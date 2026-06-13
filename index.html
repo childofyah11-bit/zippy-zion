@@ -3,65 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Drive Cloud Visualizer</title>
+    <title>Text-Art Particle Storm Visualizer</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Load Three.js library for 3D graphic rendering -->
-    <script src="https://cloudflare.com"></script>
 </head>
 <body>
 
-    <!-- 3D Viewport Canvas -->
-    <div id="visual-viewport"></div>
+    <!-- Particle Matrix Drawing Canvas Layer -->
+    <canvas id="particle-canvas"></canvas>
 
-    <!-- Central Lyric Display Deck -->
-    <div id="lyric-canvas">
-        <h1 id="active-line">CLOUD STREAMER READY</h1>
-        <h3 id="next-line">Paste your Google Drive links below to begin...</h3>
-    </div>
+    <!-- Floating HUD Command Console Overlay -->
+    <div id="matrix-overlay">
+        <div class="hud-header">
+            <h2>PARTICLE STORM MATRIX</h2>
+            <p id="system-status">AWAITING CLOUD STREAMS...</p>
+        </div>
 
-    <!-- Cloud Mixing Console Dashboard -->
-    <div id="studio-console">
-        <h2>GOOGLE DRIVE AUDIO MIXER</h2>
-        
-        <div class="deck-grid">
-            <!-- Channel A: Google Drive Vocal Link -->
-            <div class="audio-deck">
-                <h4>1. VOCAL STREAM (SINGING LINK)</h4>
-                <input type="text" id="vocal-url" class="drive-input" placeholder="Paste Google Drive Share Link Here...">
+        <!-- Google Drive Cloud Link Portals -->
+        <div class="input-bay">
+            <div class="portal-box">
+                <label>1. VOCAL STREAM (SINGING LINK)</label>
+                <input type="text" id="vocal-link" placeholder="Paste Google Drive share link...">
             </div>
-
-            <!-- Channel B: Google Drive Beat Link -->
-            <div class="audio-deck">
-                <h4>2. RHYTHM STREAM (BEAT LINK)</h4>
-                <input type="text" id="beat-url" class="drive-input" placeholder="Paste Google Drive Share Link Here...">
+            <div class="portal-box">
+                <label>2. RHYTHM STREAM (FANCY BEAT LINK)</label>
+                <input type="text" id="beat-link" placeholder="Paste Google Drive share link...">
             </div>
         </div>
 
-        <!-- System Controls Row -->
-        <div class="master-controls">
-            <label>Drum Response: <input type="range" id="drum-sensitivity" min="1" max="4" step="0.1" value="2"></label>
-            <label>Neon Tint: <input type="color" id="neon-color" value="#00ffcc"></label>
-            <button id="master-play-btn">🌐 STREAM & SYNC FROM DRIVE</button>
+        <!-- Matrix Tuning Variables Deck -->
+        <div class="tuning-deck">
+            <label>Explosion Force: <input type="range" id="blast-force" min="5" max="25" step="1" value="12"></label>
+            <label>Matrix Tint: <input type="color" id="matrix-color" value="#00ff55"></label>
+            <button id="ignite-engine-btn">ENGAGE QUANTUM STREAM</button>
         </div>
     </div>
 
-/* Core Styling Variables and Resets */
+    <script src="script.js"></script>
+</body>
+</html>
+/* Core Terminal Layout System Resets */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Impact', 'Segoe UI', sans-serif;
+    font-family: 'Courier New', Courier, monospace; /* Monospace hacker look */
 }
 
 body, html {
     width: 100%;
     height: 100%;
-    background-color: #020205;
+    background-color: #020202;
     overflow: hidden;
-    color: #ffffff;
+    color: #00ff55; /* Classic terminal green */
 }
 
-#visual-viewport {
+/* Fullscreen Particle Simulation Layer */
+#particle-canvas {
     position: absolute;
     top: 0;
     left: 0;
@@ -70,143 +67,106 @@ body, html {
     z-index: 1;
 }
 
-#lyric-canvas {
+/* Floating HUD Console Dashboard Panel */
+#matrix-overlay {
     position: absolute;
-    top: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 85%;
-    text-align: center;
-    z-index: 5;
-    pointer-events: none;
-}
-
-#active-line {
-    font-size: 3.2rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 0 15px #ff0055, 0 0 30px #ff0055;
-    transition: transform 0.05s ease;
-}
-
-#next-line {
-    font-size: 1.1rem;
-    color: #5d6d88;
-    margin-top: 10px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-/* Master Hardware Console Frame */
-#studio-console {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 850px;
-    background: rgba(8, 9, 15, 0.92);
-    backdrop-filter: blur(12px);
-    border: 2px solid #00ffcc;
-    box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
-    border-radius: 12px;
+    top: 20px;
+    left: 20px;
+    width: 360px;
+    background: rgba(5, 10, 5, 0.85);
+    border: 1px solid #00ff55;
+    box-shadow: 0 0 15px rgba(0, 255, 85, 0.2);
+    border-radius: 6px;
     padding: 16px;
     z-index: 10;
 }
 
-h2 {
-    font-size: 1.1rem;
-    color: #00ffcc;
-    text-shadow: 0 0 8px rgba(0, 255, 204, 0.5);
-    letter-spacing: 2px;
-    text-align: center;
-    margin-bottom: 12px;
-    border-bottom: 1px solid rgba(0, 255, 204, 0.2);
-    padding-bottom: 6px;
-}
-
-h4 {
-    font-size: 0.75rem;
-    color: #8a9cb5;
+.hud-header h2 {
+    font-size: 1.2rem;
+    font-weight: 900;
     letter-spacing: 1px;
-    margin-bottom: 6px;
 }
 
-.deck-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+#system-status {
+    font-size: 0.75rem;
+    color: #00aa44;
+    margin-top: 4px;
+    margin-bottom: 14px;
 }
 
-.audio-deck {
-    background: rgba(255, 255, 255, 0.02);
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+/* Input Fields & Layout Architecture Blocks */
+.input-bay {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 14px;
 }
 
-/* Neon Text Fields for Cloud Drive Links */
-.drive-input {
+.portal-box label {
+    font-size: 0.7rem;
+    display: block;
+    margin-bottom: 4px;
+    color: #00bb44;
+}
+
+.portal-box input {
     width: 100%;
-    background: #10141e;
-    border: 1px solid #2d374e;
-    padding: 10px;
+    background: #000000;
+    border: 1px solid #00aa44;
+    padding: 8px;
     border-radius: 4px;
-    color: #00ffcc;
-    font-family: monospace;
-    font-size: 0.8rem;
+    color: #00ff55;
+    font-size: 0.75rem;
     outline: none;
-    transition: border 0.2s;
 }
 
-.drive-input:focus {
-    border: 1px solid #ff0055;
-    box-shadow: 0 0 8px rgba(255, 0, 85, 0.3);
+.portal-box input:focus {
+    border: 1px solid #00ff55;
+    box-shadow: 0 0 8px rgba(0, 255, 85, 0.4);
 }
 
-.master-controls {
+/* Tuning Slider Bars System Matrix Layout */
+.tuning-deck label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    gap: 15px;
     font-size: 0.75rem;
-    color: #8a9cb5;
+    margin: 10px 0;
 }
 
 input[type="range"] {
-    accent-color: #00ffcc;
+    accent-color: #00ff55;
     cursor: pointer;
 }
 
 input[type="color"] {
-    border: none;
-    background: none;
-    cursor: pointer;
+    border: 1px solid #00ff55;
+    background: transparent;
     width: 30px;
     height: 20px;
+    cursor: pointer;
 }
 
-#master-play-btn {
-    background: #00ffcc;
-    color: #020205;
+/* Terminal Execution Link Button Trigger */
+#ignite-engine-btn {
+    width: 100%;
+    background: #00ff55;
+    color: #000000;
     border: none;
-    padding: 10px 20px;
-    font-weight: 900;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 0.8rem;
     border-radius: 4px;
     cursor: pointer;
-    box-shadow: 0 0 12px #00ffcc;
-    transition: transform 0.1s;
+    box-shadow: 0 0 10px rgba(0, 255, 85, 0.4);
+    margin-top: 10px;
 }
 
-#master-play-btn:active {
-    transform: scale(0.96);
+#ignite-engine-btn:active {
+    transform: scale(0.98);
 }
-// --- Raw Track Timeline Lyric Matrix Data ---
-const trackVerses = [
+// --- Hardcoded Song Lyric Index Array ---
+const matrixLyrics = [
     "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", 
     "Staying in my own lane", "I’m a low-key pretty goofy", "really-got-it-good-breezy", 
     "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", 
@@ -238,167 +198,179 @@ const trackVerses = [
     "Everything is turning out okay 😁"
 ];
 
-const dom = {
-    vocalIn: document.getElementById('vocal-url'),
-    beatIn: document.getElementById('beat-url'),
-    mainTxt: document.getElementById('active-line'),
-    subTxt: document.getElementById('next-line'),
-    playBtn: document.getElementById('master-play-btn'),
-    sensitivity: document.getElementById('drum-sensitivity'),
-    neonTint: document.getElementById('neon-color')
+const nodes = {
+    vocalIn: document.getElementById('vocal-link'),
+    beatIn: document.getElementById('beat-link'),
+    status: document.getElementById('system-status'),
+    canvas: document.getElementById('particle-canvas'),
+    playBtn: document.getElementById('ignite-engine-btn'),
+    force: document.getElementById('blast-force'),
+    color: document.getElementById('matrix-color')
 };
 
-let scene, camera, renderer, audioContext, beatAnalyser, vocalAnalyser;
-let dataArrayBeat, dataArrayVocal;
-let kickPad, snarePad, hihatPad;
-let vocalAudioNode = new Audio(), beatAudioNode = new Audio();
-// Allow cross-origin link streaming from external web servers
-vocalAudioNode.crossOrigin = "anonymous";
-beatAudioNode.crossOrigin = "anonymous";
+let ctx = nodes.canvas.getContext('2d');
+let audioCtx, vocalAnalyser, beatAnalyser, dataA, dataB;
+let particles = [];
+let activeIndex = 0;
+let isStreamingActive = false;
 
-let audioConfigured = false;
-let verseIndex = 0;
+let vocalTrack = new Audio();
+let beatTrack = new Audio();
+vocalTrack.crossOrigin = "anonymous";
+beatTrack.crossOrigin = "anonymous";
 
-init3DStageWorkspace();
-configureMixingConsoleIO();
-renderFramePlaybackLoop();
+// Setup Canvas Size Boundary Frames
+resizeWorkspaceCanvas();
+window.addEventListener('resize', resizeWorkspaceCanvas);
+registerControlBinds();
+simulationLoop();
 
-// --- Step 1: Generate 3D Cylinder Drum Elements ---
-function init3DStageWorkspace() {
-    const container = document.getElementById('visual-viewport');
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x020205);
-
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 4, 8);
-    camera.lookAt(0, 0, 0);
-
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.3));
-    const directional = new THREE.DirectionalLight(0x00ffcc, 1.5);
-    directional.position.set(0, 5, 3);
-    scene.add(directional);
-
-    const padGeom = new THREE.CylinderGeometry(0.8, 0.8, 0.3, 24);
-    const metalMat = new THREE.MeshStandardMaterial({ color: 0x222530, metalness: 0.7, roughness: 0.3 });
-
-    kickPad = new THREE.Mesh(padGeom, metalMat.clone()); kickPad.position.set(-2, 0, 0); scene.add(kickPad);
-    snarePad = new THREE.Mesh(padGeom, metalMat.clone()); snarePad.position.set(0, 0, -0.5); scene.add(snarePad);
-    hihatPad = new THREE.Mesh(padGeom, metalMat.clone()); hihatPad.position.set(2, 0, 0); scene.add(hihatPad);
-
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+function resizeWorkspaceCanvas() {
+    nodes.canvas.width = window.innerWidth;
+    nodes.canvas.height = window.innerHeight;
 }
 
-// --- Step 2: Extract Google Drive IDs and Convert Links ---
-function convertDriveUrl(url) {
-    // Looks for the unique file ID code inside standard Google Drive share links
-    const matches = url.match(/\/d\/([a-zA-Z0-9-_]+)/) || url.match(/id=([a-zA-Z0-9-_]+)/);
-    if (matches && matches[1]) {
-        // Formats it into Google's open hosting direct streaming format path
-        return `https://google.com{matches[1]}`;
+// --- Step 1: Clean Google Drive Share URLs ---
+function cleanUrl(url) {
+    const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/) || url.match(/id=([a-zA-Z0-9-_]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+        return `https://google.com{fileIdMatch[1]}`;
     }
-    return url; // Returns original link if it is already direct
+    return url;
 }
 
-function configureMixingConsoleIO() {
-    dom.playBtn.addEventListener('click', () => {
-        const vocalUrl = dom.vocalIn.value.trim();
-        const beatUrl = dom.beatIn.value.trim();
+// --- Step 2: Assemble Audio Pipeline Nodes ---
+function registerControlBinds() {
+    nodes.playBtn.addEventListener('click', () => {
+        const vUrl = nodes.vocalIn.value.trim();
+        const bUrl = nodes.beatIn.value.trim();
 
-        if(!vocalUrl || !beatUrl) {
-            alert("Please paste your Google Drive links into both boxes!");
+        if(!vUrl || !bUrl) {
+            alert("Please input your Google Drive vocal and beat stream links!");
             return;
         }
 
-        dom.playBtn.innerText = "⚡ DOWNLOADING CLOUD CHANNELS...";
-        
-        // Feed the parsed cloud direct links straight to our audio engine player components
-        vocalAudioNode.src = convertDriveUrl(vocalUrl);
-        beatAudioNode.src = convertDriveUrl(beatUrl);
+        nodes.status.innerText = "INITIALIZING ARCHIVE STREAMS...";
+        vocalTrack.src = cleanUrl(vUrl);
+        beatTrack.src = cleanUrl(bUrl);
 
-        if(!audioConfigured) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if(!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             
-            vocalAnalyser = audioContext.createAnalyser(); vocalAnalyser.fftSize = 64;
-            let srcA = audioContext.createMediaElementSource(vocalAudioNode);
-            srcA.connect(vocalAnalyser); vocalAnalyser.connect(audioContext.destination);
-            dataArrayVocal = new Uint8Array(vocalAnalyser.frequencyBinCount);
+            vocalAnalyser = audioCtx.createAnalyser(); vocalAnalyser.fftSize = 32;
+            let srcA = audioCtx.createMediaElementSource(vocalTrack);
+            srcA.connect(vocalAnalyser); vocalAnalyser.connect(audioCtx.destination);
+            dataA = new Uint8Array(vocalAnalyser.frequencyBinCount);
 
-            beatAnalyser = audioContext.createAnalyser(); beatAnalyser.fftSize = 64;
-            let srcB = audioContext.createMediaElementSource(beatAudioNode);
-            srcB.connect(beatAnalyser); beatAnalyser.connect(audioContext.destination);
-            dataArrayBeat = new Uint8Array(beatAnalyser.frequencyBinCount);
+            beatAnalyser = audioCtx.createAnalyser(); beatAnalyser.fftSize = 32;
+            let srcB = audioCtx.createMediaElementSource(beatTrack);
+            srcB.connect(beatAnalyser); beatAnalyser.connect(audioCtx.destination);
+            dataB = new Uint8Array(beatAnalyser.frequencyBinCount);
 
-            audioConfigured = true;
+            isStreamingActive = true;
         }
 
-        // Play synchronized streams once links are loaded from the cloud server
-        beatAudioNode.addEventListener('canplaythrough', () => {
-            vocalAudioNode.play();
-            beatAudioNode.play();
-            dom.playBtn.innerText = "🎵 JAMMING STREAM ACTIVE";
+        beatTrack.addEventListener('canplaythrough', () => {
+            vocalTrack.play();
+            beatTrack.play();
+            nodes.status.innerText = "MATRIX GRID SYNCHRONIZED";
+            assembleTextParticles(matrixLyrics[0]);
         }, { once: true });
-
-        verseIndex = 0;
-        renderTextLineOutput();
     });
 
-    beatAudioNode.addEventListener('timeupdate', () => {
-        if(!beatAudioNode.duration) return;
-        const progressPct = beatAudioNode.currentTime / beatAudioNode.duration;
-        let activeCalculationIndex = Math.floor(progressPct * trackVerses.length);
-        if(activeCalculationIndex >= trackVerses.length) activeCalculationIndex = trackVerses.length - 1;
-        if(activeCalculationIndex !== verseIndex && activeCalculationIndex >= 0) {
-            verseIndex = activeCalculationIndex;
-            renderTextLineOutput();
+    beatTrack.addEventListener('timeupdate', () => {
+        if(!beatTrack.duration) return;
+        const progress = beatTrack.currentTime / beatTrack.duration;
+        let calculatedIdx = Math.floor(progress * matrixLyrics.length);
+        if(calculatedIdx >= matrixLyrics.length) calculatedIdx = matrixLyrics.length - 1;
+
+        if(calculatedIdx !== activeIndex && calculatedIdx >= 0) {
+            activeIndex = calculatedIdx;
+            assembleTextParticles(matrixLyrics[activeIndex]);
         }
     });
 }
 
-function renderTextLineOutput() {
-    if(verseIndex < trackVerses.length) {
-        dom.mainTxt.innerText = trackVerses[verseIndex];
-        dom.subTxt.innerText = (verseIndex + 1 < trackVerses.length) ? "UP NEXT: " + trackVerses[verseIndex + 1] : "SONG CONCLUDED 👑";
+// --- Step 3: Map Out Particle Coordinates ---
+function assembleTextParticles(text) {
+    particles = [];
+    ctx.font = "bold 32px 'Courier New'";
+    
+    // Calculate centering matrix layout grids
+    const textWidth = ctx.measureText(text).width;
+    const startX = (nodes.canvas.width - textWidth) / 2;
+    const startY = nodes.canvas.height / 2;
+
+    // Split text into individual character node positions
+    for(let i = 0; i < text.length; i++) {
+        const letter = text[i];
+        if(letter === " ") continue;
+
+        const letterWidth = ctx.measureText(text.substring(0, i)).width;
+
+        particles.push({
+            char: letter,
+            x: Math.random() * nodes.canvas.width, // Spawn scattered randomly
+            y: Math.random() * nodes.canvas.height,
+            targetX: startX + letterWidth,         // Assemble into this target slot
+            targetY: startY,
+            vx: 0,
+            vy: 0
+        });
     }
 }
 
-// --- Step 3: Run Beat Animations Loop ---
-function renderFramePlaybackLoop() {
-    requestAnimationFrame(renderFramePlaybackLoop);
-    let kickIntensity = 0, vocalIntensity = 0;
+// --- Step 4: The Canvas Simulation Framework Loop ---
+function simulationLoop() {
+    requestAnimationFrame(simulationLoop);
 
-    if(audioConfigured && beatAnalyser && vocalAnalyser) {
-        beatAnalyser.getByteFrequencyData(dataArrayBeat);
-        vocalAnalyser.getByteFrequencyData(dataArrayVocal);
-        kickIntensity = dataArrayBeat[2] / 255;
-        let vocalSum = 0;
-        for(let i=0; i<dataArrayVocal.length; i++) vocalSum += dataArrayVocal[i];
-        vocalIntensity = (vocalSum / dataArrayVocal.length) / 255;
+    // Give a trailing fade blur look to the screen background matrix text frame
+    ctx.fillStyle = "rgba(2, 2, 2, 0.25)";
+    ctx.fillRect(0, 0, nodes.canvas.width, nodes.canvas.height);
+
+    let voiceVol = 0, beatKick = 0;
+    if(isStreamingActive && vocalAnalyser && beatAnalyser) {
+        vocalAnalyser.getByteFrequencyData(dataA);
+        beatAnalyser.getByteFrequencyData(dataB);
+
+        // Capture voice level for alignment forces
+        let sumA = 0; for(let i=0; i<dataA.length; i++) sumA += dataA[i];
+        voiceVol = (sumA / dataA.length) / 255;
+
+        // Capture bass beat kicks for particle storms explosions
+        beatKick = dataB[0] / 255; 
     }
 
-    const sensMult = parseFloat(dom.sensitivity.value);
-    const activeColorHex = dom.neonTint.value;
+    const colorHex = nodes.color.value;
+    const blastMultiplier = parseFloat(nodes.force.value);
 
-    if(kickPad && snarePad && hihatPad) {
-        kickPad.position.y = -(kickIntensity * 0.4 * sensMult);
-        snarePad.position.y = -(kickIntensity * 0.3 * sensMult);
-        hihatPad.position.y = -(kickIntensity * 0.2 * sensMult);
-        kickPad.material.color.setHex(kickIntensity > 0.4 ? 0xff0055 : 0x222530);
-        snarePad.material.color.set(kickIntensity > 0.4 ? activeColorHex : "#222530");
-    }
+    ctx.font = "bold 32px 'Courier New'";
+    ctx.fillStyle = colorHex;
 
-    const textBounce = 1 + (vocalIntensity * 0.22);
-    dom.mainTxt.style.transform = `scale(${textBounce})`;
-    dom.mainTxt.style.textShadow = `0 0 ${15 + (vocalIntensity * 25)}px #ff0055`;
-    renderer.render(scene, camera);
+    particles.forEach(p => {
+        // Trigger scatter explosion whenever a heavy beat drops on the rhythm channel
+        if(beatKick > 0.68) {
+            p.vx += (Math.random() - 0.5) * blastMultiplier;
+            p.vy += (Math.random() - 0.5) * blastMultiplier;
+        }
+
+        // Apply magnets to snap particle velocity paths back to text rows when voice sounds
+        const dx = p.targetX - p.x;
+        const dy = p.targetY - p.y;
+        
+        // Assembling speed relies directly on the vocal presence scale
+        const gravitySpeed = 0.03 + (voiceVol * 0.05);
+        p.vx += dx * gravitySpeed;
+        p.vy += dy * gravitySpeed;
+
+        // Physics friction drag dampener
+        p.vx *= 0.85;
+        p.vy *= 0.85;
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Render typography particles onto current frame viewports
+        ctx.fillText(p.char, p.x, p.y);
+    });
 }
-
-    <script src="script.js"></script>
-</body>
-</html>
