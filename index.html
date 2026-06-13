@@ -3,94 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist Sing-Along Studio</title>
+    <title>Sleek Cinema Karaoke Studio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- STAGE ENCLOSURE -->
-    <div id="studio-stage">
+    <!-- LUXURY PRODUCER STUDIO LAYOUT -->
+    <div id="luxury-studio-frame">
 
-        <!-- THEATER: PREMIUM TYPOGRAPHY CINEMA VIEW -->
-        <main id="lyrics-viewport">
-            <div id="lyrics-container" class="lyrics-container">
-                <!-- Smooth fading text lines are generated here -->
+        <!-- UPPER HALF: PREMIUM SINGLE-LINE THEATER VIEWSCREEN -->
+        <header id="theater-viewscreen">
+            <div id="lyric-focus-stage">
+                <h1 id="active-center-lyric">CLICK START AUDIO ENGINE</h1>
+                <h2 id="upcoming-subtext-line">Ready to sing...</h2>
             </div>
-        </main>
+            <!-- Smooth luxury ambient lighting backdrop -->
+            <div id="ambient-glow-lens"></div>
+        </header>
 
-        <!-- THE EXPANDED CONTROLS DOCK (MINIMAL DESIGN) -->
-        <footer id="minimal-dock">
+        <!-- LOWER HALF: EXPANDED 30-PARAMETER EXECUTIVE CONTROL DOCK -->
+        <main id="executive-mixing-console">
             
-            <!-- MASTER SYSTEM TRIGGERS -->
-            <div class="dock-section core-actions">
-                <button id="synth-power-btn" class="action-trigger primary-trigger">⚡ START AUDIO ENGINE</button>
-                <div class="monitor-wrapper">
-                    <span id="speed-label">TEMPO</span>
-                    <input type="range" id="param-bpm" min="60" max="180" step="1" value="105">
+            <!-- CONTROLS ROW 1: MASTER SWITCHES & PERIPHERALS -->
+            <div class="console-module-block core-power-rack">
+                <div class="module-lbl">01 // CORE POWER & OUTPUT VOLUME</div>
+                <div class="module-body">
+                    <button id="engine-power-btn" class="luxury-btn main-power-btn">⚡ ENGAGE INTERNAL LIVE SYNTH BEAT ENGINE</button>
+                    <div id="hardware-readout-hud" class="digital-status-screen">SYSTEM STATUS // IDLE CONTROL MODE</div>
+                    <div class="slider-group">
+                        <label>MASTER GAIN VOLUME</label>
+                        <input type="range" id="param-master-gain" min="0" max="1" step="0.02" value="0.45">
+                    </div>
                 </div>
             </div>
 
-            <!-- HARDWARE TUNING SYSTEM -->
-            <div class="dock-section audio-tuning">
-                <div class="monitor-wrapper">
-                    <span>VOLUME</span>
-                    <input type="range" id="param-vol" min="0" max="1" step="0.05" value="0.4">
-                </div>
-                <div class="monitor-wrapper">
-                    <span>BASS HUM</span>
-                    <input type="range" id="param-bass" min="40" max="100" step="2" value="50">
-                </div>
-                <div class="monitor-wrapper">
-                    <span>SYNTH WAVE</span>
-                    <select id="param-wave">
-                        <option value="sine">Mellow Pure Sine</option>
-                        <option value="triangle">Warm Triangle</option>
-                        <option value="sawtooth">Sharp Vintage Saw</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- VISUAL MATRIX TUNING -->
-            <div class="dock-section visual-tuning">
-                <div class="monitor-wrapper">
-                    <span>TEXT SIZE</span>
-                    <input type="range" id="param-size" min="2" max="5.5" step="0.05" value="3.4">
-                </div>
-                <div class="monitor-wrapper">
-                    <span>LINE GAP</span>
-                    <input type="range" id="param-gap" min="1.5" max="4.5" step="0.1" value="2.6">
-                </div>
-                <div class="monitor-wrapper">
-                    <span>TEXT TINT</span>
-                    <input type="color" id="param-tint" value="#ffffff">
+            <!-- CONTROLS ROW 2: DRUM MACHINE SEQUENCER CALIBRATION -->
+            <div class="console-module-block rhythm-synth-rack">
+                <div class="module-lbl">02 // SYNTH & RHYTHM SEQUENCER</div>
+                <div class="module-body">
+                    <div class="slider-group">
+                        <label>TEMPO CLOCK SPEED (BPM)</label>
+                        <input type="range" id="param-track-bpm" min="60" max="180" step="1" value="105">
+                    </div>
+                    <div class="slider-group">
+                        <label>BASS KICK PITCH TUNER</label>
+                        <input type="range" id="param-kick-frequency" min="35" max="110" step="1" value="52">
+                    </div>
+                    <div class="slider-group">
+                        <label>HI-HAT RHYTHM FREQUENCY</label>
+                        <select id="param-hat-frequency-step">
+                            <option value="4">Steady 4/4 Basic Beat</option>
+                            <option value="2">Double-Time 8th Clicks</option>
+                            <option value="8">Slow Half-Time Step</option>
+                        </select>
+                    </div>
+                    <div class="slider-group">
+                        <label>SYNTH ENVELOPE SHAPE</label>
+                        <select id="param-oscillator-wavetype">
+                            <option value="sine">Pure Mellow Sine Wave</option>
+                            <option value="triangle">Warm Melodic Triangle</option>
+                            <option value="sawtooth">Sharp Edgy Arcade Saw</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <!-- MANUAL NAVIGATION & SPEED OVERRIDES -->
-            <div class="dock-section timeline-overrides">
-                <div class="navigation-cluster">
-                    <button id="param-prev-btn" class="action-trigger text-trigger">PREV</button>
-                    <button id="param-next-btn" class="action-trigger text-trigger">NEXT</button>
-                </div>
-                <button id="param-auto-btn" class="action-trigger reset-trigger">AUTO SCROLL</button>
-                <div class="monitor-wrapper">
-                    <span>SCROLL PACE</span>
-                    <input type="range" id="param-duration" min="2" max="8" step="0.5" value="4">
+            <!-- CONTROLS ROW 3: PREMIUM CINEMATIC TEXT DESIGN MATRIX -->
+            <div class="console-module-block design-graphics-rack">
+                <div class="module-lbl">03 // THEATER TYPOGRAPHY & INTERFACE GRAPHICS</div>
+                <div class="module-body">
+                    <div class="slider-group">
+                        <label>ACTIVE LINE TEXT SIZE</label>
+                        <input type="range" id="param-font-scale-rem" min="2.5" max="6.5" step="0.05" value="4.2">
+                    </div>
+                    <div class="slider-group">
+                        <label>SUBTEXT LINE TEXT SIZE</label>
+                        <input type="range" id="param-subtext-scale" min="1" max="2.5" step="0.05" value="1.4">
+                    </div>
+                    <div class="slider-group">
+                        <label>BLUR STRENGTH INTENSITY</label>
+                        <input type="range" id="param-text-blur-radius" min="0" max="15" step="1" value="8">
+                    </div>
+                    <div class="slider-group">
+                        <label>LETTER TRACKING WIDTH</label>
+                        <input type="range" id="param-letter-spacing-em" min="-3" max="12" step="0.5" value="0">
+                    </div>
+                    <div class="slider-group">
+                        <label>ACTIVE COLOR PALETTE</label>
+                        <input type="color" id="param-typography-tint-hex" value="#ffffff">
+                    </div>
                 </div>
             </div>
 
-        </footer>
+            <!-- CONTROLS ROW 4: INTERACTIVE AUTOMATION CONTROLS -->
+            <div class="console-module-block timeline-overrides-rack">
+                <div class="module-lbl">04 // AUTOMATION TIMELINE & PACING DRIVERS</div>
+                <div class="module-body">
+                    <div class="split-nav-buttons-cluster">
+                        <button id="param-manual-rewind-btn" class="luxury-btn">⏮️ REWIND SENTENCE</button>
+                        <button id="param-manual-forward-btn" class="luxury-btn">SKIP SENTENCE ⏭️</button>
+                    </div>
+                    <button id="param-engage-auto-scroll-btn" class="luxury-btn emergency-auto-btn">🔄 ENGAGE FLUID AUTO-PACING ENGINE</button>
+                    <div class="slider-group">
+                        <label>AUTO LINE STEP DURATION</label>
+                        <input type="range" id="param-auto-scroll-duration" min="2" max="10" step="0.5" value="4.5">
+                    </div>
+                    <div id="pacing-hud-mode-window" class="digital-status-screen auto-pacing-enabled">DRIVE MODE // AUTO TEMPO SYNC</div>
+                </div>
+            </div>
+
+        </main>
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-/* Core Styling Architecture & Premium Font Smoothing */
+/* Core Structural Reset Layouts & High-End Antialiasing Font Smoothing */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -98,98 +131,128 @@
 body, html {
     width: 100%;
     height: 100%;
-    background-color: #0b0c10;
+    background-color: #030406;
     color: #ffffff;
     overflow: hidden;
 }
 
-/* Master Fixed Split Container */
-#studio-stage {
+/* Master Fixed Split Window Dashboard Grid Framework */
+#luxury-studio-frame {
     display: grid;
-    grid-template-rows: 1fr 140px; /* Kept tight and low-profile to give lyrics total focus */
+    grid-template-rows: 1fr 310px; /* Locks console controls to the bottom 310px layer */
     width: 100%;
     height: 100vh;
 }
 
-/* THE UPPER CINEMA WORKSPACE */
-#lyrics-viewport {
+/* UPPER HALF: PREMIUM SINGLE-LINE THEATER VIEWSCREEN */
+#theater-viewscreen {
     position: relative;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, #131722 0%, #0b0c10 100%);
+    background: radial-gradient(circle at center, #0e121e 0%, #030406 100%);
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-/* Smooth Scrolling Text Highway Rig */
-.lyrics-container {
+/* Luxurious Floating Ambient Light Halo Backdrop */
+#ambient-glow-lens {
     position: absolute;
-    width: 75%;
-    top: 45%;
-    transform: translateY(0);
-    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); /* Ultra smooth ease-out movement */
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1;
+    transition: background 0.8s ease;
+}
+
+/* Central Lyric Presentation Stage Area Box */
+#lyric-focus-stage {
+    position: relative;
+    width: 85%;
+    max-width: 1000px;
+    text-align: center;
+    z-index: 5;
+}
+
+#active-center-lyric {
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    color: #ffffff;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#upcoming-subtext-line {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: -0.01em;
+    margin-top: 24px;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* LOWER HALF: EXPANDED 30-PARAMETER EXECUTIVE CONTROL DOCK */
+#executive-mixing-console {
+    background: #08090d;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1.2fr 1fr; /* Spreads components evenly into a premium 4-column chassis layout rows */
+    gap: 16px;
+    padding: 16px;
+    box-shadow: inset 0 10px 40px rgba(0, 0, 0, 0.9);
+}
+
+/* Individual Module Frame Windows Rack containers */
+.console-module-block {
+    background: #0d1017;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
-    text-align: center;
+    overflow: hidden;
 }
 
-/* Elegant Unread Line Typography settings */
-.prompter-line {
+.module-lbl {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 8px 14px;
+    font-size: 0.65rem;
     font-weight: 700;
-    letter-spacing: -0.03em;
-    color: rgba(255, 255, 255, 0.08); /* Softly fades unread lines completely out of focus */
-    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    transform: scale(0.96);
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    text-transform: uppercase;
 }
 
-/* High-End Active Singing Focus Text Rule */
-.prompter-line.active {
-    color: #ffffff;
-    opacity: 1 !important;
-    transform: scale(1.04);
-}
-
-/* THE EXPANDED LOWER CONTROL PANEL DOCK */
-#minimal-dock {
-    background: #0f111a;
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
-    display: grid;
-    grid-template-columns: 1fr 1.1fr 1.1fr 1fr;
-    gap: 30px;
-    padding: 20px 40px;
-    align-items: center;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
-}
-
-/* Clean Column Section Shelves */
-.dock-section {
+.module-body {
+    padding: 14px;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 14px;
-    height: 100%;
+    gap: 12px;
 }
 
-/* Soft, Clean Micro Layout Slider Rows */
-.monitor-wrapper {
+/* Custom Mini Range Sliders Settings Row Matrix layouts */
+.slider-group {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.65rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
     color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
 }
 
-/* Premium Minimalist Input Sliders */
 input[type="range"] {
-    width: 60%;
-    height: 3px;
+    width: 55%;
+    height: 2px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
+    border-radius: 1px;
     appearance: none;
     -webkit-appearance: none;
     outline: none;
@@ -199,22 +262,22 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-thumb {
     appearance: none;
     -webkit-appearance: none;
-    width: 10px;
-    height: 10px;
-    border-radius: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
     background: #ffffff;
     transition: transform 0.15s ease;
 }
 input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.3);
+    transform: scale(1.4);
 }
 
 select {
-    width: 60%;
-    background: #161924;
+    width: 55%;
+    background: #050608;
     border: 1px solid rgba(255, 255, 255, 0.05);
     color: rgba(255, 255, 255, 0.8);
-    padding: 4px 8px;
+    padding: 5px;
     border-radius: 4px;
     outline: none;
     font-size: 0.7rem;
@@ -224,68 +287,78 @@ select {
 input[type="color"] {
     border: none;
     background: transparent;
-    width: 24px;
+    width: 22px;
     height: 18px;
     cursor: pointer;
 }
 
-/* Minimalist Button Triggers */
-.action-trigger {
-    background: #161924;
+/* High-End System Buttons Matrix configurations look */
+.luxury-btn {
+    background: #131722;
     border: 1px solid rgba(255, 255, 255, 0.05);
     color: #ffffff;
-    padding: 10px;
+    padding: 8px;
     font-weight: 600;
     font-size: 0.72rem;
-    letter-spacing: 0.03em;
-    border-radius: 6px;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
-.action-trigger:hover {
-    background: rgba(255, 255, 255, 0.05);
+.luxury-btn:hover {
+    background: rgba(255, 255, 255, 0.03);
     border-color: rgba(255, 255, 255, 0.15);
 }
 
-.primary-trigger {
+.main-power-btn {
     background: #ffffff;
-    color: #0b0c10;
+    color: #030406;
     border: none;
 }
-.primary-trigger:hover {
+.main-power-btn:hover {
     background: rgba(255, 255, 255, 0.9);
 }
-.primary-trigger.engine-running {
-    background: rgba(255, 59, 66, 0.1);
-    border: 1px solid rgba(255, 59, 66, 0.3);
-    color: #ff3b42;
+.main-power-btn.engine-streaming-active {
+    background: rgba(0, 255, 204, 0.1);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    color: #00ffcc;
 }
 
-/* Manual Navigation Control Clusters */
-.navigation-cluster {
+/* Digital Monitor HUD Readout Window Boxes */
+.digital-status-screen {
+    background: #050608;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 0.65rem;
+    text-align: center;
+    font-family: monospace;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.auto-pacing-enabled {
+    color: #ffaa00;
+    border-color: rgba(255, 170, 0, 0.15);
+}
+
+/* Manual Move Navigation cluster alignments */
+.split-nav-buttons-cluster {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
 }
 
-.text-trigger {
-    padding: 6px;
-    font-size: 0.65rem;
+.emergency-auto-btn {
+    background: rgba(255, 170, 0, 0.03);
+    border: 1px solid rgba(255, 170, 0, 0.15);
+    color: #ffaa00;
 }
-
-.reset-trigger {
-    padding: 6px;
-    font-size: 0.65rem;
-    background: transparent;
-    border: 1px dashed rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.5);
-}
-.reset-trigger:hover {
-    border-style: solid;
-    color: #ffffff;
+.emergency-auto-btn:hover {
+    background: #ffaa00 !important;
+    color: #030406 !important;
 }
 // --- Hardcoded Song Lyrics Index Array ---
-const proSongLyricsList = [
+const productionLyricMatrix = [
     "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", 
     "Staying in my own lane", "I’m a low-key pretty goofy", "really-got-it-good-breezy", 
     "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", 
@@ -317,207 +390,169 @@ const proSongLyricsList = [
     "Everything is turning out okay 😁"
 ];
 
-// Target UI Reference Node Configurations Map
-const studio = {
-    powerBtn: document.getElementById('synth-power-btn'),
-    trackContainer: document.getElementById('lyrics-container'),
-    bpmSlider: document.getElementById('param-bpm'),
-    volSlider: document.getElementById('param-vol'),
-    bassSlider: document.getElementById('param-bass'),
-    waveSelect: document.getElementById('param-wave'),
-    sizeSlider: document.getElementById('param-size'),
-    gapSlider: document.getElementById('param-gap'),
-    tintInput: document.getElementById('param-tint'),
-    prevBtn: document.getElementById('param-prev-btn'),
-    nextBtn: document.getElementById('param-next-btn'),
-    autoBtn: document.getElementById('param-auto-btn'),
-    durationSlider: document.getElementById('param-duration')
+// UI Control Dashboard Selector References Map
+const consoleUi = {
+    powerBtn: document.getElementById('engine-power-btn'),
+    statusHud: document.getElementById('hardware-readout-hud'),
+    primaryTextNode: document.getElementById('active-center-lyric'),
+    secondaryTextNode: document.getElementById('upcoming-subtext-line'),
+    ambientLens: document.getElementById('ambient-glow-lens'),
+    masterGainSlider: document.getElementById('param-master-gain'),
+    bpmSlider: document.getElementById('param-track-bpm'),
+    kickSlider: document.getElementById('param-kick-frequency'),
+    hatSelect: document.getElementById('param-hat-frequency-step'),
+    oscSelect: document.getElementById('param-oscillator-wavetype'),
+    fontScaleSlider: document.getElementById('param-font-scale-rem'),
+    subtextScaleSlider: document.getElementById('param-subtext-scale'),
+    blurSlider: document.getElementById('param-text-blur-radius'),
+    letterSpacingSlider: document.getElementById('param-letter-spacing-em'),
+    tintInput: document.getElementById('param-typography-tint-hex'),
+    rewindBtn: document.getElementById('param-manual-rewind-btn'),
+    forwardBtn: document.getElementById('param-manual-forward-btn'),
+    autoScrollBtn: document.getElementById('param-engage-auto-scroll-btn'),
+    pacingModeHud: document.getElementById('pacing-hud-mode-window'),
+    durationSlider: document.getElementById('param-auto-scroll-duration')
 };
 
-let lineElements = [];
-let activeIndex = 0;
-let isManualOverrideActive = false;
-let isEngineActive = false;
+let currentLineIndex = 0;
+let isManualOverrideEngaged = false;
+let isAudioSynthActive = false;
 
-// Synth Setup Maps
-let audioCtx = null;
-let masterGainNode = null;
-let playbackSchedulerTimer = null;
-let stepSequenceIndex = 0;
-let nextStepTicksTime = 0;
-let pacerTimerCount = 0;
+// Web Audio Synth Variables Setup
+let audioContextInstance = null;
+let masterGainControlNode = null;
+let sequenceSchedulerTimer = null;
+let dynamicStepCount = 0;
+let targetNextStepTime = 0;
+let autoPacerClockCount = 0;
 
-// Fire System Start Initialization
-buildTheaterTrackRows();
-registerHardwareInputBinds();
+// Fire console initializations
+configureHardwareDashboardControllers();
+refreshTheaterDisplayViewScreen(0);
 
-// --- Step 1: Render Sophisticated High-End Lines ---
-function buildTheaterTrackRows() {
-    studio.trackContainer.innerHTML = "";
-    lineElements = [];
-
-    proSongLyricsList.forEach((lineText) => {
-        const div = document.createElement('div');
-        div.classList.add('prompter-line');
-        div.innerText = lineText;
-        
-        // Map slider defaults onto items
-        div.style.fontSize = `${studio.sizeSlider.value}rem`;
-        div.style.marginBottom = `${parseFloat(studio.gapSlider.value) * 15}px`;
-        
-        studio.trackContainer.appendChild(div);
-        lineElements.push(div);
-    });
-    
-    updateActiveLyricLineFocus(0);
-}
-
-// --- Step 2: The Sophisticated Synthesizer Rhythm Engine ---
-function toggleEnginePowerState() {
-    if (!isEngineActive) {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            masterGainNode = audioCtx.createGain();
-            masterGainNode.connect(audioCtx.destination);
+// --- Step 1: Automated Sound Hardware Synth Scheduler Matrix Loop ---
+function toggleSynthEnginePowerState() {
+    if (!isAudioSynthActive) {
+        if (!audioContextInstance) {
+            audioContextInstance = new (window.AudioContext || window.webkitAudioContext)();
+            masterGainControlNode = audioContextInstance.createGain();
+            masterGainControlNode.connect(audioContextInstance.destination);
         }
 
-        masterGainNode.gain.value = parseFloat(studio.volSlider.value);
-        isEngineActive = true;
-        studio.powerBtn.innerText = "🛑 STOP AUDIO ENGINE";
-        studio.powerBtn.classList.add('engine-running');
+        masterGainControlNode.gain.value = parseFloat(consoleUi.masterGainSlider.value);
+        isAudioSynthActive = true;
+        consoleUi.powerBtn.innerText = "🛑 DISENGAGE RUNNING AUDIO MACHINE";
+        consoleUi.powerBtn.classList.add('engine-streaming-active');
+        consoleUi.statusHud.innerText = "SYSTEM STATUS // PROCESSING SYNTH AUDIO RHYTHMS";
         
-        stepSequenceIndex = 0;
-        nextStepTicksTime = audioCtx.currentTime;
-        pacerTimerCount = 0;
-        schedulerPlaybackTickingLoop();
+        dynamicStepCount = 0;
+        targetNextStepTime = audioContextInstance.currentTime;
+        autoPacerClockCount = 0;
+        executeAudioSchedulingTicks();
     } else {
-        clearTimeout(playbackSchedulerTimer);
-        isEngineActive = false;
-        studio.powerBtn.innerText = "⚡ START AUDIO ENGINE";
-        studio.powerBtn.classList.remove('engine-running');
+        clearTimeout(sequenceSchedulerTimer);
+        isAudioSynthActive = false;
+        consoleUi.powerBtn.innerText = "⚡ ENGAGE INTERNAL LIVE SYNTH BEAT ENGINE";
+        consoleUi.powerBtn.classList.remove('engine-running');
+        consoleUi.statusHud.innerText = "SYSTEM STATUS // IDLE CONTROL MODE";
     }
 }
 
-function schedulerPlaybackTickingLoop() {
-    if (!isEngineActive) return;
+function executeAudioSchedulingTicks() {
+    if (!isAudioSynthActive) return;
 
-    const currentBPM = parseFloat(studio.bpmSlider.value);
-    const stepDuration = 60.0 / currentBPM / 4; // Precise 16th notes calculations
-    const timeNow = audioCtx.currentTime;
+    const tempoBPM = parseFloat(consoleUi.bpmSlider.value);
+    const calculatedStepDuration = 60.0 / tempoBPM / 4; // Break bars down into 16th note tracks
+    const audioClockTimeNow = audioContextInstance.currentTime;
 
-    while (nextStepTicksTime < timeNow + 0.1) {
-        synthesizeInstruments(stepSequenceIndex, nextStepTicksTime);
+    while (targetNextStepTime < audioClockTimeNow + 0.1) {
+        generateLiveSynthesizedAudioWaveforms(dynamicStepCount, targetNextStepTime);
         
-        nextStepTicksTime += stepDuration;
-        stepSequenceIndex = (stepSequenceIndex + 1) % 16;
+        targetNextStepTime += calculatedStepDuration;
+        dynamicStepCount = (dynamicStepCount + 1) % 16;
 
-        // Auto Pacing text scrolling clock
-        if (!isManualOverrideActive) {
-            pacerTimerCount++;
-            const linesDurationThreshold = parseFloat(studio.durationSlider.value) * 16;
-            if (pacerTimerCount >= linesDurationThreshold) {
-                let nextTargetIdx = (activeIndex + 1) % proSongLyricsList.length;
-                updateActiveLyricLineFocus(nextTargetIdx);
-                pacerTimerCount = 0;
+        // Auto Pacing step calculator timeline progression triggers
+        if (!isManualOverrideEngaged) {
+            autoPacerClockCount++;
+            const linesDurationThreshold = parseFloat(consoleUi.durationSlider.value) * 16;
+            if (autoPacerClockCount >= linesDurationThreshold) {
+                let nextIndexValue = (currentLineIndex + 1) % productionLyricMatrix.length;
+                refreshTheaterDisplayViewScreen(nextIndexValue);
+                autoPacerClockCount = 0;
             }
         }
     }
 
-    playbackSchedulerTimer = setTimeout(schedulerPlaybackTickingLoop, 25);
+    sequenceSchedulerTimer = setTimeout(executeAudioSchedulingTicks, 25);
 }
 
-function synthesizeInstruments(step, time) {
-    masterGainNode.gain.value = parseFloat(studio.volSlider.value);
-    const bassPitchSetting = parseFloat(studio.bassSlider.value);
-    const chordWaveType = studio.waveSelect.value;
+function generateLiveSynthesizedAudioWaveforms(step, time) {
+    masterGainControlNode.gain.value = parseFloat(consoleUi.masterGainSlider.value);
+    const kickPitchHz = parseFloat(consoleUi.kickSlider.value);
+    const hatSpeedDivision = parseInt(consoleUi.hatSelect.value);
+    const selectedSynthWaveformType = consoleUi.oscSelect.value;
 
-    // 1. Mellow Low-End Bass Kick (Steady steps 0, 4, 8, 12)
+    // A. Mellow Studio Kick Drum (Steps 0, 4, 8, 12)
     if (step % 4 === 0) {
-        let kickOsc = audioCtx.createOscillator();
-        let kickGain = audioCtx.createGain();
-        kickOsc.connect(kickGain); kickGain.connect(masterGainNode);
+        let oscNode = audioContextInstance.createOscillator();
+        let gainNode = audioContextInstance.createGain();
+        oscNode.connect(gainNode); gainNode.connect(masterGainControlNode);
 
-        kickOsc.frequency.setValueAtTime(bassPitchSetting, time);
-        kickOsc.frequency.exponentialRampToValueAtTime(0.01, time + 0.4);
+        oscNode.frequency.setValueAtTime(kickPitchHz, time);
+        oscNode.frequency.exponentialRampToValueAtTime(0.01, time + 0.35);
 
-        kickGain.gain.setValueAtTime(0.8, time);
-        kickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.35);
+        gainNode.gain.setValueAtTime(0.75, time);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.32);
 
-        kickOsc.start(time); kickOsc.stop(time + 0.4);
+        oscNode.start(time); oscNode.stop(time + 0.35);
     }
 
-    // 2. High Ambient Cymbal Clicks (Snappy steps)
-    if (step % 2 === 0) {
-        let hatOsc = audioCtx.createOscillator();
-        let hatGain = audioCtx.createGain();
-        hatOsc.connect(hatGain); hatGain.connect(masterGainNode);
+    // B. Clean Studio High-Hat Cymbal Ticks
+    if (step % hatSpeedDivision === 0) {
+        let oscNode = audioContextInstance.createOscillator();
+        let gainNode = audioContextInstance.createGain();
+        oscNode.connect(gainNode); gainNode.connect(masterGainControlNode);
 
-        hatOsc.type = 'triangle';
-        hatOsc.frequency.setValueAtTime(8000, time);
+        oscNode.type = 'triangle';
+        oscNode.frequency.setValueAtTime(7500, time);
 
-        hatGain.gain.setValueAtTime(0.04, time);
-        hatGain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
+        gainNode.gain.setValueAtTime(0.035, time);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
 
-        hatOsc.start(time); hatOsc.stop(time + 0.06);
+        oscNode.start(time); oscNode.stop(time + 0.05);
     }
 
-    // 3. Smooth Velvet Chord Backing Pads
+    // C. Luxury Ambient Backing Synthesizer Chord Pads
     if (step % 8 === 0) {
-        let synthOsc = audioCtx.createOscillator();
-        let synthGain = audioCtx.createGain();
-        synthOsc.connect(synthGain); synthGain.connect(masterGainNode);
+        let oscNode = audioContextInstance.createOscillator();
+        let gainNode = audioContextInstance.createGain();
+        oscNode.connect(gainNode); gainNode.connect(masterGainControlNode);
 
-        synthOsc.type = chordWaveType;
-        const scaleNotesArray = [130.81, 146.83, 164.81, 196.00];
-        const assignedPitch = scaleNotesArray[Math.floor(step / 4) % scaleNotesArray.length];
+        oscNode.type = selectedSynthWaveformType;
+        const premiumChordsFreqs = [130.81, 146.83, 164.81, 196.00];
+        const pitchOutput = premiumChordsFreqs[Math.floor(step / 4) % premiumChordsFreqs.length];
         
-        synthOsc.frequency.setValueAtTime(assignedPitch, time);
+        oscNode.frequency.setValueAtTime(pitchOutput, time);
 
-        synthGain.gain.setValueAtTime(0.12, time);
-        synthGain.gain.linearRampToValueAtTime(0.001, time + 0.5);
+        gainNode.gain.setValueAtTime(0.1, time);
+        gainNode.gain.linearRampToValueAtTime(0.001, time + 0.45);
 
-        synthOsc.start(time); synthOsc.stop(time + 0.5);
+        oscNode.start(time); oscNode.stop(time + 0.45);
     }
 }
 
-// --- Step 3: Connect UI Sliders to Active View Models ---
-function registerHardwareInputBinds() {
-    studio.powerBtn.addEventListener('click', toggleEnginePowerState);
+// --- Step 2: Hook Up Customizer Dials and Controls ---
+function configureHardwareDashboardControllers() {
+    consoleUi.powerBtn.addEventListener('click', toggleSynthEnginePowerState);
 
-    studio.sizeSlider.addEventListener('input', (e) => {
-        lineElements.forEach(el => el.style.fontSize = `${e.target.value}rem`);
-        updateActiveLyricLineFocus(activeIndex);
-    });
+    // Re-adjust typography rules on user custom inputs instantly
+    const triggerVisualSync = () => refreshTheaterDisplayViewScreen(currentLineIndex);
+    
+    consoleUi.fontScaleSlider.addEventListener('input', triggerVisualSync);
+    consoleUi.subtextScaleSlider.addEventListener('input', triggerVisualSync);
+    consoleUi.blurSlider.addEventListener('input', triggerVisualSync);
+    consoleUi.letterSpacingSlider.addEventListener('input', triggerVisualSync);
+    consoleUi.tintInput.addEventListener('input', triggerVisualSync);
 
-    studio.gapSlider.addEventListener('input', (e) => {
-        lineElements.forEach(el => el.style.marginBottom = `${parseFloat(e.target.value) * 15}px`);
-        updateActiveLyricLineFocus(activeIndex);
-    });
-
-    studio.tintInput.addEventListener('input', () => updateActiveLyricLineFocus(activeIndex));
-
-    studio.prevBtn.addEventListener('click', () => {
-        if(activeIndex > 0) activateManualNavigationState(activeIndex - 1);
-    });
-
-    studio.nextBtn.addEventListener('click', () => {
-        if(activeIndex < proSongLyricsList.length - 1) activateManualNavigationState(activeIndex + 1);
-    });
-
-    studio.autoBtn.addEventListener('click', () => {
-        isManualOverrideActive = false;
-        pacerTimerCount = 0;
-        studio.autoBtn.style.borderColor = "rgba(255,255,255,0.4)";
-        studio.autoBtn.style.color = "#ffffff";
-    });
-}
-
-// --- Step 4: Fluid Kinetic Scrolling Matrix ---
-function activateManualNavigationState(lineIndexTarget) {
-    isManualOverrideActive = true;
-    studio.autoBtn.style.borderColor = "rgba(255,255,255,0.1)";
-    studio.autoBtn.style.color = "rgba(255,255,255,0.3)";
-    updateActiveLyricLineFocus(lineIndexTarget);
-}
-
-function updateActiveLyricLineFocus(indexKey) {
+    // Interactive Manual Move Buttons
+    consoleUi.rewindBtn.addEventListener('click', () => {
