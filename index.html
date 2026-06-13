@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goofball 512-Step Illusion Band</title>
+    <title>Goofball 512-Step Master Band Sequencer</title>
     <style>
         body {
-            background: #030308;
+            background: #05050a;
             color: #fff;
             font-family: 'Segoe UI', system-ui, sans-serif;
             text-align: center;
@@ -18,75 +18,21 @@
             margin: 0;
             padding: 15px;
             box-sizing: border-box;
-            overflow-x: hidden;
-            position: relative;
         }
-
-        /* Hypnotic Background vortex layout */
-        .vortex-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle, #09091f 0%, #000000 100%);
-            z-index: 1;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
-        }
-
-        .ring {
-            position: absolute;
-            border: 4px dashed #ff007f;
-            border-radius: 50%;
-            animation: swirl 10s linear infinite;
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.2);
-            box-sizing: border-box;
-        }
-
-        .ring:nth-child(even) {
-            border-color: #00ffcc;
-            animation-direction: reverse;
-            animation-duration: 8s;
-        }
-
-        @keyframes swirl {
-            0% { transform: rotate(0deg) scale(1.8); opacity: 0; }
-            10% { opacity: 0.4; }
-            90% { opacity: 0.4; }
-            100% { transform: rotate(360deg) scale(0.1); opacity: 0; }
-        }
-
-        /* Sequencer Content Container hoisted over background visuals */
-        .content-layer {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
         h1 {
             color: #ff007f;
             text-shadow: 0 0 10px rgba(255,0,127,0.5);
             font-size: 1.8rem;
             margin: 0 0 5px 0;
         }
-
         p {
             color: #7a7a9a;
             margin: 0 0 15px 0;
             font-size: 0.8rem;
         }
-
         .controls {
             margin-bottom: 15px;
         }
-
         button {
             background: #ff007f;
             color: white;
@@ -99,30 +45,25 @@
             box-shadow: 0 0 12px rgba(255,0,127,0.3);
             transition: 0.2s;
         }
-
         button:hover {
             background: #ff3399;
         }
-
         .sequencer-container {
             max-width: 95vw;
             overflow-x: auto;
             padding: 12px;
-            background: rgba(16, 16, 27, 0.85);
-            backdrop-filter: blur(4px);
+            background: #10101b;
             border-radius: 12px;
             border: 2px solid #232336;
             box-shadow: 0 0 35px rgba(0,0,0,0.8);
             scroll-behavior: smooth;
         }
-
         .sequencer {
             display: grid;
             grid-template-columns: 110px repeat(512, 22px);
             gap: 3px;
             width: fit-content;
         }
-
         .row-label {
             display: flex;
             align-items: center;
@@ -132,37 +73,27 @@
             position: sticky;
             left: 0;
             background: #10101b;
-            z-index: 12;
+            z-index: 10;
             padding-right: 5px;
         }
-
         .pad {
             width: 22px;
             height: 24px;
-            background: rgba(32, 32, 50, 0.6);
+            background: #202032;
             border-radius: 3px;
             cursor: pointer;
             border: 1px solid #30304a;
             transition: 0.05s;
         }
-
         .pad.active {
             background: #00ffcc;
             box-shadow: 0 0 8px #00ffcc;
             border-color: #fff;
         }
-        
-        div[data-type="guitar"][data-note^="G5"].pad.active, div[data-type="guitar"][data-note^="F5"].pad.active, div[data-type="guitar"][data-note^="Eb5"].pad.active { background: #ff0055; box-shadow: 0 0 8px #ff0055; }
-        div[data-type="guitar"][data-note^="D5"].pad.active, div[data-type="guitar"][data-note^="C5"].pad.active, div[data-type="guitar"][data-note^="B4"].pad.active { background: #ff9900; box-shadow: 0 0 8px #ff9900; }
-        div[data-type="guitar"][data-note^="Ab4"].pad.active, div[data-type="guitar"][data-note^="G4"].pad.active, div[data-type="guitar"][data-note^="F4"].pad.active { background: #b600ff; box-shadow: 0 0 8px #b600ff; }
-        div[data-type="guitar"][data-note^="Eb4"].pad.active, div[data-type="guitar"][data-note^="D4"].pad.active, div[data-type="guitar"][data-note^="C4"].pad.active { background: #00eaff; box-shadow: 0 0 8px #00eaff; }
-        
-        div[data-type="drum"][data-note="CRASH"].pad.active { background: #ff3333; box-shadow: 0 0 8px #ff3333; }
-        div[data-type="drum"][data-note^="HIHAT"].pad.active { background: #ffff00; box-shadow: 0 0 8px #ffff00; }
-        div[data-type="drum"][data-note^="SNARE"].pad.active { background: #00ffcc; box-shadow: 0 0 8px #00ffcc; }
-        div[data-type="drum"][data-note^="TOM"].pad.active { background: #0099ff; box-shadow: 0 0 8px #0099ff; }
-        div[data-type="drum"][data-note="KICK"].pad.active { background: #00ff55; box-shadow: 0 0 8px #00ff55; }
-        
+        div[data-note^="G5"].pad.active, div[data-note^="F5"].pad.active, div[data-note^="Eb5"].pad.active { background: #ff0055; box-shadow: 0 0 8px #ff0055; }
+        div[data-note^="D5"].pad.active, div[data-note^="C5"].pad.active, div[data-note^="B4"].pad.active { background: #ff9900; box-shadow: 0 0 8px #ff9900; }
+        div[data-note^="Ab4"].pad.active, div[data-note^="G4"].pad.active, div[data-note^="F4"].pad.active { background: #b600ff; box-shadow: 0 0 8px #b600ff; }
+        div[data-note^="Eb4"].pad.active, div[data-note^="D4"].pad.active, div[data-note^="C4"].pad.active { background: #00eaff; box-shadow: 0 0 8px #00eaff; }
         .pad.current {
             border: 1px solid #fff;
             background-image: linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15));
@@ -171,27 +102,20 @@
 </head>
 <body>
 
-    <!-- Holographic visual effect layers behind grid elements -->
-    <div class="vortex-background" id="vortex"></div>
+    <h1>CYBER ORCHESTRA: 512-STEP MASTER TRACK</h1>
+    <p>Continuous dynamic performance mapping. Auto-scroll panel follows active playback window frames.</p>
+    
+    <div class="controls">
+        <button id="playBtn">EXECUTE ARCHITECTURE</button>
+    </div>
 
-    <div class="content-layer">
-        <h1>CYBER ORCHESTRA PERFORMANCE</h1>
-        <p>Dynamic 512-step drum & guitar matrix setup tracking your soundtrack layers.</p>
-        
-        <div class="controls">
-            <button id="playBtn">EXECUTE ARCHITECTURE</button>
-        </div>
-
-        <div class="sequencer-container" id="scrollContainer">
-            <div class="sequencer" id="grid"></div>
-        </div>
+    <div class="sequencer-container" id="scrollContainer">
+        <div class="sequencer" id="grid"></div>
     </div>
 
     <script>
         let audioCtx = null;
-        
-        const guitarNotes = ['G5', 'F5', 'Eb5', 'D5', 'C5', 'B4', 'Ab4', 'G4', 'F4', 'Eb4', 'D4', 'C4'];
-        const drumNotes = ['CRASH', 'HIHAT_OPEN', 'HIHAT_CLOSE', 'TOM_HIGH', 'TOM_LOW', 'SNARE', 'KICK'];
+        const instruments = ['G5', 'F5', 'Eb5', 'D5', 'C5', 'B4', 'Ab4', 'G4', 'F4', 'Eb4', 'D4', 'C4'];
         const steps = 512;
         let currentStep = 0;
         let isPlaying = false;
@@ -203,38 +127,104 @@
             'D4': 293.66, 'C4': 261.63
         };
 
-        const guitarTracks = {};
-        const drumTracks = {};
-        guitarNotes.forEach(n => guitarTracks[n] = new Array(steps).fill(false));
-        drumNotes.forEach(d => drumTracks[d] = new Array(steps).fill(false));
+        const tracks = {};
+        instruments.forEach(inst => { tracks[inst] = new Array(steps).fill(false); });
 
-        // --- AUTOMATED PERFORMANCE COMPOSITION MAPPING SHEET ---
-        const guitarPreset = [
+        const songPreset = [
             ['C4', 0], ['Eb4', 1], ['G4', 2], ['C5', 3], ['Eb5', 4], ['G5', 5], ['F5', 6], ['D5', 8], ['B4', 10], ['C4', 12], ['G4', 13], ['C5', 14],
-            ['Eb4', 16], ['Eb4', 17], ['G4', 18], ['G4', 19], ['C5', 20], ['C5', 21], ['Eb5', 22], ['D5', 24], ['D5', 25], ['B4', 26], ['B4', 27], ['G4', 28], ['G4', 29], ['D4', 30],
-            ['C4', 32], ['C5', 32], ['D4', 34], ['D5', 34], ['Eb4', 36], ['Eb5', 36], ['F4', 38], ['F5', 38], ['G4', 40], ['G5', 40], ['Ab4', 42], ['Ab5', 42], ['C5', 44], ['Eb5', 46],
-            ['C4', 48], ['C4', 49], ['C4', 50], ['Eb4', 52], ['Eb4', 53], ['Eb4', 54], ['Ab4', 56], ['C5', 56], ['F5', 56], ['G4', 60], ['C5', 60], ['Eb5', 60], ['G5', 60],
-            ['C4', 64], ['Eb4', 66], ['F4', 68], ['G4', 70], ['Ab4', 72], ['Bb4', 74], ['C5', 76], ['D5', 78],
-            ['Eb5', 80], ['D5', 82], ['C5', 84], ['Bb4', 86], ['Ab4', 88], ['G4', 90], ['F4', 92], ['Eb4', 94],
-            ['C4', 128], ['G4', 128], ['C5', 128], ['C4', 132], ['G4', 132], ['C5', 132],
-            ['Eb4', 136], ['Bb4', 136], ['Eb5', 136], ['F4', 140], ['C5', 140], ['F5', 140],
-            ['Eb4', 256], ['G4', 258], ['C5', 276], ['F5', 280], ['D5', 284],
-            ['C4', 384], ['G4', 384], ['C5', 384], ['F4', 392], ['G4', 400], ['Ab4', 408],
+            ['Eb4', 16], ['G4', 18], ['C5', 20], ['Eb5', 22], ['D5', 24], ['B4', 26], ['G4', 28], ['D4', 30],
+            ['C4', 32], ['C5', 32], ['D4', 34], ['D5', 34], ['Eb4', 36], ['Eb5', 36], ['F4', 38], ['F5', 38], ['G4', 40], ['G5', 40], ['Ab4', 42], ['C5', 44],
+            ['C4', 48], ['C4', 50], ['Eb4', 52], ['Eb4', 54], ['Ab4', 56], ['C5', 56], ['F5', 56], ['G4', 60], ['C5', 60], ['G5', 60],
+            ['C4', 64], ['Eb4', 66], ['F4', 68], ['G4', 70], ['Ab4', 72], ['C5', 76], ['D5', 78], ['Eb5', 80], ['D5', 82], ['C5', 84], ['G4', 90],
+            ['C4', 128], ['G4', 128], ['C5', 128], ['C4', 132], ['G4', 132], ['C5', 132], ['Eb4', 136], ['Eb5', 136], ['F4', 140], ['F5', 140],
+            ['Eb4', 256], ['G4', 258], ['C5', 276], ['F5', 280], ['D5', 284], ['C4', 384], ['G4', 384], ['C5', 384], ['F4', 392], ['G4', 400],
             ['G4', 496], ['C5', 496], ['Eb5', 496], ['G5', 496], ['G5', 500], ['G5', 504], ['G5', 508]
         ];
-        guitarPreset.forEach(([note, step]) => { if (guitarTracks[note] && step < steps) guitarTracks[note][step] = true; });
 
-        for (let i = 0; i < steps; i++) {
-            const isBreakdown = (i >= 192 && i <= 239) || (i >= 448 && i <= 479);
-            if ((i % 8 === 0 || i % 16 === 10)) drumTracks['KICK'][i] = true;
-            if (i % 8 === 4 && !isBreakdown) drumTracks['SNARE'][i] = true;
-            if (i % 2 === 0 && !isBreakdown) drumTracks['HIHAT_CLOSE'][i] = true;
-            if (i % 16 === 14 && !isBreakdown) { drumTracks['HIHAT_CLOSE'][i] = false; drumTracks['HIHAT_OPEN'][i] = true; }
-            if (i === 0 || i === 64 || i === 128 || i === 256 || i === 384 || i === 480) { drumTracks['CRASH'][i] = true; drumTracks['KICK'][i] = true; }
-            if (i === 62 || i === 126 || i === 382) { drumTracks['TOM_HIGH'][i-1] = true; drumTracks['TOM_LOW'][i] = true; }
+        songPreset.forEach(([note, step]) => { if (tracks[note] && step < steps) { tracks[note][step] = true; } });
+
+        const grid = document.getElementById('grid');
+        instruments.forEach(inst => {
+            const label = document.createElement('div');
+            label.className = 'row-label';
+            label.innerText = inst;
+            grid.appendChild(label);
+
+            for (let i = 0; i < steps; i++) {
+                const pad = document.createElement('div');
+                pad.className = 'pad ' + (tracks[inst][i] ? 'active' : '');
+                pad.dataset.note = inst;
+                pad.dataset.step = i;
+                pad.onclick = () => { tracks[inst][i] = !tracks[inst][i]; pad.classList.toggle('active'); };
+                grid.appendChild(pad);
+            }
+        });
+        function playGuitar(frequency, isLong) {
+            const now = audioCtx.currentTime;
+            const duration = isLong ? 0.75 : 0.16;
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(frequency, now);
+
+            const distortion = audioCtx.createWaveShaper();
+            distortion.curve = (function(amount) {
+                const k = amount, n = 44100, curve = new Float32Array(n);
+                for (let i = 0; i < n; ++i) {
+                    const x = (i * 2) / n - 1;
+                    curve[i] = ((3 + k) * x * 20 * (Math.PI / 180)) / (Math.PI + k * Math.PI * Math.abs(x));
+                }
+                return curve;
+            })(130);
+            distortion.oversample = '4x';
+
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'peaking'; filter.frequency.setValueAtTime(1400, now); filter.gain.setValueAtTime(8, now);
+
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+            osc.connect(distortion); distortion.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(now); osc.stop(now + duration);
         }
 
-        // --- RENDER GEOMETRIC MAPPING NODES INTO WORKSPACE ---
-        const grid = document.getElementById('grid');
-        function createGridRow(noteName, trackSource, typeLabel) {
-            const label = document.createElement('div'); label.className = 'row-label';
+        function playStep() {
+            document.querySelectorAll('.pad').forEach(p => p.classList.remove('current'));
+            const activePads = document.querySelectorAll('[data-step="' + currentStep + '"]');
+            activePads.forEach(p => p.classList.add('current'));
+            
+            const scrollContainer = document.getElementById('scrollContainer');
+            if (activePads.length > 0) {
+                const firstActivePad = activePads[0];
+                scrollContainer.scrollLeft = firstActivePad.offsetLeft - 120;
+            }
+            
+            instruments.forEach(inst => {
+                if (tracks[inst][currentStep]) {
+                    const isLong = (currentStep >= 12 && currentStep <= 14) || (currentStep >= 496);
+                    playGuitar(frequencies[inst], isLong);
+                }
+            });
+            currentStep = (currentStep + 1) % steps;
+        }
+
+        document.getElementById('playBtn').addEventListener('click', () => {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            if (isPlaying) {
+                clearInterval(intervalId);
+                document.getElementById('playBtn').innerText = 'EXECUTE ARCHITECTURE';
+                document.getElementById('playBtn').style.background = '#ff007f';
+                isPlaying = false;
+                currentStep = 0;
+            } else {
+                intervalId = setInterval(playStep, 150);
+                document.getElementById('playBtn').innerText = 'HALT SCORE';
+                document.getElementById('playBtn').style.background = '#00ffcc';
+                isPlaying = true;
+            }
+        });
+    </script>
+</body>
+</html>
