@@ -3,58 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyberpunk Wave Lyric Engine</title>
+    <title>Retro Arcade Lyric Visualizer</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Include Three.js library for 3D grid environment -->
+    <script src="https://cloudflare.com"></script>
 </head>
 <body>
 
-    <!-- Main Visual Stage Arena -->
-    <div id="visual-stage">
-        <!-- Floating Audio Rhythm Wave Ring Background -->
-        <canvas id="wave-canvas"></canvas>
+    <!-- WebGL Game Environment Canvas Viewport Container -->
+    <div id="game-viewport"></div>
 
-        <!-- Centered Cinematic Lyric Delivery Box -->
-        <div id="lyric-focus-box">
-            <h1 id="active-lyric-text">LOAD A SONG TO BEGIN</h1>
-            <h2 id="upcoming-subtext">Waiting for audio signal...</h2>
+    <!-- Retro Arcade Heads-Up Display Control Overlay Panel -->
+    <div id="arcade-hud">
+        <div class="hud-panel track-info">
+            <h2>RETRO LYRIC CHASER</h2>
+            <div id="current-display">SYSTEM READY</div>
+            <div id="upcoming-display">INSERT TRACK MODE</div>
         </div>
-    </div>
 
-    <!-- Collapsible Master Studio Config Controls Dock -->
-    <div id="settings-dock">
-        <div class="dock-header">
-            <h3>Visualizer Customizer</h3>
-        </div>
-        
-        <div class="dock-body">
-            <!-- Audio Deck Row -->
-            <div class="setting-row">
-                <label for="audio-input" class="upload-trigger">Choose Audio File</label>
-                <input type="file" id="audio-input" accept="audio/*">
-                <audio id="main-audio" controls></audio>
+        <div class="hud-panel configuration-deck">
+            <h3>CONSOLE ADJUSTMENTS</h3>
+            
+            <div class="input-row">
+                <label for="track-upload" class="insert-coin-btn">UPLOAD TRACK (MP3)</label>
+                <input type="file" id="track-upload" accept="audio/*">
+                <audio id="arcade-audio" controls></audio>
             </div>
 
-            <!-- Wave Canvas Configurations -->
-            <div class="setting-row">
-                <label>Wave Thickness: <input type="range" id="wave-weight" min="1" max="8" step="1" value="3"></label>
-                <label>Wave Color: <input type="color" id="wave-color" value="#00ffcc"></label>
+            <div class="input-row">
+                <label>FLY-BY SPEED: <input type="range" id="fly-speed" min="1" max="5" step="0.2" value="2.5"></label>
+                <label>GRID PERSPECTIVE: <input type="range" id="grid-tilt" min="0.2" max="1.5" step="0.1" value="0.7"></label>
             </div>
 
-            <!-- Kinetic Typography Scaling Settings -->
-            <div class="setting-row">
-                <label>Max Text Size: <input type="range" id="text-scale" min="2" max="6" step="0.2" value="3.5"></label>
-                <label>Text Accent Tint: <input type="color" id="text-color" value="#ff0055"></label>
-            </div>
-
-            <!-- System Behavior Mode Sliders -->
-            <div class="setting-row">
-                <label>Visual Style Theme:
-                    <select id="fx-theme">
-                        <option value="neon-pulse">Electric Neon Pulse</option>
-                        <option value="glitch-ghost">Glitch Phantom Matrix</option>
-                        <option value="minimal-clean">Clean Flat Space</option>
-                    </select>
-                </label>
+            <div class="input-row">
+                <label>NEON TINT: <input type="color" id="neon-tint" value="#ff00bb"></label>
+                <label>GLOW BRIGHTNESS: <input type="range" id="glow-power" min="0.5" max="4" step="0.1" value="2"></label>
             </div>
         </div>
     </div>
@@ -62,159 +45,153 @@
     <script src="script.js"></script>
 </body>
 </html>
-/* Document Layout Resets */
+/* Core Game Theme Configuration Resets */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Courier New', Courier, monospace; /* Cyberpunk aesthetic look */
+    font-family: 'Impact', 'Arial Black', sans-serif;
 }
 
 body, html {
     width: 100%;
     height: 100%;
-    background-color: #030307;
-    color: #ffffff;
+    background-color: #010005;
     overflow: hidden;
+    color: #00ffff;
 }
 
-/* Visual Stage Enclosure Screen */
-#visual-stage {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-}
-
-/* Background Fluid Rendering WebGL Wave Canvas */
-#wave-canvas {
+/* 3D WebGL Gaming Canvas Workspace Container */
+#game-viewport {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
-    pointer-events: none;
+    z-index: 1;
 }
 
-/* Focal Center Text Presentation Box Grid layout */
-#lyric-focus-box {
-    position: relative;
-    z-index: 3;
-    text-align: center;
-    max-width: 80%;
-    padding: 20px;
-}
-
-#active-lyric-text {
-    font-size: 3.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -1px;
-    line-height: 1.1;
-    color: #ffffff;
-    text-shadow: 0 0 15px rgba(255, 0, 85, 0.8);
-    transition: transform 0.05s ease-out;
-}
-
-#upcoming-subtext {
-    font-size: 1.1rem;
-    color: #616e88;
-    margin-top: 20px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-/* Modern Floating Settings Control Dashboard Panel Dock */
-#settings-dock {
+/* Fixed Overlay Dashboard Display Grid Layout */
+#arcade-hud {
     position: absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 650px;
-    background: rgba(10, 11, 18, 0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 16px;
-    z-index: 10;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-}
-
-.dock-body {
+    width: 90%;
+    max-width: 900px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 10px;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 20px;
+    z-index: 10;
+    pointer-events: none; /* Let clicks pass through onto underlying controls safely */
 }
 
-.setting-row {
-    background: rgba(255, 255, 255, 0.02);
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.03);
+/* Individual Gaming Terminal Box Shell structures */
+.hud-panel {
+    background: rgba(4, 2, 12, 0.85);
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4), inset 0 0 15px rgba(0, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 16px;
+    pointer-events: auto; /* Re-enable click triggers for menu inputs */
+}
+
+h2 {
+    font-size: 1.6rem;
+    color: #ff00bb;
+    text-shadow: 0 0 10px #ff00bb;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+h3 {
+    font-size: 0.9rem;
+    color: #00ffff;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(0,255,255,0.3);
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+}
+
+#current-display {
+    font-size: 1.8rem;
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 0 0 12px #00ffff;
+    margin: 10px 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#upcoming-display {
+    font-size: 0.9rem;
+    text-align: center;
+    color: #8392a5;
+    letter-spacing: 1px;
+}
+
+/* Interactive Slider Matrix Elements Configuration layout */
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 8px;
 }
 
 label {
+    flex: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.75rem;
-    color: #8c9cb3;
-    margin: 6px 0;
+    color: #00ffff;
 }
 
 input[type="range"] {
     width: 50%;
-    accent-color: #ff0055;
+    accent-color: #ff00bb;
     cursor: pointer;
 }
 
 input[type="color"] {
-    border: none;
+    border: 2px solid #00ffff;
     background: transparent;
-    width: 30px;
-    height: 20px;
+    width: 35px;
+    height: 22px;
     cursor: pointer;
 }
 
-select {
-    background: #151821;
-    color: white;
-    border: 1px solid #2c3242;
-    padding: 4px;
-    border-radius: 4px;
-    outline: none;
-    font-size: 0.75rem;
-}
-
-/* Upload Action File Button Styles */
-.upload-trigger {
-    background: #00ffcc;
-    color: #000000;
-    font-weight: 900;
+/* Interactive File Loader System Activation Click Button Styles */
+.insert-coin-btn {
+    background: #ff00bb;
+    color: #ffffff;
+    font-size: 0.85rem;
     padding: 8px;
-    border-radius: 4px;
     text-align: center;
+    border-radius: 4px;
     cursor: pointer;
-    display: block;
-    width: 100%;
+    box-shadow: 0 0 10px #ff00bb;
+    transition: transform 0.1s;
+    font-weight: bold;
+}
+.insert-coin-btn:hover {
+    transform: scale(1.02);
 }
 
-#audio-input {
+#track-upload {
     display: none;
 }
 
 audio {
     width: 100%;
-    margin-top: 8px;
-    height: 30px;
+    height: 26px;
+    accent-color: #ff00bb;
 }
-// --- Raw Song Data Matrix Track Feed ---
-const songLyricsList = [
+// --- Hardcoded Interactive Lyric Matrix Base Feed Data ---
+const customArcadeLyrics = [
     "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", 
     "Staying in my own lane", "I’m a low-key pretty goofy", "really-got-it-good-breezy", 
     "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", 
@@ -246,147 +223,149 @@ const songLyricsList = [
     "Everything is turning out okay 😁"
 ];
 
-// Reference Map DOM Selector Pointers
-const ui = {
-    uploader: document.getElementById('audio-input'),
-    player: document.getElementById('main-audio'),
-    canvas: document.getElementById('wave-canvas'),
-    mainText: document.getElementById('active-lyric-text'),
-    subText: document.getElementById('upcoming-subtext'),
-    weight: document.getElementById('wave-weight'),
-    wColor: document.getElementById('wave-color'),
-    tScale: document.getElementById('text-scale'),
-    tColor: document.getElementById('text-color'),
-    theme: document.getElementById('fx-theme')
+// Reference DOM Navigation Targets Maps
+const nodes = {
+    file: document.getElementById('track-upload'),
+    player: document.getElementById('arcade-audio'),
+    curText: document.getElementById('current-display'),
+    nextText: document.getElementById('upcoming-display'),
+    speed: document.getElementById('fly-speed'),
+    tilt: document.getElementById('grid-tilt'),
+    tint: document.getElementById('neon-tint'),
+    glow: document.getElementById('glow-power')
 };
 
-let canvasCtx = ui.canvas.getContext('2d');
-let audioCtx, analyser, dataArray;
-let isAudioConfigured = false;
-let currentLineIdx = 0;
+let scene, camera, renderer, audioContext, analyser, frequencyData;
+let isAudioConnected = false;
+let perspectiveGrid, secondaryGrid;
+let trackingIndex = 0;
 
-// Fire up engine routines
-resizeCanvasViewport();
-window.addEventListener('resize', resizeCanvasViewport);
-setupControlInputListeners();
-renderWaveformLoop();
+// Execute Scene initialization
+initArcadeUniverse();
+registerHardwareIO();
+gameEngineLoop();
 
-function resizeCanvasViewport() {
-    ui.canvas.width = window.innerWidth;
-    ui.canvas.height = window.innerHeight;
+// --- Step 1: Build the 3D Retro Wave Grid Environment ---
+function initArcadeUniverse() {
+    const box = document.getElementById('game-viewport');
+    
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x010005, 0.07);
+
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 1.8, 10);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    box.appendChild(renderer.domElement);
+
+    // Build standard Infinite Neon Laser Horizon Grid lines
+    const gridGeometry = new THREE.GridHelper(80, 40, 0x00ffff, 0xff00bb);
+    perspectiveGrid = new THREE.Group();
+    perspectiveGrid.add(gridGeometry);
+    scene.add(perspectiveGrid);
+
+    // Duplicate grid layout overlay overhead for a structural sci-fi tunnel effect
+    secondaryGrid = perspectiveGrid.clone();
+    secondaryGrid.position.y = 8;
+    scene.add(secondaryGrid);
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 }
 
-// --- Step 1: Initialize Audio Nodes & Bind Upload Events ---
-function setupControlInputListeners() {
-    ui.uploader.addEventListener('change', function() {
+// --- Step 2: Register Local Upload & Media Track Streams ---
+function registerHardwareIO() {
+    nodes.file.addEventListener('change', function() {
         if(this.files.length === 0) return;
-        ui.player.src = URL.createObjectURL(this.files[0]);
-        
-        if(!isAudioConfigured) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 128; // Fast calculations for snappy wave lines
+        nodes.player.src = URL.createObjectURL(this.files);
+
+        if(!isAudioConnected) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 64; // Fast rendering frequency slices
             
-            let source = audioCtx.createMediaElementSource(ui.player);
-            source.connect(analyser);
-            analyser.connect(audioCtx.destination);
+            let audioSrc = audioContext.createMediaElementSource(nodes.player);
+            audioSrc.connect(analyser);
+            analyser.connect(audioContext.destination);
             
-            dataArray = new Uint8Array(analyser.frequencyBinCount);
-            isAudioConfigured = true;
+            frequencyData = new Uint8Array(analyser.frequencyBinCount);
+            isAudioConnected = true;
         }
-        currentLineIdx = 0;
-        advanceLyricsDisplay();
+        trackingIndex = 0;
+        refreshHudTextPanel();
     });
 
-    // Match timeline percentage accurately onto our array indexing block rows
-    ui.player.addEventListener('timeupdate', () => {
-        if(!ui.player.duration) return;
-        const progress = ui.player.currentTime / ui.player.duration;
-        let calculatedIdx = Math.floor(progress * songLyricsList.length);
+    // Sync timeline markers onto the lyrics tracker sequence frame array index
+    nodes.player.addEventListener('timeupdate', () => {
+        if (!nodes.player.duration) return;
+        const ratio = nodes.player.currentTime / nodes.player.duration;
+        let mappedIndex = Math.floor(ratio * customArcadeLyrics.length);
         
-        if(calculatedIdx >= songLyricsList.length) calculatedIdx = songLyricsList.length - 1;
+        if(mappedIndex >= customArcadeLyrics.length) mappedIndex = customArcadeLyrics.length - 1;
         
-        if(calculatedIdx !== currentLineIdx && calculatedIdx >= 0) {
-            currentLineIdx = calculatedIdx;
-            advanceLyricsDisplay();
+        if (mappedIndex !== trackingIndex && mappedIndex >= 0) {
+            trackingIndex = mappedIndex;
+            refreshHudTextPanel();
         }
-    });
-
-    // Dynamic color updates instantly without reloads
-    ui.tColor.addEventListener('input', (e) => {
-        ui.mainText.style.textShadow = `0 0 15px ${e.target.value}`;
     });
 }
 
-// --- Step 2: Swap Center Text Elements Safely ---
-function advanceLyricsDisplay() {
-    if(currentLineIdx < songLyricsList.length) {
-        ui.mainText.innerText = songLyricsList[currentLineIdx];
+// --- Step 3: Shift HUD Display Outputs ---
+function refreshHudTextPanel() {
+    if(trackingIndex < customArcadeLyrics.length) {
+        nodes.curText.innerText = customArcadeLyrics[trackingIndex];
         
-        // Show what line is coming up next below the main line
-        if(currentLineIdx + 1 < songLyricsList.length) {
-            ui.subText.innerText = "NEXT: " + songLyricsList[currentLineIdx + 1];
+        if(trackingIndex + 1 < customArcadeLyrics.length) {
+            nodes.nextText.innerText = "UPCOMING BLOCK: " + customArcadeLyrics[trackingIndex + 1];
         } else {
-            ui.subText.innerText = "FINISH LINE 🌴";
+            nodes.nextText.innerText = "STAGE COMPLETE 🚀";
         }
     }
 }
 
-// --- Step 3: Draw the Audio Wave Behind the Text ---
-function renderWaveformLoop() {
-    requestAnimationFrame(renderWaveformLoop);
-    
-    // Clear screen canvas grid every frame cleanly
-    canvasCtx.clearRect(0, 0, ui.canvas.width, ui.canvas.height);
-    
-    let audioLevel = 0;
-    
-    if(isAudioConfigured && analyser) {
-        analyser.getByteFrequencyData(dataArray);
-        
-        // Calculate average volume level for structural text impacts
-        let sum = 0;
-        for(let i = 0; i < dataArray.length; i++) {
-            sum += dataArray[i];
-        }
-        audioLevel = (sum / dataArray.length) / 255; // Normalized scale value (0.0 to 1.0)
+// --- Step 4: Core Game Rendering Loop Engine updates ---
+function gameEngineLoop() {
+    requestAnimationFrame(gameEngineLoop);
+
+    let lowBeat = 0;
+    if(isAudioConnected && analyser) {
+        analyser.getByteFrequencyData(frequencyData);
+        // Track deep bass frequencies (index slots 0 to 4)
+        let bassSum = 0;
+        for(let i=0; i<4; i++) bassSum += frequencyData[i];
+        lowBeat = (bassSum / 4) / 255;
     }
 
-    // Apply scaling calculations to text size based on real-time track amplitude volume
-    const baseScaleSetting = parseFloat(ui.tScale.value);
-    ui.mainText.style.fontSize = `${baseScaleSetting}rem`;
-    
-    const scaleFactor = 1 + (audioLevel * 0.25);
-    ui.mainText.style.transform = `scale(${scaleFactor})`;
+    // Apply slider variables to runtime environment objects
+    const standardSpeed = parseFloat(nodes.speed.value) * 0.05;
+    const acceleration = standardSpeed + (lowBeat * 0.15); // Grid moves faster on base kicks
+    const interactiveTilt = parseFloat(nodes.tilt.value);
+    const customGlow = parseFloat(nodes.glow.value);
 
-    // Handle Theme effects adjustments mapping configuration
-    const currentTheme = ui.theme.value;
-    if(currentTheme === 'glitch-ghost' && audioLevel > 0.5) {
-        ui.mainText.style.letterSpacing = `${audioLevel * 12}px`;
-    } else {
-        ui.mainText.style.letterSpacing = '-1px';
+    // Infinite wireframe conveyor scroll calculation physics
+    perspectiveGrid.position.z += acceleration;
+    if (perspectiveGrid.position.z >= 2) {
+        perspectiveGrid.position.z = 0;
     }
+    secondaryGrid.position.z = perspectiveGrid.position.z;
 
-    // Render Audio Oscilloscope Sine lines
-    canvasCtx.lineWidth = parseFloat(ui.weight.value);
-    canvasCtx.strokeStyle = ui.wColor.value;
-    canvasCtx.beginPath();
+    // Reactively rotate structural components based on manual UI parameter adjustments
+    perspectiveGrid.rotation.x = interactiveTilt;
+    secondaryGrid.rotation.x = -interactiveTilt;
 
-    const sliceWidth = ui.canvas.width / (isAudioConfigured ? dataArray.length : 40);
-    let x = 0;
+    // Dynamic camera shakes mapped right onto deep track frequencies
+    camera.position.y = 1.8 + Math.sin(performance.now() * 0.01) * (lowBeat * 0.08);
+    camera.position.x = Math.cos(performance.now() * 0.005) * (lowBeat * 0.05);
 
-    for (let i = 0; i < (isAudioConfigured ? dataArray.length : 40); i++) {
-        // Use real audio data if available, otherwise draw a subtle, idle wave line
-        const v = isAudioConfigured ? (dataArray[i] / 128.0) : 1.0 + Math.sin(i * 0.3) * 0.1;
-        // Map wave heights exactly across the center dividing plane vector array boundary coordinate line
-        const y = (v * ui.canvas.height / 2) + (Math.sin(i + performance.now() * 0.005) * 10);
+    // Change dynamic color styling rules directly based on HUD theme panels values
+    const neonColorHex = nodes.tint.value;
+    nodes.curText.style.textShadow = `0 0 ${10 + (lowBeat * 20 * customGlow)}px ${neonColorHex}`;
+    nodes.curText.style.transform = `scale(${1 + lowBeat * 0.1})`;
 
-        if (i === 0) canvasCtx.moveTo(x, y);
-        else canvasCtx.lineTo(x, y);
-
-        x += sliceWidth;
-    }
-
-    canvasCtx.lineTo(ui.canvas.width, ui.canvas.height / 2);
-    canvasCtx.stroke();
+    renderer.render(scene, camera);
 }
+
