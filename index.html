@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goofball 512-Step Master Band Sequencer</title>
+    <title>Cyber Orchestra: 512-Step Master Track</title>
     <style>
         body {
             background: #05050a;
@@ -33,7 +33,26 @@
         .controls {
             margin-bottom: 15px;
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .volume-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #10101b;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #232336;
+            color: #00ffcc;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        input[type="range"] {
+            accent-color: #ff007f;
+            cursor: pointer;
         }
         button {
             color: white;
@@ -110,24 +129,47 @@
             border: 1px solid #fff;
             background-image: linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15));
         }
+        .lyrics-container {
+            margin-top: 25px;
+            max-width: 600px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #0b0b12;
+            border-radius: 8px;
+            border: 1px solid #1a1a2e;
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #a0a0c0;
+        }
     </style>
 </head>
 <body>
 
     <h1>CYBER ORCHESTRA: 512-STEP MASTER TRACK</h1>
     <p>Continuous dynamic performance mapping. Auto-scroll panel follows active playback window frames.</p>
-    
+
     <div class="controls">
         <button id="playBtn">EXECUTE ARCHITECTURE</button>
         <button id="clearBtn">CLEAR ALL BLOCKS</button>
+        <div class="volume-box">
+            <label for="volumeSlider">BOOST VOLUME:</label>
+            <input type="range" id="volumeSlider" min="0" max="3" step="0.1" value="1">
+            <span id="volValue">100%</span>
+        </div>
     </div>
 
     <div class="sequencer-container" id="scrollContainer">
         <div class="sequencer" id="grid"></div>
     </div>
 
+    <div class="lyrics-container">
+        Before the blueprints drawn before the fever took hold<br>A deeper story that has never been told<br>Long before the charts and the doctors aligned<br>You were intricately shaped by a flawless design<br>Woven in the quiet, holy and whole<br>An unbreakable light at the center of your soul<br><br>But you wake up to a frame that feels heavy and old<br>Left out in the frost when the world is so cold<br>They look at your face and they think that you’re fine<br>While you’re drawing a boundary on a fading red line<br>Spending all your currency just trying to stand<br>Holding onto a life that keeps slipping like sand<br><br>I’m not going to act like I know what you’re going through<br>But I’m counting the bruises in the mirror too<br>I don't have an answer to make it all stop<br>Or a ladder to climb to the mountain top<br>But I’m trying to listen, I’m trying to stay<br>And I’m not going to look the other way<br><br>The clock on the wall is an enemy now<br>Trading your dreams for just making it through somehow<br>You hide away the tremors, you swallow the grief<br>Begging the ceiling for a moment of relief<br>But you don't have to shrink so that others feel safe<br>There is plenty of room for your pain in this space<br><br>I’m not going to act like I know what you’re going through<br>But I’m counting the bruises in the mirror too<br>I don't have an answer to make it all stop<br>Or a ladder to climb to the mountain top<br>But I’m trying to listen, I’m trying to stay<br>And I’m not going to look the other way<br><br>We are an army that nobody sees<br>Fighting our wars on our hands and our knees<br>Fearfully crafted, wonderfully made<br>Even right here in the dust and the shade<br><br>So take a deep breath and just let the hands drop<br>You can let the tears run, no need to make them stop<br>The war isn't lost when the day's barely begun<br>Every step that you take is a battlefield won<br><br>I am trying too. Look at me. Look at you. We’re not alone.
+    </div>
     <script>
         let audioCtx = null;
+        let masterGainNode = null;
         const instruments = ['G5', 'F5', 'Eb5', 'D5', 'C5', 'B4', 'Ab4', 'G4', 'F4', 'Eb4', 'D4', 'C4'];
         const steps = 512;
         let currentStep = 0;
@@ -135,26 +177,34 @@
         let intervalId = null;
 
         const frequencies = {
-            'G5': 783.99, 'F5': 698.46, 'Eb5': 622.25, 'D5': 587.33, 'C5': 523.25, 
-            'B4': 493.88, 'Ab4': 415.30, 'G4': 392.00, 'F4': 349.23, 'Eb4': 311.13, 
-            'D4': 293.66, 'C4': 261.63
+            'G5': 783.99, 'F5': 698.46, 'Eb5': 622.25, 'D5': 587.33,
+            'C5': 523.25, 'B4': 493.88, 'Ab4': 415.30, 'G4': 392.00,
+            'F4': 349.23, 'Eb4': 311.13, 'D4': 293.66, 'C4': 261.63
         };
 
         const tracks = {};
-        instruments.forEach(inst => { tracks[inst] = new Array(steps).fill(false); });
+        instruments.forEach(inst => {
+            tracks[inst] = new Array(steps).fill(false);
+        });
 
         const songPreset = [
-            ['C4', 0], ['Eb4', 1], ['G4', 2], ['C5', 3], ['Eb5', 4], ['G5', 5], ['F5', 6], ['D5', 8], ['B4', 10], ['C4', 12], ['G4', 13], ['C5', 14],
-            ['Eb4', 16], ['G4', 18], ['C5', 20], ['Eb5', 22], ['D5', 24], ['B4', 26], ['G4', 28], ['D4', 30],
-            ['C4', 32], ['C5', 32], ['D4', 34], ['D5', 34], ['Eb4', 36], ['Eb5', 36], ['F4', 38], ['F5', 38], ['G4', 40], ['G5', 40], ['Ab4', 42], ['C5', 44],
-            ['C4', 48], ['C4', 50], ['Eb4', 52], ['Eb4', 54], ['Ab4', 56], ['C5', 56], ['F5', 56], ['G4', 60], ['C5', 60], ['G5', 60],
-            ['C4', 64], ['Eb4', 66], ['F4', 68], ['G4', 70], ['Ab4', 72], ['C5', 76], ['D5', 78], ['Eb5', 80], ['D5', 82], ['C5', 84], ['G4', 90],
-            ['C4', 128], ['G4', 128], ['C5', 128], ['C4', 132], ['G4', 132], ['C5', 132], ['Eb4', 136], ['Eb5', 136], ['F4', 140], ['F5', 140],
-            ['Eb4', 256], ['G4', 258], ['C5', 276], ['F5', 280], ['D5', 284], ['C4', 384], ['G4', 384], ['C5', 384], ['F4', 392], ['G4', 400],
-            ['G4', 496], ['C5', 496], ['Eb5', 496], ['G5', 496], ['G5', 500], ['G5', 504], ['G5', 508]
+            ['C4', 0], ['Eb4', 1], ['G4', 2], ['C5', 3], ['Eb5', 4], ['G5', 5], ['F5', 6], ['D5', 8], ['B4', 10], 
+            ['C4', 12], ['G4', 13], ['C5', 14], ['Eb4', 16], ['G4', 18], ['C5', 20], ['Eb5', 22], ['D5', 24], 
+            ['B4', 26], ['G4', 28], ['D4', 30], ['C4', 32], ['C5', 32], ['D4', 34], ['D5', 34], ['Eb4', 36], 
+            ['Eb5', 36], ['F4', 38], ['F5', 38], ['G4', 40], ['G5', 40], ['Ab4', 42], ['C5', 44], ['C4', 48], 
+            ['C4', 50], ['Eb4', 52], ['Eb4', 54], ['Ab4', 56], ['C5', 56], ['F5', 56], ['G4', 60], ['C5', 60], 
+            ['G5', 60], ['C4', 64], ['Eb4', 66], ['F4', 68], ['G4', 70], ['Ab4', 72], ['C5', 76], ['D5', 78], 
+            ['Eb5', 80], ['D5', 82], ['C5', 84], ['G4', 90], ['C4', 128], ['G4', 128], ['C5', 128], ['C4', 132], 
+            ['G4', 132], ['C5', 132], ['Eb4', 136], ['Eb5', 136], ['F4', 140], ['F5', 140], ['Eb4', 256], 
+            ['G4', 258], ['C5', 276], ['F5', 280], ['D5', 284], ['C4', 384], ['G4', 384], ['C5', 384], ['F4', 392], 
+            ['G4', 400], ['G4', 496], ['C5', 496], ['Eb5', 496], ['G5', 496], ['G5', 500], ['G5', 504], ['G5', 508]
         ];
 
-        songPreset.forEach(([note, step]) => { if (tracks[note] && step < steps) { tracks[note][step] = true; } });
+        songPreset.forEach(([note, step]) => {
+            if (tracks[note] && step < steps) {
+                tracks[note][step] = true;
+            }
+        });
 
         const grid = document.getElementById('grid');
         instruments.forEach(inst => {
@@ -168,63 +218,150 @@
                 pad.className = 'pad ' + (tracks[inst][i] ? 'active' : '');
                 pad.dataset.note = inst;
                 pad.dataset.step = i;
-                pad.onclick = () => { tracks[inst][i] = !tracks[inst][i]; pad.classList.toggle('active'); };
+                pad.onclick = () => {
+                    tracks[inst][i] = !tracks[inst][i];
+                    pad.classList.toggle('active');
+                };
                 grid.appendChild(pad);
             }
         });
-        function playGuitar(frequency, isLong) {
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                masterGainNode = audioCtx.createGain();
+                masterGainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
+                masterGainNode.connect(audioCtx.destination);
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+        function playSynthTone(frequency, isLong) {
             const now = audioCtx.currentTime;
-            const duration = isLong ? 0.75 : 0.16;
+            const duration = isLong ? 0.6 : 0.22;
+            
             const osc = audioCtx.createOscillator();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(frequency, now);
-
-            const distortion = audioCtx.createWaveShaper();
-            distortion.curve = (function(amount) {
-                const k = amount, n = 44100, curve = new Float32Array(n);
-                for (let i = 0; i < n; ++i) {
-                    const x = (i * 2) / n - 1;
-                    curve[i] = ((3 + k) * x * 20 * (Math.PI / 180)) / (Math.PI + k * Math.PI * Math.abs(x));
-                }
-                return curve;
-            })(130);
-            distortion.oversample = '4x';
-
             const filter = audioCtx.createBiquadFilter();
-            filter.type = 'peaking'; filter.frequency.setValueAtTime(1400, now); filter.gain.setValueAtTime(8, now);
-
             const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(0.04, now);
+            
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(frequency, now);
+            
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(2000, now);
+            filter.frequency.exponentialRampToValueAtTime(800, now + duration);
+            
+            gain.gain.setValueAtTime(0.25, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+            
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(masterGainNode);
+            
+            osc.start(now);
+            osc.stop(now + duration);
+        }
 
-            osc.connect(distortion); distortion.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(now); osc.stop(now + duration);
+        function playUpbeatDrumsAndBass(step) {
+            const now = audioCtx.currentTime;
+            
+            // Electronic kick on downbeats (1, 5, 9, 13...)
+            if (step % 4 === 0) {
+                const kickOsc = audioCtx.createOscillator();
+                const kickGain = audioCtx.createGain();
+                kickOsc.frequency.setValueAtTime(150, now);
+                kickOsc.frequency.exponentialRampToValueAtTime(0.01, now + 0.12);
+                kickGain.gain.setValueAtTime(0.7, now);
+                kickGain.gain.linearRampToValueAtTime(0.001, now + 0.12);
+                kickOsc.connect(kickGain);
+                kickGain.connect(masterGainNode);
+                kickOsc.start(now);
+                kickOsc.stop(now + 0.12);
+            }
+
+            // Upbeat closed hi-hat on offbeats (3, 7, 11...)
+            if (step % 4 === 2) {
+                const hatFilter = audioCtx.createBiquadFilter();
+                hatFilter.type = 'highpass';
+                hatFilter.frequency.setValueAtTime(7000, now);
+                
+                const bufferSize = audioCtx.sampleRate * 0.04;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                
+                const hatGain = audioCtx.createGain();
+                hatGain.gain.setValueAtTime(0.18, now);
+                hatGain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
+                
+                noise.connect(hatFilter);
+                hatFilter.connect(hatGain);
+                hatGain.connect(masterGainNode);
+                noise.start(now);
+                noise.stop(now + 0.04);
+            }
+
+            // Syncopated Bassline mapping to progression changes 
+            if (step % 2 === 0) {
+                const bassOsc = audioCtx.createOscillator();
+                const bassGain = audioCtx.createGain();
+                
+                let baseFreq = 65.41; // C2 Base
+                if (step >= 128 && step < 256) baseFreq = 77.78; // Eb2
+                if (step >= 256 && step < 384) baseFreq = 87.31; // F2
+                if (step >= 384) baseFreq = 98.00; // G2
+                
+                const patternIndex = step % 8;
+                if (patternIndex === 0 || patternIndex === 2 || patternIndex === 5 || patternIndex === 6) {
+                    bassOsc.type = 'sawtooth';
+                    bassOsc.frequency.setValueAtTime(baseFreq * (patternIndex === 5 ? 1.5 : 1), now);
+                    
+                    const bassFilter = audioCtx.createBiquadFilter();
+                    bassFilter.type = 'lowpass';
+                    bassFilter.frequency.setValueAtTime(350, now);
+                    
+                    bassGain.gain.setValueAtTime(0.22, now);
+                    bassGain.gain.linearRampToValueAtTime(0.001, now + 0.15);
+                    
+                    bassOsc.connect(bassFilter);
+                    bassFilter.connect(bassGain);
+                    bassGain.connect(masterGainNode);
+                    bassOsc.start(now);
+                    bassOsc.stop(now + 0.15);
+                }
+            }
         }
 
         function playStep() {
             document.querySelectorAll('.pad').forEach(p => p.classList.remove('current'));
             const activePads = document.querySelectorAll('[data-step="' + currentStep + '"]');
             activePads.forEach(p => p.classList.add('current'));
-            
+
             const scrollContainer = document.getElementById('scrollContainer');
             if (activePads.length > 0) {
                 const firstActivePad = activePads[0];
                 scrollContainer.scrollLeft = firstActivePad.offsetLeft - 120;
             }
-            
+
             instruments.forEach(inst => {
                 if (tracks[inst][currentStep]) {
                     const isLong = (currentStep >= 12 && currentStep <= 14) || (currentStep >= 496);
-                    playGuitar(frequencies[inst], isLong);
+                    playSynthTone(frequencies[inst], isLong);
                 }
             });
+
+            playUpbeatDrumsAndBass(currentStep);
             currentStep = (currentStep + 1) % steps;
         }
 
         document.getElementById('playBtn').addEventListener('click', () => {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-
+            initAudio();
             if (isPlaying) {
                 clearInterval(intervalId);
                 document.getElementById('playBtn').innerText = 'EXECUTE ARCHITECTURE';
@@ -232,22 +369,30 @@
                 isPlaying = false;
                 currentStep = 0;
             } else {
-                intervalId = setInterval(playStep, 150);
+                intervalId = setInterval(playStep, 135); // 135ms step tempo upswing
                 document.getElementById('playBtn').innerText = 'HALT SCORE';
                 document.getElementById('playBtn').style.background = '#00ffcc';
                 isPlaying = true;
             }
         });
 
-        // NEW RESET ARCHITECTURE MODULE: Clears all selected note states completely
         document.getElementById('clearBtn').addEventListener('click', () => {
-            instruments.forEach(inst => {
-                tracks[inst].fill(false);
-            });
-            document.querySelectorAll('.pad').forEach(pad => {
-                pad.classList.remove('active');
-            });
+            instruments.forEach(inst => { tracks[inst].fill(false); });
+            document.querySelectorAll('.pad').forEach(pad => { pad.classList.remove('active'); });
+        });
+
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volValueDisplay = document.getElementById('volValue');
+        
+        volumeSlider.addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            volValueDisplay.innerText = Math.round(value * 100) + '%';
+            if (masterGainNode) {
+                masterGainNode.gain.setValueAtTime(value, audioCtx.currentTime);
+            }
         });
     </script>
 </body>
+</html>
+
 </html>
