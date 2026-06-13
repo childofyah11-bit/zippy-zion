@@ -6,7 +6,7 @@
     <title>Cyber Orchestra: Small Town Star</title>
     <style>
         body {
-            background: #030305;
+            background: #020205;
             color: #fff;
             font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
@@ -19,56 +19,62 @@
             box-sizing: border-box;
         }
         h1 {
-            color: #ff9900;
-            text-shadow: 0 0 15px rgba(255,153,0,0.4);
+            color: #3b82f6;
+            text-shadow: 0 0 15px rgba(59,130,246,0.4);
             margin: 0 0 5px 0;
             font-size: 1.8rem;
             letter-spacing: 3px;
         }
         p {
-            color: #555566;
+            color: #4b5563;
             margin: 0 0 25px 0;
             font-size: 0.8rem;
         }
-        .matrix-deck {
+        .console-deck {
             width: 95vw;
-            max-width: 750px;
-            background: #0a0a0f;
+            max-width: 900px;
+            background: #0b0f19;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 50px rgba(0,0,0,0.9);
-            border: 1px solid #1a1a26;
+            border: 1px solid #1e293b;
             box-sizing: border-box;
         }
-        .deck-header {
+        .console-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 30px;
-            background: #12121a;
+            margin-bottom: 25px;
+            background: #1e293b;
             padding: 15px 25px;
             border-radius: 12px;
-            border: 1px solid #222233;
+            border: 1px solid #334155;
         }
-        .status-light {
+        .status-display {
             display: flex;
             align-items: center;
             gap: 10px;
             font-size: 0.8rem;
             font-weight: bold;
-            color: #888899;
+            color: #94a3b8;
             letter-spacing: 0.5px;
         }
-        .status-dot {
+        .status-pulse {
             width: 10px;
             height: 10px;
-            background: #ff3333;
+            background: #ef4444;
             border-radius: 50%;
-            box-shadow: 0 0 8px #ff3333;
+            box-shadow: 0 0 8px #ef4444;
         }
-        .status-dot.active {
-            background: #ff9900;
-            box-shadow: 0 0 12px #ff9900;
+        .status-pulse.active {
+            background: #3b82f6;
+            box-shadow: 0 0 12px #3b82f6;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
         }
         button {
             font-size: 0.9rem;
@@ -78,29 +84,28 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
-            background: #ff9900;
-            color: #030305;
-            box-shadow: 0 4px 15px rgba(255,153,0,0.3);
+            background: #3b82f6;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.3);
             letter-spacing: 0.5px;
         }
         button:hover {
-            background: #ffaa22;
+            background: #60a5fa;
             transform: translateY(-1px);
         }
         button.active {
-            background: #33cc32;
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(51,204,50,0.3);
+            background: #10b981;
+            box-shadow: 0 4px 15px rgba(16,185,129,0.3);
         }
-        .knobs-panel {
+        .knobs-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
-        .knob-box {
-            background: #12121a;
-            border: 1px solid #222233;
+        .knob-card {
+            background: #111827;
+            border: 1px solid #1f2937;
             border-radius: 12px;
             padding: 15px;
             display: flex;
@@ -108,39 +113,39 @@
             gap: 10px;
             text-align: left;
         }
-        .knob-meta {
+        .knob-label {
             display: flex;
             justify-content: space-between;
             font-size: 0.75rem;
             font-weight: bold;
-            color: #ffaa22;
+            color: #60a5fa;
             letter-spacing: 0.5px;
         }
-        .knob-meta span:last-child {
-            color: #888899;
+        .knob-label span:last-child {
+            color: #9ca3af;
             font-family: monospace;
         }
         input[type="range"] {
             width: 100%;
-            accent-color: #ff9900;
+            accent-color: #3b82f6;
             cursor: pointer;
-            background: #222233;
+            background: #374151;
             height: 6px;
             border-radius: 3px;
             outline: none;
         }
         #visualizer {
             width: 100%;
-            height: 80px;
-            background: #06060a;
-            border: 1px solid #1a1a26;
+            height: 90px;
+            background: #030712;
+            border: 1px solid #1f2937;
             border-radius: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             display: block;
         }
-        .poetry-deck {
-            background: #12121a;
-            border: 1px solid #222233;
+        .poetry-viewport {
+            background: #111827;
+            border: 1px solid #1f2937;
             border-radius: 12px;
             height: 160px;
             padding: 25px;
@@ -151,28 +156,28 @@
             align-items: center;
             gap: 10px;
         }
-        .text-stream {
-            font-size: 1.15rem;
+        .text-prime {
+            font-size: 1.2rem;
             font-weight: 500;
-            color: #ff9900;
+            color: #3b82f6;
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
         }
-        .text-stream.visible {
+        .text-prime.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        .sub-stream {
+        .text-second {
             font-size: 0.95rem;
-            color: #666677;
+            color: #9ca3af;
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
             text-align: center;
         }
-        .sub-stream.visible {
+        .text-second.visible {
             opacity: 0.7;
             transform: translateY(0);
         }
@@ -181,39 +186,49 @@
 <body>
 
     <h1>CYBER ORCHESTRA: SMALL TOWN STAR</h1>
-    <p>Algorithmic frequency generation architecture.</p>
+    <p>Advanced real-time synthesis matrix dashboard node.</p>
 
-    <div class="matrix-deck">
-        <div class="deck-header">
-            <div class="status-light">
-                <div id="statusDot" class="status-dot"></div>
-                <span id="statusTxt">SYSTEM OFFLINE</span>
+    <div class="console-deck">
+        <div class="console-header">
+            <div class="status-display">
+                <div id="statusPulse" class="status-pulse"></div>
+                <span id="statusTxt">CONSOLE STANDBY</span>
             </div>
-            <button id="playBtn">LAUNCH STREAM</button>
+            <button id="playBtn">EXECUTE CORE</button>
         </div>
 
-        <div class="knobs-panel">
-            <div class="knob-box">
-                <div class="knob-meta">
-                    <span>MASTER VOL</span>
-                    <span id="volVal">100%</span>
-                </div>
+        <div class="knobs-grid">
+            <div class="knob-card">
+                <div class="knob-label"><span>MASTER GAIN</span><span id="volVal">100%</span></div>
                 <input type="range" id="volumeSlider" min="0" max="2" step="0.05" value="1">
             </div>
-            <div class="knob-box">
-                <div class="knob-meta">
-                    <span>CLOCK CADENCE</span>
-                    <span id="tempoValue">125 BPM</span>
-                </div>
-                <input type="range" id="tempoSlider" min="80" max="180" step="1" value="125">
+            <div class="knob-card">
+                <div class="knob-label"><span>SYSTEM TEMPO</span><span id="tempoValue">135 BPM</span></div>
+                <input type="range" id="tempoSlider" min="80" max="200" step="1" value="135">
+            </div>
+            <div class="knob-card">
+                <div class="knob-label"><span>SYNTH CUTOFF</span><span id="filterVal">2400 Hz</span></div>
+                <input type="range" id="filterSlider" min="400" max="6000" step="50" value="2400">
+            </div>
+            <div class="knob-card">
+                <div class="knob-label"><span>FX DELAY ECHO</span><span id="echoVal">40%</span></div>
+                <input type="range" id="echoSlider" min="0" max="0.85" step="0.05" value="0.40">
+            </div>
+            <div class="knob-card">
+                <div class="knob-label"><span>DRUM INTENSITY</span><span id="drumVal">70%</span></div>
+                <input type="range" id="drumSlider" min="0" max="1" step="0.05" value="0.70">
+            </div>
+            <div class="knob-card">
+                <div class="knob-label"><span>MELODY WAVEFORM</span><span id="waveTxt">TRIANGLE</span></div>
+                <input type="range" id="waveSlider" min="0" max="3" step="1" value="1">
             </div>
         </div>
 
         <canvas id="visualizer"></canvas>
 
-        <div class="poetry-deck">
-            <div id="text1" class="text-stream visible">Engine Standby</div>
-            <div id="text2" class="sub-stream visible">Initialize core launcher routing parameters.</div>
+        <div class="poetry-viewport">
+            <div id="text1" class="text-prime visible">Interface Ready</div>
+            <div id="text2" class="text-second visible">Click Execute Core to launch the live performance timeline.</div>
         </div>
     </div>
     <script>
@@ -228,7 +243,8 @@
         let indexMarker = 0;
         const terminalIndex = 512;
 
-        const scales = [130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33];
+        const waveforms = ['sine', 'triangle', 'sawtooth', 'square'];
+
         const triadBanks = [
             [130.81, 164.81, 196.00, 261.63], // C Major
             [146.83, 174.61, 220.00, 293.66], // D Minor
@@ -273,10 +289,10 @@
             masterOut.gain.value = parseFloat(document.getElementById('volumeSlider').value);
             
             delayUnit = audioCtx.createDelay(1.0);
-            delayUnit.delayTime.value = 0.3;
+            delayUnit.delayTime.value = 0.28;
             
             delayGain = audioCtx.createGain();
-            delayGain.gain.value = 0.4;
+            delayGain.gain.value = parseFloat(document.getElementById('echoSlider').value);
             
             analyzerUnit = audioCtx.createAnalyser();
             analyzerUnit.fftSize = 64;
@@ -302,26 +318,25 @@
                 if (!activeState) return;
                 analyzerUnit.getByteFrequencyData(dataArray);
 
-                ctx.fillStyle = '#06060a';
+                ctx.fillStyle = '#030712';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                let sliceWidth = canvas.width / binCount;
+                let barWidth = canvas.width / binCount;
                 let currentX = 0;
-
-                ctx.beginPath();
-                ctx.strokeStyle = '#ff9900';
-                ctx.lineWidth = 3;
 
                 for (let i = 0; i < binCount; i++) {
                     let val = dataArray[i] / 255;
-                    let currentY = canvas.height - (val * canvas.height);
+                    let barHeight = val * canvas.height;
                     
-                    if (i === 0) ctx.moveTo(currentX, currentY);
-                    else ctx.lineTo(currentX, currentY);
+                    ctx.fillStyle = `rgba(59, 130, 246, ${val + 0.15})`;
+                    ctx.fillRect(currentX, canvas.height - barHeight, barWidth - 2, barHeight);
                     
-                    currentX += sliceWidth;
+                    ctx.strokeStyle = '#10b981';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(currentX, canvas.height - barHeight, barWidth - 2, barHeight);
+                    
+                    currentX += barWidth;
                 }
-                ctx.stroke();
             }
             canvas.width = canvas.offsetWidth;
             loop();
@@ -332,14 +347,19 @@
             const timestamp = audioCtx.currentTime;
             const generator = audioCtx.createOscillator();
             const envelope = audioCtx.createGain();
+            const filterNode = audioCtx.createBiquadFilter();
             
             generator.type = waveform;
             generator.frequency.setValueAtTime(freq, timestamp);
             
+            filterNode.type = 'lowpass';
+            filterNode.frequency.setValueAtTime(parseFloat(document.getElementById('filterSlider').value), timestamp);
+            
             envelope.gain.setValueAtTime(level, timestamp);
             envelope.gain.exponentialRampToValueAtTime(0.001, timestamp + delay);
             
-            generator.connect(envelope);
+            generator.connect(filterNode);
+            filterNode.connect(envelope);
             envelope.connect(masterOut);
             
             generator.start(timestamp);
@@ -348,25 +368,28 @@
 
         function runClockTick() {
             const bank = triadBanks[Math.floor(indexMarker / 16) % triadBanks.length];
+            const drumIntensity = parseFloat(document.getElementById('drumSlider').value);
+            const userWaveIndex = parseInt(document.getElementById('waveSlider').value);
+            const chosenWaveform = waveforms[userWaveIndex];
             
             // Harmonic Engine
             if (indexMarker % 4 === 0) {
-                bank.forEach(f => playFrequency(f, 'sine', 0.2, 0.35));
+                bank.forEach(f => playFrequency(f, 'sine', 0.15, 0.4));
             }
             if (indexMarker % 2 === 0) {
                 const stepMelody = bank[Math.floor(Math.random() * bank.length)] * 2;
-                playFrequency(stepMelody, 'triangle', 0.08, 0.15);
+                playFrequency(stepMelody, chosenWaveform, 0.08, 0.18);
             }
 
-            // Rhythm Engine
-            if (indexMarker % 4 === 0) {
-                playFrequency(55, 'sine', 0.8, 0.1); // Kick
+            // Rhythm Engine Modifiers
+            if (indexMarker % 4 === 0 && drumIntensity > 0) {
+                playFrequency(52, 'sine', 0.9 * drumIntensity, 0.12); // Adjustable Kick Volume
             }
-            if (indexMarker % 4 === 2) {
-                playFrequency(9000, 'triangle', 0.02, 0.03); // Hat
+            if (indexMarker % 4 === 2 && drumIntensity > 0.2) {
+                playFrequency(8500, 'triangle', 0.04 * drumIntensity, 0.04); // Adjustable Hat Volume
             }
             if (indexMarker % 2 === 1) {
-                playFrequency(bank[0] / 2, 'sawtooth', 0.1, 0.12); // Bass
+                playFrequency(bank / 2, 'sawtooth', 0.12, 0.14); // Bassline Layer
             }
 
             // Timeline Module
@@ -397,22 +420,22 @@
             if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             setupHardware();
             
-            const dot = document.getElementById('statusDot');
+            const pulse = document.getElementById('statusPulse');
             const txt = document.getElementById('statusTxt');
 
             if (activeState) {
                 clearInterval(engineClock);
-                this.innerText = "LAUNCH STREAM";
+                this.innerText = "EXECUTE CORE";
                 this.classList.remove('active');
-                dot.classList.remove('active');
-                txt.innerText = "SYSTEM OFFLINE";
+                pulse.classList.remove('active');
+                txt.innerText = "CONSOLE STANDBY";
                 activeState = false;
                 indexMarker = 0;
             } else {
-                this.innerText = "HALT SIGNAL";
+                this.innerText = "HALT CORE";
                 this.classList.add('active');
-                dot.classList.add('active');
-                txt.innerText = "STREAM RUNNING";
+                pulse.classList.add('active');
+                txt.innerText = "CORE ACTIVE";
                 activeState = true;
                 engineClock = setInterval(runClockTick, calculateTempoTime());
             }
@@ -432,8 +455,25 @@
                 engineClock = setInterval(runClockTick, calculateTempoTime());
             }
         });
+
+        document.getElementById('filterSlider').addEventListener('input', (e) => {
+            document.getElementById('filterVal').innerText = e.target.value + " Hz";
+        });
+
+        document.getElementById('echoSlider').addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            document.getElementById('echoVal').innerText = Math.round(val * 100) + '%';
+            if (delayFeedback) delayFeedback.gain.value = val;
+        });
+
+        document.getElementById('drumSlider').addEventListener('input', (e) => {
+            document.getElementById('drumVal').innerText = Math.round(parseFloat(e.target.value) * 100) + '%';
+        });
+
+        document.getElementById('waveSlider').addEventListener('input', (e) => {
+            const idx = parseInt(e.target.value);
+            document.getElementById('waveTxt').innerText = waveforms[idx].toUpperCase();
+        });
     </script>
 </body>
-</html>
-
 </html>
