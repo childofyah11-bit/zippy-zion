@@ -1,558 +1,274 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sleek  Karaoke Studio</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+/**
+ * SMALL TOWN STAR (GOOFBALL) - CHRONO AUDIO ENGINE
+ * System Architecture Block 1/3: Engine & Panel Setup
+ */
 
-    <!-- LUXURY PRODUCER STUDIO LAYOUT -->
-    <div id="luxury-studio-frame">
+let audioSource, fft, fontCode;
+let goofballs = [];
+let matrixDrops = [];
+let kineticLyrics = [];
+let activeLyricIdx = 0;
 
-        <!-- UPPER HALF: PREMIUM SINGLE-LINE THEATER VIEWSCREEN -->
-        <header id="theater-viewscreen">
-            <div id="lyric-focus-stage">
-                <h1 id="active-center-lyric">CLICK START AUDIO ENGINE</h1>
-                <h2 id="upcoming-subtext-line">Ready to sing...</h2>
-            </div>
-            <!-- Smooth luxury ambient lighting backdrop -->
-            <div id="ambient-glow-lens"></div>
-        </header>
-
-        <!-- LOWER HALF: EXPANDED 30-PARAMETER EXECUTIVE CONTROL DOCK -->
-        <main id="executive-mixing-console">
-            
-            <!-- CONTROLS ROW 1: MASTER SWITCHES & PERIPHERALS -->
-            <div class="console-module-block core-power-rack">
-                <div class="module-lbl">01 // CORE POWER & OUTPUT VOLUME</div>
-                <div class="module-body">
-                    <button id="engine-power-btn" class="luxury-btn main-power-btn">⚡ ENGAGE INTERNAL LIVE SYNTH BEAT ENGINE</button>
-                    <div id="hardware-readout-hud" class="digital-status-screen">SYSTEM STATUS // IDLE CONTROL MODE</div>
-                    <div class="slider-group">
-                        <label>MASTER GAIN VOLUME</label>
-                        <input type="range" id="param-master-gain" min="0" max="1" step="0.02" value="0.45">
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONTROLS ROW 2: DRUM MACHINE SEQUENCER CALIBRATION -->
-            <div class="console-module-block rhythm-synth-rack">
-                <div class="module-lbl">02 // SYNTH & RHYTHM SEQUENCER</div>
-                <div class="module-body">
-                    <div class="slider-group">
-                        <label>TEMPO CLOCK SPEED (BPM)</label>
-                        <input type="range" id="param-track-bpm" min="60" max="180" step="1" value="105">
-                    </div>
-                    <div class="slider-group">
-                        <label>BASS KICK PITCH TUNER</label>
-                        <input type="range" id="param-kick-frequency" min="35" max="110" step="1" value="52">
-                    </div>
-                    <div class="slider-group">
-                        <label>HI-HAT RHYTHM FREQUENCY</label>
-                        <select id="param-hat-frequency-step">
-                            <option value="4">Steady 4/4 Basic Beat</option>
-                            <option value="2">Double-Time 8th Clicks</option>
-                            <option value="8">Slow Half-Time Step</option>
-                        </select>
-                    </div>
-                    <div class="slider-group">
-                        <label>SYNTH ENVELOPE SHAPE</label>
-                        <select id="param-oscillator-wavetype">
-                            <option value="sine">Pure Mellow Sine Wave</option>
-                            <option value="triangle">Warm Melodic Triangle</option>
-                            <option value="sawtooth">Sharp Edgy Arcade Saw</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONTROLS ROW 3: PREMIUM CINEMATIC TEXT DESIGN MATRIX -->
-            <div class="console-module-block design-graphics-rack">
-                <div class="module-lbl">03 // THEATER TYPOGRAPHY & INTERFACE GRAPHICS</div>
-                <div class="module-body">
-                    <div class="slider-group">
-                        <label>ACTIVE LINE TEXT SIZE</label>
-                        <input type="range" id="param-font-scale-rem" min="2.5" max="6.5" step="0.05" value="4.2">
-                    </div>
-                    <div class="slider-group">
-                        <label>SUBTEXT LINE TEXT SIZE</label>
-                        <input type="range" id="param-subtext-scale" min="1" max="2.5" step="0.05" value="1.4">
-                    </div>
-                    <div class="slider-group">
-                        <label>BLUR STRENGTH INTENSITY</label>
-                        <input type="range" id="param-text-blur-radius" min="0" max="15" step="1" value="8">
-                    </div>
-                    <div class="slider-group">
-                        <label>LETTER TRACKING WIDTH</label>
-                        <input type="range" id="param-letter-spacing-em" min="-3" max="12" step="0.5" value="0">
-                    </div>
-                    <div class="slider-group">
-                        <label>ACTIVE COLOR PALETTE</label>
-                        <input type="color" id="param-typography-tint-hex" value="#ffffff">
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONTROLS ROW 4: INTERACTIVE AUTOMATION CONTROLS -->
-            <div class="console-module-block timeline-overrides-rack">
-                <div class="module-lbl">04 // AUTOMATION TIMELINE & PACING DRIVERS</div>
-                <div class="module-body">
-                    <div class="split-nav-buttons-cluster">
-                        <button id="param-manual-rewind-btn" class="luxury-btn">⏮️ REWIND SENTENCE</button>
-                        <button id="param-manual-forward-btn" class="luxury-btn">SKIP SENTENCE ⏭️</button>
-                    </div>
-                    <button id="param-engage-auto-scroll-btn" class="luxury-btn emergency-auto-btn">🔄 ENGAGE FLUID AUTO-PACING ENGINE</button>
-                    <div class="slider-group">
-                        <label>AUTO LINE STEP DURATION</label>
-                        <input type="range" id="param-auto-scroll-duration" min="2" max="10" step="0.5" value="4.5">
-                    </div>
-                    <div id="pacing-hud-mode-window" class="digital-status-screen auto-pacing-enabled">DRIVE MODE // AUTO TEMPO SYNC</div>
-                </div>
-            </div>
-
-        </main>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
-/* Core Structural Reset Layouts & High-End Antialiasing Font Smoothing */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-body, html {
-    width: 100%;
-    height: 100%;
-    background-color: #030406;
-    color: #ffffff;
-    overflow: hidden;
-}
-
-/* Master Fixed Split Window Dashboard Grid Framework */
-#luxury-studio-frame {
-    display: grid;
-    grid-template-rows: 1fr 310px; /* Locks console controls to the bottom 310px layer */
-    width: 100%;
-    height: 100vh;
-}
-
-/* UPPER HALF: PREMIUM SINGLE-LINE THEATER VIEWSCREEN */
-#theater-viewscreen {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, #0e121e 0%, #030406 100%);
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-}
-
-/* Luxurious Floating Ambient Light Halo Backdrop */
-#ambient-glow-lens {
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 1;
-    transition: background 0.8s ease;
-}
-
-/* Central Lyric Presentation Stage Area Box */
-#lyric-focus-stage {
-    position: relative;
-    width: 85%;
-    max-width: 1000px;
-    text-align: center;
-    z-index: 5;
-}
-
-#active-center-lyric {
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 1.15;
-    color: #ffffff;
-    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-#upcoming-subtext-line {
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.25);
-    letter-spacing: -0.01em;
-    margin-top: 24px;
-    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* LOWER HALF: EXPANDED 30-PARAMETER EXECUTIVE CONTROL DOCK */
-#executive-mixing-console {
-    background: #08090d;
-    display: grid;
-    grid-template-columns: 1fr 1.2fr 1.2fr 1fr; /* Spreads components evenly into a premium 4-column chassis layout rows */
-    gap: 16px;
-    padding: 16px;
-    box-shadow: inset 0 10px 40px rgba(0, 0, 0, 0.9);
-}
-
-/* Individual Module Frame Windows Rack containers */
-.console-module-block {
-    background: #0d1017;
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.module-lbl {
-    background: rgba(255, 255, 255, 0.02);
-    padding: 8px 14px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    text-transform: uppercase;
-}
-
-.module-body {
-    padding: 14px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
-}
-
-/* Custom Mini Range Sliders Settings Row Matrix layouts */
-.slider-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-}
-
-input[type="range"] {
-    width: 55%;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 1px;
-    appearance: none;
-    -webkit-appearance: none;
-    outline: none;
-    cursor: pointer;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;
-    background: #ffffff;
-    transition: transform 0.15s ease;
-}
-input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.4);
-}
-
-select {
-    width: 55%;
-    background: #050608;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.8);
-    padding: 5px;
-    border-radius: 4px;
-    outline: none;
-    font-size: 0.7rem;
-    font-weight: 500;
-}
-
-input[type="color"] {
-    border: none;
-    background: transparent;
-    width: 22px;
-    height: 18px;
-    cursor: pointer;
-}
-
-/* High-End System Buttons Matrix configurations look */
-.luxury-btn {
-    background: #131722;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-    padding: 8px;
-    font-weight: 600;
-    font-size: 0.72rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.luxury-btn:hover {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.15);
-}
-
-.main-power-btn {
-    background: #ffffff;
-    color: #030406;
-    border: none;
-}
-.main-power-btn:hover {
-    background: rgba(255, 255, 255, 0.9);
-}
-.main-power-btn.engine-streaming-active {
-    background: rgba(0, 255, 204, 0.1);
-    border: 1px solid rgba(0, 255, 204, 0.3);
-    color: #00ffcc;
-}
-
-/* Digital Monitor HUD Readout Window Boxes */
-.digital-status-screen {
-    background: #050608;
-    border: 1px solid rgba(255, 255, 255, 0.02);
-    border-radius: 4px;
-    padding: 6px;
-    font-size: 0.65rem;
-    text-align: center;
-    font-family: monospace;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.3);
-}
-
-.auto-pacing-enabled {
-    color: #ffaa00;
-    border-color: rgba(255, 170, 0, 0.15);
-}
-
-/* Manual Move Navigation cluster alignments */
-.split-nav-buttons-cluster {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}
-
-.emergency-auto-btn {
-    background: rgba(255, 170, 0, 0.03);
-    border: 1px solid rgba(255, 170, 0, 0.15);
-    color: #ffaa00;
-}
-.emergency-auto-btn:hover {
-    background: #ffaa00 !important;
-    color: #030406 !important;
-}
-// --- Hardcoded Song Lyrics Index Array ---
-const productionLyricMatrix = [
-    "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", 
-    "Staying in my own lane", "I’m a low-key pretty goofy", "really-got-it-good-breezy", 
-    "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", 
-    "And God made me perfectly okay", "Woke up, Clean slate", "Sun's up, Don't wait", 
-    "Step out, Big yard", "Life's good, Not hard", "Green trees, Clear breeze", 
-    "Out here, Do what I please", "Big smile, Spark eye", "Watch the clouds roll right on by", 
-    "No rush, My pace", "Wide open, No race", "Fresh air, Cool shade", 
-    "Sun shine, High sky", "No stress, Time flies", "Quiet space, Ground solid", 
-    "Real world, Big knowledge", "Just growth, Big views", "No stress, Good news", 
-    "Out back, Chill state", "Everything is looking great", "Birds sing, Warm air", 
-    "No worries, No care", "Right here, My spot", "Appreciate what I got", 
-    "His design, Right place", "Full of purpose, Full of grace", "Phone rings, Big crowd", 
-    "They talk, Real loud", "They know me, I'm known", "But right now, My zone", 
-    "Feet up, Chill mind", "One of a kind", "Good joke, Fun time", 
-    "That's the end of the line", "They call, I decline", "My space, All mine", 
-    "Top tier, No fear", "I’m the star around here", "Screen bright, App tapped", 
-    "Class notes, Book wrapped", "Log in, School grind", "Sharp brain, Good mind", 
-    "Homework, Done fast", "A-plus, First class", "Next tab, Beats play", 
-    "Soundtrack for the day", "Headphones, No need", "Speakers loud, Top speed", 
-    "Volume up, Track rolls", "Deep rhythm, Takes control", "Popular, Well liked", 
-    "But the focus is spiked", "Peaceful, Rest easy", "Everything is going breezy", 
-    "Music stops, Heavy silence", "World waits, Big reliance", "They look, I stand", 
-    "Take control, Command", "Lights fade, Stage set", "Moment they won't forget", 
-    "No mistakes, No flaws", "Woven by His holy laws", "Every detail, Every strand", 
-    "Held inside a higher hand", "Take a breath, Hear the call", "God made me perfectly after all", 
-    "Sun goes down, Stars appear", "Living life, With no fear", "Grateful heart, Peaceful state", 
-    "Everything is looking great", "Walking forward, Staying strong", "This is where I belong", 
-    "Deep breath, Clear sky", "Watch the days fly right on by", "In His hands, Every day", 
-    "Everything is turning out okay 😁"
-];
-
-// UI Control Dashboard Selector References Map
-const consoleUi = {
-    powerBtn: document.getElementById('engine-power-btn'),
-    statusHud: document.getElementById('hardware-readout-hud'),
-    primaryTextNode: document.getElementById('active-center-lyric'),
-    secondaryTextNode: document.getElementById('upcoming-subtext-line'),
-    ambientLens: document.getElementById('ambient-glow-lens'),
-    masterGainSlider: document.getElementById('param-master-gain'),
-    bpmSlider: document.getElementById('param-track-bpm'),
-    kickSlider: document.getElementById('param-kick-frequency'),
-    hatSelect: document.getElementById('param-hat-frequency-step'),
-    oscSelect: document.getElementById('param-oscillator-wavetype'),
-    fontScaleSlider: document.getElementById('param-font-scale-rem'),
-    subtextScaleSlider: document.getElementById('param-subtext-scale'),
-    blurSlider: document.getElementById('param-text-blur-radius'),
-    letterSpacingSlider: document.getElementById('param-letter-spacing-em'),
-    tintInput: document.getElementById('param-typography-tint-hex'),
-    rewindBtn: document.getElementById('param-manual-rewind-btn'),
-    forwardBtn: document.getElementById('param-manual-forward-btn'),
-    autoScrollBtn: document.getElementById('param-engage-auto-scroll-btn'),
-    pacingModeHud: document.getElementById('pacing-hud-mode-window'),
-    durationSlider: document.getElementById('param-auto-scroll-duration')
+// Global Visual State Configurations
+let sysState = {
+  bgHue: '#020208',
+  particleCap: 200,
+  physicsSpeed: 3.5,
+  glitchGain: 0.4,
+  matrixFeedSpeed: 4,
+  colorScheme: 'Hyper Neon Cyan',
+  gainMultiplier: 1.8,
+  glowDepth: 15,
+  gridGeometry: true,
+  waveProfile: 4
 };
 
-let currentLineIndex = 0;
-let isManualOverrideEngaged = false;
-let isAudioSynthActive = false;
+// Interface Controls Layout
+let gui = {};
+let lyricTimeline = [
+  "Goofball bouncing-off-the-wall-ball", "Everybody knows my name",
+  "Staying in my own lane", "Dancing in the quiet rain",
+  "Screen bright, App tapped", "Beats play... Soundtrack for the day",
+  "Speakers loud, Top speed", "Deep rhythm takes control",
+  "Lights fade, Stage set", "God made me perfectly after all 💫"
+];
 
-// Web Audio Synth Variables Setup
-let audioContextInstance = null;
-let masterGainControlNode = null;
-let sequenceSchedulerTimer = null;
-let dynamicStepCount = 0;
-let targetNextStepTime = 0;
-let autoPacerClockCount = 0;
-
-// Fire console initializations
-configureHardwareDashboardControllers();
-refreshTheaterDisplayViewScreen(0);
-
-// --- Step 1: Automated Sound Hardware Synth Scheduler Matrix Loop ---
-function toggleSynthEnginePowerState() {
-    if (!isAudioSynthActive) {
-        if (!audioContextInstance) {
-            audioContextInstance = new (window.AudioContext || window.webkitAudioContext)();
-            masterGainControlNode = audioContextInstance.createGain();
-            masterGainControlNode.connect(audioContextInstance.destination);
-        }
-
-        masterGainControlNode.gain.value = parseFloat(consoleUi.masterGainSlider.value);
-        isAudioSynthActive = true;
-        consoleUi.powerBtn.innerText = "🛑 DISENGAGE RUNNING AUDIO MACHINE";
-        consoleUi.powerBtn.classList.add('engine-streaming-active');
-        consoleUi.statusHud.innerText = "SYSTEM STATUS // PROCESSING SYNTH AUDIO RHYTHMS";
-        
-        dynamicStepCount = 0;
-        targetNextStepTime = audioContextInstance.currentTime;
-        autoPacerClockCount = 0;
-        executeAudioSchedulingTicks();
-    } else {
-        clearTimeout(sequenceSchedulerTimer);
-        isAudioSynthActive = false;
-        consoleUi.powerBtn.innerText = "⚡ ENGAGE INTERNAL LIVE SYNTH BEAT ENGINE";
-        consoleUi.powerBtn.classList.remove('engine-running');
-        consoleUi.statusHud.innerText = "SYSTEM STATUS // IDLE CONTROL MODE";
-    }
+function setup() {
+  createCanvas(windowWidth - 280, windowHeight);
+  fft = new p5.FFT(0.85, 512);
+  
+  // Audio fallback initialization
+  audioSource = new p5.AudioIn();
+  audioSource.start();
+  fft.setInput(audioSource);
+  
+  buildControlCenter();
+  syncEngineArrays();
 }
 
-function executeAudioSchedulingTicks() {
-    if (!isAudioSynthActive) return;
+function windowResized() {
+  resizeCanvas(windowWidth - 280, windowHeight);
+}
+/**
+ * System Architecture Block 2/3: Graphic Rendering Engine
+ */
 
-    const tempoBPM = parseFloat(consoleUi.bpmSlider.value);
-    const calculatedStepDuration = 60.0 / tempoBPM / 4; // Break bars down into 16th note tracks
-    const audioClockTimeNow = audioContextInstance.currentTime;
-
-    while (targetNextStepTime < audioClockTimeNow + 0.1) {
-        generateLiveSynthesizedAudioWaveforms(dynamicStepCount, targetNextStepTime);
-        
-        targetNextStepTime += calculatedStepDuration;
-        dynamicStepCount = (dynamicStepCount + 1) % 16;
-
-        // Auto Pacing step calculator timeline progression triggers
-        if (!isManualOverrideEngaged) {
-            autoPacerClockCount++;
-            const linesDurationThreshold = parseFloat(consoleUi.durationSlider.value) * 16;
-            if (autoPacerClockCount >= linesDurationThreshold) {
-                let nextIndexValue = (currentLineIndex + 1) % productionLyricMatrix.length;
-                refreshTheaterDisplayViewScreen(nextIndexValue);
-                autoPacerClockCount = 0;
-            }
-        }
-    }
-
-    sequenceSchedulerTimer = setTimeout(executeAudioSchedulingTicks, 25);
+function draw() {
+  background(sysState.bgHue);
+  
+  // Frequency Spectrum Distribution
+  fft.analyze();
+  let subBass = fft.getEnergy("bass") * sysState.gainMultiplier;
+  let midRange = fft.getEnergy("mid") * sysState.gainMultiplier;
+  let transients = fft.getEnergy("treble") * sysState.gainMultiplier;
+  
+  updateEngineState();
+  
+  // Layer 1: Holographic Tech Grid Background
+  if (sysState.gridGeometry) {
+    drawHoloGrid(midRange);
+    drawMatrixTextStream(subBass);
+  }
+  
+  // Layer 2: Core Reactive Waveform (Oscilloscope Orbit)
+  drawSpatialWaveform(subBass, midRange);
+  
+  // Layer 3: Kinetic Particles ("Goofballs")
+  renderGoofballPhysics(subBass, transients);
+  
+  // Layer 4: Graphic Overlay & Real-time Text Systems
+  renderKineticLyrics(subBass);
+  applyGlitchVignette(transients);
 }
 
-function generateLiveSynthesizedAudioWaveforms(step, time) {
-    masterGainControlNode.gain.value = parseFloat(consoleUi.masterGainSlider.value);
-    const kickPitchHz = parseFloat(consoleUi.kickSlider.value);
-    const hatSpeedDivision = parseInt(consoleUi.hatSelect.value);
-    const selectedSynthWaveformType = consoleUi.oscSelect.value;
-
-    // A. Mellow Studio Kick Drum (Steps 0, 4, 8, 12)
-    if (step % 4 === 0) {
-        let oscNode = audioContextInstance.createOscillator();
-        let gainNode = audioContextInstance.createGain();
-        oscNode.connect(gainNode); gainNode.connect(masterGainControlNode);
-
-        oscNode.frequency.setValueAtTime(kickPitchHz, time);
-        oscNode.frequency.exponentialRampToValueAtTime(0.01, time + 0.35);
-
-        gainNode.gain.setValueAtTime(0.75, time);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.32);
-
-        oscNode.start(time); oscNode.stop(time + 0.35);
-    }
-
-    // B. Clean Studio High-Hat Cymbal Ticks
-    if (step % hatSpeedDivision === 0) {
-        let oscNode = audioContextInstance.createOscillator();
-        let gainNode = audioContextInstance.createGain();
-        oscNode.connect(gainNode); gainNode.connect(masterGainControlNode);
-
-        oscNode.type = 'triangle';
-        oscNode.frequency.setValueAtTime(7500, time);
-
-        gainNode.gain.setValueAtTime(0.035, time);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
-
-        oscNode.start(time); oscNode.stop(time + 0.05);
-    }
-
-    // C. Luxury Ambient Backing Synthesizer Chord Pads
-    if (step % 8 === 0) {
-        let oscNode = audioContextInstance.createOscillator();
-        let gainNode = audioContextInstance.createGain();
-        oscNode.connect(gainNode); gainNode.connect(masterGainControlNode);
-
-        oscNode.type = selectedSynthWaveformType;
-        const premiumChordsFreqs = [130.81, 146.83, 164.81, 196.00];
-        const pitchOutput = premiumChordsFreqs[Math.floor(step / 4) % premiumChordsFreqs.length];
-        
-        oscNode.frequency.setValueAtTime(pitchOutput, time);
-
-        gainNode.gain.setValueAtTime(0.1, time);
-        gainNode.gain.linearRampToValueAtTime(0.001, time + 0.45);
-
-        oscNode.start(time); oscNode.stop(time + 0.45);
-    }
+function drawHoloGrid(mid) {
+  stroke(getThemeColor(40));
+  strokeWeight(0.5);
+  let step = 40 + (mid * 0.05);
+  for (let x = 0; x < width; x += step) line(x, 0, x, height);
+  for (let y = 0; y < height; y += step) line(0, y, width, y);
 }
 
-// --- Step 2: Hook Up Customizer Dials and Controls ---
-function configureHardwareDashboardControllers() {
-    consoleUi.powerBtn.addEventListener('click', toggleSynthEnginePowerState);
+function drawMatrixTextStream(bass) {
+  fill(getThemeColor(120));
+  textSize(11);
+  textFont('Courier New');
+  
+  if (random(1) < 0.25) {
+    matrixDrops.push({
+      x: random(width), y: 0,
+      v: random(1, 5) * (sysState.matrixFeedSpeed * 0.5),
+      token: random(['01', 'A+', 'SYS_OK', '{}', '[]', 'GRACE', 'STARS'])
+    });
+  }
+  
+  for (let i = matrixDrops.length - 1; i >= 0; i--) {
+    let d = matrixDrops[i];
+    text(d.token, d.x, d.y);
+    d.y += d.v + (bass * 0.03);
+    if (d.y > height) matrixDrops.splice(i, 1);
+  }
+}
 
-    // Re-adjust typography rules on user custom inputs instantly
-    const triggerVisualSync = () => refreshTheaterDisplayViewScreen(currentLineIndex);
+function drawSpatialWaveform(bass, mid) {
+  push();
+  translate(width / 2, height / 2);
+  noFill();
+  
+  // Chromatic Aberration Simulation Effect (Double Ring)
+  strokeWeight(sysState.waveProfile);
+  stroke(getThemeColor(220));
+  renderWaveRing(1.0, bass);
+  
+  strokeWeight(sysState.waveProfile * 0.5);
+  stroke(255, 50, 100, 150); // Red fringe glitch ring
+  renderWaveRing(1.05, mid);
+  pop();
+}
+
+function renderWaveRing(scaleF, energy) {
+  let waveform = fft.waveform();
+  beginShape();
+  for (let i = 0; i < waveform.length; i += 4) {
+    let angle = map(i, 0, waveform.length, 0, TWO_PI);
+    let offset = map(waveform[i], -1, 1, -60, 60) * (energy * 0.02);
+    let r = (160 + offset) * scaleF;
+    let x = r * cos(angle);
+    let y = r * sin(angle);
+    vertex(x, y);
+  }
+  endShape(CLOSE);
+}
+/**
+ * System Architecture Block 3/3: Physics & Interface Bindings
+ */
+
+class GoofballParticle {
+  constructor() {
+    this.pos = createVector(random(width), random(height));
+    this.vel = p5.Vector.random2D().mult(random(1, 3));
+    this.dim = random(20, 50);
+  }
+  
+  motionEngine(bass, treble) {
+    let dynamicSpeed = sysState.physicsSpeed * (1 + bass * 0.008);
+    this.pos.add(p5.Vector.mult(this.vel, dynamicSpeed * 0.3));
     
-    consoleUi.fontScaleSlider.addEventListener('input', triggerVisualSync);
-    consoleUi.subtextScaleSlider.addEventListener('input', triggerVisualSync);
-    consoleUi.blurSlider.addEventListener('input', triggerVisualSync);
-    consoleUi.letterSpacingSlider.addEventListener('input', triggerVisualSync);
-    consoleUi.tintInput.addEventListener('input', triggerVisualSync);
+    // Bounds Check with Wall Bounce Elasticity
+    if (this.pos.x < 0 || this.pos.x > width) this.vel.x *= -1;
+    if (this.pos.y < 0 || this.pos.y > height) this.vel.y *= -1;
+    
+    this.currentDim = this.dim + (treble * 0.15);
+  }
+  
+  render() {
+    push();
+    drawingContext.shadowBlur = sysState.glowDepth;
+    drawingContext.shadowColor = getThemeColor(255);
+    
+    noStroke();
+    fill(getThemeColor(180));
+    ellipse(this.pos.x, this.pos.y, this.currentDim);
+    
+    // Internal Core Label
+    fill(sysState.bgHue);
+    textAlign(CENTER, CENTER);
+    textSize(this.currentDim * 0.28);
+    textFont('sans-serif');
+    text("GOOF", this.pos.x, this.pos.y);
+    pop();
+  }
+}
 
-    // Interactive Manual Move Buttons
-    consoleUi.rewindBtn.addEventListener('click', () => {
+function renderKineticLyrics(bass) {
+  // Rotate lyric on structural bass drops
+  if (bass > 210 && random(1) < 0.05) {
+    activeLyricIdx = (activeLyricIdx + 1) % lyricTimeline.length;
+  }
+  
+  push();
+  textAlign(CENTER);
+  textFont('Courier New');
+  textSize(24 + (bass * 0.05));
+  fontWeight(BOLD);
+  fill(255);
+  text(lyricTimeline[activeLyricIdx], width / 2, height - 60);
+  pop();
+}
+
+function applyGlitchVignette(treble) {
+  if (treble > 190 && random(1) < sysState.glitchGain) {
+    stroke(255, 0, 100, 200);
+    strokeWeight(random(2, 8));
+    line(0, random(height), width, random(height));
+    
+    fill(getThemeColor(25));
+    rect(random(width), random(height), random(50, 200), random(10, 40));
+  }
+}
+
+function buildControlCenter() {
+  let menuX = width + 25;
+  let panel = createDiv('').position(menuX - 10, 0).size(280, height).style('background', '#0b0c16').style('border-left', '2px solid #222540').style('padding', '15px');
+  
+  let header = createDiv('🎛️ CORE MATRIX COMMAND').parent(panel).style('color', '#00ffcc').style('font-family', 'monospace').style('font-weight', 'bold').style('margin-bottom', '20px');
+  
+  gui.audioBtn = createButton('⚡ INIT MIC / AUDIO DRIVER').parent(panel).style('width', '100%').style('background', '#16192b').style('color', '#00ffcc').style('border', '1px solid #00ffcc').style('padding', '8px').style('cursor', 'pointer');
+  gui.audioBtn.mousePressed(() => userStartAudio());
+  
+  createGuiLabel('THEME COLOR SELECTOR', panel);
+  gui.themeOpt = createSelect().parent(panel).style('width', '100%').style('background', '#16192b').style('color', '#fff');
+  gui.themeOpt.option('Hyper Neon Cyan');
+  gui.themeOpt.option('Cyberpunk Crimson');
+  gui.themeOpt.option('Liquid Gold');
+  
+  createGuiLabel('PARTICLE CAP (GOOFBALLS)', panel);
+  gui.capSld = createSlider(20, 400, 200, 1).parent(panel);
+  
+  createGuiLabel('VELOCITY VECTOR AMPLITUDE', panel);
+  gui.velSld = createSlider(0.5, 10.0, 3.5, 0.1).parent(panel);
+  
+  createGuiLabel('GLITCH MATRIX TRANSVERTER', panel);
+  gui.gliSld = createSlider(0, 1, 0.4, 0.05).parent(panel);
+  
+  createGuiLabel('CODE FIELD SPEED', panel);
+  gui.matSld = createSlider(0, 12, 4, 0.5).parent(panel);
+  
+  createGuiLabel('AUDIO AMPLITUDE SENSITIVITY', panel);
+  gui.gainSld = createSlider(0.5, 4.0, 1.8, 0.1).parent(panel);
+}
+
+function updateEngineState() {
+  sysState.particleCap = gui.capSld.value();
+  sysState.physicsSpeed = gui.velSld.value();
+  sysState.glitchGain = gui.gliSld.value();
+  sysState.matrixFeedSpeed = gui.matSld.value();
+  sysState.gainMultiplier = gui.gainSld.value();
+  sysState.colorScheme = gui.themeOpt.value();
+  
+  syncEngineArrays();
+}
+
+function syncEngineArrays() {
+  while (goofballs.length < sysState.particleCap) goofballs.push(new GoofballParticle());
+  while (goofballs.length > sysState.particleCap) goofballs.pop();
+}
+
+function renderGoofballPhysics(bass, treble) {
+  for (let ball of goofballs) {
+    ball.motionEngine(bass, treble);
+    ball.render();
+  }
+}
+
+function createGuiLabel(labelString, parentPanel) {
+  createDiv(labelString).parent(parentPanel).style('color', '#6b7280').style('font-family', 'sans-serif').style('font-size', '10px').style('margin-top', '18px').style('margin-bottom', '4px').style('letter-spacing', '1px');
+}
+
+function getThemeColor(alpha) {
+  if (sysState.colorScheme === 'Hyper Neon Cyan') return color(0, 255, 204, alpha);
+  if (sysState.colorScheme === 'Cyberpunk Crimson') return color(255, 0, 90, alpha);
+  if (sysState.colorScheme === 'Liquid Gold') return color(255, 210, 0, alpha);
+  return color(255, alpha);
+}
+
