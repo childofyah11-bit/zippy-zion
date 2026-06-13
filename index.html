@@ -3,108 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Goofball Audio Visualizer</title>
+    <title>Interactive Lyric Studio & Audio Player</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Include Three.js library for 3D rendering -->
-    <script src="https://cloudflare.com"></script>
-    <style>
-        /* Extra styles added inline to prevent changes to your main style.css file */
-        #lyrics-container {
-            position: absolute;
-            bottom: 40px;
-            right: 40px;
-            width: 400px;
-            height: 120px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 15px;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            pointer-events: none;
-        }
-        #current-lyric {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(244, 0, 9, 0.8);
-            margin-bottom: 5px;
-            transition: transform 0.1s ease;
-        }
-        #next-lyric {
-            font-size: 0.9rem;
-            color: #888;
-        }
-    </style>
 </head>
 <body>
-    <!-- 3D Canvas Viewport -->
-    <div id="canvas-container"></div>
-
-    <!-- Live Dynamic Lyrics Screen Overlay -->
-    <div id="lyrics-container">
-        <div id="current-lyric">🎵 Press Play & Upload Song 🎵</div>
-        <div id="next-lyric">Song lyric engine ready...</div>
-    </div>
-
-    <!-- Interface and Control Panel Overlay -->
-    <div id="control-panel">
-        <h2>Coke Visualizer Controls</h2>
+    <!-- Main Studio Dashboard Layout -->
+    <div class="studio-container">
         
-        <!-- Audio Input Controls -->
-        <div class="control-group">
-            <label for="audio-file" class="file-upload-btn">Upload Your Song</label>
-            <input type="file" id="audio-file" accept="audio/*">
-            <div id="track-name">No track loaded</div>
-            <audio id="audio-element" controls></audio>
-        </div>
+        <!-- Left Side: Interactive Customization Control Panel -->
+        <aside class="control-panel">
+            <h2>Studio Controls</h2>
+            
+            <!-- Audio Input Deck -->
+            <div class="control-group">
+                <h3>1. Audio & Track Input</h3>
+                <label class="file-btn" for="audio-upload">Upload Song File</label>
+                <input type="file" id="audio-upload" accept="audio/*">
+                <div id="file-status">No audio loaded</div>
+                <audio id="audio-player" controls></audio>
+            </div>
 
-        <!-- Pulse & Movement Controls -->
-        <div class="control-group">
-            <h3>Dance & Motion Settings</h3>
-            <label>Bass Pulse Intensity: <input type="range" id="pulse-intensity" min="0" max="5" step="0.1" value="2"></label>
-            <label>Treble Scale Intensity: <input type="range" id="treble-intensity" min="0" max="5" step="0.1" value="1.5"></label>
-            <label>Base Spin Speed: <input type="range" id="spin-speed" min="0" max="5" step="0.1" value="1"></label>
-            <label>Floating Speed: <input type="range" id="float-speed" min="0" max="5" step="0.1" value="1"></label>
-        </div>
+            <!-- Typography & Size Styling Tweaks -->
+            <div class="control-group">
+                <h3>2. Typography Settings</h3>
+                <label>Font Size: <input type="range" id="font-size" min="1.5" max="4" step="0.1" value="2.5"></label>
+                <label>Line Spacing: <input type="range" id="line-height" min="1" max="3" step="0.1" value="1.8"></label>
+                <label>Text Alignment: 
+                    <select id="text-align">
+                        <option value="center">Centered</option>
+                        <option value="left">Left Aligned</option>
+                        <option value="right">Right Aligned</option>
+                    </select>
+                </label>
+            </div>
 
-        <!-- Color & Lighting Controls -->
-        <div class="control-group">
-            <h3>Visuals & Lights</h3>
-            <label>Can Base Color: <input type="color" id="can-color" value="#f40009"></label>
-            <label>Equalizer Light Intensity: <input type="range" id="light-brightness" min="0" max="10" step="0.5" value="5"></label>
-            <label>Background Theme: 
-                <select id="bg-theme">
-                    <option value="dark">Midnight Dark</option>
-                    <option value="neon">Neon Club</option>
-                    <option value="retro">Retro Wave</option>
-                </select>
-            </label>
-        </div>
+            <!-- Kinetic Playback Tracking Physics -->
+            <div class="control-group">
+                <h3>3. Scroll & Timing Physics</h3>
+                <label>Scroll Speed Factor: <input type="range" id="scroll-speed" min="0.5" max="3" step="0.1" value="1.5"></label>
+                <label>Visual Focus Blur: <input type="range" id="focus-blur" min="0" max="8" step="1" value="3"></label>
+                <label>Highlight Style: 
+                    <select id="highlight-style">
+                        <option value="glow-red">Neon Coca-Red Glow</option>
+                        <option value="glow-blue">Cyber Electric Blue</option>
+                        <option value="pulse-bold">Bold Bouncing Shift</option>
+                    </select>
+                </label>
+            </div>
 
-        <!-- Particles / Audio Rings Controls -->
-        <div class="control-group">
-            <h3>Equalizer Ring</h3>
-            <label>Ring Particle Size: <input type="range" id="particle-size" min="0.01" max="0.2" step="0.01" value="0.05"></label>
-            <label>Audio Sensitivity: <input type="range" id="audio-sensitivity" min="0.5" max="3" step="0.1" value="1.5"></label>
-        </div>
+            <!-- Color Palette Themes Matrix -->
+            <div class="control-group">
+                <h3>4. Aesthetic Theme Mode</h3>
+                <label>Active Text Color: <input type="color" id="color-active" value="#ff2a2a"></label>
+                <label>Idle Text Color: <input type="color" id="color-idle" value="#666666"></label>
+                <label>Background Theme: 
+                    <select id="studio-theme">
+                        <option value="dark-slate">Midnight Slate</option>
+                        <option value="oled-black">True OLED Black</option>
+                        <option value="cyberpunk">Cyberpunk Grid</option>
+                    </select>
+                </label>
+            </div>
+        </aside>
+
+        <!-- Right Side: Live Scrolling Kinetic Typography Screen Stage -->
+        <main class="lyric-stage" id="stage">
+            <div class="scroll-wrapper" id="scroll-wrapper">
+                <!-- Lyrics will be dynamically injected and built here by JavaScript -->
+            </div>
+        </main>
+
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-// --- Global Setup & Visualizer States ---
-let scene, camera, renderer, audioContext, analyser, dataArray;
-let cokeCan, particleRing, audioSource, pointLight;
-let isAudioInitialized = false;
+/* Core Document Properties Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
 
-// Custom Kinetic Song Lyrics Database Array
-const songLyrics = [
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #0b0d12;
+    color: #f5f6f9;
+}
+
+/* Master Grid Window Workspace Splitter */
+.studio-container {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Sidebar Menu Controls Shell */
+.control-panel {
+    background: #121620;
+    border-right: 1px solid #1f2637;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    z-index: 5;
+}
+
+.control-panel::-webkit-scrollbar {
+    width: 4px;
+}
+.control-panel::-webkit-scrollbar-thumb {
+    background: #2b354d;
+    border-radius: 4px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #ffffff;
+    border-bottom: 2px solid #1f2637;
+    padding-bottom: 12px;
+}
+
+h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c7a9c;
+    margin-bottom: 12px;
+}
+
+.control-group {
+    background: #181d2a;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #22293a;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #abb7d4;
+    margin: 12px 0;
+}
+
+/* Custom Config Interactive Tool Inputs */
+input[type="range"] {
+    width: 50%;
+    accent-color: #ff2a2a;
+    cursor: pointer;
+}
+
+input[type="color"] {
+    border: none;
+    background: none;
+    width: 32px;
+    height: 24px;
+    cursor: pointer;
+}
+
+select {
+    background: #22293a;
+    color: #ffffff;
+    border: 1px solid #2d374e;
+    padding: 6px 10px;
+    border-radius: 6px;
+    outline: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.file-btn {
+    background: #ff2a2a;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: filter 0.2s;
+    display: block;
+}
+.file-btn:hover {
+    filter: brightness(1.1);
+}
+#audio-upload {
+    display: none;
+}
+#file-status {
+    font-size: 0.75rem;
+    color: #526285;
+    text-align: center;
+    margin: 6px 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+audio {
+    width: 100%;
+    margin-top: 6px;
+}
+
+/* Right Display Canvas Stage Area Layout */
+.lyric-stage {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background: #08090c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+/* Seamless Rolling Scrolling Rig Element Box */
+.scroll-wrapper {
+    position: absolute;
+    width: 85%;
+    top: 45%;  /* Anchors the active singing row tracking coordinate plane zone center line */
+    transform: translateY(0);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Micro Typography Blocks Processing Row Lines */
+.lyric-line {
+    font-weight: 700;
+    transition: all 0.4s ease;
+    opacity: 0.2;
+    transform: scale(0.92);
+}
+
+/* Dynamic Live Core Visual Theme Modifier Configurations Matrix */
+.lyric-line.active.glow-red {
+    opacity: 1 !important;
+    transform: scale(1.05) !important;
+    text-shadow: 0 0 20px rgba(255, 42, 42, 0.6);
+}
+
+.lyric-line.active.glow-blue {
+    opacity: 1 !important;
+    transform: scale(1.05) !important;
+    text-shadow: 0 0 20px rgba(0, 162, 255, 0.7);
+}
+
+.lyric-line.active.pulse-bold {
+    opacity: 1 !important;
+    transform: scale(1.12) !important;
+}
+// --- Hardcoded Interactive Lyric Matrix Array Data ---
+const songData = [
     "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", 
     "Staying in my own lane", "I’m a low-key pretty goofy", "really-got-it-good-breezy", 
     "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", 
@@ -136,204 +293,153 @@ const songLyrics = [
     "Everything is turning out okay 😁"
 ];
 
-let currentLyricIndex = 0;
-let lyricTimer = 0;
-
-// UI Elements Configuration Map
-const controls = {
-    pulse: document.getElementById('pulse-intensity'),
-    treble: document.getElementById('treble-intensity'),
-    spin: document.getElementById('spin-speed'),
-    float: document.getElementById('float-speed'),
-    canColor: document.getElementById('can-color'),
-    lightBright: document.getElementById('light-brightness'),
-    theme: document.getElementById('bg-theme'),
-    pSize: document.getElementById('particle-size'),
-    sensitivity: document.getElementById('audio-sensitivity'),
-    curLyricText: document.getElementById('current-lyric'),
-    nextLyricText: document.getElementById('next-lyric')
+// Map Element Targets DOM Reference Nodes
+const elements = {
+    fileInput: document.getElementById('audio-upload'),
+    fileStatus: document.getElementById('file-status'),
+    player: document.getElementById('audio-player'),
+    wrapper: document.getElementById('scroll-wrapper'),
+    stage: document.getElementById('stage'),
+    fontSize: document.getElementById('font-size'),
+    lineHeight: document.getElementById('line-height'),
+    textAlign: document.getElementById('text-align'),
+    scrollSpeed: document.getElementById('scroll-speed'),
+    focusBlur: document.getElementById('focus-blur'),
+    highlightStyle: document.getElementById('highlight-style'),
+    colorActive: document.getElementById('color-active'),
+    colorIdle: document.getElementById('color-idle'),
+    theme: document.getElementById('studio-theme')
 };
 
-// Initialize App
-init3D();
-setupAudioEngine();
-animate();
+let lineElementsArray = [];
+let currentIndex = -1;
 
-// --- Step 1: Create 3D Scene Geometry ---
-function init3D() {
-    const container = document.getElementById('canvas-container');
-    
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x050505);
+// Run App
+buildStudioStage();
+registerControlTriggers();
 
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 2, 7);
+// --- Step 1: Procedural Generation Stage Frame Assembly ---
+function buildStudioStage() {
+    elements.wrapper.innerHTML = "";
+    lineElementsArray = [];
 
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
-
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(ambientLight);
-
-    pointLight = new THREE.PointLight(0xffffff, 5, 15);
-    pointLight.position.set(2, 4, 3);
-    scene.add(pointLight);
-
-    cokeCan = new THREE.Group();
-    
-    const bodyGeom = new THREE.CylinderGeometry(1, 1, 3, 32);
-    const bodyMat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(controls.canColor.value),
-        metalness: 0.8,
-        roughness: 0.2
-    });
-    const canBody = new THREE.Mesh(bodyGeom, bodyMat);
-    cokeCan.add(canBody);
-
-    const rimGeom = new THREE.CylinderGeometry(0.95, 1, 0.15, 32);
-    const rimMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.9, roughness: 0.1 });
-    
-    const topRim = new THREE.Mesh(rimGeom, rimMat);
-    topRim.position.y = 1.55;
-    cokeCan.add(topRim);
-
-    const bottomRim = new THREE.Mesh(rimGeom, rimMat);
-    bottomRim.position.y = -1.55;
-    bottomRim.rotation.x = Math.PI;
-    cokeCan.add(bottomRim);
-
-    scene.add(cokeCan);
-    buildParticleRing();
-
-    window.addEventListener('resize', onWindowResize);
-    controls.canColor.addEventListener('input', (e) => { bodyMat.color.set(e.target.value); });
-    controls.theme.addEventListener('change', updateBackgroundTheme);
-}
-
-// --- Step 2: Build Equalizer Particle Rings ---
-function buildParticleRing() {
-    if (particleRing) scene.remove(particleRing);
-
-    const particleCount = 128;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const radius = 2.5;
-
-    for (let i = 0; i < particleCount; i++) {
-        const angle = (i / particleCount) * Math.PI * 2;
-        positions[i * 3] = Math.cos(angle) * radius;
-        positions[i * 3 + 1] = -0.5;
-        positions[i * 3 + 2] = Math.sin(angle) * radius;
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    
-    const mat = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: parseFloat(controls.pSize.value),
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
-    });
-
-    particleRing = new THREE.Points(geometry, mat);
-    scene.add(particleRing);
-}
-
-// --- Step 3: Web Audio Analysis Processing ---
-function setupAudioEngine() {
-    const fileInput = document.getElementById('audio-file');
-    const audio = document.getElementById('audio-element');
-
-    fileInput.addEventListener('change', function() {
-        const files = this.files;
-        if(files.length === 0) return;
+    songData.forEach((textStr, idx) => {
+        const div = document.createElement('div');
+        div.classList.add('lyric-line');
+        div.innerText = textStr;
         
-        document.getElementById('track-name').innerText = files[0].name;
-        audio.src = URL.createObjectURL(files[0]);
-        audio.load();
+        // Initial setup from default control inputs
+        div.style.fontSize = `${elements.fontSize.value}rem`;
+        div.style.marginBottom = `${parseFloat(elements.lineHeight.value) * 10}px`;
+        div.style.textAlign = elements.textAlign.value;
+        div.style.color = elements.colorIdle.value;
+        
+        elements.wrapper.appendChild(div);
+        lineElementsArray.push(div);
+    });
+}
 
-        if (!isAudioInitialized) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            analyser = audioContext.createAnalyser();
-            analyser.fftSize = 256;
-            
-            audioSource = audioContext.createMediaElementSource(audio);
-            audioSource.connect(analyser);
-            analyser.connect(audioContext.destination);
-            
-            const bufferLength = analyser.frequencyBinCount;
-            dataArray = new Uint8Array(bufferLength);
-            isAudioInitialized = true;
-            
-            // Set starting lyrics layout configuration
-            currentLyricIndex = 0;
-            updateLyricDisplay();
+// --- Step 2: Handle Audio & Calculate Line Transitions ---
+function registerControlTriggers() {
+    // Process Local Media Upload Track File Streams
+    elements.fileInput.addEventListener('change', function() {
+        if(this.files.length === 0) return;
+        const file = this.files[0];
+        elements.fileStatus.innerText = file.name;
+        elements.player.src = URL.createObjectURL(file);
+    });
+
+    // Real-Time Core Audio Timeline Event Monitor Link
+    elements.player.addEventListener('timeupdate', () => {
+        const duration = elements.player.duration || 180; // Default fallback to 3 mins
+        const progressPercent = elements.player.currentTime / duration;
+        
+        // Calculate current active line based on playback progress
+        let targetIndex = Math.floor(progressPercent * songData.length);
+        if (targetIndex >= songData.length) targetIndex = songData.length - 1;
+        
+        if (targetIndex !== currentIndex && targetIndex >= 0) {
+            updateActiveLineFocus(targetIndex);
         }
     });
+
+    // Live Customization Parameter Controls Bindings Configuration
+    elements.fontSize.addEventListener('input', (e) => {
+        lineElementsArray.forEach(el => el.style.fontSize = `${e.target.value}rem`);
+        repositionScrollWrapper();
+    });
+
+    elements.lineHeight.addEventListener('input', (e) => {
+        lineElementsArray.forEach(el => el.style.marginBottom = `${parseFloat(e.target.value) * 10}px`);
+        repositionScrollWrapper();
+    });
+
+    elements.textAlign.addEventListener('change', (e) => {
+        lineElementsArray.forEach(el => el.style.textAlign = e.target.value);
+    });
+
+    elements.colorActive.addEventListener('input', () => updateActiveLineFocus(currentIndex));
+    elements.colorIdle.addEventListener('input', () => {
+        lineElementsArray.forEach((el, idx) => {
+            if(idx !== currentIndex) el.style.color = elements.colorIdle.value;
+        });
+    });
+
+    elements.theme.addEventListener('change', applyThemeStyling);
 }
 
-// --- Step 4: Kinetic Lyrics Control Engine ---
-function updateLyricDisplay() {
-    if(currentLyricIndex < songLyrics.length) {
-        controls.curLyricText.innerText = songLyrics[currentLyricIndex];
-        if(currentLyricIndex + 1 < songLyrics.length) {
-            controls.nextLyricText.innerText = "Next: " + songLyrics[currentLyricIndex + 1];
+// --- Step 3: Kinetic Focus Transitions Engine ---
+function updateActiveLineFocus(activeIndex) {
+    currentIndex = activeIndex;
+    const activeStyle = elements.highlightStyle.value;
+    const blurVal = elements.focusBlur.value;
+
+    lineElementsArray.forEach((lineEl, idx) => {
+        // Clear old tracker styling classes completely
+        lineEl.className = 'lyric-line';
+        
+        if(idx === activeIndex) {
+            lineEl.classList.add('active', activeStyle);
+            lineEl.style.color = elements.colorActive.value;
+            lineEl.style.filter = 'blur(0px)';
         } else {
-            controls.nextLyricText.innerText = "Fin ☀️";
+            lineEl.style.color = elements.colorIdle.value;
+            // Apply step out blur physics on inactive lines if enabled
+            const distance = Math.abs(idx - activeIndex);
+            lineEl.style.filter = distance > 0 ? `blur(${Math.min(distance * blurVal * 0.5, blurVal)}px)` : 'none';
         }
+    });
+
+    repositionScrollWrapper();
+}
+
+// --- Step 4: Accurate Positioning Calculations ---
+function repositionScrollWrapper() {
+    if (currentIndex === -1 || !lineElementsArray[currentIndex]) return;
+    
+    const targetLine = lineElementsArray[currentIndex];
+    // Calculate the distance from the top of the container to the targeted active line text node element box
+    const targetOffsetTop = targetLine.offsetTop;
+    const targetHeight = targetLine.offsetHeight;
+    
+    // Smooth transition movement alignment calculations
+    const transformY = -(targetOffsetTop - (targetHeight / 2));
+    elements.wrapper.style.transform = `translateY(${transformY}px)`;
+}
+
+// --- Step 5: Studio Aesthetic Theme Controls Mapping ---
+function applyThemeStyling() {
+    const activeTheme = elements.theme.value;
+    if(activeTheme === 'dark-slate') {
+        elements.stage.style.background = '#08090c';
+        elements.stage.style.backgroundImage = 'none';
+    } else if(activeTheme === 'oled-black') {
+        elements.stage.style.background = '#000000';
+        elements.stage.style.backgroundImage = 'none';
+    } else if(activeTheme === 'cyberpunk') {
+        elements.stage.style.background = '#0f051d';
+        // Procedural background glowing grid matrix design logic fallback
+        elements.stage.style.backgroundImage = 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)';
+        elements.stage.style.backgroundSize = '30px 30px';
     }
 }
-
-function updateBackgroundTheme() {
-    const val = controls.theme.value;
-    if (val === 'dark') scene.background.setHex(0x050505);
-    else if (val === 'neon') scene.background.setHex(0x1a0033);
-    else if (val === 'retro') scene.background.setHex(0x2b101d);
-}
-
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-// --- Step 5: Animation Engine loop & Audio Parsing ---
-function animate(timestamp) {
-    requestAnimationFrame(animate);
-
-    const time = timestamp * 0.001;
-    let bass = 0, treble = 0;
-
-    if (isAudioInitialized && analyser) {
-        analyser.getByteFrequencyData(dataArray);
-        
-        let bassSum = 0;
-        for(let i=0; i<10; i++) bassSum += dataArray[i];
-        bass = (bassSum / 10) / 255;
-
-        let trebleSum = 0;
-        for(let i=80; i<100; i++) trebleSum += dataArray[i];
-        treble = (trebleSum / 20) / 255;
-
-        // Transform Equalizer Particle Ring Waveforms live
-        const posAttr = particleRing.geometry.attributes.position;
-        const sensitivityVal = parseFloat(controls.sensitivity.value);
-        
-        for (let i = 0; i < analyser.frequencyBinCount; i++) {
-            const angle = (i / analyser.frequencyBinCount) * Math.PI * 2;
-            const audioScale = (dataArray[i] / 255) * sensitivityVal;
-            const dynamicRadius = 2.5 + audioScale;
-            
-            posAttr.setXYZ(i, Math.cos(angle) * dynamicRadius, -0.5 + (audioScale * 0.5), Math.sin(angle) * dynamicRadius);
-        }
-        posAttr.needsUpdate = true;
-        particleRing.material.size = parseFloat(controls.pSize.value);
-
-        // Advance lyrics sequentially based on beats and timing thresholds
-        lyricTimer += 1;
-        // Adjust this number (130) to make lyrics move faster or slower with your song beat
-        if (bass > 0.65 && lyricTimer > 130) { 
-            currentLyricIndex = (currentLyricIndex + 1) % songLyrics.length;
