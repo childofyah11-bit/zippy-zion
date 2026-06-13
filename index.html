@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goofball 256-Step Industrial Rock Soundtrack</title>
+    <title>Goofball 512-Step Master Band Sequencer</title>
     <style>
         body {
             background: #05050a;
@@ -60,7 +60,7 @@
         }
         .sequencer {
             display: grid;
-            grid-template-columns: 80px repeat(256, 22px);
+            grid-template-columns: 110px repeat(512, 22px);
             gap: 3px;
             width: fit-content;
         }
@@ -68,7 +68,7 @@
             display: flex;
             align-items: center;
             font-weight: bold;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #00ffcc;
             position: sticky;
             left: 0;
@@ -78,7 +78,7 @@
         }
         .pad {
             width: 22px;
-            height: 26px;
+            height: 24px;
             background: #202032;
             border-radius: 3px;
             cursor: pointer;
@@ -90,10 +90,19 @@
             box-shadow: 0 0 8px #00ffcc;
             border-color: #fff;
         }
-        div[data-note^="G5"].pad.active, div[data-note^="F5"].pad.active, div[data-note^="Eb5"].pad.active { background: #ff0055; box-shadow: 0 0 8px #ff0055; }
-        div[data-note^="D5"].pad.active, div[data-note^="C5"].pad.active, div[data-note^="B4"].pad.active { background: #ff9900; box-shadow: 0 0 8px #ff9900; }
-        div[data-note^="Ab4"].pad.active, div[data-note^="G4"].pad.active, div[data-note^="F4"].pad.active { background: #b600ff; box-shadow: 0 0 8px #b600ff; }
-        div[data-note^="Eb4"].pad.active, div[data-note^="D4"].pad.active, div[data-note^="C4"].pad.active { background: #00eaff; box-shadow: 0 0 8px #00eaff; }
+        
+        /* GUITAR COLOR BALANCING (Neon Pinks, Oranges, Purples) */
+        div[data-type="guitar"][data-note^="G5"].pad.active, div[data-type="guitar"][data-note^="F5"].pad.active, div[data-type="guitar"][data-note^="Eb5"].pad.active { background: #ff0055; box-shadow: 0 0 8px #ff0055; }
+        div[data-type="guitar"][data-note^="D5"].pad.active, div[data-type="guitar"][data-note^="C5"].pad.active, div[data-type="guitar"][data-note^="B4"].pad.active { background: #ff9900; box-shadow: 0 0 8px #ff9900; }
+        div[data-type="guitar"][data-note^="Ab4"].pad.active, div[data-type="guitar"][data-note^="G4"].pad.active, div[data-type="guitar"][data-note^="F4"].pad.active { background: #b600ff; box-shadow: 0 0 8px #b600ff; }
+        div[data-type="guitar"][data-note^="Eb4"].pad.active, div[data-type="guitar"][data-note^="D4"].pad.active, div[data-type="guitar"][data-note^="C4"].pad.active { background: #00eaff; box-shadow: 0 0 8px #00eaff; }
+        
+        /* DRUM COLOR BALANCING (Bright Electric Greens and Reds) */
+        div[data-type="drum"][data-note="CRASH"].pad.active { background: #ff3333; box-shadow: 0 0 8px #ff3333; }
+        div[data-type="drum"][data-note^="HIHAT"].pad.active { background: #ffff00; box-shadow: 0 0 8px #ffff00; }
+        div[data-type="drum"][data-note^="SNARE"].pad.active { background: #00ffcc; box-shadow: 0 0 8px #00ffcc; }
+        div[data-type="drum"][data-note^="TOM"].pad.active { background: #0099ff; box-shadow: 0 0 8px #0099ff; }
+        div[data-type="drum"][data-note="KICK"].pad.active { background: #00ff55; box-shadow: 0 0 8px #00ff55; }
         
         .pad.current {
             border: 1px solid #fff;
@@ -103,8 +112,8 @@
 </head>
 <body>
 
-    <h1>CYBER ORCHESTRA: EXPANDED 256-STEP LAYOUT</h1>
-    <p>The layout will auto-scroll as it walks across the continuous full-length performance timeline.</p>
+    <h1>CYBER ORCHESTRA: 512-STEP MASTER TRACK</h1>
+    <p>Continuous dynamic performance mapping. Auto-scroll panel follows active playback window frames.</p>
     
     <div class="controls">
         <button id="playBtn">EXECUTE ARCHITECTURE</button>
@@ -117,8 +126,10 @@
     <script>
         let audioCtx = null;
         
-        const instruments = ['G5', 'F5', 'Eb5', 'D5', 'C5', 'B4', 'Ab4', 'G4', 'F4', 'Eb4', 'D4', 'C4'];
-        const steps = 256;
+        const guitarNotes = ['G5', 'F5', 'Eb5', 'D5', 'C5', 'B4', 'Ab4', 'G4', 'F4', 'Eb4', 'D4', 'C4'];
+        const drumNotes = ['CRASH', 'HIHAT_OPEN', 'HIHAT_CLOSE', 'TOM_HIGH', 'TOM_LOW', 'SNARE', 'KICK'];
+        
+        const steps = 512;
         let currentStep = 0;
         let isPlaying = false;
         let intervalId = null;
@@ -129,157 +140,82 @@
             'D4': 293.66, 'C4': 261.63
         };
 
-        const tracks = {};
-        instruments.forEach(inst => {
-            tracks[inst] = new Array(steps).fill(false);
-        });
+        const guitarTracks = {};
+        const drumTracks = {};
+        
+        guitarNotes.forEach(n => guitarTracks[n] = new Array(steps).fill(false));
+        drumNotes.forEach(d => drumTracks[d] = new Array(steps).fill(false));
 
-        // 256-Step Continuous Evolving Track Presets
-        const songPreset = [
-            // [SECTION 1] Bouncy Goofball Opening Theme (Steps 0 - 63)
+        // --- AUTOMATED MASTER 512-STEP ARRANGEMENT COMPOSITION ---
+        const guitarPreset = [
+            // [VERSE 1] (Steps 0 - 63)
             ['C4', 0], ['Eb4', 1], ['G4', 2], ['C5', 3], ['Eb5', 4], ['G5', 5], ['F5', 6], ['D5', 8], ['B4', 10], ['C4', 12], ['G4', 13], ['C5', 14],
             ['Eb4', 16], ['Eb4', 17], ['G4', 18], ['G4', 19], ['C5', 20], ['C5', 21], ['Eb5', 22], ['D5', 24], ['D5', 25], ['B4', 26], ['B4', 27], ['G4', 28], ['G4', 29], ['D4', 30],
             ['C4', 32], ['C5', 32], ['D4', 34], ['D5', 34], ['Eb4', 36], ['Eb5', 36], ['F4', 38], ['F5', 38], ['G4', 40], ['G5', 40], ['Ab4', 42], ['Ab5', 42], ['C5', 44], ['Eb5', 46],
             ['C4', 48], ['C4', 49], ['C4', 50], ['Eb4', 52], ['Eb4', 53], ['Eb4', 54], ['Ab4', 56], ['C5', 56], ['F5', 56], ['G4', 60], ['C5', 60], ['Eb5', 60], ['G5', 60],
 
-            // [SECTION 2] Aggressive Rising Action Run (Steps 64 - 127)
+            // [VERSE 2 - CLIMB] (Steps 64 - 127)
             ['C4', 64], ['Eb4', 66], ['F4', 68], ['G4', 70], ['Ab4', 72], ['Bb4', 74], ['C5', 76], ['D5', 78],
             ['Eb5', 80], ['D5', 82], ['C5', 84], ['Bb4', 86], ['Ab4', 88], ['G4', 90], ['F4', 92], ['Eb4', 94],
             ['C4', 96], ['G4', 98], ['C5', 100], ['Eb5', 102], ['G5', 104], ['F5', 106], ['Eb5', 108], ['D5', 110],
-            ['C5', 112], ['B4', 114], ['C5', 116], ['D5', 118], ['G4', 120], ['G4', 122], ['G4', 124], ['G4', 126],
 
-            // [SECTION 3] Heavy Power Riff Chorus Layer (Steps 128 - 191)
+            // [CHORUS 1 - POWER HEAVY RIFFS] (Steps 128 - 191)
             ['C4', 128], ['G4', 128], ['C5', 128], ['C4', 132], ['G4', 132], ['C5', 132],
             ['Eb4', 136], ['Bb4', 136], ['Eb5', 136], ['F4', 140], ['C5', 140], ['F5', 140],
             ['G4', 144], ['D5', 144], ['G5', 144], ['Ab4', 148], ['Eb5', 148], ['Ab5', 148],
-            ['F4', 152], ['C5', 152], ['F5', 152], ['G4', 156], ['D5', 156], ['G5', 156],
-            ['C4', 160], ['G4', 160], ['C5', 160], ['Eb5', 164], ['D5', 168], ['C5', 172],
-            ['Ab4', 176], ['F4', 180], ['G4', 184], ['D4', 188],
 
-            // [SECTION 4] Heavy Silence Dropout into Grand Finale (Steps 192 - 255)
-            ['C4', 192], ['C4', 194], ['C4', 196],
-            ['Eb4', 208], ['Eb4', 210], ['Eb4', 212],
-            ['F4', 224], ['Ab4', 228], ['C5', 232], ['Eb5', 236],
-            ['G4', 240], ['C5', 240], ['Eb5', 240], ['G5', 240],
-            ['G5', 244], ['G5', 248], ['G5', 252]
+            // [VERSE 3 - REPEAT WITH MODULATION] (Steps 256 - 319)
+            ['Eb4', 256], ['G4', 258], ['C5', 260], ['Eb5', 262], ['D5', 264], ['B4', 268],
+            ['Eb4', 272], ['G4', 274], ['C5', 276], ['Eb5', 278], ['F5', 280], ['D5', 284],
+
+            // [CHORUS 2 - EXPANDED POWER CHORDS] (Steps 384 - 447)
+            ['C4', 384], ['G4', 384], ['C5', 384], ['F4', 392], ['C5', 392], ['F5', 392],
+            ['G4', 400], ['D5', 400], ['G5', 400], ['Ab4', 408], ['Eb5', 408], ['Ab5', 408],
+
+            // [GRAND FINALE RESOLUTION HOLD] (Steps 496 - 511)
+            ['G4', 496], ['C5', 496], ['Eb5', 496], ['G5', 496], ['G5', 500], ['G5', 504], ['G5', 508]
         ];
+        guitarPreset.forEach(([note, step]) => { if (guitarTracks[note] && step < steps) guitarTracks[note][step] = true; });
 
-        songPreset.forEach(([note, step]) => {
-            if (tracks[note]) { tracks[note][step] = true; }
-        });
+        for (let i = 0; i < steps; i++) {
+            const isBreakdown = (i >= 192 && i <= 239) || (i >= 448 && i <= 479);
+            
+            if ((i % 8 === 0 || i % 16 === 10)) drumTracks['KICK'][i] = true;
+            if (i % 8 === 4 && !isBreakdown) drumTracks['SNARE'][i] = true;
+            if (i % 2 === 0 && !isBreakdown) drumTracks['HIHAT_CLOSE'][i] = true;
+            if (i % 16 === 14 && !isBreakdown) { drumTracks['HIHAT_CLOSE'][i] = false; drumTracks['HIHAT_OPEN'][i] = true; }
+            
+            if (i === 0 || i === 64 || i === 128 || i === 256 || i === 320 || i === 384 || i === 480) {
+                drumTracks['CRASH'][i] = true;
+                drumTracks['KICK'][i] = true;
+            }
+            
+            if (i === 62 || i === 126 || i === 254 || i === 318 || i === 382 || i === 478) {
+                drumTracks['TOM_HIGH'][i-1] = true;
+                drumTracks['TOM_LOW'][i] = true;
+            }
+        }
 
         const grid = document.getElementById('grid');
-        instruments.forEach(inst => {
+        
+        function createGridRow(noteName, trackSource, typeLabel) {
             const label = document.createElement('div');
             label.className = 'row-label';
-            label.innerText = inst;
+            label.innerText = typeLabel.toUpperCase() + ": " + noteName.replace('_', ' ');
             grid.appendChild(label);
 
             for (let i = 0; i < steps; i++) {
                 const pad = document.createElement('div');
-                pad.className = `pad ${tracks[inst][i] ? 'active' : ''}`;
-                pad.dataset.note = inst;
+                pad.className = `pad ${trackSource[noteName][i] ? 'active' : ''}`;
                 pad.dataset.step = i;
+                pad.dataset.note = noteName;
+                pad.dataset.type = typeLabel;
                 pad.onclick = () => {
-                    tracks[inst][i] = !tracks[inst][i];
+                    trackSource[noteName][i] = !trackSource[noteName][i];
                     pad.classList.toggle('active');
                 };
                 grid.appendChild(pad);
             }
-        });
-
-        function playCyberGuitar(frequency, isLong) {
-            const now = audioCtx.currentTime;
-            const duration = isLong ? 0.85 : 0.16;
-            
-            const osc = audioCtx.createOscillator();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(frequency, now);
-
-            osc.frequency.linearRampToValueAtTime(frequency * 1.005, now + 0.04);
-            osc.frequency.linearRampToValueAtTime(frequency * 0.995, now + 0.08);
-            osc.frequency.linearRampToValueAtTime(frequency, now + 0.12);
-
-            const distortion = audioCtx.createWaveShaper();
-            function makeDistortionCurve(amount) {
-                const k = typeof amount === 'number' ? amount : 50;
-                const n_samples = 44100;
-                const curve = new Float32Array(n_samples);
-                const deg = Math.PI / 180;
-                for (let i = 0; i < n_samples; ++i) {
-                    const x = (i * 2) / n_samples - 1;
-                    curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.PI * Math.abs(x));
-                }
-                return curve;
-            }
-            distortion.curve = makeDistortionCurve(135); 
-            distortion.oversample = '4x';
-
-            const filter = audioCtx.createBiquadFilter();
-            filter.type = 'peaking';
-            filter.frequency.setValueAtTime(1400, now);
-            filter.Q.setValueAtTime(4, now);
-            filter.gain.setValueAtTime(8, now);
-
-            const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(0.05, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-            osc.connect(distortion);
-            distortion.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start(now);
-            osc.stop(now + duration);
         }
 
-        function playStep() {
-            document.querySelectorAll('.pad').forEach(p => p.classList.remove('current'));
-            
-            const activePads = document.querySelectorAll(`[data-step="${currentStep}"]`);
-            activePads.forEach(p => p.classList.add('current'));
-            
-            const scrollContainer = document.getElementById('scrollContainer');
-            const firstActivePad = activePads[0];
-            if (firstActivePad) {
-                scrollContainer.scrollLeft = firstActivePad.offsetLeft - 100;
-            }
-            
-            instruments.forEach(inst => {
-                if (tracks[inst][currentStep]) {
-                    const isLong = (currentStep >= 12 && currentStep <= 14) || 
-                                   (currentStep >= 48 && currentStep <= 54) || 
-                                   (currentStep >= 192 && currentStep <= 196) ||
-                                   (currentStep >= 240);
-                    playCyberGuitar(frequencies[inst], isLong);
-                }
-            });
-            currentStep = (currentStep + 1) % steps;
-        }
-
-        document.getElementById('playBtn').addEventListener('click', () => {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
-            if (isPlaying) {
-                clearInterval(intervalId);
-                document.getElementById('playBtn').innerText = 'EXECUTE ARCHITECTURE';
-                document.getElementById('playBtn').style.background = '#ff007f';
-                document.querySelectorAll('.pad').forEach(p => p.classList.remove('current'));
-                isPlaying = false;
-                currentStep = 0;
-            } else {
-                intervalId = setInterval(playStep, 160);
-                document.getElementById('playBtn').innerText = 'HALT SCORE';
-                document.getElementById('playBtn').style.background = '#00ffcc';
-                isPlaying = true;
-            }
-        });
-    </script>
-</body>
-</html>
+        guitarNotes.forEach(n => createGridRow(n, guitarTracks, 'guitar'));
