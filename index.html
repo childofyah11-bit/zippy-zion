@@ -275,7 +275,6 @@
         const tracks = {};
         instruments.forEach(inst => { tracks[inst] = new Array(steps).fill(false); });
 
-        // Rolling 16-step high-energy chord structure pattern 
         const drivingPattern = [
             ['C4', 0],  ['Eb4', 0],  ['G4', 0],   ['G5', 2],
             ['C4', 4],  ['Eb4', 4],  ['C5', 4],   ['Eb5', 6],
@@ -283,27 +282,22 @@
             ['G4', 12], ['B4', 12],  ['D5', 12],  ['D5', 14]
         ];
 
-        // Cascading melody run used to create automatic variety runs
         const cascadingMelody = ['C5', 'D5', 'Eb5', 'F5', 'G5', 'F5', 'Eb5', 'D5'];
 
-        // Continuous Loop Generator - populates 100% of the grid blocks with ZERO dead spots
         for (let globalStep = 0; globalStep < steps; globalStep++) {
             let patternIndex = globalStep % 16;
             
-            // Map the steady continuous harmony track
             drivingPattern.forEach(([note, stepOffset]) => {
                 if (patternIndex === stepOffset) {
                     tracks[note][globalStep] = true;
                 }
             });
 
-            // Map a flowing, continuous top-line note run across the upper pads
             if (globalStep % 2 === 0) {
                 let melodyNote = cascadingMelody[(globalStep / 2) % cascadingMelody.length];
                 tracks[melodyNote][globalStep] = true;
             }
 
-            // Fill empty quarter steps with dense upbeat syncopated balance points
             if (globalStep % 4 === 1 || globalStep % 4 === 3) {
                 tracks['G4'][globalStep] = true;
             }
@@ -398,21 +392,24 @@
             const userCutoff = parseFloat(document.getElementById('filterSlider').value);
             
             const osc = audioCtx.createOscillator();
-            const filter = audioCtx.createBiquadFilter();
+            const filter = document.getElementById('filterSlider') ? audioCtx.createBiquadFilter() : null;
             const gain = audioCtx.createGain();
             
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(frequency, now);
             
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(userCutoff, now);
-            filter.frequency.exponentialRampToValueAtTime(userCutoff / 2.5, now + duration);
+            if (filter) {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(userCutoff, now);
+                filter.frequency.exponentialRampToValueAtTime(userCutoff / 2.5, now + duration);
+                osc.connect(filter);
+                filter.connect(gain);
+            } else {
+                osc.connect(gain);
+            }
             
-            gain.gain.setValueAtTime(0.14, now); // Attenuated master to handle full multi-note grid stacks safely
+            gain.gain.setValueAtTime(0.12, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-            
-            osc.connect(filter);
-            filter.connect(gain);
             gain.connect(masterGainNode);
             
             osc.start(now);
@@ -545,4 +542,3 @@
         document.getElementById('volumeSlider').addEventListener('input', (e) => {
             const val = parseFloat(e.target.value);
             document.getElementById('volValue').innerText = Math.round(val * 100) + '%';
-
