@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goofball Soundtrack: Single File Edition</title>
+    <title>Goofball Industrial Rock Soundtrack</title>
     <style>
-        /* ALL YOUR STYLES PACKED HERE - NO CSS FILE NEEDED */
         body {
             background: #05050a;
             color: #fff;
@@ -85,7 +84,6 @@
             box-shadow: 0 0 8px #00ffcc;
             border-color: #fff;
         }
-        /* Your original visual colors for different instrument notes */
         div[data-note^="G5"].pad.active, div[data-note^="F5"].pad.active, div[data-note^="Eb5"].pad.active { background: #ff0055; box-shadow: 0 0 8px #ff0055; }
         div[data-note^="D5"].pad.active, div[data-note^="C5"].pad.active, div[data-note^="B4"].pad.active { background: #ff9900; box-shadow: 0 0 8px #ff9900; }
         div[data-note^="Ab4"].pad.active, div[data-note^="G4"].pad.active, div[data-note^="F4"].pad.active { background: #b600ff; box-shadow: 0 0 8px #b600ff; }
@@ -95,20 +93,12 @@
             border: 1px solid #fff;
             background-image: linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15));
         }
-        .lyrics-display {
-            margin-top: 20px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #00ffcc;
-            min-height: 1.5em;
-            text-shadow: 0 0 8px rgba(0,255,204,0.4);
-        }
     </style>
 </head>
 <body>
 
-    <h1>CYBER ORCHESTRA: GOOFBALL TRACK</h1>
-    <p>Scroll horizontally to view your custom song layout across the 64-step grid.</p>
+    <h1>CYBER ORCHESTRA: CYBER-ROCK GUITAR</h1>
+    <p>Scroll horizontally to view the entire continuous track layout grid.</p>
     
     <div class="controls">
         <button id="playBtn">EXECUTE ARCHITECTURE</button>
@@ -118,10 +108,7 @@
         <div class="sequencer" id="grid"></div>
     </div>
 
-    <div class="lyrics-display" id="lyrics">"God made me perfectly okay 😁"</div>
-
     <script>
-        /* ALL YOUR AUDIO LOGIC PACKED HERE - NO SCRIPT FILE NEEDED */
         let audioCtx = null;
         
         const instruments = ['G5', 'F5', 'Eb5', 'D5', 'C5', 'B4', 'Ab4', 'G4', 'F4', 'Eb4', 'D4', 'C4'];
@@ -136,37 +123,24 @@
             'D4': 293.66, 'C4': 261.63
         };
 
-        // Custom timeline sheet using your lyrics text
-        const lyricTimeline = new Array(steps).fill("");
-        lyricTimeline[0]  = "🤪 I'm a goofball bouncing-off-the-wall-ball";
-        lyricTimeline[6]  = "👋 Everybody knows my name";
-        lyricTimeline[12] = "🏎️ Staying in my own lane";
-        lyricTimeline[16] = "☀️ Woke up, Clean slate, Sun's up, Don't wait";
-        lyricTimeline[24] = "🌳 Step out, Big yard, Life's good, Not hard";
-        lyricTimeline[32] = "📝 Homework Done fast, A-plus First class";
-        lyricTimeline[40] = "🎧 Next tab Beats play, Soundtrack for the day";
-        lyricTimeline[48] = "🤫 Music stops... Heavy silence...";
-        lyricTimeline[54] = "✨ Lights fade Stage set, Moment they won't forget";
-        lyricTimeline[60] = "😁 God made me perfectly okay after all";
-
         const tracks = {};
         instruments.forEach(inst => {
             tracks[inst] = new Array(steps).fill(false);
         });
 
-        // The musical instrument roadmap custom built for your song sections
         const songPreset = [
-            ['C4', 0], ['Eb4', 1], ['G4', 2], ['C5', 3],
-            ['Eb5', 4], ['G5', 5],
+            ['C4', 0], ['Eb4', 1], ['G4', 2], ['C5', 3], ['Eb5', 4], ['G5', 5],
             ['F5', 6], ['D5', 8], ['B4', 10],
             ['C4', 12], ['G4', 13], ['C5', 14],
             ['Eb4', 16], ['Eb4', 17], ['G4', 18], ['G4', 19], ['C5', 20], ['C5', 21], ['Eb5', 22],
             ['D5', 24], ['D5', 25], ['B4', 26], ['B4', 27], ['G4', 28], ['G4', 29], ['D4', 30],
-            ['C4', 32], ['D4', 34], ['Eb4', 36], ['F4', 38],
-            ['G4', 40], ['Ab4', 42], ['C5', 44], ['Eb5', 46],
-            ['F4', 48], ['F4', 49], ['F4', 50],
-            ['Ab4', 54], ['C5', 56], ['F5', 58],
-            ['G5', 60], ['G5', 61], ['G5', 62], ['G5', 63]
+            ['C4', 32], ['C5', 32], ['D4', 34], ['D5', 34], ['Eb4', 36], ['Eb5', 36], ['F4', 38], ['F5', 38],
+            ['G4', 40], ['G5', 40], ['Ab4', 42], ['Ab5', 42], ['C5', 44], ['Eb5', 46],
+            ['C4', 48], ['C4', 49], ['C4', 50], 
+            ['Eb4', 52], ['Eb4', 53], ['Eb4', 54],
+            ['Ab4', 56], ['C5', 56], ['F5', 56],
+            ['G4', 60], ['C5', 60], ['Eb5', 60], ['G5', 60],
+            ['G5', 61], ['G5', 62], ['G5', 63]
         ];
 
         songPreset.forEach(([note, step]) => {
@@ -193,92 +167,92 @@
             }
         });
 
-        // Original Epic Cyber Orchestra Heavy Dual-Sawtooth Synthesizer Engine
-        function playSymphonicStrings(frequency, isLong) {
+        // RE-ENGINEERED: Custom Distorted Cyber-Guitar Synth Module
+        function playCyberGuitar(frequency, isLong) {
             const now = audioCtx.currentTime;
-            const duration = isLong ? 0.65 : 0.18;
-            const osc1 = audioCtx.createOscillator();
-            const osc2 = audioCtx.createOscillator();
+            const duration = isLong ? 0.70 : 0.16;
             
-            osc1.type = 'sawtooth';
-            osc2.type = 'sawtooth';
-            osc1.frequency.setValueAtTime(frequency, now);
-            osc2.frequency.setValueAtTime(frequency, now);
-            
-            // Detune adjustments to create a huge, cinematic room scale profile
-            osc1.detune.setValueAtTime(9, now);
-            osc2.detune.setValueAtTime(-9, now);
-            
+            const osc = audioCtx.createOscillator();
+            // A combination of pulse/sawtooth behaviors makes a raw guitar tone
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(frequency, now);
+
+            // Add subtle pitch vibration (chorus effect) for rock grit
+            osc.frequency.linearRampToValueAtTime(frequency * 1.005, now + 0.04);
+            osc.frequency.linearRampToValueAtTime(frequency * 0.995, now + 0.08);
+            osc.frequency.linearRampToValueAtTime(frequency, now + 0.12);
+
+            // WaveShaper Node simulates pure heavy amplifier distortion drive
+            const distortion = audioCtx.createWaveShaper();
+            function makeDistortionCurve(amount) {
+                const k = typeof amount === 'number' ? amount : 50;
+                const n_samples = 44100;
+                const curve = new Float32Array(n_samples);
+                const deg = Math.PI / 180;
+                for (let i = 0; i < n_samples; ++i) {
+                    const x = (i * 2) / n_samples - 1;
+                    curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.PI * Math.abs(x));
+                }
+                return curve;
+            }
+            distortion.curve = makeDistortionCurve(120); // High-gain rock overdrive level
+            distortion.oversample = '4x';
+
             const filter = audioCtx.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(1250, now);
-            filter.frequency.exponentialRampToValueAtTime(600, now + duration);
-            
+            filter.type = 'peaking'; // Emulates an electric guitar cabinet speaker curve
+            filter.frequency.setValueAtTime(1400, now);
+            filter.Q.setValueAtTime(4, now);
+            filter.gain.setValueAtTime(8, now);
+
             const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.setValueAtTime(0.05, now); // Attenuate loud guitar spikes safely
             gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-            
-            osc1.connect(filter);
-            osc2.connect(filter);
+
+            osc.connect(distortion);
+            distortion.connect(filter);
             filter.connect(gain);
             gain.connect(audioCtx.destination);
-            
-            osc1.start(now);
-            osc2.start(now);
-            osc1.stop(now + duration);
-            osc2.stop(now + duration);
+
+            osc.start(now);
+            osc.stop(now + duration);
         }
 
         function playStep() {
             document.querySelectorAll('.pad').forEach(p => p.classList.remove('current'));
             document.querySelectorAll(`[data-step="${currentStep}"]`).forEach(p => p.classList.add('current'));
             
-            if(lyricTimeline[currentStep] !== "") {
-                document.getElementById('lyrics').innerText = lyricTimeline[currentStep];
-            }
-
             instruments.forEach(inst => {
                 if (tracks[inst][currentStep]) {
                     const isLong = (currentStep >= 12 && currentStep <= 14) || 
-                                   (currentStep >= 48 && currentStep <= 50) || 
+                                   (currentStep >= 48 && currentStep <= 54) || 
                                    (currentStep >= 60);
-                    playSymphonicStrings(frequencies[inst], isLong);
+                    playCyberGuitar(frequencies[inst], isLong);
                 }
             });
             currentStep = (currentStep + 1) % steps;
         }
 
         document.getElementById('playBtn').addEventListener('click', () => {
-            // Direct interactive activation loop to break browser sandboxing blockades
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
             if (audioCtx.state === 'suspended') {
-                audioCtx.resume().then(() => {
-                    startPlayback();
-                });
+                audioCtx.resume();
+            }
+
+            if (isPlaying) {
+                clearInterval(intervalId);
+                document.getElementById('playBtn').innerText = 'EXECUTE ARCHITECTURE';
+                document.getElementById('playBtn').style.background = '#ff007f';
+                document.querySelectorAll('.pad').forEach(p => p.classList.remove('current'));
+                isPlaying = false;
             } else {
-                startPlayback();
+                intervalId = setInterval(playStep, 160); // Driving rock tempo speed (approx 93 BPM)
+                document.getElementById('playBtn').innerText = 'HALT SCORE';
+                document.getElementById('playBtn').style.background = '#00ffcc';
+                isPlaying = true;
             }
         });
-
-        function startPlayback() {
-            if (isPlaying) {
-                // Stop playback
-                clearInterval(intervalId);
-                isPlaying = false;
-                document.getElementById('playBtn').innerText = 'EXECUTE ARCHITECTURE';
-                currentStep = 0;
-                document.querySelectorAll('.pad').forEach(p => p.classList.remove('current'));
-            } else {
-                // Start playback
-                isPlaying = true;
-                document.getElementById('playBtn').innerText = 'STOP PLAYBACK';
-                currentStep = 0;
-                playStep();
-                intervalId = setInterval(playStep, 150);
-            }
-        }
     </script>
 </body>
 </html>
