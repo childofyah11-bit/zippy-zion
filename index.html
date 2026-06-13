@@ -392,22 +392,18 @@
             const userCutoff = parseFloat(document.getElementById('filterSlider').value);
             
             const osc = audioCtx.createOscillator();
-            const filter = document.getElementById('filterSlider') ? audioCtx.createBiquadFilter() : null;
+            const filter = audioCtx.createBiquadFilter();
             const gain = audioCtx.createGain();
             
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(frequency, now);
             
-            if (filter) {
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(userCutoff, now);
-                filter.frequency.exponentialRampToValueAtTime(userCutoff / 2.5, now + duration);
-                osc.connect(filter);
-                filter.connect(gain);
-            } else {
-                osc.connect(gain);
-            }
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(userCutoff, now);
+            filter.frequency.exponentialRampToValueAtTime(userCutoff / 2.5, now + duration);
             
+            osc.connect(filter);
+            filter.connect(gain);
             gain.gain.setValueAtTime(0.12, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
             gain.connect(masterGainNode);
@@ -542,3 +538,6 @@
         document.getElementById('volumeSlider').addEventListener('input', (e) => {
             const val = parseFloat(e.target.value);
             document.getElementById('volValue').innerText = Math.round(val * 100) + '%';
+            if (masterGainNode) masterGainNode.gain.setValueAtTime(val, audioCtx.currentTime);
+        });
+
