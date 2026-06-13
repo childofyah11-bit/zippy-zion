@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Orchestra: 512-Step Master Track</title>
+    <title>Cyber Orchestra: Small Town Star</title>
     <style>
         body {
-            background: #05050a;
+            background: #030308;
             color: #fff;
             font-family: 'Segoe UI', system-ui, sans-serif;
             text-align: center;
@@ -18,34 +18,46 @@
             margin: 0;
             padding: 15px;
             box-sizing: border-box;
+            overflow-x: hidden;
         }
         h1 {
             color: #ff007f;
-            text-shadow: 0 0 10px rgba(255,0,127,0.5);
-            font-size: 1.8rem;
+            text-shadow: 0 0 15px rgba(255,0,127,0.6);
+            font-size: 2rem;
             margin: 0 0 5px 0;
+            letter-spacing: 2px;
         }
         p {
-            color: #7a7a9a;
-            margin: 0 0 15px 0;
-            font-size: 0.8rem;
+            color: #6a6a8a;
+            margin: 0 0 20px 0;
+            font-size: 0.85rem;
+        }
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 95vw;
+            max-width: 1400px;
         }
         .controls {
-            margin-bottom: 15px;
             display: flex;
             gap: 15px;
             align-items: center;
             flex-wrap: wrap;
             justify-content: center;
+            background: #090911;
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid #1a1a30;
         }
-        .volume-box {
+        .control-group {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: #10101b;
+            background: #111122;
             padding: 8px 15px;
             border-radius: 20px;
-            border: 1px solid #232336;
+            border: 1px solid #232344;
             color: #00ffcc;
             font-size: 0.8rem;
             font-weight: bold;
@@ -53,40 +65,46 @@
         input[type="range"] {
             accent-color: #ff007f;
             cursor: pointer;
+            width: 100px;
         }
         button {
             color: white;
             border: none;
-            padding: 10px 30px;
+            padding: 12px 35px;
             font-size: 0.9rem;
             font-weight: bold;
-            border-radius: 20px;
+            border-radius: 25px;
             cursor: pointer;
             transition: 0.2s;
+            letter-spacing: 0.5px;
         }
         #playBtn {
             background: #ff007f;
-            box-shadow: 0 0 12px rgba(255,0,127,0.3);
+            box-shadow: 0 0 15px rgba(255,0,127,0.4);
         }
-        #playBtn:hover {
-            background: #ff3399;
-        }
+        #playBtn:hover { background: #ff3399; transform: scale(1.03); }
         #clearBtn {
             background: #00eaff;
             color: #05050a;
-            box-shadow: 0 0 12px rgba(0,234,255,0.3);
+            box-shadow: 0 0 15px rgba(0,234,255,0.3);
         }
-        #clearBtn:hover {
-            background: #33f0ff;
-        }
-        .sequencer-container {
-            max-width: 95vw;
-            overflow-x: auto;
-            padding: 12px;
-            background: #10101b;
+        #clearBtn:hover { background: #33f0ff; transform: scale(1.03); }
+        
+        #visualizer {
+            width: 100%;
+            height: 100px;
+            background: #06060f;
             border-radius: 12px;
-            border: 2px solid #232336;
-            box-shadow: 0 0 35px rgba(0,0,0,0.8);
+            border: 1px solid #15152a;
+        }
+
+        .sequencer-container {
+            overflow-x: auto;
+            padding: 15px;
+            background: #0a0a14;
+            border-radius: 14px;
+            border: 2px solid #20203a;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
             scroll-behavior: smooth;
         }
         .sequencer {
@@ -99,82 +117,125 @@
             display: flex;
             align-items: center;
             font-weight: bold;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: #00ffcc;
             position: sticky;
             left: 0;
-            background: #10101b;
+            background: #0a0a14;
             z-index: 10;
-            padding-right: 5px;
+            padding-right: 8px;
+            text-shadow: 0 0 5px rgba(0,255,204,0.3);
         }
         .pad {
             width: 22px;
-            height: 24px;
-            background: #202032;
-            border-radius: 3px;
+            height: 25px;
+            background: #161626;
+            border-radius: 4px;
             cursor: pointer;
-            border: 1px solid #30304a;
-            transition: 0.05s;
+            border: 1px solid #26263f;
+            transition: transform 0.05s;
         }
+        .pad:hover { background: #25253c; }
         .pad.active {
             background: #00ffcc;
-            box-shadow: 0 0 8px #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
             border-color: #fff;
         }
-        div[data-note^="G5"].pad.active, div[data-note^="F5"].pad.active, div[data-note^="Eb5"].pad.active { background: #ff0055; box-shadow: 0 0 8px #ff0055; }
-        div[data-note^="D5"].pad.active, div[data-note^="C5"].pad.active, div[data-note^="B4"].pad.active { background: #ff9900; box-shadow: 0 0 8px #ff9900; }
-        div[data-note^="Ab4"].pad.active, div[data-note^="G4"].pad.active, div[data-note^="F4"].pad.active { background: #b600ff; box-shadow: 0 0 8px #b600ff; }
-        div[data-note^="Eb4"].pad.active, div[data-note^="D4"].pad.active, div[data-note^="C4"].pad.active { background: #00eaff; box-shadow: 0 0 8px #00eaff; }
+        div[data-note^="G5"].pad.active, div[data-note^="F5"].pad.active, div[data-note^="Eb5"].pad.active { background: #ff0055; box-shadow: 0 0 10px #ff0055; }
+        div[data-note^="D5"].pad.active, div[data-note^="C5"].pad.active, div[data-note^="B4"].pad.active { background: #ff9900; box-shadow: 0 0 10px #ff9900; }
+        div[data-note^="Ab4"].pad.active, div[data-note^="G4"].pad.active, div[data-note^="F4"].pad.active { background: #b600ff; box-shadow: 0 0 10px #b600ff; }
+        div[data-note^="Eb4"].pad.active, div[data-note^="D4"].pad.active, div[data-note^="C4"].pad.active { background: #00eaff; box-shadow: 0 0 10px #00eaff; }
+        
         .pad.current {
             border: 1px solid #fff;
-            background-image: linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15));
+            background-image: linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25));
         }
-        .lyrics-container {
-            margin-top: 25px;
-            max-width: 600px;
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 15px;
-            background: #0b0b12;
-            border-radius: 8px;
-            border: 1px solid #1a1a2e;
-            text-align: left;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #a0a0c0;
+
+        .lyrics-window {
+            margin-top: 10px;
+            padding: 20px;
+            background: #06060f;
+            border-radius: 12px;
+            border: 1px solid #1a1a35;
+            text-align: center;
+            height: 120px;
+            overflow-y: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .lyric-line {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #4a4a6a;
+            transition: all 0.25s ease;
+            transform: scale(0.9);
+            opacity: 0.4;
+        }
+        .lyric-line.active-lyric {
+            color: #ff007f;
+            text-shadow: 0 0 12px rgba(255,0,127,0.5);
+            font-weight: bold;
+            transform: scale(1.1);
+            opacity: 1;
         }
     </style>
 </head>
 <body>
 
-    <h1>CYBER ORCHESTRA: 512-STEP MASTER TRACK</h1>
-    <p>Continuous dynamic performance mapping. Auto-scroll panel follows active playback window frames.</p>
+    <h1>CYBER ORCHESTRA: SMALL TOWN STAR</h1>
+    <p>Dynamic track engine loaded with "Small Town Star (Goofball)" script orchestration.</p>
 
-    <div class="controls">
-        <button id="playBtn">EXECUTE ARCHITECTURE</button>
-        <button id="clearBtn">CLEAR ALL BLOCKS</button>
-        <div class="volume-box">
-            <label for="volumeSlider">BOOST VOLUME:</label>
-            <input type="range" id="volumeSlider" min="0" max="3" step="0.1" value="1">
-            <span id="volValue">100%</span>
+    <div class="dashboard">
+        <div class="controls">
+            <button id="playBtn">EXECUTE ARCHITECTURE</button>
+            <button id="clearBtn">CLEAR ALL BLOCKS</button>
+            
+            <div class="control-group">
+                <label for="volumeSlider">VOLUME:</label>
+                <input type="range" id="volumeSlider" min="0" max="3" step="0.1" value="1">
+                <span id="volValue">100%</span>
+            </div>
+            <div class="control-group">
+                <label for="tempoSlider">BPM/TEMPO:</label>
+                <input type="range" id="tempoSlider" min="80" max="200" step="5" value="140">
+                <span id="tempoValue">140</span>
+            </div>
+            <div class="control-group">
+                <label for="filterSlider">CUTOFF:</label>
+                <input type="range" id="filterSlider" min="400" max="5000" step="100" value="2200">
+            </div>
+            <div class="control-group">
+                <label for="echoSlider">ECHO/FX:</label>
+                <input type="range" id="echoSlider" min="0" max="0.8" step="0.05" value="0.35">
+            </div>
         </div>
-    </div>
 
-    <div class="sequencer-container" id="scrollContainer">
-        <div class="sequencer" id="grid"></div>
-    </div>
+        <canvas id="visualizer"></canvas>
 
-    <div class="lyrics-container">
-        Before the blueprints drawn before the fever took hold<br>A deeper story that has never been told<br>Long before the charts and the doctors aligned<br>You were intricately shaped by a flawless design<br>Woven in the quiet, holy and whole<br>An unbreakable light at the center of your soul<br><br>But you wake up to a frame that feels heavy and old<br>Left out in the frost when the world is so cold<br>They look at your face and they think that you’re fine<br>While you’re drawing a boundary on a fading red line<br>Spending all your currency just trying to stand<br>Holding onto a life that keeps slipping like sand<br><br>I’m not going to act like I know what you’re going through<br>But I’m counting the bruises in the mirror too<br>I don't have an answer to make it all stop<br>Or a ladder to climb to the mountain top<br>But I’m trying to listen, I’m trying to stay<br>And I’m not going to look the other way<br><br>The clock on the wall is an enemy now<br>Trading your dreams for just making it through somehow<br>You hide away the tremors, you swallow the grief<br>Begging the ceiling for a moment of relief<br>But you don't have to shrink so that others feel safe<br>There is plenty of room for your pain in this space<br><br>I’m not going to act like I know what you’re going through<br>But I’m counting the bruises in the mirror too<br>I don't have an answer to make it all stop<br>Or a ladder to climb to the mountain top<br>But I’m trying to listen, I’m trying to stay<br>And I’m not going to look the other way<br><br>We are an army that nobody sees<br>Fighting our wars on our hands and our knees<br>Fearfully crafted, wonderfully made<br>Even right here in the dust and the shade<br><br>So take a deep breath and just let the hands drop<br>You can let the tears run, no need to make them stop<br>The war isn't lost when the day's barely begun<br>Every step that you take is a battlefield won<br><br>I am trying too. Look at me. Look at you. We’re not alone.
+        <div class="sequencer-container" id="scrollContainer">
+            <div class="sequencer" id="grid"></div>
+        </div>
+
+        <div class="lyrics-window" id="lyricsWindow">
+            <div class="lyric-line" id="lyric1">System Ready...</div>
+            <div class="lyric-line" id="lyric2">Press Execute Architecture to track "Small Town Star"</div>
+        </div>
     </div>
     <script>
         let audioCtx = null;
         let masterGainNode = null;
+        let delayNode = null;
+        let delayFeedback = null;
+        let analyserNode = null;
+        
         const instruments = ['G5', 'F5', 'Eb5', 'D5', 'C5', 'B4', 'Ab4', 'G4', 'F4', 'Eb4', 'D4', 'C4'];
         const steps = 512;
         let currentStep = 0;
         let isPlaying = false;
         let intervalId = null;
+        let stepDuration = 107;
 
         const frequencies = {
             'G5': 783.99, 'F5': 698.46, 'Eb5': 622.25, 'D5': 587.33,
@@ -182,29 +243,71 @@
             'F4': 349.23, 'Eb4': 311.13, 'D4': 293.66, 'C4': 261.63
         };
 
-        const tracks = {};
-        instruments.forEach(inst => {
-            tracks[inst] = new Array(steps).fill(false);
-        });
-
-        const songPreset = [
-            ['C4', 0], ['Eb4', 1], ['G4', 2], ['C5', 3], ['Eb5', 4], ['G5', 5], ['F5', 6], ['D5', 8], ['B4', 10], 
-            ['C4', 12], ['G4', 13], ['C5', 14], ['Eb4', 16], ['G4', 18], ['C5', 20], ['Eb5', 22], ['D5', 24], 
-            ['B4', 26], ['G4', 28], ['D4', 30], ['C4', 32], ['C5', 32], ['D4', 34], ['D5', 34], ['Eb4', 36], 
-            ['Eb5', 36], ['F4', 38], ['F5', 38], ['G4', 40], ['G5', 40], ['Ab4', 42], ['C5', 44], ['C4', 48], 
-            ['C4', 50], ['Eb4', 52], ['Eb4', 54], ['Ab4', 56], ['C5', 56], ['F5', 56], ['G4', 60], ['C5', 60], 
-            ['G5', 60], ['C4', 64], ['Eb4', 66], ['F4', 68], ['G4', 70], ['Ab4', 72], ['C5', 76], ['D5', 78], 
-            ['Eb5', 80], ['D5', 82], ['C5', 84], ['G4', 90], ['C4', 128], ['G4', 128], ['C5', 128], ['C4', 132], 
-            ['G4', 132], ['C5', 132], ['Eb4', 136], ['Eb5', 136], ['F4', 140], ['F5', 140], ['Eb4', 256], 
-            ['G4', 258], ['C5', 276], ['F5', 280], ['D5', 284], ['C4', 384], ['G4', 384], ['C5', 384], ['F4', 392], 
-            ['G4', 400], ['G4', 496], ['C5', 496], ['Eb5', 496], ['G5', 496], ['G5', 500], ['G5', 504], ['G5', 508]
+        const lyricTimeline = [
+            { step: 0, l1: "I’m a goofball bouncing-off-the-wall-ball", l2: "Everybody knows my name" },
+            { step: 16, l1: "Yeah I’ll be a little goofball", l2: "Staying in my own lane" },
+            { step: 32, l1: "I’m a low-key pretty goofy really-got-it-good-breezy standing-pretty-tall-ball", l2: "Dancing in the quiet rain" },
+            { step: 52, l1: "Just a low-key goofball", l2: "And God made me perfectly okay" },
+            { step: 68, l1: "Woke up / Clean slate / Sun's up / Don't wait", l2: "Step out / Big yard / Life's good / Not hard" },
+            { step: 88, l1: "Green trees / Clear breeze / Out here / Do what I please", l2: "Big smile / Spark eye / Watch the clouds roll right on by" },
+            { step: 108, l1: "No rush / My pace / Wide open / No race", l2: "Fresh air / Cool shade / Sun shine / High sky" },
+            { step: 128, l1: "No stress / Time flies / Quiet space / Ground solid", l2: "Real world / Big knowledge / Just growth / Big views" },
+            { step: 148, l1: "No stress / Good news / Out back / Chill state", l2: "Everything is looking great / Birds sing" },
+            { step: 168, l1: "Warm air / No worries / No care / Right here", l2: "My spot / Appreciate what I got / His design" },
+            { step: 188, l1: "Right place / Full of purpose / Full of grace", l2: "Phone rings / Big crowd / They talk / Real loud" },
+            { step: 208, l1: "They know me / I'm known / But right now / My zone", l2: "Feet up / Chill mind / One of a kind" },
+            { step: 228, l1: "Good joke / Fun time / That's the end of the line", l2: "They call / I decline / My space / All mine" },
+            { step: 248, l1: "Top tier / No fear", l2: "I’m the star around here" },
+            { step: 264, l1: "Screen bright / App tapped / Class notes / Book wrapped", l2: "Log in / School grind / Sharp brain / Good mind" },
+            { step: 284, l1: "Homework / Done fast / A-plus / First class", l2: "Next tab / Beats play / Soundtrack for the day" },
+            { step: 304, l1: "Headphones / No need / Speakers loud / Top speed", l2: "Volume up / Track rolls / Deep rhythm / Takes control" },
+            { step: 324, l1: "Popular / Well liked / But the focus is spiked", l2: "Peaceful / Rest easy / Everything is going breezy" },
+            { step: 344, l1: "Music stops / Heavy silence / World waits / Big reliance", l2: "They look / I stand / Take control / Command" },
+            { step: 368, l1: "Lights fade / Stage set / Moment they won't forget", l2: "No mistakes / No flaws / Woven by His holy laws" },
+            { step: 392, l1: "Every detail / Every strand", l2: "Held inside a higher hand" },
+            { step: 412, l1: "Take a breath / Hear the call", l2: "God made me perfectly after all" },
+            { step: 432, l1: "Sun goes down / Stars appear", l2: "Living life / With no fear" },
+            { step: 452, l1: "Grateful heart / Peaceful state", l2: "Everything is looking great" },
+            { step: 472, l1: "Walking forward / Staying strong", l2: "This is where I belong" },
+            { step: 492, l1: "Deep breath / Clear sky / Watch the days fly right on by", l2: "In His hands / Every day / Everything is turning out okay 😁" }
         ];
 
-        songPreset.forEach(([note, step]) => {
-            if (tracks[note] && step < steps) {
-                tracks[note][step] = true;
+        const tracks = {};
+        instruments.forEach(inst => { tracks[inst] = new Array(steps).fill(false); });
+
+        // Rolling 16-step high-energy chord structure pattern 
+        const drivingPattern = [
+            ['C4', 0],  ['Eb4', 0],  ['G4', 0],   ['G5', 2],
+            ['C4', 4],  ['Eb4', 4],  ['C5', 4],   ['Eb5', 6],
+            ['F4', 8],  ['Ab4', 8],  ['C5', 8],   ['F5', 10],
+            ['G4', 12], ['B4', 12],  ['D5', 12],  ['D5', 14]
+        ];
+
+        // Cascading melody run used to create automatic variety runs
+        const cascadingMelody = ['C5', 'D5', 'Eb5', 'F5', 'G5', 'F5', 'Eb5', 'D5'];
+
+        // Continuous Loop Generator - populates 100% of the grid blocks with ZERO dead spots
+        for (let globalStep = 0; globalStep < steps; globalStep++) {
+            let patternIndex = globalStep % 16;
+            
+            // Map the steady continuous harmony track
+            drivingPattern.forEach(([note, stepOffset]) => {
+                if (patternIndex === stepOffset) {
+                    tracks[note][globalStep] = true;
+                }
+            });
+
+            // Map a flowing, continuous top-line note run across the upper pads
+            if (globalStep % 2 === 0) {
+                let melodyNote = cascadingMelody[(globalStep / 2) % cascadingMelody.length];
+                tracks[melodyNote][globalStep] = true;
             }
-        });
+
+            // Fill empty quarter steps with dense upbeat syncopated balance points
+            if (globalStep % 4 === 1 || globalStep % 4 === 3) {
+                tracks['G4'][globalStep] = true;
+            }
+        }
 
         const grid = document.getElementById('grid');
         instruments.forEach(inst => {
@@ -225,21 +328,74 @@
                 grid.appendChild(pad);
             }
         });
-
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
                 masterGainNode = audioCtx.createGain();
-                masterGainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
-                masterGainNode.connect(audioCtx.destination);
+                masterGainNode.gain.setValueAtTime(parseFloat(document.getElementById('volumeSlider').value), audioCtx.currentTime);
+                
+                delayNode = audioCtx.createDelay(1.0);
+                delayNode.delayTime.setValueAtTime(0.22, audioCtx.currentTime);
+                
+                delayFeedback = audioCtx.createGain();
+                delayFeedback.gain.setValueAtTime(parseFloat(document.getElementById('echoSlider').value), audioCtx.currentTime);
+                
+                analyserNode = audioCtx.createAnalyser();
+                analyserNode.fftSize = 256;
+                
+                masterGainNode.connect(delayNode);
+                delayNode.connect(delayFeedback);
+                delayFeedback.connect(delayNode);
+                
+                masterGainNode.connect(analyserNode);
+                delayNode.connect(analyserNode);
+                analyserNode.connect(audioCtx.destination);
+                
+                setupVisualizerLoop();
             }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
+
+        function setupVisualizerLoop() {
+            const canvas = document.getElementById('visualizer');
+            const ctx = canvas.getContext('2d');
+            const bufferLength = analyserNode.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function draw() {
+                requestAnimationFrame(draw);
+                analyserNode.getByteFrequencyData(dataArray);
+
+                ctx.fillStyle = '#06060f';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                let barWidth = (canvas.width / bufferLength) * 2.5;
+                let barHeight;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    barHeight = dataArray[i] / 1.6;
+                    ctx.fillStyle = `rgba(255, 0, 127, ${barHeight / 90})`;
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    
+                    ctx.strokeStyle = '#00ffcc';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    if(i===0) ctx.moveTo(x, canvas.height - barHeight);
+                    else ctx.lineTo(x, canvas.height - barHeight);
+                    x += barWidth + 1;
+                }
+                ctx.stroke();
+            }
+            canvas.width = canvas.offsetWidth;
+            draw();
+        }
+
         function playSynthTone(frequency, isLong) {
             const now = audioCtx.currentTime;
-            const duration = isLong ? 0.6 : 0.22;
+            const duration = isLong ? 0.4 : 0.15;
+            const userCutoff = parseFloat(document.getElementById('filterSlider').value);
             
             const osc = audioCtx.createOscillator();
             const filter = audioCtx.createBiquadFilter();
@@ -249,10 +405,10 @@
             osc.frequency.setValueAtTime(frequency, now);
             
             filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(2000, now);
-            filter.frequency.exponentialRampToValueAtTime(800, now + duration);
+            filter.frequency.setValueAtTime(userCutoff, now);
+            filter.frequency.exponentialRampToValueAtTime(userCutoff / 2.5, now + duration);
             
-            gain.gain.setValueAtTime(0.25, now);
+            gain.gain.setValueAtTime(0.14, now); // Attenuated master to handle full multi-note grid stacks safely
             gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
             
             osc.connect(filter);
@@ -266,75 +422,79 @@
         function playUpbeatDrumsAndBass(step) {
             const now = audioCtx.currentTime;
             
-            // Electronic kick on downbeats (1, 5, 9, 13...)
             if (step % 4 === 0) {
                 const kickOsc = audioCtx.createOscillator();
                 const kickGain = audioCtx.createGain();
-                kickOsc.frequency.setValueAtTime(150, now);
-                kickOsc.frequency.exponentialRampToValueAtTime(0.01, now + 0.12);
-                kickGain.gain.setValueAtTime(0.7, now);
-                kickGain.gain.linearRampToValueAtTime(0.001, now + 0.12);
+                kickOsc.frequency.setValueAtTime(140, now);
+                kickOsc.frequency.exponentialRampToValueAtTime(0.01, now + 0.1);
+                kickGain.gain.setValueAtTime(0.65, now);
+                kickGain.gain.linearRampToValueAtTime(0.001, now + 0.1);
                 kickOsc.connect(kickGain);
                 kickGain.connect(masterGainNode);
                 kickOsc.start(now);
-                kickOsc.stop(now + 0.12);
+                kickOsc.stop(now + 0.1);
             }
 
-            // Upbeat closed hi-hat on offbeats (3, 7, 11...)
             if (step % 4 === 2) {
                 const hatFilter = audioCtx.createBiquadFilter();
                 hatFilter.type = 'highpass';
-                hatFilter.frequency.setValueAtTime(7000, now);
-                
-                const bufferSize = audioCtx.sampleRate * 0.04;
+                hatFilter.frequency.setValueAtTime(7500, now);
+                const bufferSize = audioCtx.sampleRate * 0.03;
                 const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
                 const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = Math.random() * 2 - 1;
-                }
-                
+                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
                 const noise = audioCtx.createBufferSource();
                 noise.buffer = buffer;
-                
                 const hatGain = audioCtx.createGain();
-                hatGain.gain.setValueAtTime(0.18, now);
-                hatGain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
-                
+                hatGain.gain.setValueAtTime(0.14, now);
+                hatGain.gain.exponentialRampToValueAtTime(0.01, now + 0.03);
                 noise.connect(hatFilter);
                 hatFilter.connect(hatGain);
                 hatGain.connect(masterGainNode);
                 noise.start(now);
-                noise.stop(now + 0.04);
+                noise.stop(now + 0.03);
             }
 
-            // Syncopated Bassline mapping to progression changes 
             if (step % 2 === 0) {
                 const bassOsc = audioCtx.createOscillator();
                 const bassGain = audioCtx.createGain();
-                
-                let baseFreq = 65.41; // C2 Base
-                if (step >= 128 && step < 256) baseFreq = 77.78; // Eb2
-                if (step >= 256 && step < 384) baseFreq = 87.31; // F2
-                if (step >= 384) baseFreq = 98.00; // G2
+                let baseFreq = 65.41; 
+                if (step >= 128 && step < 256) baseFreq = 77.78; 
+                if (step >= 256 && step < 384) baseFreq = 87.31; 
+                if (step >= 384) baseFreq = 98.00; 
                 
                 const patternIndex = step % 8;
                 if (patternIndex === 0 || patternIndex === 2 || patternIndex === 5 || patternIndex === 6) {
                     bassOsc.type = 'sawtooth';
-                    bassOsc.frequency.setValueAtTime(baseFreq * (patternIndex === 5 ? 1.5 : 1), now);
-                    
+                    bassOsc.frequency.setValueAtTime(baseFreq * (patternIndex === 5 ? 1.2 : 1), now);
                     const bassFilter = audioCtx.createBiquadFilter();
                     bassFilter.type = 'lowpass';
-                    bassFilter.frequency.setValueAtTime(350, now);
-                    
-                    bassGain.gain.setValueAtTime(0.22, now);
-                    bassGain.gain.linearRampToValueAtTime(0.001, now + 0.15);
-                    
+                    bassFilter.frequency.setValueAtTime(280, now);
+                    bassGain.gain.setValueAtTime(0.16, now);
+                    bassGain.gain.linearRampToValueAtTime(0.001, now + 0.12);
                     bassOsc.connect(bassFilter);
                     bassFilter.connect(bassGain);
                     bassGain.connect(masterGainNode);
                     bassOsc.start(now);
-                    bassOsc.stop(now + 0.15);
+                    bassOsc.stop(now + 0.12);
                 }
+            }
+        }
+
+        function updateLyrics(step) {
+            const currentMatch = lyricTimeline.reduce((prev, curr) => (step >= curr.step) ? curr : prev, lyricTimeline);
+            const l1Element = document.getElementById('lyric1');
+            const l2Element = document.getElementById('lyric2');
+            
+            if(l1Element.innerText !== currentMatch.l1) {
+                l1Element.classList.remove('active-lyric');
+                l2Element.classList.remove('active-lyric');
+                setTimeout(() => {
+                    l1Element.innerText = currentMatch.l1;
+                    l2Element.innerText = currentMatch.l2;
+                    l1Element.classList.add('active-lyric');
+                    setTimeout(() => l2Element.classList.add('active-lyric'), 400);
+                }, 150);
             }
         }
 
@@ -345,18 +505,19 @@
 
             const scrollContainer = document.getElementById('scrollContainer');
             if (activePads.length > 0) {
-                const firstActivePad = activePads[0];
-                scrollContainer.scrollLeft = firstActivePad.offsetLeft - 120;
+                const targetPad = activePads[0];
+                scrollContainer.scrollLeft = targetPad.offsetLeft - 120;
             }
 
             instruments.forEach(inst => {
                 if (tracks[inst][currentStep]) {
-                    const isLong = (currentStep >= 12 && currentStep <= 14) || (currentStep >= 496);
+                    const isLong = (currentStep % 8 === 0);
                     playSynthTone(frequencies[inst], isLong);
                 }
             });
 
             playUpbeatDrumsAndBass(currentStep);
+            updateLyrics(currentStep);
             currentStep = (currentStep + 1) % steps;
         }
 
@@ -369,7 +530,7 @@
                 isPlaying = false;
                 currentStep = 0;
             } else {
-                intervalId = setInterval(playStep, 135); // 135ms step tempo upswing
+                intervalId = setInterval(playStep, stepDuration);
                 document.getElementById('playBtn').innerText = 'HALT SCORE';
                 document.getElementById('playBtn').style.background = '#00ffcc';
                 isPlaying = true;
@@ -381,18 +542,7 @@
             document.querySelectorAll('.pad').forEach(pad => { pad.classList.remove('active'); });
         });
 
-        const volumeSlider = document.getElementById('volumeSlider');
-        const volValueDisplay = document.getElementById('volValue');
-        
-        volumeSlider.addEventListener('input', (e) => {
-            const value = parseFloat(e.target.value);
-            volValueDisplay.innerText = Math.round(value * 100) + '%';
-            if (masterGainNode) {
-                masterGainNode.gain.setValueAtTime(value, audioCtx.currentTime);
-            }
-        });
-    </script>
-</body>
-</html>
+        document.getElementById('volumeSlider').addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            document.getElementById('volValue').innerText = Math.round(val * 100) + '%';
 
-</html>
