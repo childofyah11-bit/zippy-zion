@@ -542,3 +542,4 @@
 
         document.getElementById('volumeSlider').addEventListener('input', (e) => {
             const val = parseFloat(e.target.value);
+            document.getElementById('volValue').innerText = Math.round(val * 100) + '%';
