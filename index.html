@@ -3,189 +3,356 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Sing-Along Prompter</title>
+    <title>Pro Cinema Karaoke & Audio Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Sing-Along Screen Display Arena -->
-    <div class="prompter-container">
-        
-        <!-- Top Half: Center Stage Lyric Delivery Viewport -->
-        <main class="lyric-stage">
-            <div id="scroll-wrapper" class="scroll-wrapper">
-                <!-- Lyrics are safely generated here by JavaScript -->
+    <!-- MASTER PRODUCER VIEWPORT WRAPPER -->
+    <div id="producer-dashboard">
+
+        <!-- UPPER THEATER: LIVE CINEMATIC LYRIC VIEWSCREEN -->
+        <header id="viewscreen-theater">
+            <div id="teleprompter-track" class="teleprompter-track">
+                <!-- Lyrics will prompter-scroll here automatically -->
             </div>
+            <div id="cinematic-lens-overlay"></div>
+        </header>
+
+        <!-- LOWER DECK: THE MASSIVE MASTER CONTROL CONSOLE -->
+        <main id="hardware-console">
+            
+            <!-- SECTION 1: INTERACTIVE INPUT PORTALS & HUB -->
+            <div class="console-rack media-rack">
+                <div class="rack-header">🎛️ MEDIA INGESTION</div>
+                <div class="rack-body">
+                    <div class="field-group">
+                        <label>GOOGLE DRIVE STREAM SOURCE URL</label>
+                        <input type="text" id="drive-url" placeholder="Paste 'Anyone with link' Google Drive URL...">
+                    </div>
+                    <button id="ingest-track-btn">INITIALIZE CORE AUDIO STREAM</button>
+                    <div id="deck-status" class="hud-readout">DECK STATUS: DISCONNECTED</div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: LIVE AUDITORY MONITOR DECK -->
+            <div class="console-rack playback-rack">
+                <div class="rack-header">📊 PLAYBACK MONITOR</div>
+                <div class="rack-body">
+                    <div class="timeline-hud">
+                        <span id="current-time-readout">00:00</span>
+                        <div id="custom-progress-bar"><div id="progress-fill"></div></div>
+                        <span id="total-time-readout">00:00</span>
+                    </div>
+                    <audio id="core-audio-engine" controls></audio>
+                </div>
+            </div>
+
+            <!-- SECTION 3: KINETIC VISUAL ENGINE CALIBRATOR -->
+            <div class="console-rack visual-rack">
+                <div class="rack-header">🎨 VISUAL DESIGN MATRIX</div>
+                <div class="rack-body">
+                    <div class="slider-row">
+                        <label>GIANT TEXT SIZE</label>
+                        <input type="range" id="size-slider" min="2" max="6" step="0.1" value="3.5">
+                    </div>
+                    <div class="slider-row">
+                        <label>ROW GAP SPACING</label>
+                        <input type="range" id="gap-slider" min="1" max="4" step="0.1" value="2.2">
+                    </div>
+                    <div class="slider-row">
+                        <label>INTERFACE SKIN</label>
+                        <select id="theme-selector">
+                            <option value="cyber-cyan">Cyberpunk Turquoise</option>
+                            <option value="coke-classic">Classic Neon Crimson</option>
+                            <option value="arcade-gold">Retro Arcade Gold</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: MANUAL OVERRIDE FLIGHT DECK CONTROLS -->
+            <div class="console-rack override-rack">
+                <div class="rack-header">🕹️ MANUAL OVERRIDE DECK</div>
+                <div class="rack-body">
+                    <div class="override-grid">
+                        <button id="manual-prev-btn" class="console-btn">⏮️ REWIND LINE</button>
+                        <button id="manual-next-btn" class="console-btn">SKIP LINE ⏭️</button>
+                    </div>
+                    <button id="reset-pacing-btn" class="console-btn emergency-btn">🔄 RESET TO AUTO-PACING</button>
+                    <div id="pacing-hud-status" class="hud-readout mode-active">ENGINE MODE: AUTO STREAM</div>
+                </div>
+            </div>
+
         </main>
-
-        <!-- Bottom Half: Simple Cloud Input Deck & Action Triggers -->
-        <footer class="prompter-deck">
-            
-            <!-- Quick Link Box -->
-            <div class="deck-row">
-                <input type="text" id="song-url" placeholder="Paste your Google Drive Song or Beat Link here...">
-                <button id="load-btn">LOAD TRACK</button>
-            </div>
-
-            <!-- Central Timeline Audio Controls Tracker -->
-            <div class="deck-row audio-row">
-                <audio id="main-audio" controls></audio>
-            </div>
-
-            <!-- Manual Override Navigation Buttons -->
-            <div class="deck-row override-row">
-                <button id="prev-line-btn" class="manual-btn">⏮️ PREVIOUS LINE</button>
-                <span id="manual-indicator">MODE: AUTO PACING</span>
-                <button id="next-line-btn" class="manual-btn">NEXT LINE ⏭️</button>
-            </div>
-            
-        </footer>
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-/* Core Structural Reset Layouts */
+/* Master Core Interface Resets */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body, html {
     width: 100%;
     height: 100%;
-    background-color: #0b0c10;
-    color: #ffffff;
+    background-color: #040508;
+    color: #f0f3f8;
     overflow: hidden;
 }
 
-/* Main Dashboard Workspace split view */
-.prompter-container {
+/* Master Fixed Split Window Console Framework */
+#producer-dashboard {
     display: grid;
-    grid-template-rows: 1fr 200px;
+    grid-template-rows: 1fr 280px; /* Big upgrade: Dedicated 280px tall hardware deck */
     width: 100%;
     height: 100vh;
 }
 
-/* Lyric Presentation Theater Floor Area */
-.lyric-stage {
+/* UPPER AREA: GIANT VIEWSCREEN THEATER */
+#viewscreen-theater {
     position: relative;
     width: 100%;
     height: 100%;
+    background: radial-gradient(circle at center, #0b0f19 0%, #05060a 100%);
     overflow: hidden;
-    background-color: #0d0f14;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: 4px solid #121824;
 }
 
-/* The Smooth Rolling Text Rig */
-.scroll-wrapper {
+/* Visual Lens Fade Tint Filter Overlays */
+#cinematic-lens-overlay {
     position: absolute;
-    width: 85%;
-    top: 40%; /* Keeps active singing row lines perfectly anchored in the sweet spot */
-    transform: translateY(0px);
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(rgba(5,6,10,1) 0%, rgba(5,6,10,0) 15%, rgba(5,6,10,0) 85%, rgba(5,6,10,1) 100%);
+    z-index: 3;
+}
+
+/* Automated Rolling Kinetic Text Highway Rig */
+.teleprompter-track {
+    position: absolute;
+    width: 80%;
+    top: 45%; /* Keep singing line centered perfectly on screen */
+    transform: translateY(0);
+    transition: transform 0.6s cubic-bezier(0.2, 1, 0.2, 1);
     display: flex;
     flex-direction: column;
     text-align: center;
+    z-index: 2;
 }
 
-/* Micro Typography Line Block Processing Row Elements */
-.sing-line {
-    font-size: 2.2rem;
-    font-weight: 800;
-    padding: 15px 0;
-    color: #444b59; /* Dim tone for lines that are coming up or finished */
-    transition: all 0.35s ease;
+/* Individual Cinema Karaoke Lyric Rows Typography styling matrix */
+.cinema-line {
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: #242c3d; /* Smoothly darkens unread text out of view */
+    transition: all 0.4s ease;
     transform: scale(0.92);
 }
 
-/* Highlight Styling rule for the Active Sing Along sentence block */
-.sing-line.active {
-    color: #00ffcc; /* Bright friendly turquoise */
-    text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
-    transform: scale(1.08);
+/* MASTER CONTROLLER INTERFACE TINT VARIATIONS (LIVE SWITCHING THEMES) */
+.cyber-cyan .cinema-line.active { color: #00ffcc; text-shadow: 0 0 25px rgba(0, 255, 204, 0.6); transform: scale(1.08); }
+.coke-classic .cinema-line.active { color: #ff1e27; text-shadow: 0 0 25px rgba(255, 30, 39, 0.6); transform: scale(1.08); }
+.arcade-gold .cinema-line.active { color: #ffcc00; text-shadow: 0 0 25px rgba(255, 204, 0, 0.6); transform: scale(1.08); }
+
+/* LOWER AREA: THE MASSIVE MASTER CONTROL CONSOLE */
+#hardware-console {
+    background: #090b10;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* Massive 4-section hardware rack breakdown */
+    gap: 16px;
+    padding: 16px;
+    box-shadow: inset 0 8px 30px rgba(0,0,0,0.8);
+    border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Bottom Controls Deck Dashboard Enclosure Dock */
-.prompter-deck {
-    background: #141822;
-    border-top: 1px solid #22293a;
-    padding: 16px 30px;
+/* Individual Studio Rack Shelves Box Shells styling configuration */
+.console-rack {
+    background: #10141f;
+    border: 1px solid #1a2233;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    overflow: hidden;
+}
+
+.rack-header {
+    background: #141a29;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #687999;
+    border-bottom: 1px solid #1a2233;
+}
+
+.rack-body {
+    padding: 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* Media input box fields layout properties */
+.field-group label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #4a5770;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.field-group input {
+    width: 100%;
+    background: #07090d;
+    border: 1px solid #1d263a;
+    border-radius: 4px;
+    padding: 8px;
+    color: #ffffff;
+    font-size: 0.8rem;
+    outline: none;
+}
+
+/* Master Command Action Buttons Matrix configuration rules */
+#ingest-track-btn {
+    background: #162035;
+    border: 1px solid #233252;
+    color: #ffffff;
+    padding: 8px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* Interactive theme mapping glows */
+.cyber-cyan #ingest-track-btn:hover { background: #00ffcc; color: #000; border-color: #00ffcc; box-shadow: 0 0 10px rgba(0,255,204,0.3); }
+.coke-classic #ingest-track-btn:hover { background: #ff1e27; color: #fff; border-color: #ff1e27; box-shadow: 0 0 10px rgba(255,30,39,0.3); }
+.arcade-gold #ingest-track-btn:hover { background: #ffcc00; color: #000; border-color: #ffcc00; box-shadow: 0 0 10px rgba(255,204,0,0.3); }
+
+/* HUD Information Display Windows Readouts style values matrix */
+.hud-readout {
+    background: #07090d;
+    border: 1px solid #151b29;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 0.7rem;
+    text-align: center;
+    font-family: monospace;
+    font-weight: bold;
+    color: #4f5f80;
+}
+
+/* Custom Playback Timeline Progress Tracking Rig */
+.timeline-hud {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #8c9cb3;
+}
+
+#custom-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #07090d;
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+#progress-fill {
+    width: 0%;
+    height: 100%;
+    background: #00ffcc;
+    transition: width 0.1s linear;
+}
+
+.coke-classic #progress-fill { background: #ff1e27; }
+.arcade-gold #progress-fill { background: #ffcc00; }
+
+audio {
+    width: 100%;
+    height: 30px;
+}
+
+/* Custom tuning sliders layouts row grid */
+.slider-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #8c9cb3;
+}
+
+input[type="range"] {
+    width: 55%;
+    cursor: pointer;
+}
+
+select {
+    width: 55%;
+    background: #07090d;
+    border: 1px solid #1d263a;
+    color: #ffffff;
+    padding: 4px;
+    border-radius: 4px;
+    outline: none;
+}
+
+/* Manual Navigation Control Overrides elements structural design look */
+.override-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
 
-.deck-row {
-    display: flex;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    gap: 15px;
-}
-
-/* Link input boxes style values matrix */
-#song-url {
-    flex: 1;
-    background: #1b2234;
-    border: 1px solid #2d3954;
-    border-radius: 6px;
-    padding: 10px;
-    color: #00ffcc;
-    outline: none;
-    font-size: 0.9rem;
-}
-
-#load-btn {
-    background: #00ffcc;
-    color: #141822;
-    font-weight: bold;
-    padding: 0 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.audio-row audio {
-    width: 100%;
-}
-
-/* Manual Move Override Button Layout Elements configuration styles */
-.override-row {
-    justify-content: space-between;
-    align-items: center;
-}
-
-.manual-btn {
-    background: #22293a;
+.console-btn {
+    background: #141a26;
+    border: 1px solid #20293d;
     color: #ffffff;
-    border: 1px solid #2d3954;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    padding: 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background 0.2s;
 }
-.manual-btn:hover {
-    background: #2d3954;
-    color: #00ffcc;
+.console-btn:hover {
+    background: #1b2436;
 }
 
-#manual-indicator {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #627293;
-    font-weight: bold;
+.emergency-btn {
+    background: rgba(255,30,39,0.05);
+    border: 1px solid rgba(255,30,39,0.2);
+    color: #ff3b42;
 }
-// --- Raw Song Lyric Index Block Feed Array Data ---
-const singAlongLyrics = [
+.emergency-btn:hover {
+    background: #ff1e27 !important;
+    color: #ffffff !important;
+}
+
+.mode-active {
+    color: #ffcc00;
+    border-color: rgba(255,204,0,0.2);
+}
+// --- Hardcoded Song Lyrics Index Matrix Base Data ---
+const proMasterLyrics = [
     "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", 
     "Staying in my own lane", "I’m a low-key pretty goofy", "really-got-it-good-breezy", 
     "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", 
@@ -217,134 +384,185 @@ const singAlongLyrics = [
     "Everything is turning out okay 😁"
 ];
 
-// Quick target pointers maps
-const ui = {
-    input: document.getElementById('song-url'),
-    loadBtn: document.getElementById('load-btn'),
-    audio: document.getElementById('main-audio'),
-    wrapper: document.getElementById('scroll-wrapper'),
-    prevBtn: document.getElementById('prev-line-btn'),
-    nextBtn: document.getElementById('next-line-btn'),
-    indicator: document.getElementById('manual-indicator')
+// Target DOM Elements Pointer Node Maps
+const dashboard = {
+    bodyWrapper: document.body,
+    driveInput: document.getElementById('drive-url'),
+    ingestBtn: document.getElementById('ingest-track-btn'),
+    deckStatus: document.getElementById('deck-status'),
+    audioEngine: document.getElementById('core-audio-engine'),
+    teleprompter: document.getElementById('teleprompter-track'),
+    timeCurrent: document.getElementById('current-time-readout'),
+    timeTotal: document.getElementById('total-time-readout'),
+    progressFill: document.getElementById('progress-fill'),
+    progressBar: document.getElementById('custom-progress-bar'),
+    sizeSlider: document.getElementById('size-slider'),
+    gapSlider: document.getElementById('gap-slider'),
+    themeSelect: document.getElementById('theme-selector'),
+    prevBtn: document.getElementById('manual-prev-btn'),
+    nextBtn: document.getElementById('manual-next-btn'),
+    resetBtn: document.getElementById('reset-pacing-btn'),
+    pacingStatus: document.getElementById('pacing-hud-status')
 };
 
-let lineElements = [];
-let activeLineIdx = 0;
-let isManualOverrideActive = false;
+let linesArrayNodes = [];
+let targetActiveIndex = 0;
+let isManualOverrideEngaged = false;
 
-// Initialize Workspace Prompter
-buildPrompterLines();
-registerStudioEvents();
+// Initialize Master Console
+assembleTheaterTracks();
+bindHardwareDashboardTriggers();
 
-// --- Step 1: Text Row Elements Procedural Builder Loop ---
-function buildPrompterLines() {
-    ui.wrapper.innerHTML = "";
-    lineElements = [];
+// --- Step 1: Render Giant Viewscreen Lines ---
+function assembleTheaterTracks() {
+    dashboard.teleprompter.innerHTML = "";
+    linesArrayNodes = [];
 
-    singAlongLyrics.forEach((lineText) => {
-        const rowDiv = document.createElement('div');
-        rowDiv.classList.add('sing-line');
-        rowDiv.innerText = lineText;
+    proMasterLyrics.forEach((textString) => {
+        const h1 = document.createElement('h1');
+        h1.classList.add('cinema-line');
+        h1.innerText = textString;
         
-        ui.wrapper.appendChild(rowDiv);
-        lineElements.push(rowDiv);
+        // Apply slider dimensions instantly
+        h1.style.fontSize = `${dashboard.sizeSlider.value}rem`;
+        h1.style.marginBottom = `${parseFloat(dashboard.gapSlider.value) * 15}px`;
+        
+        dashboard.teleprompter.appendChild(h1);
+        linesArrayNodes.push(h1);
     });
     
-    updateActiveLineHighlight(0);
+    // Set initial structural skin class theme
+    dashboard.bodyWrapper.className = dashboard.themeSelect.value;
+    updateFocusLinePosition(0);
 }
 
-// --- Step 2: Extract Google Drive File IDs ---
-function parseGoogleDriveUrl(rawUrl) {
-    const extractedId = rawUrl.match(/\/d\/([a-zA-Z0-9-_]+)/) || rawUrl.match(/id=([a-zA-Z0-9-_]+)/);
-    if (extractedId && extractedId) {
-        return `https://google.com{extractedId}`;
+// --- Step 2: Clean Cloud URL Input Streams ---
+function cleanCloudUrl(rawUrl) {
+    const parsedId = rawUrl.match(/\/d\/([a-zA-Z0-9-_]+)/) || rawUrl.match(/id=([a-zA-Z0-9-_]+)/);
+    if (parsedId && parsedId) {
+        return `https://google.com{parsedId}`;
     }
     return rawUrl;
 }
 
-// --- Step 3: Sync Timeline Tracker Feed Triggers ---
-function registerStudioEvents() {
-    // Action file loader button link event
-    ui.loadBtn.addEventListener('click', () => {
-        const rawLink = ui.input.value.trim();
-        if(!rawLink) {
-            alert("Please paste your public Google Drive song link into the input box!");
+// --- Step 3: Register Interactive Hardware Controls Link Triggers ---
+function bindHardwareDashboardTriggers() {
+    dashboard.ingestBtn.addEventListener('click', () => {
+        const sourceUrl = dashboard.driveInput.value.trim();
+        if(!sourceUrl) {
+            alert("Master Control Alert: Please input a valid Google Drive source streaming URL!");
             return;
         }
-        
-        ui.loadBtn.innerText = "LOADING...";
-        ui.audio.crossOrigin = "anonymous";
-        ui.audio.src = parseGoogleDriveUrl(rawLink);
-        ui.audio.load();
-        
-        ui.audio.addEventListener('canplaythrough', () => {
-            ui.loadBtn.innerText = "TRACK READY";
-            isManualOverrideActive = false;
-            ui.indicator.innerText = "MODE: AUTO PACING";
-            updateActiveLineHighlight(0);
+
+        dashboard.deckStatus.innerText = "DECK STATUS: LINKING STREAM...";
+        dashboard.audioEngine.crossOrigin = "anonymous";
+        dashboard.audioEngine.src = cleanCloudUrl(sourceUrl);
+        dashboard.audioEngine.load();
+
+        dashboard.audioEngine.addEventListener('canplaythrough', () => {
+            dashboard.deckStatus.innerText = "DECK STATUS: ONLINE & CONNECTED";
+            isManualOverrideEngaged = false;
+            dashboard.pacingStatus.innerText = "ENGINE MODE: AUTO STREAM";
+            dashboard.pacingStatus.className = "hud-readout mode-active";
+            updateFocusLinePosition(0);
         }, { once: true });
     });
 
-    // Auto Pacing Tracking Calculation Rule
-    ui.audio.addEventListener('timeupdate', () => {
-        // If user manually pushed a button, pause auto scroll calculations so it doesn't fight them
-        if (isManualOverrideActive || !ui.audio.duration) return;
+    // Live Tracking Playback Monitor System Data Parser
+    dashboard.audioEngine.addEventListener('timeupdate', () => {
+        const currentSec = dashboard.audioEngine.currentTime;
+        const totalSec = dashboard.audioEngine.duration || 0;
 
-        const timelineProgressPct = ui.audio.currentTime / ui.audio.duration;
-        let calculatedLineTarget = Math.floor(timelineProgressPct * singAlongLyrics.length);
+        // Render Hardware Timer Readouts
+        dashboard.timeCurrent.innerText = formatTimeHUD(currentSec);
+        dashboard.timeTotal.innerText = formatTimeHUD(totalSec);
+        
+        // Advance Custom Progress Bar Fill
+        if (totalSec > 0) {
+            const pct = (currentSec / totalSec) * 100;
+            dashboard.progressFill.style.width = `${pct}%`;
 
-        if (calculatedLineTarget >= singAlongLyrics.length) {
-            calculatedLineTarget = singAlongLyrics.length - 1;
-        }
-
-        if (calculatedLineTarget !== activeLineIdx && calculatedLineTarget >= 0) {
-            updateActiveLineHighlight(calculatedLineTarget);
+            // Auto Pacing calculations tracking framework
+            if (!isManualOverrideEngaged) {
+                let targetLineCalc = Math.floor((currentSec / totalSec) * proMasterLyrics.length);
+                if(targetLineCalc >= proMasterLyrics.length) targetLineCalc = proMasterLyrics.length - 1;
+                
+                if(targetLineCalc !== targetActiveIndex && targetLineCalc >= 0) {
+                    updateFocusLinePosition(targetLineCalc);
+                }
+            }
         }
     });
 
-    // --- Step 4: Hook Up Option to Move Stuff Manually ---
-    ui.prevBtn.addEventListener('click', () => {
-        if(activeLineIdx > 0) {
-            engageManualOverrideMode(activeLineIdx - 1);
-        }
+    // Live Slider Dynamic Customizer Remappings
+    dashboard.sizeSlider.addEventListener('input', (e) => {
+        linesArrayNodes.forEach(el => el.style.fontSize = `${e.target.value}rem`);
+        updateFocusLinePosition(targetActiveIndex);
     });
 
-    ui.nextBtn.addEventListener('click', () => {
-        if(activeLineIdx < singAlongLyrics.length - 1) {
-            engageManualOverrideMode(activeLineIdx + 1);
-        }
+    dashboard.gapSlider.addEventListener('input', (e) => {
+        linesArrayNodes.forEach(el => el.style.marginBottom = `${parseFloat(e.target.value) * 15}px`);
+        updateFocusLinePosition(targetActiveIndex);
+    });
+
+    dashboard.themeSelect.addEventListener('change', (e) => {
+        dashboard.bodyWrapper.className = e.target.value;
+    });
+
+    // Manual Flight Overrides Button Actions
+    dashboard.prevBtn.addEventListener('click', () => {
+        if(targetActiveIndex > 0) switchPacingModeToManual(targetActiveIndex - 1);
+    });
+
+    dashboard.nextBtn.addEventListener('click', () => {
+        if(targetActiveIndex < proMasterLyrics.length - 1) switchPacingModeToManual(targetActiveIndex + 1);
+    });
+
+    dashboard.resetBtn.addEventListener('click', () => {
+        isManualOverrideEngaged = false;
+        dashboard.pacingStatus.innerText = "ENGINE MODE: AUTO STREAM";
+        dashboard.pacingStatus.className = "hud-readout mode-active";
     });
 }
 
-// --- Step 5: Shift Text Focal Target Positions ---
-function engageManualOverrideMode(targetIdx) {
-    isManualOverrideActive = true;
-    ui.indicator.innerText = "MODE: MANUAL OVERRIDE";
-    
-    // Jump audio play position directly to estimated line location if song is currently running
-    if(ui.audio.duration) {
-        const estimatedPlaybackSecond = (targetIdx / singAlongLyrics.length) * ui.audio.duration;
-        ui.audio.currentTime = estimatedPlaybackSecond;
+// --- Step 4: Time Readout Text Formatter ---
+function formatTimeHUD(seconds) {
+    if (isNaN(seconds)) return "00:00";
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+// --- Step 5: Shift Cinematic Focus Viewlines Matrix ---
+function switchPacingModeToManual(lineIndexTarget) {
+    isManualOverrideEngaged = true;
+    dashboard.pacingStatus.innerText = "ENGINE MODE: MANUAL OVERRIDE";
+    dashboard.pacingStatus.className = "hud-readout";
+
+    // Re-adjust underlying audio track runtime clock target position
+    if (dashboard.audioEngine.duration) {
+        const runtimeJumpSecondTarget = (lineIndexTarget / proMasterLyrics.length) * dashboard.audioEngine.duration;
+        dashboard.audioEngine.currentTime = runtimeJumpSecondTarget;
     }
-    
-    updateActiveLineHighlight(targetIdx);
+
+    updateFocusLinePosition(lineIndexTarget);
 }
 
-function updateActiveLineHighlight(targetIndex) {
-    activeLineIdx = targetIndex;
+function updateFocusLinePosition(indexKey) {
+    targetActiveIndex = indexKey;
 
-    lineElements.forEach((divNode, idx) => {
-        if(idx === targetIndex) {
-            divNode.classList.add('active');
+    linesArrayNodes.forEach((h1Node, index) => {
+        if(index === indexKey) {
+            h1Node.classList.add('active');
         } else {
-            divNode.classList.remove('active');
+            h1Node.classList.remove('active');
         }
     });
 
-    // Translate scroll rig smoothly up or down relative to selected text block offset height coordinate box
-    if (lineElements[targetIndex]) {
-        const targetElement = lineElements[targetIndex];
-        const calculatedTransformY = -(targetElement.offsetTop - (targetElement.offsetHeight / 2));
-        ui.wrapper.style.transform = `translateY(${calculatedTransformY}px)`;
+    // Vector scroll translate shift equations
+    if (linesArrayNodes[indexKey]) {
+        const focusedElement = linesArrayNodes[indexKey];
+        const offsetTargetY = -(focusedElement.offsetTop - (focusedElement.offsetHeight / 2));
+        dashboard.teleprompter.style.transform = `translateY(${offsetTargetY}px)`;
     }
 }
