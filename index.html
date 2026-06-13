@@ -6,7 +6,7 @@
     <title>Cyber Orchestra: Small Town Star</title>
     <style>
         body {
-            background: #020205;
+            background: #020204;
             color: #fff;
             font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
@@ -19,8 +19,8 @@
             box-sizing: border-box;
         }
         h1 {
-            color: #3b82f6;
-            text-shadow: 0 0 15px rgba(59,130,246,0.4);
+            color: #a855f7;
+            text-shadow: 0 0 15px rgba(168,85,247,0.4);
             margin: 0 0 5px 0;
             font-size: 1.8rem;
             letter-spacing: 3px;
@@ -32,12 +32,12 @@
         }
         .console-deck {
             width: 95vw;
-            max-width: 900px;
-            background: #0b0f19;
+            max-width: 950px;
+            background: #090514;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 50px rgba(0,0,0,0.9);
-            border: 1px solid #1e293b;
+            border: 1px solid #3b0764;
             box-sizing: border-box;
         }
         .console-header {
@@ -45,10 +45,10 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 25px;
-            background: #1e293b;
+            background: #2e1065;
             padding: 15px 25px;
             border-radius: 12px;
-            border: 1px solid #334155;
+            border: 1px solid #581c87;
         }
         .status-display {
             display: flex;
@@ -56,7 +56,7 @@
             gap: 10px;
             font-size: 0.8rem;
             font-weight: bold;
-            color: #94a3b8;
+            color: #c084fc;
             letter-spacing: 0.5px;
         }
         .status-pulse {
@@ -67,11 +67,11 @@
             box-shadow: 0 0 8px #ef4444;
         }
         .status-pulse.active {
-            background: #3b82f6;
-            box-shadow: 0 0 12px #3b82f6;
-            animation: pulse 1.5s infinite;
+            background: #a855f7;
+            box-shadow: 0 0 12px #a855f7;
+            animation: pulseGlow 1.5s infinite;
         }
-        @keyframes pulse {
+        @keyframes pulseGlow {
             0% { opacity: 0.4; }
             50% { opacity: 1; }
             100% { opacity: 0.4; }
@@ -84,28 +84,28 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
-            background: #3b82f6;
+            background: #a855f7;
             color: #ffffff;
-            box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+            box-shadow: 0 4px 15px rgba(168,85,247,0.3);
             letter-spacing: 0.5px;
         }
         button:hover {
-            background: #60a5fa;
+            background: #c084fc;
             transform: translateY(-1px);
         }
         button.active {
-            background: #10b981;
-            box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+            background: #06b6d4;
+            box-shadow: 0 4px 15px rgba(6,182,212,0.3);
         }
         .knobs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 25px;
         }
         .knob-card {
-            background: #111827;
-            border: 1px solid #1f2937;
+            background: #120626;
+            border: 1px solid #3b0764;
             border-radius: 12px;
             padding: 15px;
             display: flex;
@@ -118,7 +118,7 @@
             justify-content: space-between;
             font-size: 0.75rem;
             font-weight: bold;
-            color: #60a5fa;
+            color: #c084fc;
             letter-spacing: 0.5px;
         }
         .knob-label span:last-child {
@@ -127,9 +127,9 @@
         }
         input[type="range"] {
             width: 100%;
-            accent-color: #3b82f6;
+            accent-color: #a855f7;
             cursor: pointer;
-            background: #374151;
+            background: #1e1b4b;
             height: 6px;
             border-radius: 3px;
             outline: none;
@@ -137,15 +137,15 @@
         #visualizer {
             width: 100%;
             height: 90px;
-            background: #030712;
-            border: 1px solid #1f2937;
+            background: #05020c;
+            border: 1px solid #2e1065;
             border-radius: 12px;
             margin-bottom: 25px;
             display: block;
         }
         .poetry-viewport {
-            background: #111827;
-            border: 1px solid #1f2937;
+            background: #120626;
+            border: 1px solid #3b0764;
             border-radius: 12px;
             height: 160px;
             padding: 25px;
@@ -159,7 +159,7 @@
         .text-prime {
             font-size: 1.2rem;
             font-weight: 500;
-            color: #3b82f6;
+            color: #a855f7;
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -186,15 +186,15 @@
 <body>
 
     <h1>CYBER ORCHESTRA: SMALL TOWN STAR</h1>
-    <p>Advanced real-time synthesis matrix dashboard node.</p>
+    <p>Extended 9-parameter continuous live streaming generative system.</p>
 
     <div class="console-deck">
         <div class="console-header">
             <div class="status-display">
                 <div id="statusPulse" class="status-pulse"></div>
-                <span id="statusTxt">CONSOLE STANDBY</span>
+                <span id="statusTxt">DECK STANDBY</span>
             </div>
-            <button id="playBtn">EXECUTE CORE</button>
+            <button id="playBtn">LAUNCH STREAM</button>
         </div>
 
         <div class="knobs-grid">
@@ -203,32 +203,44 @@
                 <input type="range" id="volumeSlider" min="0" max="2" step="0.05" value="1">
             </div>
             <div class="knob-card">
-                <div class="knob-label"><span>SYSTEM TEMPO</span><span id="tempoValue">135 BPM</span></div>
-                <input type="range" id="tempoSlider" min="80" max="200" step="1" value="135">
+                <div class="knob-label"><span>SYSTEM TEMPO</span><span id="tempoValue">140 BPM</span></div>
+                <input type="range" id="tempoSlider" min="80" max="200" step="1" value="140">
             </div>
             <div class="knob-card">
-                <div class="knob-label"><span>SYNTH CUTOFF</span><span id="filterVal">2400 Hz</span></div>
+                <div class="knob-label"><span>LOWPASS FILTER</span><span id="filterVal">2400 Hz</span></div>
                 <input type="range" id="filterSlider" min="400" max="6000" step="50" value="2400">
             </div>
             <div class="knob-card">
-                <div class="knob-label"><span>FX DELAY ECHO</span><span id="echoVal">40%</span></div>
+                <div class="knob-label"><span>FX ECHO FEEDBACK</span><span id="echoVal">40%</span></div>
                 <input type="range" id="echoSlider" min="0" max="0.85" step="0.05" value="0.40">
             </div>
             <div class="knob-card">
-                <div class="knob-label"><span>DRUM INTENSITY</span><span id="drumVal">70%</span></div>
+                <div class="knob-label"><span>DRUM MIX INTENSITY</span><span id="drumVal">70%</span></div>
                 <input type="range" id="drumSlider" min="0" max="1" step="0.05" value="0.70">
             </div>
             <div class="knob-card">
-                <div class="knob-label"><span>MELODY WAVEFORM</span><span id="waveTxt">TRIANGLE</span></div>
+                <div class="knob-label"><span>MELODY OSC WAVE</span><span id="waveTxt">TRIANGLE</span></div>
                 <input type="range" id="waveSlider" min="0" max="3" step="1" value="1">
+            </div>
+            <div class="knob-card">
+                <div class="knob-label"><span>PITCH OCTAVE SHIFT</span><span id="octaveTxt">NORMAL (X1)</span></div>
+                <input type="range" id="octaveSlider" min="0" max="2" step="1" value="1">
+            </div>
+            <div class="knob-card">
+                <div class="knob-label"><span>CHORUS ATTACK LEVEL</span><span id="harmonyVal">50%</span></div>
+                <input type="range" id="harmonySlider" min="0" max="1" step="0.05" value="0.50">
+            </div>
+            <div class="knob-card">
+                <div class="knob-label"><span>RHYTHMIC SWING FLIP</span><span id="swingVal">OFF</span></div>
+                <input type="range" id="swingSlider" min="0" max="1" step="1" value="0">
             </div>
         </div>
 
         <canvas id="visualizer"></canvas>
 
         <div class="poetry-viewport">
-            <div id="text1" class="text-prime visible">Interface Ready</div>
-            <div id="text2" class="text-second visible">Click Execute Core to launch the live performance timeline.</div>
+            <div id="text1" class="text-prime visible">Interface Primed</div>
+            <div id="text2" class="text-second visible">Launch Stream to engage endless loops and text matrices.</div>
         </div>
     </div>
     <script>
@@ -241,7 +253,6 @@
         let activeState = false;
         let engineClock = null;
         let indexMarker = 0;
-        const terminalIndex = 512;
 
         const waveforms = ['sine', 'triangle', 'sawtooth', 'square'];
 
@@ -318,7 +329,7 @@
                 if (!activeState) return;
                 analyzerUnit.getByteFrequencyData(dataArray);
 
-                ctx.fillStyle = '#030712';
+                ctx.fillStyle = '#05020c';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 let barWidth = canvas.width / binCount;
@@ -328,10 +339,10 @@
                     let val = dataArray[i] / 255;
                     let barHeight = val * canvas.height;
                     
-                    ctx.fillStyle = `rgba(59, 130, 246, ${val + 0.15})`;
+                    ctx.fillStyle = `rgba(168, 85, 247, ${val + 0.15})`;
                     ctx.fillRect(currentX, canvas.height - barHeight, barWidth - 2, barHeight);
                     
-                    ctx.strokeStyle = '#10b981';
+                    ctx.strokeStyle = '#06b6d4';
                     ctx.lineWidth = 1;
                     ctx.strokeRect(currentX, canvas.height - barHeight, barWidth - 2, barHeight);
                     
@@ -372,24 +383,36 @@
             const userWaveIndex = parseInt(document.getElementById('waveSlider').value);
             const chosenWaveform = waveforms[userWaveIndex];
             
-            // Harmonic Engine
+            // Modifier 1: Octave Multiplier Shift
+            const octChoice = parseInt(document.getElementById('octaveSlider').value);
+            const octMultiplier = octChoice === 0 ? 0.5 : (octChoice === 2 ? 2 : 1);
+
+            // Modifier 2: Harmony Blend Level Slider
+            const harmonyLevel = parseFloat(document.getElementById('harmonySlider').value);
+
+            // Core Chord Pad Progression
             if (indexMarker % 4 === 0) {
-                bank.forEach(f => playFrequency(f, 'sine', 0.15, 0.4));
+                bank.forEach(f => playFrequency(f * octMultiplier, 'sine', 0.14, 0.4));
+                if (harmonyLevel > 0) {
+                    bank.forEach(f => playFrequency(f * octMultiplier * 1.5, 'triangle', 0.08 * harmonyLevel, 0.35));
+                }
             }
+            
+            // Melody Generator Run
             if (indexMarker % 2 === 0) {
-                const stepMelody = bank[Math.floor(Math.random() * bank.length)] * 2;
+                const stepMelody = bank[Math.floor(Math.random() * bank.length)] * 2 * octMultiplier;
                 playFrequency(stepMelody, chosenWaveform, 0.08, 0.18);
             }
 
-            // Rhythm Engine Modifiers
+            // Rhythm Engine
             if (indexMarker % 4 === 0 && drumIntensity > 0) {
-                playFrequency(52, 'sine', 0.9 * drumIntensity, 0.12); // Adjustable Kick Volume
+                playFrequency(52, 'sine', 0.9 * drumIntensity, 0.12);
             }
             if (indexMarker % 4 === 2 && drumIntensity > 0.2) {
-                playFrequency(8500, 'triangle', 0.04 * drumIntensity, 0.04); // Adjustable Hat Volume
+                playFrequency(8500, 'triangle', 0.04 * drumIntensity, 0.04);
             }
             if (indexMarker % 2 === 1) {
-                playFrequency(bank / 2, 'sawtooth', 0.12, 0.14); // Bassline Layer
+                playFrequency((bank / 2) * octMultiplier, 'sawtooth', 0.12, 0.14);
             }
 
             // Timeline Module
@@ -408,12 +431,30 @@
                 }, 100);
             }
 
-            indexMarker = (indexMarker + 1) % terminalIndex;
+            // Endless Loop calculation update mapping (never hits zero standstill cutoff)
+            indexMarker = (indexMarker + 1) % 512;
         }
 
         function calculateTempoTime() {
             const bpm = parseInt(document.getElementById('tempoSlider').value);
-            return (60000 / bpm) / 4;
+            const baseInterval = (60000 / bpm) / 4;
+            
+            // Modifier 3: Swing Switch calculation mapping 
+            const swingOn = parseInt(document.getElementById('swingSlider').value);
+            if (swingOn === 1 && indexMarker % 2 === 1) {
+                return baseInterval * 1.4; // Delay offbeats for a syncopated bounce pattern
+            }
+            return baseInterval;
+        }
+
+        function resetAndReschedule() {
+            if (!activeState) return;
+            clearInterval(engineClock);
+            runClockTick();
+            engineClock = setTimeout(function tickLoop() {
+                runClockTick();
+                engineClock = setTimeout(tickLoop, calculateTempoTime());
+            }, calculateTempoTime());
         }
 
         document.getElementById('playBtn').addEventListener('click', function() {
@@ -424,36 +465,35 @@
             const txt = document.getElementById('statusTxt');
 
             if (activeState) {
-                clearInterval(engineClock);
-                this.innerText = "EXECUTE CORE";
+                clearTimeout(engineClock);
+                this.innerText = "LAUNCH STREAM";
                 this.classList.remove('active');
                 pulse.classList.remove('active');
-                txt.innerText = "CONSOLE STANDBY";
+                txt.innerText = "DECK STANDBY";
                 activeState = false;
                 indexMarker = 0;
             } else {
-                this.innerText = "HALT CORE";
+                this.innerText = "HALT SIGNAL";
                 this.classList.add('active');
                 pulse.classList.add('active');
-                txt.innerText = "CORE ACTIVE";
+                txt.innerText = "STREAM RUNNING";
                 activeState = true;
-                engineClock = setInterval(runClockTick, calculateTempoTime());
+                engineClock = setTimeout(function tickLoop() {
+                    runClockTick();
+                    engineClock = setTimeout(tickLoop, calculateTempoTime());
+                }, calculateTempoTime());
             }
         });
 
         document.getElementById('volumeSlider').addEventListener('input', (e) => {
             const val = parseFloat(e.target.value);
-            document.getElementById('volVal').innerText = Math.round(val * 100) + '%';
+            document.getElementById('volValue').innerText = Math.round(val * 100) + '%';
             if (masterOut) masterOut.gain.value = val;
         });
 
         document.getElementById('tempoSlider').addEventListener('input', (e) => {
             const bpm = e.target.value;
             document.getElementById('tempoValue').innerText = bpm + " BPM";
-            if (activeState) {
-                clearInterval(engineClock);
-                engineClock = setInterval(runClockTick, calculateTempoTime());
-            }
         });
 
         document.getElementById('filterSlider').addEventListener('input', (e) => {
@@ -473,6 +513,20 @@
         document.getElementById('waveSlider').addEventListener('input', (e) => {
             const idx = parseInt(e.target.value);
             document.getElementById('waveTxt').innerText = waveforms[idx].toUpperCase();
+        });
+
+        document.getElementById('octaveSlider').addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            const modes = ['LOW (X0.5)', 'NORMAL (X1)', 'HIGH (X2)'];
+            document.getElementById('octaveTxt').innerText = modes[val];
+        });
+
+        document.getElementById('harmonySlider').addEventListener('input', (e) => {
+            document.getElementById('harmonyVal').innerText = Math.round(parseFloat(e.target.value) * 100) + '%';
+        });
+
+        document.getElementById('swingSlider').addEventListener('input', (e) => {
+            document.getElementById('swingVal').innerText = parseInt(e.target.value) === 1 ? "ON" : "OFF";
         });
     </script>
 </body>
