@@ -3,84 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Cinema Karaoke & Audio Dashboard</title>
+    <title>Quantum Beat Engine & Cinema Prompter</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- MASTER PRODUCER VIEWPORT WRAPPER -->
-    <div id="producer-dashboard">
+    <!-- APPLICATION GRID FRAMEWORK WORKSPACE -->
+    <div id="studio-dashboard">
 
-        <!-- UPPER THEATER: LIVE CINEMATIC LYRIC VIEWSCREEN -->
-        <header id="viewscreen-theater">
-            <div id="teleprompter-track" class="teleprompter-track">
-                <!-- Lyrics will prompter-scroll here automatically -->
+        <!-- UPPER HALF: CINEMATIC LYRIC VIEWSCREEN STAGE -->
+        <header id="projection-screen">
+            <div id="lyrics-highway" class="lyrics-highway">
+                <!-- Lyrics will be injected and scrolled here by JavaScript -->
             </div>
-            <div id="cinematic-lens-overlay"></div>
+            <div id="lens-flare-tint"></div>
         </header>
 
-        <!-- LOWER DECK: THE MASSIVE MASTER CONTROL CONSOLE -->
-        <main id="hardware-console">
+        <!-- LOWER HALF: EXPANDED 20-CONTROL HARDWARE MIXING PANEL -->
+        <main id="producer-mixer-deck">
             
-            <!-- SECTION 1: INTERACTIVE INPUT PORTALS & HUB -->
-            <div class="console-rack media-rack">
-                <div class="rack-header">🎛️ MEDIA INGESTION</div>
+            <!-- CONTROLS 1-3: CORE AUDIO HOST & SWITCHES -->
+            <div class="mixer-rack rack-main">
+                <div class="rack-header">🎛️ SYSTEM POWER & STATUS</div>
                 <div class="rack-body">
-                    <div class="field-group">
-                        <label>GOOGLE DRIVE STREAM SOURCE URL</label>
-                        <input type="text" id="drive-url" placeholder="Paste 'Anyone with link' Google Drive URL...">
+                    <button id="power-toggle-btn" class="pro-btn power-btn">⚡ ENGAGE INTERNAL SYNTH BEAT ENGINE</button>
+                    <div id="engine-readout" class="hud-status-window">STATUS: ENGINE OFFLINE</div>
+                    <div class="control-row">
+                        <label>MASTER VOLUME</label>
+                        <input type="range" id="ctrl-master-vol" min="0" max="1" step="0.05" value="0.5">
                     </div>
-                    <button id="ingest-track-btn">INITIALIZE CORE AUDIO STREAM</button>
-                    <div id="deck-status" class="hud-readout">DECK STATUS: DISCONNECTED</div>
                 </div>
             </div>
 
-            <!-- SECTION 2: LIVE AUDITORY MONITOR DECK -->
-            <div class="console-rack playback-rack">
-                <div class="rack-header">📊 PLAYBACK MONITOR</div>
+            <!-- CONTROLS 4-7: DRUM MACHINE SEQUENCER -->
+            <div class="mixer-rack rack-synth">
+                <div class="rack-header">🥁 SYNTH & DRUM HARDWARE CONSOLE</div>
                 <div class="rack-body">
-                    <div class="timeline-hud">
-                        <span id="current-time-readout">00:00</span>
-                        <div id="custom-progress-bar"><div id="progress-fill"></div></div>
-                        <span id="total-time-readout">00:00</span>
+                    <div class="control-row">
+                        <label>TRACK TEMPO (BPM)</label>
+                        <input type="range" id="ctrl-bpm" min="60" max="180" step="1" value="110">
                     </div>
-                    <audio id="core-audio-engine" controls></audio>
-                </div>
-            </div>
-
-            <!-- SECTION 3: KINETIC VISUAL ENGINE CALIBRATOR -->
-            <div class="console-rack visual-rack">
-                <div class="rack-header">🎨 VISUAL DESIGN MATRIX</div>
-                <div class="rack-body">
-                    <div class="slider-row">
-                        <label>GIANT TEXT SIZE</label>
-                        <input type="range" id="size-slider" min="2" max="6" step="0.1" value="3.5">
+                    <div class="control-row">
+                        <label>BASS KICK DEPTH</label>
+                        <input type="range" id="ctrl-kick-pitch" min="30" max="120" step="2" value="55">
                     </div>
-                    <div class="slider-row">
-                        <label>ROW GAP SPACING</label>
-                        <input type="range" id="gap-slider" min="1" max="4" step="0.1" value="2.2">
+                    <div class="control-row">
+                        <label>HI-HAT RHYTHM SPEED</label>
+                        <select id="ctrl-hat-speed">
+                            <option value="4">Steady 4/4 Beat</option>
+                            <option value="8">Double-Time 8th Notes</option>
+                            <option value="2">Slow Half-Time Beat</option>
+                        </select>
                     </div>
-                    <div class="slider-row">
-                        <label>INTERFACE SKIN</label>
-                        <select id="theme-selector">
-                            <option value="cyber-cyan">Cyberpunk Turquoise</option>
-                            <option value="coke-classic">Classic Neon Crimson</option>
-                            <option value="arcade-gold">Retro Arcade Gold</option>
+                    <div class="control-row">
+                        <label>SYNTH CHORD WAVETYPE</label>
+                        <select id="ctrl-synth-wave">
+                            <option value="triangle">Triangle Wave (Mellow)</option>
+                            <option value="sawtooth">Sawtooth Wave (Edgy Arcade)</option>
+                            <option value="sine">Sine Wave (Smooth Clean)</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION 4: MANUAL OVERRIDE FLIGHT DECK CONTROLS -->
-            <div class="console-rack override-rack">
-                <div class="rack-header">🕹️ MANUAL OVERRIDE DECK</div>
+            <!-- CONTROLS 8-13: LIVE CINEMA TEXT CUSTOMIZER MATRIX -->
+            <div class="mixer-rack rack-visual">
+                <div class="rack-header">🎨 THEATER TYPOGRAPHY GRAPHICS</div>
                 <div class="rack-body">
-                    <div class="override-grid">
-                        <button id="manual-prev-btn" class="console-btn">⏮️ REWIND LINE</button>
-                        <button id="manual-next-btn" class="console-btn">SKIP LINE ⏭️</button>
+                    <div class="control-row">
+                        <label>TEXT SIZE MODIFIER</label>
+                        <input type="range" id="ctrl-text-size" min="2" max="6" step="0.1" value="3.5">
                     </div>
-                    <button id="reset-pacing-btn" class="console-btn emergency-btn">🔄 RESET TO AUTO-PACING</button>
-                    <div id="pacing-hud-status" class="hud-readout mode-active">ENGINE MODE: AUTO STREAM</div>
+                    <div class="control-row">
+                        <label>LINE GAP WIDTH</label>
+                        <input type="range" id="ctrl-gap-size" min="1" max="5" step="0.1" value="2.5">
+                    </div>
+                    <div class="control-row">
+                        <label>UNREAD LYRICS DIMMING</label>
+                        <input type="range" id="ctrl-dimming" min="0.05" max="0.5" step="0.05" value="0.2">
+                    </div>
+                    <div class="control-row">
+                        <label>ACTIVE GLOW BURST</label>
+                        <input type="range" id="ctrl-glow-radius" min="10" max="40" step="2" value="20">
+                    </div>
+                    <div class="control-row">
+                        <label>THEATER SKIN STYLING</label>
+                        <select id="ctrl-ui-theme">
+                            <option value="cyber-turquoise">Quantum Cyber Turquoise</option>
+                            <option value="crimson-neon">Classic Crimson Neon</option>
+                            <option value="arcade-amber">Retro Arcade Amber</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTROLS 14-20: AUTOMATION & OVERRIDE PANEL -->
+            <div class="mixer-rack rack-override">
+                <div class="rack-header">🕹️ AUTO TIMELINE & OVERRIDES</div>
+                <div class="rack-body">
+                    <div class="override-grid-buttons">
+                        <button id="ctrl-prev-btn" class="pro-btn">⏮️ REWIND LINE</button>
+                        <button id="ctrl-next-btn" class="pro-btn">SKIP LINE ⏭️</button>
+                    </div>
+                    <button id="ctrl-auto-reset-btn" class="pro-btn reset-btn">🔄 FORCE SYSTEM AUTO-PACING</button>
+                    <div class="control-row">
+                        <label>AUTO SCROLL SPEED SPEED</label>
+                        <input type="range" id="ctrl-scroll-duration" min="2" max="8" step="0.5" value="4">
+                    </div>
+                    <div id="pacing-hud-readout" class="hud-status-window highlighting-active">PACING MODE: AUTO ENGINE</div>
                 </div>
             </div>
 
@@ -90,97 +120,94 @@
     <script src="script.js"></script>
 </body>
 </html>
-/* Master Core Interface Resets */
+/* Core Structural Layout Variables Matrix and Resets */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
 }
 
 body, html {
     width: 100%;
     height: 100%;
-    background-color: #040508;
-    color: #f0f3f8;
+    background-color: #030407;
+    color: #f1f4f9;
     overflow: hidden;
 }
 
-/* Master Fixed Split Window Console Framework */
-#producer-dashboard {
+/* Master Fixed Double Decker Panel Division */
+#studio-dashboard {
     display: grid;
-    grid-template-rows: 1fr 280px; /* Big upgrade: Dedicated 280px tall hardware deck */
+    grid-template-rows: 1fr 310px; /* Expands console bay deck room dimensions */
     width: 100%;
     height: 100vh;
 }
 
-/* UPPER AREA: GIANT VIEWSCREEN THEATER */
-#viewscreen-theater {
+/* UPPER LAYER: THE CINEMA PROJECTION ENCLOSURE */
+#projection-screen {
     position: relative;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, #0b0f19 0%, #05060a 100%);
+    background: radial-gradient(circle at center, #0a0e1a 0%, #030406 100%);
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 4px solid #121824;
+    border-bottom: 4px solid #111722;
 }
 
-/* Visual Lens Fade Tint Filter Overlays */
-#cinematic-lens-overlay {
+#lens-flare-tint {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    background: linear-gradient(rgba(5,6,10,1) 0%, rgba(5,6,10,0) 15%, rgba(5,6,10,0) 85%, rgba(5,6,10,1) 100%);
+    background: linear-gradient(#030406 0%, rgba(3,4,6,0) 15%, rgba(3,4,6,0) 85%, #030406 100%);
     z-index: 3;
 }
 
-/* Automated Rolling Kinetic Text Highway Rig */
-.teleprompter-track {
+/* Rolling Text Highway Assembly Shell */
+.lyrics-highway {
     position: absolute;
-    width: 80%;
-    top: 45%; /* Keep singing line centered perfectly on screen */
+    width: 85%;
+    top: 45%; /* Retains focus line row element exactly locked into dead-center space */
     transform: translateY(0);
-    transition: transform 0.6s cubic-bezier(0.2, 1, 0.2, 1);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
     text-align: center;
     z-index: 2;
 }
 
-/* Individual Cinema Karaoke Lyric Rows Typography styling matrix */
-.cinema-line {
+/* Default state typography values for unselected rows matrix */
+.prompter-line {
     font-weight: 900;
     letter-spacing: -1px;
-    color: #242c3d; /* Smoothly darkens unread text out of view */
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     transform: scale(0.92);
 }
 
-/* MASTER CONTROLLER INTERFACE TINT VARIATIONS (LIVE SWITCHING THEMES) */
-.cyber-cyan .cinema-line.active { color: #00ffcc; text-shadow: 0 0 25px rgba(0, 255, 204, 0.6); transform: scale(1.08); }
-.coke-classic .cinema-line.active { color: #ff1e27; text-shadow: 0 0 25px rgba(255, 30, 39, 0.6); transform: scale(1.08); }
-.arcade-gold .cinema-line.active { color: #ffcc00; text-shadow: 0 0 25px rgba(255, 204, 0, 0.6); transform: scale(1.08); }
+/* HARDWARE THEME TINT SCHEMES CONFIGURATION (DYNAMICALLY ASSIGNED VIA DROPDOWN CONTROL 13) */
+.cyber-turquoise .prompter-line.active { color: #00ffcc; transform: scale(1.08); }
+.crimson-neon .prompter-line.active { color: #ff1f26; transform: scale(1.08); }
+.arcade-amber .prompter-line.active { color: #ffaa00; transform: scale(1.08); }
 
-/* LOWER AREA: THE MASSIVE MASTER CONTROL CONSOLE */
-#hardware-console {
-    background: #090b10;
+/* LOWER LAYER: THE GIANT MASTER AUDIO MIXER SYSTEM CONTROL PANEL */
+#producer-mixer-deck {
+    background: #080a0f;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr; /* Massive 4-section hardware rack breakdown */
-    gap: 16px;
-    padding: 16px;
-    box-shadow: inset 0 8px 30px rgba(0,0,0,0.8);
-    border-top: 1px solid rgba(255,255,255,0.05);
+    grid-template-columns: 1fr 1.2fr 1.2fr 1fr; /* Custom widths mapping the four racks layout rows */
+    gap: 14px;
+    padding: 14px;
+    box-shadow: inset 0 10px 40px rgba(0,0,0,0.9);
 }
 
-/* Individual Studio Rack Shelves Box Shells styling configuration */
-.console-rack {
-    background: #10141f;
-    border: 1px solid #1a2233;
+/* Individual System Rack Boxes structural setups */
+.mixer-rack {
+    background: #0f131d;
+    border: 1px solid #19202f;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -188,17 +215,18 @@ body, html {
 }
 
 .rack-header {
-    background: #141a29;
+    background: #131926;
     padding: 6px 12px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 800;
     letter-spacing: 1px;
-    color: #687999;
-    border-bottom: 1px solid #1a2233;
+    color: #5c6c8a;
+    border-bottom: 1px solid #19202f;
+    text-transform: uppercase;
 }
 
 .rack-body {
-    padding: 14px;
+    padding: 12px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -206,153 +234,96 @@ body, html {
     gap: 12px;
 }
 
-/* Media input box fields layout properties */
-.field-group label {
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: #4a5770;
-    display: block;
-    margin-bottom: 4px;
-}
-
-.field-group input {
-    width: 100%;
-    background: #07090d;
-    border: 1px solid #1d263a;
-    border-radius: 4px;
-    padding: 8px;
-    color: #ffffff;
-    font-size: 0.8rem;
-    outline: none;
-}
-
-/* Master Command Action Buttons Matrix configuration rules */
-#ingest-track-btn {
-    background: #162035;
-    border: 1px solid #233252;
-    color: #ffffff;
-    padding: 8px;
-    font-weight: 700;
-    font-size: 0.75rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-/* Interactive theme mapping glows */
-.cyber-cyan #ingest-track-btn:hover { background: #00ffcc; color: #000; border-color: #00ffcc; box-shadow: 0 0 10px rgba(0,255,204,0.3); }
-.coke-classic #ingest-track-btn:hover { background: #ff1e27; color: #fff; border-color: #ff1e27; box-shadow: 0 0 10px rgba(255,30,39,0.3); }
-.arcade-gold #ingest-track-btn:hover { background: #ffcc00; color: #000; border-color: #ffcc00; box-shadow: 0 0 10px rgba(255,204,0,0.3); }
-
-/* HUD Information Display Windows Readouts style values matrix */
-.hud-readout {
-    background: #07090d;
-    border: 1px solid #151b29;
-    border-radius: 4px;
-    padding: 6px;
-    font-size: 0.7rem;
-    text-align: center;
-    font-family: monospace;
-    font-weight: bold;
-    color: #4f5f80;
-}
-
-/* Custom Playback Timeline Progress Tracking Rig */
-.timeline-hud {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: monospace;
-    font-size: 0.75rem;
-    color: #8c9cb3;
-}
-
-#custom-progress-bar {
-    flex: 1;
-    height: 6px;
-    background: #07090d;
-    border-radius: 3px;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-#progress-fill {
-    width: 0%;
-    height: 100%;
-    background: #00ffcc;
-    transition: width 0.1s linear;
-}
-
-.coke-classic #progress-fill { background: #ff1e27; }
-.arcade-gold #progress-fill { background: #ffcc00; }
-
-audio {
-    width: 100%;
-    height: 30px;
-}
-
-/* Custom tuning sliders layouts row grid */
-.slider-row {
+/* Master Control Elements Rows Styles matrix settings */
+.control-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    color: #8c9cb3;
+    color: #8898b3;
 }
 
 input[type="range"] {
     width: 55%;
     cursor: pointer;
+    accent-color: #00ffcc;
 }
+.crimson-neon input[type="range"] { accent-color: #ff1f26; }
+.arcade-amber input[type="range"] { accent-color: #ffaa00; }
 
 select {
     width: 55%;
-    background: #07090d;
-    border: 1px solid #1d263a;
+    background: #06080c;
+    border: 1px solid #1d2536;
     color: #ffffff;
-    padding: 4px;
+    padding: 5px;
     border-radius: 4px;
     outline: none;
+    font-size: 0.72rem;
 }
 
-/* Manual Navigation Control Overrides elements structural design look */
-.override-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.console-btn {
-    background: #141a26;
-    border: 1px solid #20293d;
+/* Professional Grade System Activation Core Buttons */
+.pro-btn {
+    background: #171f30;
+    border: 1px solid #23304a;
     color: #ffffff;
-    padding: 10px;
-    font-size: 0.7rem;
+    padding: 8px;
     font-weight: 700;
+    font-size: 0.72rem;
     border-radius: 4px;
     cursor: pointer;
-}
-.console-btn:hover {
-    background: #1b2436;
+    transition: all 0.2s;
 }
 
-.emergency-btn {
-    background: rgba(255,30,39,0.05);
-    border: 1px solid rgba(255,30,39,0.2);
-    color: #ff3b42;
+.power-btn {
+    background: rgba(0, 255, 204, 0.05);
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    color: #00ffcc;
+    font-size: 0.75rem;
 }
-.emergency-btn:hover {
-    background: #ff1e27 !important;
+.power-btn.engine-running {
+    background: #00ffcc;
+    color: #080a0f;
+    box-shadow: 0 0 15px rgba(0,255,204,0.4);
+}
+
+/* HUD System Data Stream Screen Readouts boxes styling rules */
+.hud-status-window {
+    background: #05070a;
+    border: 1px solid #131924;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 0.68rem;
+    text-align: center;
+    font-family: monospace;
+    font-weight: bold;
+    color: #4b5873;
+}
+
+.highlighting-active {
+    color: #ffaa00;
+    border-color: rgba(255,170,0,0.15);
+}
+
+/* Manual Move buttons grid alignment row spaces layouts */
+.override-grid-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.reset-btn {
+    background: rgba(255, 31, 38, 0.04);
+    border: 1px solid rgba(255, 31, 38, 0.15);
+    color: #ff3c43;
+}
+.reset-btn:hover {
+    background: #ff1f26 !important;
     color: #ffffff !important;
 }
-
-.mode-active {
-    color: #ffcc00;
-    border-color: rgba(255,204,0,0.2);
-}
-// --- Hardcoded Song Lyrics Index Matrix Base Data ---
-const proMasterLyrics = [
+// --- Hardcoded Song Lyrics Index Array ---
+const studioSongLyrics = [
     "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", 
     "Staying in my own lane", "I’m a low-key pretty goofy", "really-got-it-good-breezy", 
     "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", 
@@ -384,185 +355,253 @@ const proMasterLyrics = [
     "Everything is turning out okay 😁"
 ];
 
-// Target DOM Elements Pointer Node Maps
-const dashboard = {
-    bodyWrapper: document.body,
-    driveInput: document.getElementById('drive-url'),
-    ingestBtn: document.getElementById('ingest-track-btn'),
-    deckStatus: document.getElementById('deck-status'),
-    audioEngine: document.getElementById('core-audio-engine'),
-    teleprompter: document.getElementById('teleprompter-track'),
-    timeCurrent: document.getElementById('current-time-readout'),
-    timeTotal: document.getElementById('total-time-readout'),
-    progressFill: document.getElementById('progress-fill'),
-    progressBar: document.getElementById('custom-progress-bar'),
-    sizeSlider: document.getElementById('size-slider'),
-    gapSlider: document.getElementById('gap-slider'),
-    themeSelect: document.getElementById('theme-selector'),
-    prevBtn: document.getElementById('manual-prev-btn'),
-    nextBtn: document.getElementById('manual-next-btn'),
-    resetBtn: document.getElementById('reset-pacing-btn'),
-    pacingStatus: document.getElementById('pacing-hud-status')
+// Target DOM Elements Pointer Nodes Maps
+const hardware = {
+    body: document.body,
+    powerBtn: document.getElementById('power-toggle-btn'),
+    statusDisplay: document.getElementById('engine-readout'),
+    highway: document.getElementById('lyrics-highway'),
+    masterVol: document.getElementById('ctrl-master-vol'),
+    bpmSlider: document.getElementById('ctrl-bpm'),
+    kickPitch: document.getElementById('ctrl-kick-pitch'),
+    hatSpeed: document.getElementById('ctrl-hat-speed'),
+    synthWave: document.getElementById('ctrl-synth-wave'),
+    textSize: document.getElementById('ctrl-text-size'),
+    gapSize: document.getElementById('ctrl-gap-size'),
+    dimming: document.getElementById('ctrl-dimming'),
+    glowRadius: document.getElementById('ctrl-glow-radius'),
+    uiTheme: document.getElementById('ctrl-ui-theme'),
+    prevBtn: document.getElementById('ctrl-prev-btn'),
+    nextBtn: document.getElementById('ctrl-next-btn'),
+    autoResetBtn: document.getElementById('ctrl-auto-reset-btn'),
+    pacingReadout: document.getElementById('pacing-hud-readout'),
+    scrollDuration: document.getElementById('ctrl-scroll-duration')
 };
 
-let linesArrayNodes = [];
-let targetActiveIndex = 0;
-let isManualOverrideEngaged = false;
+let lineElementsArray = [];
+let activeIndexMarker = 0;
+let isSystemOverriddenManually = false;
+let isEnginePlaying = false;
 
-// Initialize Master Console
-assembleTheaterTracks();
-bindHardwareDashboardTriggers();
+// Synthesizer Audio Variables
+let audioCtx = null;
+let masterGainNode = null;
+let stepSchedulerTimer = null;
+let currentStepIndex = 0;
+let lastStepTime = 0;
+let lyricTimerCountdown = 0;
 
-// --- Step 1: Render Giant Viewscreen Lines ---
-function assembleTheaterTracks() {
-    dashboard.teleprompter.innerHTML = "";
-    linesArrayNodes = [];
+// Fire structural layout routines
+generateTheaterScreenTracks();
+hookUpHardwareControlsMatrix();
 
-    proMasterLyrics.forEach((textString) => {
+// --- Step 1: Render Viewscreen Text Rows ---
+function generateTheaterScreenTracks() {
+    hardware.highway.innerHTML = "";
+    lineElementsArray = [];
+
+    studioSongLyrics.forEach((sentenceString) => {
         const h1 = document.createElement('h1');
-        h1.classList.add('cinema-line');
-        h1.innerText = textString;
+        h1.classList.add('prompter-line');
+        h1.innerText = sentenceString;
         
-        // Apply slider dimensions instantly
-        h1.style.fontSize = `${dashboard.sizeSlider.value}rem`;
-        h1.style.marginBottom = `${parseFloat(dashboard.gapSlider.value) * 15}px`;
+        // Link slider states instantly onto typography blocks
+        h1.style.fontSize = `${hardware.textSize.value}rem`;
+        h1.style.marginBottom = `${parseFloat(hardware.gapSize.value) * 12}px`;
+        h1.style.opacity = hardware.dimming.value;
         
-        dashboard.teleprompter.appendChild(h1);
-        linesArrayNodes.push(h1);
+        hardware.highway.appendChild(h1);
+        lineElementsArray.push(h1);
     });
     
-    // Set initial structural skin class theme
-    dashboard.bodyWrapper.className = dashboard.themeSelect.value;
-    updateFocusLinePosition(0);
+    hardware.body.className = hardware.uiTheme.value;
+    updateFocusedLyricRow(0);
 }
 
-// --- Step 2: Clean Cloud URL Input Streams ---
-function cleanCloudUrl(rawUrl) {
-    const parsedId = rawUrl.match(/\/d\/([a-zA-Z0-9-_]+)/) || rawUrl.match(/id=([a-zA-Z0-9-_]+)/);
-    if (parsedId && parsedId) {
-        return `https://google.com{parsedId}`;
-    }
-    return rawUrl;
-}
-
-// --- Step 3: Register Interactive Hardware Controls Link Triggers ---
-function bindHardwareDashboardTriggers() {
-    dashboard.ingestBtn.addEventListener('click', () => {
-        const sourceUrl = dashboard.driveInput.value.trim();
-        if(!sourceUrl) {
-            alert("Master Control Alert: Please input a valid Google Drive source streaming URL!");
-            return;
+// --- Step 2: Audio Synthesis & Beat Generator Logic ---
+function toggleBeatEnginePower() {
+    if (!isEnginePlaying) {
+        // Initialize and fire up the internal sound hardware module
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGainNode = audioCtx.createGain();
+            masterGainNode.connect(audioCtx.destination);
         }
-
-        dashboard.deckStatus.innerText = "DECK STATUS: LINKING STREAM...";
-        dashboard.audioEngine.crossOrigin = "anonymous";
-        dashboard.audioEngine.src = cleanCloudUrl(sourceUrl);
-        dashboard.audioEngine.load();
-
-        dashboard.audioEngine.addEventListener('canplaythrough', () => {
-            dashboard.deckStatus.innerText = "DECK STATUS: ONLINE & CONNECTED";
-            isManualOverrideEngaged = false;
-            dashboard.pacingStatus.innerText = "ENGINE MODE: AUTO STREAM";
-            dashboard.pacingStatus.className = "hud-readout mode-active";
-            updateFocusLinePosition(0);
-        }, { once: true });
-    });
-
-    // Live Tracking Playback Monitor System Data Parser
-    dashboard.audioEngine.addEventListener('timeupdate', () => {
-        const currentSec = dashboard.audioEngine.currentTime;
-        const totalSec = dashboard.audioEngine.duration || 0;
-
-        // Render Hardware Timer Readouts
-        dashboard.timeCurrent.innerText = formatTimeHUD(currentSec);
-        dashboard.timeTotal.innerText = formatTimeHUD(totalSec);
         
-        // Advance Custom Progress Bar Fill
-        if (totalSec > 0) {
-            const pct = (currentSec / totalSec) * 100;
-            dashboard.progressFill.style.width = `${pct}%`;
+        masterGainNode.gain.value = parseFloat(hardware.masterVol.value);
+        isEnginePlaying = true;
+        hardware.powerBtn.innerText = "🛑 SHUTDOWN INTERNAL SYNTH BEAT ENGINE";
+        hardware.powerBtn.classList.add('engine-running');
+        hardware.statusDisplay.innerText = "STATUS: SYNTHESIZING LIVE AUDIO STREAMS";
+        
+        currentStepIndex = 0;
+        lastStepTime = audioCtx.currentTime;
+        lyricTimerCountdown = 0;
+        runSynthesizerScheduler();
+    } else {
+        // Stop scheduler ticking instantly
+        clearTimeout(stepSchedulerTimer);
+        isEnginePlaying = false;
+        hardware.powerBtn.innerText = "⚡ ENGAGE INTERNAL SYNTH BEAT ENGINE";
+        hardware.powerBtn.classList.remove('engine-running');
+        hardware.statusDisplay.innerText = "STATUS: ENGINE OFFLINE";
+    }
+}
 
-            // Auto Pacing calculations tracking framework
-            if (!isManualOverrideEngaged) {
-                let targetLineCalc = Math.floor((currentSec / totalSec) * proMasterLyrics.length);
-                if(targetLineCalc >= proMasterLyrics.length) targetLineCalc = proMasterLyrics.length - 1;
-                
-                if(targetLineCalc !== targetActiveIndex && targetLineCalc >= 0) {
-                    updateFocusLinePosition(targetLineCalc);
-                }
+function runSynthesizerScheduler() {
+    if (!isEnginePlaying) return;
+
+    const tempoBPM = parseFloat(hardware.bpmSlider.value);
+    const stepDurationSeconds = 60.0 / tempoBPM / 4; // Break bars down into snappy 16th notes
+    const currentTime = audioCtx.currentTime;
+
+    while (lastStepTime < currentTime + 0.1) {
+        scheduleSynthAudioInstruments(currentStepIndex, lastStepTime);
+        
+        // Advance clock steps
+        lastStepTime += stepDurationSeconds;
+        currentStepIndex = (currentStepIndex + 1) % 16;
+
+        // Auto-pacing lyric progression tracker timing check
+        if (!isSystemOverriddenManually) {
+            lyricTimerCountdown++;
+            const linesDurationThreshold = parseFloat(hardware.scrollDuration.value) * 16;
+            if (lyricTimerCountdown >= linesDurationThreshold) {
+                let nextTargetIdx = (activeIndexMarker + 1) % studioSongLyrics.length;
+                updateFocusedLyricRow(nextTargetIdx);
+                lyricTimerCountdown = 0;
             }
         }
-    });
-
-    // Live Slider Dynamic Customizer Remappings
-    dashboard.sizeSlider.addEventListener('input', (e) => {
-        linesArrayNodes.forEach(el => el.style.fontSize = `${e.target.value}rem`);
-        updateFocusLinePosition(targetActiveIndex);
-    });
-
-    dashboard.gapSlider.addEventListener('input', (e) => {
-        linesArrayNodes.forEach(el => el.style.marginBottom = `${parseFloat(e.target.value) * 15}px`);
-        updateFocusLinePosition(targetActiveIndex);
-    });
-
-    dashboard.themeSelect.addEventListener('change', (e) => {
-        dashboard.bodyWrapper.className = e.target.value;
-    });
-
-    // Manual Flight Overrides Button Actions
-    dashboard.prevBtn.addEventListener('click', () => {
-        if(targetActiveIndex > 0) switchPacingModeToManual(targetActiveIndex - 1);
-    });
-
-    dashboard.nextBtn.addEventListener('click', () => {
-        if(targetActiveIndex < proMasterLyrics.length - 1) switchPacingModeToManual(targetActiveIndex + 1);
-    });
-
-    dashboard.resetBtn.addEventListener('click', () => {
-        isManualOverrideEngaged = false;
-        dashboard.pacingStatus.innerText = "ENGINE MODE: AUTO STREAM";
-        dashboard.pacingStatus.className = "hud-readout mode-active";
-    });
-}
-
-// --- Step 4: Time Readout Text Formatter ---
-function formatTimeHUD(seconds) {
-    if (isNaN(seconds)) return "00:00";
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-}
-
-// --- Step 5: Shift Cinematic Focus Viewlines Matrix ---
-function switchPacingModeToManual(lineIndexTarget) {
-    isManualOverrideEngaged = true;
-    dashboard.pacingStatus.innerText = "ENGINE MODE: MANUAL OVERRIDE";
-    dashboard.pacingStatus.className = "hud-readout";
-
-    // Re-adjust underlying audio track runtime clock target position
-    if (dashboard.audioEngine.duration) {
-        const runtimeJumpSecondTarget = (lineIndexTarget / proMasterLyrics.length) * dashboard.audioEngine.duration;
-        dashboard.audioEngine.currentTime = runtimeJumpSecondTarget;
     }
 
-    updateFocusLinePosition(lineIndexTarget);
+    // Loop scheduling sequence at 25ms intervals for perfect audio tracking precision
+    stepSchedulerTimer = setTimeout(runSynthesizerScheduler, 25);
 }
 
-function updateFocusLinePosition(indexKey) {
-    targetActiveIndex = indexKey;
+function scheduleSynthAudioInstruments(step, time) {
+    masterGainNode.gain.value = parseFloat(hardware.masterVol.value);
+    const baseKickPitch = parseFloat(hardware.kickPitch.value);
+    const selectedHatRate = parseInt(hardware.hatSpeed.value);
+    const waveTypeSelection = hardware.synthWave.value;
 
-    linesArrayNodes.forEach((h1Node, index) => {
-        if(index === indexKey) {
-            h1Node.classList.add('active');
+    // 1. Synthesize Bass Drum Kicks (Trigger loops on steps 0, 4, 8, 12)
+    if (step % 4 === 0) {
+        let kickOsc = audioCtx.createOscillator();
+        let kickGain = audioCtx.createGain();
+        kickOsc.connect(kickGain);
+        kickGain.connect(masterGainNode);
+
+        kickOsc.frequency.setValueAtTime(baseKickPitch, time);
+        kickOsc.frequency.exponentialRampToValueAtTime(0.01, time + 0.3); // Deep downward sweeping frequency drop pitch bend
+
+        kickGain.gain.setValueAtTime(1.0, time);
+        kickGain.gain.exponentialRampToValueAtTime(0.01, time + 0.25);
+
+        kickOsc.start(time);
+        kickOsc.stop(time + 0.3);
+    }
+
+    // 2. Synthesize High-Hat Cymbal Clicks
+    if (step % selectedHatRate === 0) {
+        let hatOsc = audioCtx.createOscillator();
+        let hatGain = audioCtx.createGain();
+        hatOsc.connect(hatGain);
+        hatGain.connect(masterGainNode);
+
+        hatOsc.type = 'triangle'; // Formats oscillator to simulate clean ticks
+        hatOsc.frequency.setValueAtTime(10000, time); // Giant ear-piercing frequency click
+
+        hatGain.gain.setValueAtTime(0.12, time);
+        hatGain.gain.exponentialRampToValueAtTime(0.01, time + 0.04);
+
+        hatOsc.start(time);
+        hatOsc.stop(time + 0.05);
+    }
+
+    // 3. Synthesize Melodic Chord Backing Notes (Trigger changes every 8 sequence bars)
+    if (step % 8 === 0) {
+        let synthOsc = audioCtx.createOscillator();
+        let synthGain = audioCtx.createGain();
+        synthOsc.connect(synthGain);
+        synthGain.connect(masterGainNode);
+
+        synthOsc.type = waveTypeSelection;
+        // Shift note frequencies sequentially back and forth
+        const melodyPitches = [110.00, 130.81, 146.83, 164.81];
+        const pitchSelection = melodyPitches[Math.floor(step / 4) % melodyPitches.length];
+        
+        synthOsc.frequency.setValueAtTime(pitchSelection, time);
+
+        synthGain.gain.setValueAtTime(0.18, time);
+        synthGain.gain.linearRampToValueAtTime(0.01, time + 0.4);
+
+        synthOsc.start(time);
+        synthOsc.stop(time + 0.4);
+    }
+}
+
+// --- Step 3: Register Slider Parameter Event Monitors ---
+function hookUpHardwareControlsMatrix() {
+    hardware.powerBtn.addEventListener('click', toggleBeatEnginePower);
+
+    hardware.textSize.addEventListener('input', (e) => {
+        lineElementsArray.forEach(el => el.style.fontSize = `${e.target.value}rem`);
+        updateFocusedLyricRow(activeIndexMarker);
+    });
+
+    hardware.gapSize.addEventListener('input', (e) => {
+        lineElementsArray.forEach(el => el.style.marginBottom = `${parseFloat(e.target.value) * 12}px`);
+        updateFocusedLyricRow(activeIndexMarker);
+    });
+
+    hardware.dimming.addEventListener('input', () => updateFocusedLyricRow(activeIndexMarker));
+    hardware.glowRadius.addEventListener('input', () => updateFocusedLyricRow(activeIndexMarker));
+    
+    hardware.uiTheme.addEventListener('change', (e) => {
+        hardware.body.className = e.target.value;
+    });
+
+    // Manual Overrides Calibration
+    hardware.prevBtn.addEventListener('click', () => {
+        if(activeIndexMarker > 0) switchPacingToManualOverride(activeIndexMarker - 1);
+    });
+
+    hardware.nextBtn.addEventListener('click', () => {
+        if(activeIndexMarker < studioSongLyrics.length - 1) switchPacingToManualOverride(activeIndexMarker + 1);
+    });
+
+    hardware.autoResetBtn.addEventListener('click', () => {
+        isSystemOverriddenManually = false;
+        lyricTimerCountdown = 0;
+        hardware.pacingReadout.innerText = "PACING MODE: AUTO ENGINE";
+        hardware.pacingReadout.className = "hud-status-window highlighting-active";
+    });
+}
+
+// --- Step 4: Shift Focused Text Elements Matrix lines ---
+function switchPacingToManualOverride(targetIdx) {
+    isSystemOverriddenManually = true;
+    hardware.pacingReadout.innerText = "PACING MODE: MANUAL OVERRIDE";
+    hardware.pacingReadout.className = "hud-status-window";
+    updateFocusedLyricRow(targetIdx);
+}
+
+function updateFocusedLyricRow(indexKey) {
+    activeIndexMarker = indexKey;
+    const idleDimmScaleValue = hardware.dimming.value;
+    const glowingNeonStrengthVal = hardware.glowRadius.value;
+    const activeColorHexCode = getComputedStyle(hardware.body).getPropertyValue('--theme-tint').trim() || "#00ffcc";
+
+    lineElementsArray.forEach((divNode, index) => {
+        if (index === indexKey) {
+            divNode.classList.add('active');
+            divNode.style.opacity = "1";
+            // Map manual slider values onto neon drop shadows configurations
+            divNode.style.textShadow = `0 0 ${glowingNeonStrengthVal}px ${activeColorHexCode}`;
         } else {
-            h1Node.classList.remove('active');
+            divNode.classList.remove('active');
+            divNode.style.opacity = idleDimmScaleValue;
+            divNode.style.textShadow = "none";
         }
     });
 
-    // Vector scroll translate shift equations
-    if (linesArrayNodes[indexKey]) {
-        const focusedElement = linesArrayNodes[indexKey];
-        const offsetTargetY = -(focusedElement.offsetTop - (focusedElement.offsetHeight / 2));
-        dashboard.teleprompter.style.transform = `translateY(${offsetTargetY}px)`;
-    }
-}
