@@ -6,7 +6,7 @@
     <title>Cyber Orchestra: Small Town Star</title>
     <style>
         body {
-            background: #06060c;
+            background: #030305;
             color: #fff;
             font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
@@ -19,185 +19,221 @@
             box-sizing: border-box;
         }
         h1 {
-            color: #00ffcc;
-            text-shadow: 0 0 15px rgba(0,255,204,0.6);
+            color: #ff9900;
+            text-shadow: 0 0 15px rgba(255,153,0,0.4);
             margin: 0 0 5px 0;
-            font-size: 2rem;
-            letter-spacing: 2px;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
         }
         p {
-            color: #6a6a8a;
-            margin: 0 0 20px 0;
-            font-size: 0.85rem;
+            color: #555566;
+            margin: 0 0 25px 0;
+            font-size: 0.8rem;
         }
-        .player-container {
+        .matrix-deck {
             width: 95vw;
-            max-width: 800px;
-            background: #0f0f1d;
-            border: 2px solid #25254e;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            max-width: 750px;
+            background: #0a0a0f;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.9);
+            border: 1px solid #1a1a26;
             box-sizing: border-box;
         }
-        .main-controls {
+        .deck-header {
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        button {
-            font-size: 1rem;
-            font-weight: bold;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.2s;
-            color: white;
-            letter-spacing: 1px;
-        }
-        #playBtn {
-            background: #00ffcc;
-            color: #06060c;
-            box-shadow: 0 0 15px rgba(0,255,204,0.4);
-        }
-        #playBtn:hover { background: #33ffdd; transform: scale(1.02); }
-        #playBtn.playing {
-            background: #ff007f;
-            color: white;
-            box-shadow: 0 0 15px rgba(255,0,127,0.4);
-        }
-        .sliders-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        .slider-card {
-            background: #191932;
-            border: 1px solid #32325d;
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            background: #12121a;
+            padding: 15px 25px;
+            border-radius: 12px;
+            border: 1px solid #222233;
         }
-        .slider-card label {
-            font-size: 0.75rem;
+        .status-light {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
             font-weight: bold;
-            color: #ff007f;
+            color: #888899;
             letter-spacing: 0.5px;
         }
-        .slider-card input {
-            width: 100%;
-            accent-color: #00ffcc;
-            cursor: pointer;
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #ff3333;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ff3333;
         }
-        .slider-card span {
-            font-size: 0.8rem;
+        .status-dot.active {
+            background: #ff9900;
+            box-shadow: 0 0 12px #ff9900;
+        }
+        button {
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ff9900;
+            color: #030305;
+            box-shadow: 0 4px 15px rgba(255,153,0,0.3);
+            letter-spacing: 0.5px;
+        }
+        button:hover {
+            background: #ffaa22;
+            transform: translateY(-1px);
+        }
+        button.active {
+            background: #33cc32;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(51,204,50,0.3);
+        }
+        .knobs-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .knob-box {
+            background: #12121a;
+            border: 1px solid #222233;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: left;
+        }
+        .knob-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #ffaa22;
+            letter-spacing: 0.5px;
+        }
+        .knob-meta span:last-child {
+            color: #888899;
             font-family: monospace;
-            color: #00ffcc;
+        }
+        input[type="range"] {
+            width: 100%;
+            accent-color: #ff9900;
+            cursor: pointer;
+            background: #222233;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
         }
         #visualizer {
             width: 100%;
-            height: 120px;
-            background: #090916;
-            border: 1px solid #1f1f3d;
+            height: 80px;
+            background: #06060a;
+            border: 1px solid #1a1a26;
             border-radius: 12px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             display: block;
         }
-        .lyrics-display {
-            background: #090916;
-            border: 1px solid #1f1f3d;
+        .poetry-deck {
+            background: #12121a;
+            border: 1px solid #222233;
             border-radius: 12px;
-            height: 140px;
-            padding: 20px;
+            height: 160px;
+            padding: 25px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            gap: 10px;
         }
-        .lyric-row {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #4a4a6a;
-            transition: all 0.3s ease;
-            transform: scale(0.95);
-            opacity: 0.3;
+        .text-stream {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #ff9900;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
         }
-        .lyric-row.active {
-            color: #00ffcc;
-            text-shadow: 0 0 15px rgba(0,255,204,0.6);
-            font-weight: bold;
-            transform: scale(1.05);
+        .text-stream.visible {
             opacity: 1;
+            transform: translateY(0);
+        }
+        .sub-stream {
+            font-size: 0.95rem;
+            color: #666677;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+            text-align: center;
+        }
+        .sub-stream.visible {
+            opacity: 0.7;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
 
     <h1>CYBER ORCHESTRA: SMALL TOWN STAR</h1>
-    <p>Streamlined live synthesis dashboard engine.</p>
+    <p>Algorithmic frequency generation architecture.</p>
 
-    <div class="player-container">
-        <div class="main-controls">
-            <button id="playBtn">START STREAM</button>
+    <div class="matrix-deck">
+        <div class="deck-header">
+            <div class="status-light">
+                <div id="statusDot" class="status-dot"></div>
+                <span id="statusTxt">SYSTEM OFFLINE</span>
+            </div>
+            <button id="playBtn">LAUNCH STREAM</button>
         </div>
 
-        <div class="sliders-grid">
-            <div class="slider-card">
-                <label>MASTER VOLUME</label>
-                <input type="range" id="volumeSlider" min="0" max="2" step="0.1" value="1">
-                <span id="volVal">100%</span>
+        <div class="knobs-panel">
+            <div class="knob-box">
+                <div class="knob-meta">
+                    <span>MASTER VOL</span>
+                    <span id="volVal">100%</span>
+                </div>
+                <input type="range" id="volumeSlider" min="0" max="2" step="0.05" value="1">
             </div>
-            <div class="slider-card">
-                <label>TRACK TEMPO</label>
-                <input type="range" id="tempoSlider" min="80" max="180" step="2" value="130">
-                <span id="tempoVal">130 BPM</span>
-            </div>
-            <div class="slider-card">
-                <label>FILTER RESONANCE</label>
-                <input type="range" id="filterSlider" min="500" max="4000" step="100" value="2000">
-                <span id="filterVal">2000Hz</span>
-            </div>
-            <div class="slider-card">
-                <label>ECHO FEEDBACK</label>
-                <input type="range" id="echoSlider" min="0" max="0.8" step="0.05" value="0.3">
-                <span id="echoVal">30%</span>
+            <div class="knob-box">
+                <div class="knob-meta">
+                    <span>CLOCK CADENCE</span>
+                    <span id="tempoValue">125 BPM</span>
+                </div>
+                <input type="range" id="tempoSlider" min="80" max="180" step="1" value="125">
             </div>
         </div>
 
         <canvas id="visualizer"></canvas>
 
-        <div class="lyrics-display">
-            <div id="line1" class="lyric-row active">System Standby</div>
-            <div id="line2" class="lyric-row">Click Start Stream to initialize music engine</div>
+        <div class="poetry-deck">
+            <div id="text1" class="text-stream visible">Engine Standby</div>
+            <div id="text2" class="sub-stream visible">Initialize core launcher routing parameters.</div>
         </div>
     </div>
     <script>
         let audioCtx = null;
-        let masterGain = null;
-        let delayNode = null;
-        let delayFeedback = null;
-        let analyser = null;
+        let masterOut = null;
+        let delayUnit = null;
+        let delayGain = null;
+        let analyzerUnit = null;
         
-        let isPlaying = false;
-        let stepInterval = null;
-        let currentStep = 0;
-        const totalSteps = 512;
+        let activeState = false;
+        let engineClock = null;
+        let indexMarker = 0;
+        const terminalIndex = 512;
 
-        const synthNotes = [261.63, 293.66, 311.13, 349.23, 392.00, 440.00, 493.88, 523.25, 587.33, 622.25, 698.46, 783.99];
-        const chords = [
-            [261.63, 311.13, 392.00], // Cm
-            [311.13, 392.00, 523.25], // Eb
-            [349.23, 415.30, 523.25], // Fm
-            [392.00, 493.88, 587.33]  // G
+        const scales = [130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33];
+        const triadBanks = [
+            [130.81, 164.81, 196.00, 261.63], // C Major
+            [146.83, 174.61, 220.00, 293.66], // D Minor
+            [164.81, 196.00, 246.94, 329.63], // E Minor
+            [196.00, 246.94, 293.66, 392.00]  // G Major
         ];
 
         const lyricTimeline = [
@@ -229,182 +265,175 @@
             { step: 492, l1: "Deep breath / Clear sky / Watch the days fly right on by", l2: "In His hands / Every day / Everything is turning out okay 😁" }
         ];
 
-        function initAudio() {
+        function setupHardware() {
             if (audioCtx) return;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             
-            masterGain = audioCtx.createGain();
-            masterGain.gain.value = parseFloat(document.getElementById('volumeSlider').value);
+            masterOut = audioCtx.createGain();
+            masterOut.gain.value = parseFloat(document.getElementById('volumeSlider').value);
             
-            delayNode = audioCtx.createDelay(1.0);
-            delayNode.delayTime.value = 0.25;
+            delayUnit = audioCtx.createDelay(1.0);
+            delayUnit.delayTime.value = 0.3;
             
-            delayFeedback = audioCtx.createGain();
-            delayFeedback.gain.value = parseFloat(document.getElementById('echoSlider').value);
+            delayGain = audioCtx.createGain();
+            delayGain.gain.value = 0.4;
             
-            analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 128;
+            analyzerUnit = audioCtx.createAnalyser();
+            analyzerUnit.fftSize = 64;
             
-            masterGain.connect(delayNode);
-            delayNode.connect(delayFeedback);
-            delayFeedback.connect(delayNode);
+            masterOut.connect(delayUnit);
+            delayUnit.connect(delayGain);
+            delayGain.connect(delayUnit);
             
-            masterGain.connect(analyser);
-            delayNode.connect(analyser);
-            analyser.connect(audioCtx.destination);
+            masterOut.connect(analyzerUnit);
+            delayUnit.connect(analyzerUnit);
+            analyzerUnit.connect(audioCtx.destination);
             
-            startVisualizer();
+            renderFrame();
         }
-        function startVisualizer() {
+        function renderFrame() {
             const canvas = document.getElementById('visualizer');
             const ctx = canvas.getContext('2d');
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
+            const binCount = analyzerUnit.frequencyBinCount;
+            const dataArray = new Uint8Array(binCount);
 
-            function draw() {
-                requestAnimationFrame(draw);
-                if (!isPlaying) return;
-                analyser.getByteFrequencyData(dataArray);
+            function loop() {
+                requestAnimationFrame(loop);
+                if (!activeState) return;
+                analyzerUnit.getByteFrequencyData(dataArray);
 
-                ctx.fillStyle = '#090916';
+                ctx.fillStyle = '#06060a';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                let barWidth = (canvas.width / bufferLength) * 2;
-                let x = 0;
+                let sliceWidth = canvas.width / binCount;
+                let currentX = 0;
 
-                for (let i = 0; i < bufferLength; i++) {
-                    let barHeight = dataArray[i] / 1.5;
-                    ctx.fillStyle = `rgba(0, 255, 204, ${barHeight / 120})`;
-                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                ctx.beginPath();
+                ctx.strokeStyle = '#ff9900';
+                ctx.lineWidth = 3;
+
+                for (let i = 0; i < binCount; i++) {
+                    let val = dataArray[i] / 255;
+                    let currentY = canvas.height - (val * canvas.height);
                     
-                    ctx.strokeStyle = '#ff007f';
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    if(i === 0) ctx.moveTo(x, canvas.height - barHeight);
-                    else ctx.lineTo(x, canvas.height - barHeight);
-                    x += barWidth + 1;
+                    if (i === 0) ctx.moveTo(currentX, currentY);
+                    else ctx.lineTo(currentX, currentY);
+                    
+                    currentX += sliceWidth;
                 }
                 ctx.stroke();
             }
             canvas.width = canvas.offsetWidth;
-            draw();
+            loop();
         }
 
-        function playTone(freq, type, vol, duration) {
+        function playFrequency(freq, waveform, level, delay) {
             if (!audioCtx) return;
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            const filterNode = audioCtx.createBiquadFilter();
+            const timestamp = audioCtx.currentTime;
+            const generator = audioCtx.createOscillator();
+            const envelope = audioCtx.createGain();
             
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, now);
+            generator.type = waveform;
+            generator.frequency.setValueAtTime(freq, timestamp);
             
-            filterNode.type = 'lowpass';
-            filterNode.frequency.setValueAtTime(parseFloat(document.getElementById('filterSlider').value), now);
+            envelope.gain.setValueAtTime(level, timestamp);
+            envelope.gain.exponentialRampToValueAtTime(0.001, timestamp + delay);
             
-            gainNode.gain.setValueAtTime(vol, now);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+            generator.connect(envelope);
+            envelope.connect(masterOut);
             
-            osc.connect(filterNode);
-            filterNode.connect(gainNode);
-            gainNode.connect(masterGain);
-            
-            osc.start(now);
-            osc.stop(now + duration);
+            generator.start(timestamp);
+            generator.stop(timestamp + delay);
         }
 
-        function playStep() {
-            const currentChord = chords[Math.floor(currentStep / 16) % chords.length];
+        function runClockTick() {
+            const bank = triadBanks[Math.floor(indexMarker / 16) % triadBanks.length];
             
-            // 1. Core Melodic Progression
-            if (currentStep % 4 === 0) {
-                currentChord.forEach(freq => playTone(freq, 'triangle', 0.15, 0.4));
+            // Harmonic Engine
+            if (indexMarker % 4 === 0) {
+                bank.forEach(f => playFrequency(f, 'sine', 0.2, 0.35));
             }
-            if (currentStep % 2 === 0) {
-                const randomNote = currentChord[Math.floor(Math.random() * currentChord.length)] * 2;
-                playTone(randomNote, 'sine', 0.1, 0.2);
-            }
-
-            // 2. Continuous Backing Rhythm Track
-            if (currentStep % 4 === 0) {
-                playTone(60, 'sine', 0.8, 0.12); // Steady Electronic Kick
-            }
-            if (currentStep % 4 === 2) {
-                // Synthesis Noise Simulation for Hi-Hats
-                playTone(8000, 'triangle', 0.03, 0.04);
-            }
-            if (currentStep % 2 === 1) {
-                const bassFreq = currentChord[0] / 2;
-                playTone(bassFreq, 'sawtooth', 0.12, 0.15); // Bouncing Bass Line
+            if (indexMarker % 2 === 0) {
+                const stepMelody = bank[Math.floor(Math.random() * bank.length)] * 2;
+                playFrequency(stepMelody, 'triangle', 0.08, 0.15);
             }
 
-            // 3. Text Engine Sync Tracker
-            const match = lyricTimeline.reduce((prev, curr) => (currentStep >= curr.step) ? curr : prev, lyricTimeline);
-            const l1 = document.getElementById('line1');
-            const l2 = document.getElementById('line2');
-            if (l1.innerText !== match.l1) {
-                l1.classList.remove('active');
-                l2.classList.remove('active');
+            // Rhythm Engine
+            if (indexMarker % 4 === 0) {
+                playFrequency(55, 'sine', 0.8, 0.1); // Kick
+            }
+            if (indexMarker % 4 === 2) {
+                playFrequency(9000, 'triangle', 0.02, 0.03); // Hat
+            }
+            if (indexMarker % 2 === 1) {
+                playFrequency(bank[0] / 2, 'sawtooth', 0.1, 0.12); // Bass
+            }
+
+            // Timeline Module
+            const match = lyricTimeline.reduce((prev, curr) => (indexMarker >= curr.step) ? curr : prev, lyricTimeline);
+            const line1 = document.getElementById('text1');
+            const line2 = document.getElementById('text2');
+            
+            if (line1.innerText !== match.l1) {
+                line1.classList.remove('visible');
+                line2.classList.remove('visible');
                 setTimeout(() => {
-                    l1.innerText = match.l1;
-                    l2.innerText = match.l2;
-                    l1.classList.add('active');
-                    l2.classList.add('active');
-                }, 50);
+                    line1.innerText = match.l1;
+                    line2.innerText = match.l2;
+                    line1.classList.add('visible');
+                    line2.classList.add('visible');
+                }, 100);
             }
 
-            currentStep = (currentStep + 1) % totalSteps;
+            indexMarker = (indexMarker + 1) % terminalIndex;
         }
 
-        function getIntervalTime() {
+        function calculateTempoTime() {
             const bpm = parseInt(document.getElementById('tempoSlider').value);
-            return (60000 / bpm) / 4; // 16th note timing conversion
+            return (60000 / bpm) / 4;
         }
 
-        // Control Panel Target Listeners
         document.getElementById('playBtn').addEventListener('click', function() {
             if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            initAudio();
+            setupHardware();
             
-            if (isPlaying) {
-                clearInterval(stepInterval);
-                this.innerText = "START STREAM";
-                this.classList.remove('playing');
-                isPlaying = false;
-                currentStep = 0;
+            const dot = document.getElementById('statusDot');
+            const txt = document.getElementById('statusTxt');
+
+            if (activeState) {
+                clearInterval(engineClock);
+                this.innerText = "LAUNCH STREAM";
+                this.classList.remove('active');
+                dot.classList.remove('active');
+                txt.innerText = "SYSTEM OFFLINE";
+                activeState = false;
+                indexMarker = 0;
             } else {
-                this.innerText = "HALT ENGINE";
-                this.classList.add('playing');
-                isPlaying = true;
-                stepInterval = setInterval(playStep, getIntervalTime());
+                this.innerText = "HALT SIGNAL";
+                this.classList.add('active');
+                dot.classList.add('active');
+                txt.innerText = "STREAM RUNNING";
+                activeState = true;
+                engineClock = setInterval(runClockTick, calculateTempoTime());
             }
         });
 
         document.getElementById('volumeSlider').addEventListener('input', (e) => {
             const val = parseFloat(e.target.value);
             document.getElementById('volVal').innerText = Math.round(val * 100) + '%';
-            if (masterGain) masterGain.gain.value = val;
+            if (masterOut) masterOut.gain.value = val;
         });
 
         document.getElementById('tempoSlider').addEventListener('input', (e) => {
             const bpm = e.target.value;
-            document.getElementById('tempoVal').innerText = bpm + " BPM";
-            if (isPlaying) {
-                clearInterval(stepInterval);
-                stepInterval = setInterval(playStep, getIntervalTime());
+            document.getElementById('tempoValue').innerText = bpm + " BPM";
+            if (activeState) {
+                clearInterval(engineClock);
+                engineClock = setInterval(runClockTick, calculateTempoTime());
             }
-        });
-
-        document.getElementById('filterSlider').addEventListener('input', (e) => {
-            document.getElementById('filterVal').innerText = e.target.value + "Hz";
-        });
-
-        document.getElementById('echoSlider').addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            document.getElementById('echoVal').innerText = Math.round(val * 100) + '%';
-            if (delayFeedback) delayFeedback.gain.value = val;
         });
     </script>
 </body>
+</html>
+
 </html>
