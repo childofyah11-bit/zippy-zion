@@ -3,265 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Lyric Studio & Audio Player</title>
+    <title>Cyberpunk Wave Lyric Engine</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Main Studio Dashboard Layout -->
-    <div class="studio-container">
+
+    <!-- Main Visual Stage Arena -->
+    <div id="visual-stage">
+        <!-- Floating Audio Rhythm Wave Ring Background -->
+        <canvas id="wave-canvas"></canvas>
+
+        <!-- Centered Cinematic Lyric Delivery Box -->
+        <div id="lyric-focus-box">
+            <h1 id="active-lyric-text">LOAD A SONG TO BEGIN</h1>
+            <h2 id="upcoming-subtext">Waiting for audio signal...</h2>
+        </div>
+    </div>
+
+    <!-- Collapsible Master Studio Config Controls Dock -->
+    <div id="settings-dock">
+        <div class="dock-header">
+            <h3>Visualizer Customizer</h3>
+        </div>
         
-        <!-- Left Side: Interactive Customization Control Panel -->
-        <aside class="control-panel">
-            <h2>Studio Controls</h2>
-            
-            <!-- Audio Input Deck -->
-            <div class="control-group">
-                <h3>1. Audio & Track Input</h3>
-                <label class="file-btn" for="audio-upload">Upload Song File</label>
-                <input type="file" id="audio-upload" accept="audio/*">
-                <div id="file-status">No audio loaded</div>
-                <audio id="audio-player" controls></audio>
+        <div class="dock-body">
+            <!-- Audio Deck Row -->
+            <div class="setting-row">
+                <label for="audio-input" class="upload-trigger">Choose Audio File</label>
+                <input type="file" id="audio-input" accept="audio/*">
+                <audio id="main-audio" controls></audio>
             </div>
 
-            <!-- Typography & Size Styling Tweaks -->
-            <div class="control-group">
-                <h3>2. Typography Settings</h3>
-                <label>Font Size: <input type="range" id="font-size" min="1.5" max="4" step="0.1" value="2.5"></label>
-                <label>Line Spacing: <input type="range" id="line-height" min="1" max="3" step="0.1" value="1.8"></label>
-                <label>Text Alignment: 
-                    <select id="text-align">
-                        <option value="center">Centered</option>
-                        <option value="left">Left Aligned</option>
-                        <option value="right">Right Aligned</option>
+            <!-- Wave Canvas Configurations -->
+            <div class="setting-row">
+                <label>Wave Thickness: <input type="range" id="wave-weight" min="1" max="8" step="1" value="3"></label>
+                <label>Wave Color: <input type="color" id="wave-color" value="#00ffcc"></label>
+            </div>
+
+            <!-- Kinetic Typography Scaling Settings -->
+            <div class="setting-row">
+                <label>Max Text Size: <input type="range" id="text-scale" min="2" max="6" step="0.2" value="3.5"></label>
+                <label>Text Accent Tint: <input type="color" id="text-color" value="#ff0055"></label>
+            </div>
+
+            <!-- System Behavior Mode Sliders -->
+            <div class="setting-row">
+                <label>Visual Style Theme:
+                    <select id="fx-theme">
+                        <option value="neon-pulse">Electric Neon Pulse</option>
+                        <option value="glitch-ghost">Glitch Phantom Matrix</option>
+                        <option value="minimal-clean">Clean Flat Space</option>
                     </select>
                 </label>
             </div>
-
-            <!-- Kinetic Playback Tracking Physics -->
-            <div class="control-group">
-                <h3>3. Scroll & Timing Physics</h3>
-                <label>Scroll Speed Factor: <input type="range" id="scroll-speed" min="0.5" max="3" step="0.1" value="1.5"></label>
-                <label>Visual Focus Blur: <input type="range" id="focus-blur" min="0" max="8" step="1" value="3"></label>
-                <label>Highlight Style: 
-                    <select id="highlight-style">
-                        <option value="glow-red">Neon Coca-Red Glow</option>
-                        <option value="glow-blue">Cyber Electric Blue</option>
-                        <option value="pulse-bold">Bold Bouncing Shift</option>
-                    </select>
-                </label>
-            </div>
-
-            <!-- Color Palette Themes Matrix -->
-            <div class="control-group">
-                <h3>4. Aesthetic Theme Mode</h3>
-                <label>Active Text Color: <input type="color" id="color-active" value="#ff2a2a"></label>
-                <label>Idle Text Color: <input type="color" id="color-idle" value="#666666"></label>
-                <label>Background Theme: 
-                    <select id="studio-theme">
-                        <option value="dark-slate">Midnight Slate</option>
-                        <option value="oled-black">True OLED Black</option>
-                        <option value="cyberpunk">Cyberpunk Grid</option>
-                    </select>
-                </label>
-            </div>
-        </aside>
-
-        <!-- Right Side: Live Scrolling Kinetic Typography Screen Stage -->
-        <main class="lyric-stage" id="stage">
-            <div class="scroll-wrapper" id="scroll-wrapper">
-                <!-- Lyrics will be dynamically injected and built here by JavaScript -->
-            </div>
-        </main>
-
+        </div>
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-/* Core Document Properties Reset */
+/* Document Layout Resets */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Courier New', Courier, monospace; /* Cyberpunk aesthetic look */
 }
 
 body, html {
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    background-color: #0b0d12;
-    color: #f5f6f9;
-}
-
-/* Master Grid Window Workspace Splitter */
-.studio-container {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    width: 100%;
-    height: 100vh;
-}
-
-/* Sidebar Menu Controls Shell */
-.control-panel {
-    background: #121620;
-    border-right: 1px solid #1f2637;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    overflow-y: auto;
-    z-index: 5;
-}
-
-.control-panel::-webkit-scrollbar {
-    width: 4px;
-}
-.control-panel::-webkit-scrollbar-thumb {
-    background: #2b354d;
-    border-radius: 4px;
-}
-
-h2 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+    background-color: #030307;
     color: #ffffff;
-    border-bottom: 2px solid #1f2637;
-    padding-bottom: 12px;
+    overflow: hidden;
 }
 
-h3 {
-    font-size: 0.9rem;
+/* Visual Stage Enclosure Screen */
+#visual-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* Background Fluid Rendering WebGL Wave Canvas */
+#wave-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Focal Center Text Presentation Box Grid layout */
+#lyric-focus-box {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    max-width: 80%;
+    padding: 20px;
+}
+
+#active-lyric-text {
+    font-size: 3.5rem;
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #6c7a9c;
-    margin-bottom: 12px;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 0, 85, 0.8);
+    transition: transform 0.05s ease-out;
 }
 
-.control-group {
-    background: #181d2a;
+#upcoming-subtext {
+    font-size: 1.1rem;
+    color: #616e88;
+    margin-top: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Modern Floating Settings Control Dashboard Panel Dock */
+#settings-dock {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 650px;
+    background: rgba(10, 11, 18, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
     padding: 16px;
-    border-radius: 10px;
-    border: 1px solid #22293a;
+    z-index: 10;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+.dock-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.setting-row {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.03);
 }
 
 label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
-    color: #abb7d4;
-    margin: 12px 0;
+    font-size: 0.75rem;
+    color: #8c9cb3;
+    margin: 6px 0;
 }
 
-/* Custom Config Interactive Tool Inputs */
 input[type="range"] {
     width: 50%;
-    accent-color: #ff2a2a;
+    accent-color: #ff0055;
     cursor: pointer;
 }
 
 input[type="color"] {
     border: none;
-    background: none;
-    width: 32px;
-    height: 24px;
+    background: transparent;
+    width: 30px;
+    height: 20px;
     cursor: pointer;
 }
 
 select {
-    background: #22293a;
-    color: #ffffff;
-    border: 1px solid #2d374e;
-    padding: 6px 10px;
-    border-radius: 6px;
+    background: #151821;
+    color: white;
+    border: 1px solid #2c3242;
+    padding: 4px;
+    border-radius: 4px;
     outline: none;
-    font-size: 0.8rem;
-    cursor: pointer;
+    font-size: 0.75rem;
 }
 
-.file-btn {
-    background: #ff2a2a;
-    color: white;
-    padding: 10px;
-    border-radius: 6px;
-    font-weight: 600;
+/* Upload Action File Button Styles */
+.upload-trigger {
+    background: #00ffcc;
+    color: #000000;
+    font-weight: 900;
+    padding: 8px;
+    border-radius: 4px;
     text-align: center;
     cursor: pointer;
-    transition: filter 0.2s;
     display: block;
+    width: 100%;
 }
-.file-btn:hover {
-    filter: brightness(1.1);
-}
-#audio-upload {
+
+#audio-input {
     display: none;
 }
-#file-status {
-    font-size: 0.75rem;
-    color: #526285;
-    text-align: center;
-    margin: 6px 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
+
 audio {
     width: 100%;
-    margin-top: 6px;
+    margin-top: 8px;
+    height: 30px;
 }
-
-/* Right Display Canvas Stage Area Layout */
-.lyric-stage {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-    background: #08090c;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s ease;
-}
-
-/* Seamless Rolling Scrolling Rig Element Box */
-.scroll-wrapper {
-    position: absolute;
-    width: 85%;
-    top: 45%;  /* Anchors the active singing row tracking coordinate plane zone center line */
-    transform: translateY(0);
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    display: flex;
-    flex-direction: column;
-}
-
-/* Micro Typography Blocks Processing Row Lines */
-.lyric-line {
-    font-weight: 700;
-    transition: all 0.4s ease;
-    opacity: 0.2;
-    transform: scale(0.92);
-}
-
-/* Dynamic Live Core Visual Theme Modifier Configurations Matrix */
-.lyric-line.active.glow-red {
-    opacity: 1 !important;
-    transform: scale(1.05) !important;
-    text-shadow: 0 0 20px rgba(255, 42, 42, 0.6);
-}
-
-.lyric-line.active.glow-blue {
-    opacity: 1 !important;
-    transform: scale(1.05) !important;
-    text-shadow: 0 0 20px rgba(0, 162, 255, 0.7);
-}
-
-.lyric-line.active.pulse-bold {
-    opacity: 1 !important;
-    transform: scale(1.12) !important;
-}
-// --- Hardcoded Interactive Lyric Matrix Array Data ---
-const songData = [
+// --- Raw Song Data Matrix Track Feed ---
+const songLyricsList = [
     "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", 
     "Staying in my own lane", "I’m a low-key pretty goofy", "really-got-it-good-breezy", 
     "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", 
@@ -293,153 +246,147 @@ const songData = [
     "Everything is turning out okay 😁"
 ];
 
-// Map Element Targets DOM Reference Nodes
-const elements = {
-    fileInput: document.getElementById('audio-upload'),
-    fileStatus: document.getElementById('file-status'),
-    player: document.getElementById('audio-player'),
-    wrapper: document.getElementById('scroll-wrapper'),
-    stage: document.getElementById('stage'),
-    fontSize: document.getElementById('font-size'),
-    lineHeight: document.getElementById('line-height'),
-    textAlign: document.getElementById('text-align'),
-    scrollSpeed: document.getElementById('scroll-speed'),
-    focusBlur: document.getElementById('focus-blur'),
-    highlightStyle: document.getElementById('highlight-style'),
-    colorActive: document.getElementById('color-active'),
-    colorIdle: document.getElementById('color-idle'),
-    theme: document.getElementById('studio-theme')
+// Reference Map DOM Selector Pointers
+const ui = {
+    uploader: document.getElementById('audio-input'),
+    player: document.getElementById('main-audio'),
+    canvas: document.getElementById('wave-canvas'),
+    mainText: document.getElementById('active-lyric-text'),
+    subText: document.getElementById('upcoming-subtext'),
+    weight: document.getElementById('wave-weight'),
+    wColor: document.getElementById('wave-color'),
+    tScale: document.getElementById('text-scale'),
+    tColor: document.getElementById('text-color'),
+    theme: document.getElementById('fx-theme')
 };
 
-let lineElementsArray = [];
-let currentIndex = -1;
+let canvasCtx = ui.canvas.getContext('2d');
+let audioCtx, analyser, dataArray;
+let isAudioConfigured = false;
+let currentLineIdx = 0;
 
-// Run App
-buildStudioStage();
-registerControlTriggers();
+// Fire up engine routines
+resizeCanvasViewport();
+window.addEventListener('resize', resizeCanvasViewport);
+setupControlInputListeners();
+renderWaveformLoop();
 
-// --- Step 1: Procedural Generation Stage Frame Assembly ---
-function buildStudioStage() {
-    elements.wrapper.innerHTML = "";
-    lineElementsArray = [];
-
-    songData.forEach((textStr, idx) => {
-        const div = document.createElement('div');
-        div.classList.add('lyric-line');
-        div.innerText = textStr;
-        
-        // Initial setup from default control inputs
-        div.style.fontSize = `${elements.fontSize.value}rem`;
-        div.style.marginBottom = `${parseFloat(elements.lineHeight.value) * 10}px`;
-        div.style.textAlign = elements.textAlign.value;
-        div.style.color = elements.colorIdle.value;
-        
-        elements.wrapper.appendChild(div);
-        lineElementsArray.push(div);
-    });
+function resizeCanvasViewport() {
+    ui.canvas.width = window.innerWidth;
+    ui.canvas.height = window.innerHeight;
 }
 
-// --- Step 2: Handle Audio & Calculate Line Transitions ---
-function registerControlTriggers() {
-    // Process Local Media Upload Track File Streams
-    elements.fileInput.addEventListener('change', function() {
+// --- Step 1: Initialize Audio Nodes & Bind Upload Events ---
+function setupControlInputListeners() {
+    ui.uploader.addEventListener('change', function() {
         if(this.files.length === 0) return;
-        const file = this.files[0];
-        elements.fileStatus.innerText = file.name;
-        elements.player.src = URL.createObjectURL(file);
+        ui.player.src = URL.createObjectURL(this.files[0]);
+        
+        if(!isAudioConfigured) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 128; // Fast calculations for snappy wave lines
+            
+            let source = audioCtx.createMediaElementSource(ui.player);
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+            
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+            isAudioConfigured = true;
+        }
+        currentLineIdx = 0;
+        advanceLyricsDisplay();
     });
 
-    // Real-Time Core Audio Timeline Event Monitor Link
-    elements.player.addEventListener('timeupdate', () => {
-        const duration = elements.player.duration || 180; // Default fallback to 3 mins
-        const progressPercent = elements.player.currentTime / duration;
+    // Match timeline percentage accurately onto our array indexing block rows
+    ui.player.addEventListener('timeupdate', () => {
+        if(!ui.player.duration) return;
+        const progress = ui.player.currentTime / ui.player.duration;
+        let calculatedIdx = Math.floor(progress * songLyricsList.length);
         
-        // Calculate current active line based on playback progress
-        let targetIndex = Math.floor(progressPercent * songData.length);
-        if (targetIndex >= songData.length) targetIndex = songData.length - 1;
+        if(calculatedIdx >= songLyricsList.length) calculatedIdx = songLyricsList.length - 1;
         
-        if (targetIndex !== currentIndex && targetIndex >= 0) {
-            updateActiveLineFocus(targetIndex);
+        if(calculatedIdx !== currentLineIdx && calculatedIdx >= 0) {
+            currentLineIdx = calculatedIdx;
+            advanceLyricsDisplay();
         }
     });
 
-    // Live Customization Parameter Controls Bindings Configuration
-    elements.fontSize.addEventListener('input', (e) => {
-        lineElementsArray.forEach(el => el.style.fontSize = `${e.target.value}rem`);
-        repositionScrollWrapper();
+    // Dynamic color updates instantly without reloads
+    ui.tColor.addEventListener('input', (e) => {
+        ui.mainText.style.textShadow = `0 0 15px ${e.target.value}`;
     });
-
-    elements.lineHeight.addEventListener('input', (e) => {
-        lineElementsArray.forEach(el => el.style.marginBottom = `${parseFloat(e.target.value) * 10}px`);
-        repositionScrollWrapper();
-    });
-
-    elements.textAlign.addEventListener('change', (e) => {
-        lineElementsArray.forEach(el => el.style.textAlign = e.target.value);
-    });
-
-    elements.colorActive.addEventListener('input', () => updateActiveLineFocus(currentIndex));
-    elements.colorIdle.addEventListener('input', () => {
-        lineElementsArray.forEach((el, idx) => {
-            if(idx !== currentIndex) el.style.color = elements.colorIdle.value;
-        });
-    });
-
-    elements.theme.addEventListener('change', applyThemeStyling);
 }
 
-// --- Step 3: Kinetic Focus Transitions Engine ---
-function updateActiveLineFocus(activeIndex) {
-    currentIndex = activeIndex;
-    const activeStyle = elements.highlightStyle.value;
-    const blurVal = elements.focusBlur.value;
-
-    lineElementsArray.forEach((lineEl, idx) => {
-        // Clear old tracker styling classes completely
-        lineEl.className = 'lyric-line';
+// --- Step 2: Swap Center Text Elements Safely ---
+function advanceLyricsDisplay() {
+    if(currentLineIdx < songLyricsList.length) {
+        ui.mainText.innerText = songLyricsList[currentLineIdx];
         
-        if(idx === activeIndex) {
-            lineEl.classList.add('active', activeStyle);
-            lineEl.style.color = elements.colorActive.value;
-            lineEl.style.filter = 'blur(0px)';
+        // Show what line is coming up next below the main line
+        if(currentLineIdx + 1 < songLyricsList.length) {
+            ui.subText.innerText = "NEXT: " + songLyricsList[currentLineIdx + 1];
         } else {
-            lineEl.style.color = elements.colorIdle.value;
-            // Apply step out blur physics on inactive lines if enabled
-            const distance = Math.abs(idx - activeIndex);
-            lineEl.style.filter = distance > 0 ? `blur(${Math.min(distance * blurVal * 0.5, blurVal)}px)` : 'none';
+            ui.subText.innerText = "FINISH LINE 🌴";
         }
-    });
-
-    repositionScrollWrapper();
-}
-
-// --- Step 4: Accurate Positioning Calculations ---
-function repositionScrollWrapper() {
-    if (currentIndex === -1 || !lineElementsArray[currentIndex]) return;
-    
-    const targetLine = lineElementsArray[currentIndex];
-    // Calculate the distance from the top of the container to the targeted active line text node element box
-    const targetOffsetTop = targetLine.offsetTop;
-    const targetHeight = targetLine.offsetHeight;
-    
-    // Smooth transition movement alignment calculations
-    const transformY = -(targetOffsetTop - (targetHeight / 2));
-    elements.wrapper.style.transform = `translateY(${transformY}px)`;
-}
-
-// --- Step 5: Studio Aesthetic Theme Controls Mapping ---
-function applyThemeStyling() {
-    const activeTheme = elements.theme.value;
-    if(activeTheme === 'dark-slate') {
-        elements.stage.style.background = '#08090c';
-        elements.stage.style.backgroundImage = 'none';
-    } else if(activeTheme === 'oled-black') {
-        elements.stage.style.background = '#000000';
-        elements.stage.style.backgroundImage = 'none';
-    } else if(activeTheme === 'cyberpunk') {
-        elements.stage.style.background = '#0f051d';
-        // Procedural background glowing grid matrix design logic fallback
-        elements.stage.style.backgroundImage = 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)';
-        elements.stage.style.backgroundSize = '30px 30px';
     }
+}
+
+// --- Step 3: Draw the Audio Wave Behind the Text ---
+function renderWaveformLoop() {
+    requestAnimationFrame(renderWaveformLoop);
+    
+    // Clear screen canvas grid every frame cleanly
+    canvasCtx.clearRect(0, 0, ui.canvas.width, ui.canvas.height);
+    
+    let audioLevel = 0;
+    
+    if(isAudioConfigured && analyser) {
+        analyser.getByteFrequencyData(dataArray);
+        
+        // Calculate average volume level for structural text impacts
+        let sum = 0;
+        for(let i = 0; i < dataArray.length; i++) {
+            sum += dataArray[i];
+        }
+        audioLevel = (sum / dataArray.length) / 255; // Normalized scale value (0.0 to 1.0)
+    }
+
+    // Apply scaling calculations to text size based on real-time track amplitude volume
+    const baseScaleSetting = parseFloat(ui.tScale.value);
+    ui.mainText.style.fontSize = `${baseScaleSetting}rem`;
+    
+    const scaleFactor = 1 + (audioLevel * 0.25);
+    ui.mainText.style.transform = `scale(${scaleFactor})`;
+
+    // Handle Theme effects adjustments mapping configuration
+    const currentTheme = ui.theme.value;
+    if(currentTheme === 'glitch-ghost' && audioLevel > 0.5) {
+        ui.mainText.style.letterSpacing = `${audioLevel * 12}px`;
+    } else {
+        ui.mainText.style.letterSpacing = '-1px';
+    }
+
+    // Render Audio Oscilloscope Sine lines
+    canvasCtx.lineWidth = parseFloat(ui.weight.value);
+    canvasCtx.strokeStyle = ui.wColor.value;
+    canvasCtx.beginPath();
+
+    const sliceWidth = ui.canvas.width / (isAudioConfigured ? dataArray.length : 40);
+    let x = 0;
+
+    for (let i = 0; i < (isAudioConfigured ? dataArray.length : 40); i++) {
+        // Use real audio data if available, otherwise draw a subtle, idle wave line
+        const v = isAudioConfigured ? (dataArray[i] / 128.0) : 1.0 + Math.sin(i * 0.3) * 0.1;
+        // Map wave heights exactly across the center dividing plane vector array boundary coordinate line
+        const y = (v * ui.canvas.height / 2) + (Math.sin(i + performance.now() * 0.005) * 10);
+
+        if (i === 0) canvasCtx.moveTo(x, y);
+        else canvasCtx.lineTo(x, y);
+
+        x += sliceWidth;
+    }
+
+    canvasCtx.lineTo(ui.canvas.width, ui.canvas.height / 2);
+    canvasCtx.stroke();
 }
