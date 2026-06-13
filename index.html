@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goofball Industrial Rock Soundtrack</title>
+    <title>Goofball 256-Step Industrial Rock Soundtrack</title>
     <style>
         body {
             background: #05050a;
@@ -56,10 +56,11 @@
             border-radius: 12px;
             border: 2px solid #232336;
             box-shadow: 0 0 35px rgba(0,0,0,0.8);
+            scroll-behavior: smooth;
         }
         .sequencer {
             display: grid;
-            grid-template-columns: 80px repeat(64, 22px);
+            grid-template-columns: 80px repeat(256, 22px);
             gap: 3px;
             width: fit-content;
         }
@@ -69,6 +70,11 @@
             font-weight: bold;
             font-size: 0.7rem;
             color: #00ffcc;
+            position: sticky;
+            left: 0;
+            background: #10101b;
+            z-index: 10;
+            padding-right: 5px;
         }
         .pad {
             width: 22px;
@@ -97,14 +103,14 @@
 </head>
 <body>
 
-    <h1>CYBER ORCHESTRA: CYBER-ROCK GUITAR</h1>
-    <p>Scroll horizontally to view the entire continuous track layout grid.</p>
+    <h1>CYBER ORCHESTRA: EXPANDED 256-STEP LAYOUT</h1>
+    <p>The layout will auto-scroll as it walks across the continuous full-length performance timeline.</p>
     
     <div class="controls">
         <button id="playBtn">EXECUTE ARCHITECTURE</button>
     </div>
 
-    <div class="sequencer-container">
+    <div class="sequencer-container" id="scrollContainer">
         <div class="sequencer" id="grid"></div>
     </div>
 
@@ -112,7 +118,7 @@
         let audioCtx = null;
         
         const instruments = ['G5', 'F5', 'Eb5', 'D5', 'C5', 'B4', 'Ab4', 'G4', 'F4', 'Eb4', 'D4', 'C4'];
-        const steps = 64;
+        const steps = 256;
         let currentStep = 0;
         let isPlaying = false;
         let intervalId = null;
@@ -128,19 +134,34 @@
             tracks[inst] = new Array(steps).fill(false);
         });
 
+        // 256-Step Continuous Evolving Track Presets
         const songPreset = [
-            ['C4', 0], ['Eb4', 1], ['G4', 2], ['C5', 3], ['Eb5', 4], ['G5', 5],
-            ['F5', 6], ['D5', 8], ['B4', 10],
-            ['C4', 12], ['G4', 13], ['C5', 14],
-            ['Eb4', 16], ['Eb4', 17], ['G4', 18], ['G4', 19], ['C5', 20], ['C5', 21], ['Eb5', 22],
-            ['D5', 24], ['D5', 25], ['B4', 26], ['B4', 27], ['G4', 28], ['G4', 29], ['D4', 30],
-            ['C4', 32], ['C5', 32], ['D4', 34], ['D5', 34], ['Eb4', 36], ['Eb5', 36], ['F4', 38], ['F5', 38],
-            ['G4', 40], ['G5', 40], ['Ab4', 42], ['Ab5', 42], ['C5', 44], ['Eb5', 46],
-            ['C4', 48], ['C4', 49], ['C4', 50], 
-            ['Eb4', 52], ['Eb4', 53], ['Eb4', 54],
-            ['Ab4', 56], ['C5', 56], ['F5', 56],
-            ['G4', 60], ['C5', 60], ['Eb5', 60], ['G5', 60],
-            ['G5', 61], ['G5', 62], ['G5', 63]
+            // [SECTION 1] Bouncy Goofball Opening Theme (Steps 0 - 63)
+            ['C4', 0], ['Eb4', 1], ['G4', 2], ['C5', 3], ['Eb5', 4], ['G5', 5], ['F5', 6], ['D5', 8], ['B4', 10], ['C4', 12], ['G4', 13], ['C5', 14],
+            ['Eb4', 16], ['Eb4', 17], ['G4', 18], ['G4', 19], ['C5', 20], ['C5', 21], ['Eb5', 22], ['D5', 24], ['D5', 25], ['B4', 26], ['B4', 27], ['G4', 28], ['G4', 29], ['D4', 30],
+            ['C4', 32], ['C5', 32], ['D4', 34], ['D5', 34], ['Eb4', 36], ['Eb5', 36], ['F4', 38], ['F5', 38], ['G4', 40], ['G5', 40], ['Ab4', 42], ['Ab5', 42], ['C5', 44], ['Eb5', 46],
+            ['C4', 48], ['C4', 49], ['C4', 50], ['Eb4', 52], ['Eb4', 53], ['Eb4', 54], ['Ab4', 56], ['C5', 56], ['F5', 56], ['G4', 60], ['C5', 60], ['Eb5', 60], ['G5', 60],
+
+            // [SECTION 2] Aggressive Rising Action Run (Steps 64 - 127)
+            ['C4', 64], ['Eb4', 66], ['F4', 68], ['G4', 70], ['Ab4', 72], ['Bb4', 74], ['C5', 76], ['D5', 78],
+            ['Eb5', 80], ['D5', 82], ['C5', 84], ['Bb4', 86], ['Ab4', 88], ['G4', 90], ['F4', 92], ['Eb4', 94],
+            ['C4', 96], ['G4', 98], ['C5', 100], ['Eb5', 102], ['G5', 104], ['F5', 106], ['Eb5', 108], ['D5', 110],
+            ['C5', 112], ['B4', 114], ['C5', 116], ['D5', 118], ['G4', 120], ['G4', 122], ['G4', 124], ['G4', 126],
+
+            // [SECTION 3] Heavy Power Riff Chorus Layer (Steps 128 - 191)
+            ['C4', 128], ['G4', 128], ['C5', 128], ['C4', 132], ['G4', 132], ['C5', 132],
+            ['Eb4', 136], ['Bb4', 136], ['Eb5', 136], ['F4', 140], ['C5', 140], ['F5', 140],
+            ['G4', 144], ['D5', 144], ['G5', 144], ['Ab4', 148], ['Eb5', 148], ['Ab5', 148],
+            ['F4', 152], ['C5', 152], ['F5', 152], ['G4', 156], ['D5', 156], ['G5', 156],
+            ['C4', 160], ['G4', 160], ['C5', 160], ['Eb5', 164], ['D5', 168], ['C5', 172],
+            ['Ab4', 176], ['F4', 180], ['G4', 184], ['D4', 188],
+
+            // [SECTION 4] Heavy Silence Dropout into Grand Finale (Steps 192 - 255)
+            ['C4', 192], ['C4', 194], ['C4', 196],
+            ['Eb4', 208], ['Eb4', 210], ['Eb4', 212],
+            ['F4', 224], ['Ab4', 228], ['C5', 232], ['Eb5', 236],
+            ['G4', 240], ['C5', 240], ['Eb5', 240], ['G5', 240],
+            ['G5', 244], ['G5', 248], ['G5', 252]
         ];
 
         songPreset.forEach(([note, step]) => {
@@ -167,22 +188,18 @@
             }
         });
 
-        // RE-ENGINEERED: Custom Distorted Cyber-Guitar Synth Module
         function playCyberGuitar(frequency, isLong) {
             const now = audioCtx.currentTime;
-            const duration = isLong ? 0.70 : 0.16;
+            const duration = isLong ? 0.85 : 0.16;
             
             const osc = audioCtx.createOscillator();
-            // A combination of pulse/sawtooth behaviors makes a raw guitar tone
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(frequency, now);
 
-            // Add subtle pitch vibration (chorus effect) for rock grit
             osc.frequency.linearRampToValueAtTime(frequency * 1.005, now + 0.04);
             osc.frequency.linearRampToValueAtTime(frequency * 0.995, now + 0.08);
             osc.frequency.linearRampToValueAtTime(frequency, now + 0.12);
 
-            // WaveShaper Node simulates pure heavy amplifier distortion drive
             const distortion = audioCtx.createWaveShaper();
             function makeDistortionCurve(amount) {
                 const k = typeof amount === 'number' ? amount : 50;
@@ -195,17 +212,17 @@
                 }
                 return curve;
             }
-            distortion.curve = makeDistortionCurve(120); // High-gain rock overdrive level
+            distortion.curve = makeDistortionCurve(135); 
             distortion.oversample = '4x';
 
             const filter = audioCtx.createBiquadFilter();
-            filter.type = 'peaking'; // Emulates an electric guitar cabinet speaker curve
+            filter.type = 'peaking';
             filter.frequency.setValueAtTime(1400, now);
             filter.Q.setValueAtTime(4, now);
             filter.gain.setValueAtTime(8, now);
 
             const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(0.05, now); // Attenuate loud guitar spikes safely
+            gain.gain.setValueAtTime(0.05, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
             osc.connect(distortion);
@@ -219,13 +236,22 @@
 
         function playStep() {
             document.querySelectorAll('.pad').forEach(p => p.classList.remove('current'));
-            document.querySelectorAll(`[data-step="${currentStep}"]`).forEach(p => p.classList.add('current'));
+            
+            const activePads = document.querySelectorAll(`[data-step="${currentStep}"]`);
+            activePads.forEach(p => p.classList.add('current'));
+            
+            const scrollContainer = document.getElementById('scrollContainer');
+            const firstActivePad = activePads[0];
+            if (firstActivePad) {
+                scrollContainer.scrollLeft = firstActivePad.offsetLeft - 100;
+            }
             
             instruments.forEach(inst => {
                 if (tracks[inst][currentStep]) {
                     const isLong = (currentStep >= 12 && currentStep <= 14) || 
                                    (currentStep >= 48 && currentStep <= 54) || 
-                                   (currentStep >= 60);
+                                   (currentStep >= 192 && currentStep <= 196) ||
+                                   (currentStep >= 240);
                     playCyberGuitar(frequencies[inst], isLong);
                 }
             });
@@ -246,8 +272,9 @@
                 document.getElementById('playBtn').style.background = '#ff007f';
                 document.querySelectorAll('.pad').forEach(p => p.classList.remove('current'));
                 isPlaying = false;
+                currentStep = 0;
             } else {
-                intervalId = setInterval(playStep, 160); // Driving rock tempo speed (approx 93 BPM)
+                intervalId = setInterval(playStep, 160);
                 document.getElementById('playBtn').innerText = 'HALT SCORE';
                 document.getElementById('playBtn').style.background = '#00ffcc';
                 isPlaying = true;
