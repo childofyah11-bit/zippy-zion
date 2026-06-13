@@ -3,170 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text-Art Particle Storm Visualizer</title>
+    <title>Simple Sing-Along Prompter</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Particle Matrix Drawing Canvas Layer -->
-    <canvas id="particle-canvas"></canvas>
-
-    <!-- Floating HUD Command Console Overlay -->
-    <div id="matrix-overlay">
-        <div class="hud-header">
-            <h2>PARTICLE STORM MATRIX</h2>
-            <p id="system-status">AWAITING CLOUD STREAMS...</p>
-        </div>
-
-        <!-- Google Drive Cloud Link Portals -->
-        <div class="input-bay">
-            <div class="portal-box">
-                <label>1. VOCAL STREAM (SINGING LINK)</label>
-                <input type="text" id="vocal-link" placeholder="Paste Google Drive share link...">
+    <!-- Sing-Along Screen Display Arena -->
+    <div class="prompter-container">
+        
+        <!-- Top Half: Center Stage Lyric Delivery Viewport -->
+        <main class="lyric-stage">
+            <div id="scroll-wrapper" class="scroll-wrapper">
+                <!-- Lyrics are safely generated here by JavaScript -->
             </div>
-            <div class="portal-box">
-                <label>2. RHYTHM STREAM (FANCY BEAT LINK)</label>
-                <input type="text" id="beat-link" placeholder="Paste Google Drive share link...">
-            </div>
-        </div>
+        </main>
 
-        <!-- Matrix Tuning Variables Deck -->
-        <div class="tuning-deck">
-            <label>Explosion Force: <input type="range" id="blast-force" min="5" max="25" step="1" value="12"></label>
-            <label>Matrix Tint: <input type="color" id="matrix-color" value="#00ff55"></label>
-            <button id="ignite-engine-btn">ENGAGE QUANTUM STREAM</button>
-        </div>
+        <!-- Bottom Half: Simple Cloud Input Deck & Action Triggers -->
+        <footer class="prompter-deck">
+            
+            <!-- Quick Link Box -->
+            <div class="deck-row">
+                <input type="text" id="song-url" placeholder="Paste your Google Drive Song or Beat Link here...">
+                <button id="load-btn">LOAD TRACK</button>
+            </div>
+
+            <!-- Central Timeline Audio Controls Tracker -->
+            <div class="deck-row audio-row">
+                <audio id="main-audio" controls></audio>
+            </div>
+
+            <!-- Manual Override Navigation Buttons -->
+            <div class="deck-row override-row">
+                <button id="prev-line-btn" class="manual-btn">⏮️ PREVIOUS LINE</button>
+                <span id="manual-indicator">MODE: AUTO PACING</span>
+                <button id="next-line-btn" class="manual-btn">NEXT LINE ⏭️</button>
+            </div>
+            
+        </footer>
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-/* Core Terminal Layout System Resets */
+/* Core Structural Reset Layouts */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Courier New', Courier, monospace; /* Monospace hacker look */
+    font-family: system-ui, -apple-system, sans-serif;
 }
 
 body, html {
     width: 100%;
     height: 100%;
-    background-color: #020202;
+    background-color: #0b0c10;
+    color: #ffffff;
     overflow: hidden;
-    color: #00ff55; /* Classic terminal green */
 }
 
-/* Fullscreen Particle Simulation Layer */
-#particle-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* Main Dashboard Workspace split view */
+.prompter-container {
+    display: grid;
+    grid-template-rows: 1fr 200px;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Lyric Presentation Theater Floor Area */
+.lyric-stage {
+    position: relative;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    overflow: hidden;
+    background-color: #0d0f14;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Floating HUD Console Dashboard Panel */
-#matrix-overlay {
+/* The Smooth Rolling Text Rig */
+.scroll-wrapper {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 360px;
-    background: rgba(5, 10, 5, 0.85);
-    border: 1px solid #00ff55;
-    box-shadow: 0 0 15px rgba(0, 255, 85, 0.2);
-    border-radius: 6px;
-    padding: 16px;
-    z-index: 10;
-}
-
-.hud-header h2 {
-    font-size: 1.2rem;
-    font-weight: 900;
-    letter-spacing: 1px;
-}
-
-#system-status {
-    font-size: 0.75rem;
-    color: #00aa44;
-    margin-top: 4px;
-    margin-bottom: 14px;
-}
-
-/* Input Fields & Layout Architecture Blocks */
-.input-bay {
+    width: 85%;
+    top: 40%; /* Keeps active singing row lines perfectly anchored in the sweet spot */
+    transform: translateY(0px);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 14px;
+    text-align: center;
 }
 
-.portal-box label {
-    font-size: 0.7rem;
-    display: block;
-    margin-bottom: 4px;
-    color: #00bb44;
+/* Micro Typography Line Block Processing Row Elements */
+.sing-line {
+    font-size: 2.2rem;
+    font-weight: 800;
+    padding: 15px 0;
+    color: #444b59; /* Dim tone for lines that are coming up or finished */
+    transition: all 0.35s ease;
+    transform: scale(0.92);
 }
 
-.portal-box input {
-    width: 100%;
-    background: #000000;
-    border: 1px solid #00aa44;
-    padding: 8px;
-    border-radius: 4px;
-    color: #00ff55;
-    font-size: 0.75rem;
-    outline: none;
+/* Highlight Styling rule for the Active Sing Along sentence block */
+.sing-line.active {
+    color: #00ffcc; /* Bright friendly turquoise */
+    text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+    transform: scale(1.08);
 }
 
-.portal-box input:focus {
-    border: 1px solid #00ff55;
-    box-shadow: 0 0 8px rgba(0, 255, 85, 0.4);
-}
-
-/* Tuning Slider Bars System Matrix Layout */
-.tuning-deck label {
+/* Bottom Controls Deck Dashboard Enclosure Dock */
+.prompter-deck {
+    background: #141822;
+    border-top: 1px solid #22293a;
+    padding: 16px 30px;
     display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.deck-row {
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    gap: 15px;
+}
+
+/* Link input boxes style values matrix */
+#song-url {
+    flex: 1;
+    background: #1b2234;
+    border: 1px solid #2d3954;
+    border-radius: 6px;
+    padding: 10px;
+    color: #00ffcc;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+#load-btn {
+    background: #00ffcc;
+    color: #141822;
+    font-weight: bold;
+    padding: 0 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.audio-row audio {
+    width: 100%;
+}
+
+/* Manual Move Override Button Layout Elements configuration styles */
+.override-row {
     justify-content: space-between;
     align-items: center;
+}
+
+.manual-btn {
+    background: #22293a;
+    color: #ffffff;
+    border: 1px solid #2d3954;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.manual-btn:hover {
+    background: #2d3954;
+    color: #00ffcc;
+}
+
+#manual-indicator {
     font-size: 0.75rem;
-    margin: 10px 0;
-}
-
-input[type="range"] {
-    accent-color: #00ff55;
-    cursor: pointer;
-}
-
-input[type="color"] {
-    border: 1px solid #00ff55;
-    background: transparent;
-    width: 30px;
-    height: 20px;
-    cursor: pointer;
-}
-
-/* Terminal Execution Link Button Trigger */
-#ignite-engine-btn {
-    width: 100%;
-    background: #00ff55;
-    color: #000000;
-    border: none;
-    padding: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #627293;
     font-weight: bold;
-    font-size: 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 255, 85, 0.4);
-    margin-top: 10px;
 }
-
-#ignite-engine-btn:active {
-    transform: scale(0.98);
-}
-// --- Hardcoded Song Lyric Index Array ---
-const matrixLyrics = [
+// --- Raw Song Lyric Index Block Feed Array Data ---
+const singAlongLyrics = [
     "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", 
     "Staying in my own lane", "I’m a low-key pretty goofy", "really-got-it-good-breezy", 
     "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", 
@@ -198,179 +217,134 @@ const matrixLyrics = [
     "Everything is turning out okay 😁"
 ];
 
-const nodes = {
-    vocalIn: document.getElementById('vocal-link'),
-    beatIn: document.getElementById('beat-link'),
-    status: document.getElementById('system-status'),
-    canvas: document.getElementById('particle-canvas'),
-    playBtn: document.getElementById('ignite-engine-btn'),
-    force: document.getElementById('blast-force'),
-    color: document.getElementById('matrix-color')
+// Quick target pointers maps
+const ui = {
+    input: document.getElementById('song-url'),
+    loadBtn: document.getElementById('load-btn'),
+    audio: document.getElementById('main-audio'),
+    wrapper: document.getElementById('scroll-wrapper'),
+    prevBtn: document.getElementById('prev-line-btn'),
+    nextBtn: document.getElementById('next-line-btn'),
+    indicator: document.getElementById('manual-indicator')
 };
 
-let ctx = nodes.canvas.getContext('2d');
-let audioCtx, vocalAnalyser, beatAnalyser, dataA, dataB;
-let particles = [];
-let activeIndex = 0;
-let isStreamingActive = false;
+let lineElements = [];
+let activeLineIdx = 0;
+let isManualOverrideActive = false;
 
-let vocalTrack = new Audio();
-let beatTrack = new Audio();
-vocalTrack.crossOrigin = "anonymous";
-beatTrack.crossOrigin = "anonymous";
+// Initialize Workspace Prompter
+buildPrompterLines();
+registerStudioEvents();
 
-// Setup Canvas Size Boundary Frames
-resizeWorkspaceCanvas();
-window.addEventListener('resize', resizeWorkspaceCanvas);
-registerControlBinds();
-simulationLoop();
+// --- Step 1: Text Row Elements Procedural Builder Loop ---
+function buildPrompterLines() {
+    ui.wrapper.innerHTML = "";
+    lineElements = [];
 
-function resizeWorkspaceCanvas() {
-    nodes.canvas.width = window.innerWidth;
-    nodes.canvas.height = window.innerHeight;
+    singAlongLyrics.forEach((lineText) => {
+        const rowDiv = document.createElement('div');
+        rowDiv.classList.add('sing-line');
+        rowDiv.innerText = lineText;
+        
+        ui.wrapper.appendChild(rowDiv);
+        lineElements.push(rowDiv);
+    });
+    
+    updateActiveLineHighlight(0);
 }
 
-// --- Step 1: Clean Google Drive Share URLs ---
-function cleanUrl(url) {
-    const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/) || url.match(/id=([a-zA-Z0-9-_]+)/);
-    if (fileIdMatch && fileIdMatch[1]) {
-        return `https://google.com{fileIdMatch[1]}`;
+// --- Step 2: Extract Google Drive File IDs ---
+function parseGoogleDriveUrl(rawUrl) {
+    const extractedId = rawUrl.match(/\/d\/([a-zA-Z0-9-_]+)/) || rawUrl.match(/id=([a-zA-Z0-9-_]+)/);
+    if (extractedId && extractedId) {
+        return `https://google.com{extractedId}`;
     }
-    return url;
+    return rawUrl;
 }
 
-// --- Step 2: Assemble Audio Pipeline Nodes ---
-function registerControlBinds() {
-    nodes.playBtn.addEventListener('click', () => {
-        const vUrl = nodes.vocalIn.value.trim();
-        const bUrl = nodes.beatIn.value.trim();
-
-        if(!vUrl || !bUrl) {
-            alert("Please input your Google Drive vocal and beat stream links!");
+// --- Step 3: Sync Timeline Tracker Feed Triggers ---
+function registerStudioEvents() {
+    // Action file loader button link event
+    ui.loadBtn.addEventListener('click', () => {
+        const rawLink = ui.input.value.trim();
+        if(!rawLink) {
+            alert("Please paste your public Google Drive song link into the input box!");
             return;
         }
-
-        nodes.status.innerText = "INITIALIZING ARCHIVE STREAMS...";
-        vocalTrack.src = cleanUrl(vUrl);
-        beatTrack.src = cleanUrl(bUrl);
-
-        if(!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            
-            vocalAnalyser = audioCtx.createAnalyser(); vocalAnalyser.fftSize = 32;
-            let srcA = audioCtx.createMediaElementSource(vocalTrack);
-            srcA.connect(vocalAnalyser); vocalAnalyser.connect(audioCtx.destination);
-            dataA = new Uint8Array(vocalAnalyser.frequencyBinCount);
-
-            beatAnalyser = audioCtx.createAnalyser(); beatAnalyser.fftSize = 32;
-            let srcB = audioCtx.createMediaElementSource(beatTrack);
-            srcB.connect(beatAnalyser); beatAnalyser.connect(audioCtx.destination);
-            dataB = new Uint8Array(beatAnalyser.frequencyBinCount);
-
-            isStreamingActive = true;
-        }
-
-        beatTrack.addEventListener('canplaythrough', () => {
-            vocalTrack.play();
-            beatTrack.play();
-            nodes.status.innerText = "MATRIX GRID SYNCHRONIZED";
-            assembleTextParticles(matrixLyrics[0]);
+        
+        ui.loadBtn.innerText = "LOADING...";
+        ui.audio.crossOrigin = "anonymous";
+        ui.audio.src = parseGoogleDriveUrl(rawLink);
+        ui.audio.load();
+        
+        ui.audio.addEventListener('canplaythrough', () => {
+            ui.loadBtn.innerText = "TRACK READY";
+            isManualOverrideActive = false;
+            ui.indicator.innerText = "MODE: AUTO PACING";
+            updateActiveLineHighlight(0);
         }, { once: true });
     });
 
-    beatTrack.addEventListener('timeupdate', () => {
-        if(!beatTrack.duration) return;
-        const progress = beatTrack.currentTime / beatTrack.duration;
-        let calculatedIdx = Math.floor(progress * matrixLyrics.length);
-        if(calculatedIdx >= matrixLyrics.length) calculatedIdx = matrixLyrics.length - 1;
+    // Auto Pacing Tracking Calculation Rule
+    ui.audio.addEventListener('timeupdate', () => {
+        // If user manually pushed a button, pause auto scroll calculations so it doesn't fight them
+        if (isManualOverrideActive || !ui.audio.duration) return;
 
-        if(calculatedIdx !== activeIndex && calculatedIdx >= 0) {
-            activeIndex = calculatedIdx;
-            assembleTextParticles(matrixLyrics[activeIndex]);
+        const timelineProgressPct = ui.audio.currentTime / ui.audio.duration;
+        let calculatedLineTarget = Math.floor(timelineProgressPct * singAlongLyrics.length);
+
+        if (calculatedLineTarget >= singAlongLyrics.length) {
+            calculatedLineTarget = singAlongLyrics.length - 1;
+        }
+
+        if (calculatedLineTarget !== activeLineIdx && calculatedLineTarget >= 0) {
+            updateActiveLineHighlight(calculatedLineTarget);
+        }
+    });
+
+    // --- Step 4: Hook Up Option to Move Stuff Manually ---
+    ui.prevBtn.addEventListener('click', () => {
+        if(activeLineIdx > 0) {
+            engageManualOverrideMode(activeLineIdx - 1);
+        }
+    });
+
+    ui.nextBtn.addEventListener('click', () => {
+        if(activeLineIdx < singAlongLyrics.length - 1) {
+            engageManualOverrideMode(activeLineIdx + 1);
         }
     });
 }
 
-// --- Step 3: Map Out Particle Coordinates ---
-function assembleTextParticles(text) {
-    particles = [];
-    ctx.font = "bold 32px 'Courier New'";
+// --- Step 5: Shift Text Focal Target Positions ---
+function engageManualOverrideMode(targetIdx) {
+    isManualOverrideActive = true;
+    ui.indicator.innerText = "MODE: MANUAL OVERRIDE";
     
-    // Calculate centering matrix layout grids
-    const textWidth = ctx.measureText(text).width;
-    const startX = (nodes.canvas.width - textWidth) / 2;
-    const startY = nodes.canvas.height / 2;
-
-    // Split text into individual character node positions
-    for(let i = 0; i < text.length; i++) {
-        const letter = text[i];
-        if(letter === " ") continue;
-
-        const letterWidth = ctx.measureText(text.substring(0, i)).width;
-
-        particles.push({
-            char: letter,
-            x: Math.random() * nodes.canvas.width, // Spawn scattered randomly
-            y: Math.random() * nodes.canvas.height,
-            targetX: startX + letterWidth,         // Assemble into this target slot
-            targetY: startY,
-            vx: 0,
-            vy: 0
-        });
+    // Jump audio play position directly to estimated line location if song is currently running
+    if(ui.audio.duration) {
+        const estimatedPlaybackSecond = (targetIdx / singAlongLyrics.length) * ui.audio.duration;
+        ui.audio.currentTime = estimatedPlaybackSecond;
     }
+    
+    updateActiveLineHighlight(targetIdx);
 }
 
-// --- Step 4: The Canvas Simulation Framework Loop ---
-function simulationLoop() {
-    requestAnimationFrame(simulationLoop);
+function updateActiveLineHighlight(targetIndex) {
+    activeLineIdx = targetIndex;
 
-    // Give a trailing fade blur look to the screen background matrix text frame
-    ctx.fillStyle = "rgba(2, 2, 2, 0.25)";
-    ctx.fillRect(0, 0, nodes.canvas.width, nodes.canvas.height);
-
-    let voiceVol = 0, beatKick = 0;
-    if(isStreamingActive && vocalAnalyser && beatAnalyser) {
-        vocalAnalyser.getByteFrequencyData(dataA);
-        beatAnalyser.getByteFrequencyData(dataB);
-
-        // Capture voice level for alignment forces
-        let sumA = 0; for(let i=0; i<dataA.length; i++) sumA += dataA[i];
-        voiceVol = (sumA / dataA.length) / 255;
-
-        // Capture bass beat kicks for particle storms explosions
-        beatKick = dataB[0] / 255; 
-    }
-
-    const colorHex = nodes.color.value;
-    const blastMultiplier = parseFloat(nodes.force.value);
-
-    ctx.font = "bold 32px 'Courier New'";
-    ctx.fillStyle = colorHex;
-
-    particles.forEach(p => {
-        // Trigger scatter explosion whenever a heavy beat drops on the rhythm channel
-        if(beatKick > 0.68) {
-            p.vx += (Math.random() - 0.5) * blastMultiplier;
-            p.vy += (Math.random() - 0.5) * blastMultiplier;
+    lineElements.forEach((divNode, idx) => {
+        if(idx === targetIndex) {
+            divNode.classList.add('active');
+        } else {
+            divNode.classList.remove('active');
         }
-
-        // Apply magnets to snap particle velocity paths back to text rows when voice sounds
-        const dx = p.targetX - p.x;
-        const dy = p.targetY - p.y;
-        
-        // Assembling speed relies directly on the vocal presence scale
-        const gravitySpeed = 0.03 + (voiceVol * 0.05);
-        p.vx += dx * gravitySpeed;
-        p.vy += dy * gravitySpeed;
-
-        // Physics friction drag dampener
-        p.vx *= 0.85;
-        p.vy *= 0.85;
-
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Render typography particles onto current frame viewports
-        ctx.fillText(p.char, p.x, p.y);
     });
+
+    // Translate scroll rig smoothly up or down relative to selected text block offset height coordinate box
+    if (lineElements[targetIndex]) {
+        const targetElement = lineElements[targetIndex];
+        const calculatedTransformY = -(targetElement.offsetTop - (targetElement.offsetHeight / 2));
+        ui.wrapper.style.transform = `translateY(${calculatedTransformY}px)`;
+    }
 }
