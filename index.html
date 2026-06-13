@@ -223,6 +223,7 @@
             <div class="lyric-line" id="lyric2">Press Execute Architecture to track "Small Town Star"</div>
         </div>
     </div>
+
     <script>
         let audioCtx = null;
         let masterGainNode = null;
@@ -322,6 +323,8 @@
                 grid.appendChild(pad);
             }
         });
+    </script>
+    <script>
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -541,3 +544,4 @@
             if (masterGainNode) masterGainNode.gain.setValueAtTime(val, audioCtx.currentTime);
         });
 
+        document.getElementById('tempoSlider').addEventListener('input', (e) => {
