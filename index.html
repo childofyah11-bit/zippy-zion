@@ -32,9 +32,10 @@
         }
         .controls {
             margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
         }
         button {
-            background: #ff007f;
             color: white;
             border: none;
             padding: 10px 30px;
@@ -42,11 +43,22 @@
             font-weight: bold;
             border-radius: 20px;
             cursor: pointer;
-            box-shadow: 0 0 12px rgba(255,0,127,0.3);
             transition: 0.2s;
         }
-        button:hover {
+        #playBtn {
+            background: #ff007f;
+            box-shadow: 0 0 12px rgba(255,0,127,0.3);
+        }
+        #playBtn:hover {
             background: #ff3399;
+        }
+        #clearBtn {
+            background: #00eaff;
+            color: #05050a;
+            box-shadow: 0 0 12px rgba(0,234,255,0.3);
+        }
+        #clearBtn:hover {
+            background: #33f0ff;
         }
         .sequencer-container {
             max-width: 95vw;
@@ -107,6 +119,7 @@
     
     <div class="controls">
         <button id="playBtn">EXECUTE ARCHITECTURE</button>
+        <button id="clearBtn">CLEAR ALL BLOCKS</button>
     </div>
 
     <div class="sequencer-container" id="scrollContainer">
@@ -224,6 +237,16 @@
                 document.getElementById('playBtn').style.background = '#00ffcc';
                 isPlaying = true;
             }
+        });
+
+        // NEW RESET ARCHITECTURE MODULE: Clears all selected note states completely
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            instruments.forEach(inst => {
+                tracks[inst].fill(false);
+            });
+            document.querySelectorAll('.pad').forEach(pad => {
+                pad.classList.remove('active');
+            });
         });
     </script>
 </body>
