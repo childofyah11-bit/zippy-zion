@@ -3,195 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio-Only Synthesizer</title>
+    <title>8-BIT PIXEL SYNTH</title>
     <style>
+        /* Retro Pixel Art Styling */
         body {
-            background-color: #121214;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            image-rendering: pixelated;
         }
 
-        .synth-box {
-            background: #1e1e24;
-            border: 2px solid #333;
-            border-radius: 8px;
-            padding: 20px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            background: #111;
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        .control-group {
+        /* Forced Landing Gatekeeper Screen */
+        #boot-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
             display: flex;
             flex-direction: column;
-            width: 45%;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            border: 8px double #00ff00;
+            box-sizing: border-box;
+        }
+
+        .insert-coin-btn {
+            background: #ff0055;
+            color: #fff;
+            border: 4px solid #fff;
+            padding: 15px 30px;
+            font-family: inherit;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 6px 6px 0px #aa0033;
+            text-transform: uppercase;
+        }
+
+        .insert-coin-btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0px #aa0033;
+        }
+
+        /* Main Cabinet Box */
+        .arcade-cabinet {
+            background: #111;
+            border: 6px solid #00ff00;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 10px 10px 0px #004400;
+        }
+
+        .screen-header {
+            text-align: center;
+            border-bottom: 4px dashed #00ff00;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .control-row {
+            background: #000;
+            border: 4px solid #222;
+            padding: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         label {
-            font-size: 12px;
+            font-size: 14px;
             text-transform: uppercase;
-            margin-bottom: 8px;
-            color: #aaa;
         }
 
         select, input[type="range"] {
-            padding: 8px;
-            background: #2a2a32;
-            color: white;
-            border: 1px solid #444;
-            border-radius: 4px;
-        }
-
-        .keyboard {
-            display: flex;
             background: #000;
-            padding: 10px;
-            border-radius: 6px;
-            height: 150px;
+            color: #00ff00;
+            border: 3px solid #00ff00;
+            font-family: inherit;
+            font-weight: bold;
+            padding: 4px;
+            outline: none;
         }
 
-        .key {
+        /* 8-Bit Pixel Piano Keys */
+        .arcade-keys {
+            display: flex;
+            background: #222;
+            border: 4px solid #00ff00;
+            padding: 8px;
+            gap: 6px;
+        }
+
+        .pixel-key {
             flex: 1;
-            background: #fff;
-            border: 1px solid #000;
-            border-radius: 0 0 4px 4px;
+            background: #ffffff;
+            height: 120px;
+            border: 4px solid #000000;
+            box-shadow: 0px 6px 0px #888888;
             cursor: pointer;
         }
 
-        .key:active {
-            background: #00ff88;
+        .pixel-key:active {
+            background: #00ff00;
+            box-shadow: 0px 2px 0px #00aa00;
+            transform: translateY(4px);
         }
     </style>
 </head>
 <body>
 
-    <div class="synth-box">
-        <h2 style="margin-top: 0; font-weight: 300; letter-spacing: 1px;">Audio Engine Output</h2>
+    <!-- OVERLAY SCREEN: Forces browser to unlock audio system on click -->
+    <div id="boot-screen">
+        <h1 style="font-size: 28px; margin-bottom: 30px; text-shadow: 3px 3px 0 #004400;">PIXEL SYNTH V1</h1>
+        <button class="insert-coin-btn" id="coin-btn">INSERT COIN (START)</button>
+        <p style="margin-top: 20px; font-size: 12px; color: #008800;">REMOVED ALL ANIMATIONS FOR STABILITY</p>
+    </div>
+
+    <!-- MAIN SOUND INTERFACE -->
+    <div class="arcade-cabinet">
+        <div class="screen-header">
+            <h2 style="margin: 0; font-size: 18px; letter-spacing: 1px;">AUDIO CORE ONLINE</h2>
+        </div>
         
-        <div class="controls">
-            <div class="control-group">
-                <label>Waveform Type</label>
-                <select id="wave-type">
-                    <option value="sine">Sine (Soft Pure Tone)</option>
-                    <option value="triangle" selected>Triangle (Clear Flute)</option>
-                    <option value="sawtooth">Sawtooth (Buzzing Brass)</option>
-                    <option value="square">Square (Retro Arcade)</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <label>Volume Level</label>
-                <input type="range" id="volume-level" min="0" max="0.5" step="0.05" value="0.25">
-            </div>
+        <div class="control-row">
+            <label>WAVE TYPE</label>
+            <select id="wave-select">
+                <option value="square" selected>SQUARE (8-BIT RETRO)</option>
+                <option value="triangle">TRIANGLE (SOFT TONE)</option>
+                <option value="sawtooth">SAWTOOTH (BUZZY)</option>
+                <option value="sine">SINE (PURE WAVE)</option>
+            </select>
+        </div>
+        
+        <div class="control-row">
+            <label>VOLUME</label>
+            <input type="range" id="volume-slider" min="0" max="0.4" step="0.05" value="0.2">
         </div>
 
-        <div class="keyboard">
-            <!-- Tones configured from Middle C (C4) upwards -->
-            <div class="key" data-frequency="261.63" title="C4"></div>
-            <div class="key" data-frequency="293.66" title="D4"></div>
-            <div class="key" data-frequency="329.63" title="E4"></div>
-            <div class="key" data-frequency="349.23" title="F4"></div>
-            <div class="key" data-frequency="392.00" title="G4"></div>
-            <div class="key" data-frequency="440.00" title="A4"></div>
-            <div class="key" data-frequency="493.88" title="B4"></div>
-            <div class="key" data-frequency="523.25" title="C5"></div>
+        <div class="arcade-keys">
+            <!-- 8 Raw Tones mapped perfectly across a standard musical scale -->
+            <div class="pixel-key" data-note="261.63"></div>
+            <div class="pixel-key" data-note="293.66"></div>
+            <div class="pixel-key" data-note="329.63"></div>
+            <div class="pixel-key" data-note="349.23"></div>
+            <div class="pixel-key" data-note="392.00"></div>
+            <div class="pixel-key" data-note="440.00"></div>
+            <div class="pixel-key" data-note="493.88"></div>
+            <div class="pixel-key" data-note="523.25"></div>
         </div>
     </div>
 
     <script>
-        let audioCtx = null;
-        const activeVoices = new Map();
+        let synthEngine = null;
+        const liveTones = new Map();
 
-        function startAudioEngine() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Destroys the boot blocker screen and wakes up browser audio hardware completely
+        document.getElementById('coin-btn').addEventListener('click', () => {
+            synthEngine = new (window.AudioContext || window.webkitAudioContext)();
+            synthEngine.resume();
+            
+            // Remove the loading wall immediately
+            document.getElementById('boot-screen').style.display = 'none';
+        });
+
+        function triggerSound(pitch) {
+            // Hard fallback check to handle device lockouts
+            if (!synthEngine) return;
+            if (synthEngine.state === 'suspended') synthEngine.resume();
+
+            // Prevent stuck audio overlapping artifacts
+            if (liveTones.has(pitch)) {
+                killSound(pitch);
             }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+
+            const currentWave = document.getElementById('wave-select').value;
+            const levelVolume = parseFloat(document.getElementById('volume-slider').value);
+
+            // Establish direct sound pathway generators
+            const oscNode = synthEngine.createOscillator();
+            const gainNode = synthEngine.createGain();
+
+            oscNode.type = currentWave;
+            oscNode.frequency.value = pitch;
+            
+            // Fixed direct connection map bypassing calculation bottlenecks
+            gainNode.gain.setValueAtTime(levelVolume, synthEngine.currentTime);
+
+            oscNode.connect(gainNode);
+            gainNode.connect(synthEngine.destination);
+
+            oscNode.start();
+
+            // Track active sound signals in local device stack memory
+            liveTones.set(pitch, { sound: oscNode, output: gainNode });
         }
 
-        function playSound(frequency) {
-            // Force hardware initiation on every key touch event
-            startAudioEngine();
+        function killSound(pitch) {
+            if (!liveTones.has(pitch)) return;
 
-            // Clear duplicate note if already triggered
-            if (activeVoices.has(frequency)) {
-                stopSound(frequency);
-            }
-
-            const waveForm = document.getElementById('wave-type').value;
-            const volumeSetting = parseFloat(document.getElementById('volume-level').value);
-
-            // Create generator and gain envelope nodes
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-
-            oscillator.type = waveForm;
-            oscillator.frequency.value = frequency;
+            const instance = liveTones.get(pitch);
             
-            // Fixed instant attack parameter to avoid scheduling delay dropouts
-            gainNode.gain.setValueAtTime(volumeSetting, audioCtx.currentTime);
-
-            // Connect Generator -> Volume Controller -> Device Speakers
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            oscillator.start();
-
-            // Keep pointers in memory array map
-            activeVoices.set(frequency, { osc: oscillator, gain: gainNode });
-        }
-
-        function stopSound(frequency) {
-            if (!activeVoices.has(frequency)) return;
-
-            const voice = activeVoices.get(frequency);
-            
-            // Hard stop sound cleanly to eliminate hanging feedback loops
+            // Instantly sever audio channel to stop the note dead
             try {
-                voice.osc.stop();
-                voice.osc.disconnect();
-                voice.gain.disconnect();
-            } catch(e) {
-                // Catch hardware block states gracefully
+                instance.sound.stop();
+                instance.sound.disconnect();
+                instance.output.disconnect();
+            } catch(error) {
+                // Fail silently if browser thread has terminated it
             }
 
-            activeVoices.delete(frequency);
+            liveTones.delete(pitch);
         }
 
-        // Bind raw interaction events down to UI keyboard nodes
-        document.querySelectorAll('.key').forEach(key => {
-            const freq = parseFloat(key.getAttribute('data-frequency'));
+        // Standard Event Mapping Framework
+        document.querySelectorAll('.pixel-key').forEach(btn => {
+            const pitchHz = parseFloat(btn.getAttribute('data-note'));
 
-            // Click Handlers
-            key.addEventListener('mousedown', () => playSound(freq));
-            key.addEventListener('mouseup', () => stopSound(freq));
-            key.addEventListener('mouseleave', () => stopSound(freq));
+            // Mouse Clicks
+            btn.addEventListener('mousedown', () => triggerSound(pitchHz));
+            btn.addEventListener('mouseup', () => killSound(pitchHz));
+            btn.addEventListener('mouseleave', () => killSound(pitchHz));
 
-            // Mobile Device Touch Handlers
-            key.addEventListener('touchstart', (e) => {
+            // Mobile Display Touch Responses
+            btn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
-                playSound(freq);
+                triggerSound(pitchHz);
             });
-            key.addEventListener('touchend', (e) => {
+            btn.addEventListener('touchend', (e) => {
                 e.preventDefault();
-                stopSound(freq);
+                killSound(pitchHz);
             });
         });
     </script>
