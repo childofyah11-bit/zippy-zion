@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OS 19 // Fluid Audio Node Quantum</title>
+  <title>OS 19 // Ultra High-Tech Quantum Deck</title>
 </head>
 <body>
 
@@ -25,17 +25,36 @@
     <!-- Live Hardware Telemetry Matrix -->
     <div class="glass-card telemetry-row">
       <div>SIGNAL: <span class="premium-cyan" id="carrier-text">5G_ULTRA</span></div>
-      <div>CORE_TEMP: <span class="premium-cyan" id="temp-metric">31°C</span></div>
+      <div>CORE_TEMP: <span id="temp-metric">31.0°C</span></div>
     </div>
 
-    <!-- Isolated Audio Node Viewport Layout -->
-    <div class="glass-card main-media-deck">
-      <div id="media-boot-prompt" onclick="igniteMediaDeck()">
-        <div class="premium-gradient-text" style="font-size: 1.4rem; font-weight: 700; letter-spacing: 2px;">STREAM AUDIO NODE</div>
-        <p style="color: #64748b; font-size: 0.8rem; margin: 10px 0 0 0;">TAP TO SYNCHRONIZE COGNITIVE WAVEFRONT</p>
+    <!-- Split Interface Layout: Main Audio and Technical Matrix -->
+    <div style="display: flex; gap: 15px; flex: 1; min-height: 0;">
+      
+      <!-- Left Column: Main Music Deck Media Staging Area -->
+      <div class="glass-card main-media-deck" style="flex: 1.4;">
+        <div id="media-boot-prompt" onclick="igniteMediaDeck()">
+          <div class="premium-gradient-text" style="font-size: 1.3rem; font-weight: 700; letter-spacing: 2px;">STREAM AUDIO NODE</div>
+          <p style="color: #64748b; font-size: 0.75rem; margin: 10px 0 0 0;">TAP TO SYNCHRONIZE COGNITIVE WAVEFRONT</p>
+        </div>
+        <div id="fluid-audio-ring"></div>
+        <div id="kinetic-lyric-viewport"></div>
       </div>
-      <div id="fluid-audio-ring"></div>
-      <div id="kinetic-lyric-viewport"></div>
+
+      <!-- Right Column: Real-time Variable Telemetry Sidebar -->
+      <div class="glass-card sidebar-matrix" style="flex: 1; font-family: monospace; font-size: 0.6rem; color: #94a3b8; display: flex; flex-direction: column; gap: 8px; text-align: left; background: rgba(0,0,0,0.4); border-left: 2px solid var(--cyan-glow);">
+        <div style="font-weight: bold; color: var(--cyan-glow); letter-spacing: 1px; border-bottom: 1px solid rgba(0,240,255,0.2); padding-bottom: 4px;">LIVE RUNTIME MATRICES</div>
+        <div>RENDER_LATENCY: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
+        <div>BUFFER_ALLOC: <span class="telemetry-value" id="val-alloc">140 bytes</span></div>
+        <div>PARTICLE_VEL: <span class="telemetry-value" id="val-vel">0.00px/f</span></div>
+        <div>STEALTH_SHIELD: <span class="telemetry-value" id="val-stealth">INACTIVE</span></div>
+        <div>BIT_RATE_INDEX: <span class="telemetry-value" id="val-bitrate">0000 kbps</span></div>
+        <div>FREQUENCY_FREQ: <span class="telemetry-value" id="val-freq">0.0 Hz</span></div>
+        <div style="margin-top: auto; font-weight: bold; color: var(--magenta-glow); letter-spacing: 1px; border-bottom: 1px solid rgba(255,0,127,0.2); padding-bottom: 4px;">HARDWARE PARAMETERS</div>
+        <div>CORE_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
+        <div>THROTTLE_FLAG: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
+        <div>SYSTEM_UPTIME: <span class="telemetry-value" id="val-uptime">000.0s</span></div>
+      </div>
     </div>
 
     <!-- High-Velocity Encrypted Diagnostics Monitor -->
@@ -43,19 +62,28 @@
       <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">SYSTEM DIAGNOSTIC STREAM:</div>
     </div>
 
-    <!-- Navigation Command Row Button Interface -->
-    <div id="media-controls">
-      <button class="nav-control-btn" onclick="cycleTrackNode(-1)">⏮</button>
-      <button class="nav-control-btn" onclick="cycleTrackNode(1)">⏭</button>
+    <!-- High-Tech Advanced Controls Instrument Panel -->
+    <div id="media-controls" style="flex-direction: column; gap: 10px;">
+      <div style="display: flex; justify-content: center; gap: 30px; width: 100%;">
+        <button class="nav-control-btn icon-btn" onclick="cycleTrackNode(-1)">⏮</button>
+        <button class="nav-control-btn icon-btn" id="master-toggle-btn" style="color: var(--cyan-glow)">⚡</button>
+        <button class="nav-control-btn icon-btn" onclick="cycleTrackNode(1)">⏭</button>
+      </div>
+      <div style="display: flex; gap: 8px; width: 100%; justify-content: space-between; font-size: 0.55rem; font-family: monospace;">
+        <button class="tech-sub-btn" onclick="scrambleFrequencies()">SCRAMBLE FREQ</button>
+        <button class="tech-sub-btn" onclick="purgeMemoryBuffers()">PURGE CACHE</button>
+        <button class="tech-sub-btn" onclick="toggleHyperDrive()">HYPERDRIVE</button>
+      </div>
     </div>
   </div>
   <style>
     :root {
-      --premium-bg: #090a0f;
-      --glass-surface: rgba(255, 255, 255, 0.03);
-      --glass-border: rgba(255, 255, 255, 0.06);
+      --premium-bg: #040508;
+      --glass-surface: rgba(15, 20, 32, 0.2);
+      --glass-border: rgba(255, 255, 255, 0.05);
       --cyan-glow: #00f0ff;
       --magenta-glow: #ff007f;
+      --matrix-green: #39ff14;
     }
     body, html {
       margin: 0;
@@ -82,20 +110,20 @@
     }
     #phone-container {
       position: relative;
-      width: 400px;
+      width: 580px; /* Expanded for high-tech desktop split layout */
       height: 840px;
-      background: rgba(13, 15, 24, 0.8);
-      border: 4px solid rgba(255,255,255,0.1);
-      border-radius: 55px;
+      background: rgba(8, 10, 16, 0.9);
+      border: 4px solid rgba(255,255,255,0.08);
+      border-radius: 45px;
       z-index: 2;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.95), inset 0 0 30px rgba(0,240,255,0.03);
       padding: 25px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
+      gap: 15px;
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
       transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
       will-change: transform;
       contain: content;
@@ -106,6 +134,7 @@
       left: 50%;
       transform: translate3d(-50%, 0, 0);
       background: #000;
+      border: 1px solid rgba(255,255,255,0.05);
       border-radius: 30px;
       padding: 8px 20px;
       display: flex;
@@ -117,7 +146,7 @@
       z-index: 100;
       box-shadow: 0 4px 20px rgba(0,0,0,0.5);
       pointer-events: auto;
-      width: 180px;
+      width: 200px;
       height: 34px;
       will-change: width, height, background-color;
       contain: layout;
@@ -153,13 +182,14 @@
     .glass-card {
       background: var(--glass-surface);
       border: 1px solid var(--glass-border);
-      border-radius: 24px;
+      border-radius: 20px;
       padding: 15px;
       box-sizing: border-box;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       transform: translate3d(0,0,0);
     }
+  <style>
     .telemetry-row {
       margin-top: 25px;
       display: flex;
@@ -170,12 +200,12 @@
       color: #94a3b8;
       contain: layout paint;
     }
-    .premium-cyan {
-      color: var(--cyan-glow);
-      text-shadow: 0 0 8px rgba(0,240,255,0.4);
+    #temp-metric {
+      color: var(--matrix-green);
+      text-shadow: 0 0 8px rgba(57,255,20,0.3);
+      transition: color 0.2s ease;
     }
     .main-media-deck {
-      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -183,8 +213,9 @@
       position: relative;
       text-align: center;
       overflow: hidden;
-      border-radius: 32px;
+      border-radius: 24px;
       contain: layout size;
+      background: rgba(0, 0, 0, 0.2);
     }
     #media-boot-prompt {
       pointer-events: auto;
@@ -196,7 +227,7 @@
     }
     #kinetic-lyric-viewport {
       display: none;
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       font-weight: 800;
       line-height: 1.3;
       text-transform: uppercase;
@@ -208,25 +239,35 @@
     #fluid-audio-ring {
       display: none;
       position: absolute;
-      width: 220px;
-      height: 220px;
+      width: 180px;
+      height: 180px;
       border: 2px solid rgba(0, 240, 255, 0.15);
       border-radius: 50%;
       z-index: 2;
       transform: scale3d(1, 1, 1);
-      transition: transform 0.15s cubic-bezier(0.1, 0.9, 0.3, 1), border-color 0.15s ease;
+      transition: transform 0.1s cubic-bezier(0.1, 0.9, 0.3, 1), border-color 0.1s ease;
       box-shadow: 0 0 30px rgba(0,240,255,0.05);
       will-change: transform, border-color;
     }
     .fluid-word {
       display: inline-block;
-      margin: 0 5px;
+      margin: 0 4px;
       opacity: 0;
       transform: translate3d(0, 12px, 0) scale3d(0.9, 0.9, 1);
       animation: fluidWaveIn 0.25s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
     }
+    .sidebar-matrix div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .telemetry-value {
+      color: #fff;
+      font-weight: bold;
+      float: right;
+    }
     .activity-monitor {
-      height: 110px;
+      height: 100px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -246,32 +287,41 @@
       color: var(--magenta-glow) !important;
       font-weight: bold;
     }
-    #media-controls {
-      display: none;
-      justify-content: center;
-      gap: 40px;
-      pointer-events: auto;
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    .nav-control-btn {
+    .icon-btn {
       background: none;
       border: none;
       color: #fff;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.2s;
       opacity: 0.6;
     }
-    .nav-control-btn:hover {
+    .icon-btn:hover {
       opacity: 1;
       transform: scale3d(1.1, 1.1, 1);
+    }
+    .tech-sub-btn {
+      flex: 1;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #64748b;
+      padding: 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: monospace;
+      font-size: 0.55rem;
+      transition: all 0.2s ease;
+    }
+    .tech-sub-btn:hover {
+      background: rgba(0, 240, 255, 0.05);
+      border-color: var(--cyan-glow);
+      color: #fff;
     }
     @keyframes fluidWaveIn {
       to { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
     }
     @keyframes floatIcon {
-      0%, 100% { transform: translate3d(0, 0, 0); }
+      0%, 100 { transform: translate3d(0, 0, 0); }
       50% { transform: translate3d(0, -3px, 0); }
     }
     .premium-gradient-text {
@@ -280,6 +330,7 @@
       -webkit-text-fill-color: transparent;
     }
   </style>
+
   <script>
     const rawPayload = [
       "Small Town Star (Goofball)", "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", 
@@ -306,7 +357,9 @@
     ];
 
     const payloadData = rawPayload.map(line => line.split(' '));
-    let trackPtr = 0, trackTimer, audioCtx, biquadFilter, stealthShieldActive = false;
+    let trackPtr = 0, trackTimer, audioCtx, biquadFilter, stealthShieldActive = false, hyperDriveActive = false;
+    let baseCompTemp = 36.4, frameStartTime = 0;
+    const startTimeStamp = performance.now();
     
     const canvas = document.getElementById('ambient-canvas'), ctx = canvas.getContext('2d');
     const offscreen = document.createElement('canvas'), oCtx = offscreen.getContext('2d');
@@ -318,26 +371,34 @@
     window.addEventListener('resize', scaleViewport, { passive: true });
     scaleViewport();
 
-    const particleCount = 45;
-    const particleBuffer = new Float32Array(particleCount * 4);
-    for(let i = 0; i < particleCount; i++) {
-      const idx = i << 2;
-      particleBuffer[idx] = Math.random() * window.innerWidth;
-      particleBuffer[idx+1] = Math.random() * window.innerHeight;
-      particleBuffer[idx+2] = Math.random() * 50 + 25;
-      particleBuffer[idx+3] = -(Math.random() * 0.6 + 0.15);
+    // High performance flat buffer array mechanics
+    let particleCount = 45;
+    let particleBuffer = new Float32Array(particleCount * 4);
+    function buildParticleBuffers() {
+      for(let i = 0; i < particleCount; i++) {
+        const idx = i << 2;
+        particleBuffer[idx] = Math.random() * window.innerWidth;
+        particleBuffer[idx+1] = Math.random() * window.innerHeight;
+        particleBuffer[idx+2] = Math.random() * 40 + 20;
+        particleBuffer[idx+3] = -(Math.random() * 0.5 + 0.15);
+      }
+      document.getElementById('val-alloc').textContent = (particleBuffer.byteLength) + ' bytes';
     }
+    buildParticleBuffers();
 
-    function drawAmbientGraph() {
-      oCtx.fillStyle = '#090a0f';
+    function drawAmbientGraph(timestamp) {
+      const start = performance.now();
+      oCtx.fillStyle = '#040508';
       oCtx.fillRect(0, 0, offscreen.width, offscreen.height);
-      oCtx.fillStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.025)' : 'rgba(0, 240, 255, 0.025)';
+      oCtx.fillStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.03)' : 'rgba(0, 240, 255, 0.03)';
 
       const w = offscreen.width, h = offscreen.height;
+      let totalVel = 0;
 
       for (let i = 0; i < particleCount; i++) {
         const idx = i << 2;
-        let y = particleBuffer[idx+1] + particleBuffer[idx+3];
+        let speedMultiplier = hyperDriveActive ? 8.0 : 1.0;
+        let y = particleBuffer[idx+1] + (particleBuffer[idx+3] * speedMultiplier);
         const r = particleBuffer[idx+2];
 
         if(y < -r) {
@@ -345,6 +406,7 @@
           particleBuffer[idx] = Math.random() * w;
         }
         particleBuffer[idx+1] = y;
+        totalVel += Math.abs(particleBuffer[idx+3] * speedMultiplier);
 
         oCtx.beginPath();
         oCtx.arc(particleBuffer[idx], y, r, 0, 6.28318);
@@ -353,6 +415,14 @@
 
       ctx.clearRect(0, 0, w, h);
       ctx.drawImage(offscreen, 0, 0);
+      
+      // Update sidebar runtime telemetry elements
+      const renderTime = performance.now() - start;
+      document.getElementById('val-latency').textContent = renderTime.toFixed(2) + 'ms';
+      document.getElementById('val-vel').textContent = (totalVel / particleCount).toFixed(2) + 'px/f';
+      document.getElementById('val-uptime').textContent = ((performance.now() - startTimeStamp) / 1000).toFixed(1) + 's';
+      document.getElementById('val-load').textContent = (renderTime * 6.2).toFixed(1) + '%';
+
       requestAnimationFrame(drawAmbientGraph);
     }
     requestAnimationFrame(drawAmbientGraph);
@@ -366,16 +436,23 @@
           biquadFilter.connect(audioCtx.destination);
         }
         let now = audioCtx.currentTime, osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+        let freqHz = stealthShieldActive ? 85 : 340 + (trackPtr * 4);
+        
         osc.type = stealthShieldActive ? 'sawtooth' : 'sine';
-        osc.frequency.setValueAtTime(stealthShieldActive ? 90 : 380 + (trackPtr * 3), now);
-        biquadFilter.frequency.setValueAtTime(stealthShieldActive ? 200 : 1200, now);
+        osc.frequency.setValueAtTime(freqHz, now);
+        biquadFilter.frequency.setValueAtTime(stealthShieldActive ? 180 : 1400, now);
+        
+        document.getElementById('val-freq').textContent = freqHz + ' Hz';
         
         gain.gain.setValueAtTime(0.015, now);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
         osc.connect(gain);
         gain.connect(biquadFilter);
         osc.start();
-        osc.stop(now + 0.18);
+        osc.stop(now + 0.15);
+        
+        // Spike calculated computer temperature slightly on audio task computation
+        baseCompTemp += 0.4;
       } catch(e) {}
     }
 
@@ -388,7 +465,19 @@
       const parts = clockDate.toTimeString().substring(0, 8);
       const ms = String(clockDate.getMilliseconds()).padStart(3, '0').substring(0,2);
       clockEl.textContent = parts + '.' + ms;
-      if(Math.random() > 0.99) tempEl.textContent = (Math.floor(Math.random() * 4) + 30) + "°C";
+      
+      // High-precision calculated temperature cooling logic loop
+      if(baseCompTemp > 35.0) baseCompTemp -= 0.04;
+      if(hyperDriveActive) baseCompTemp += (Math.random() * 0.15);
+      
+      tempEl.textContent = baseCompTemp.toFixed(1) + '°C';
+      if(baseCompTemp > 42.0) {
+        tempEl.style.color = 'var(--magenta-glow)';
+        document.getElementById('val-throttle').textContent = 'THERMAL_WARN';
+      } else {
+        tempEl.style.color = 'var(--matrix-green)';
+        document.getElementById('val-throttle').textContent = 'NOMINAL';
+      }
     }
     setInterval(processSystemClock, 30);
 
@@ -405,20 +494,24 @@
       expandedStatus.style.display = "block";
       carrierText.textContent = "PROXY_TUNNEL";
       carrierText.className = "premium-cyan covert-shift-flag";
-      appendCovertLog("OVERRIDE EXECUTED: SIMULATED REGIONAL CLOCK DELAY SECURED (-3600s)", true);
+      document.getElementById('val-stealth').textContent = 'ACTIVE';
+      document.getElementById('val-stealth').style.color = 'var(--magenta-glow)';
+      appendCovertLog("OVERRIDE EXECUTED: REGIONAL GEOLOCATION TUNNEL SECURED (-3600s)", true);
       emitOversampleTone();
     }, { passive: true });
 
     window.addEventListener('mouseup', () => {
       if (!stealthShieldActive) return;
       stealthShieldActive = false;
-      island.style.width = "180px";
+      island.style.width = "200px";
       island.style.height = "34px";
       island.style.backgroundColor = "#000";
       island.style.borderColor = "transparent";
       expandedStatus.style.display = "none";
       carrierText.textContent = "5G_ULTRA";
       carrierText.className = "premium-cyan";
+      document.getElementById('val-stealth').textContent = 'INACTIVE';
+      document.getElementById('val-stealth').style.color = '#fff';
       appendCovertLog("Telemetry re-synchronized to root gateway index.", false);
     }, { passive: true });
 
@@ -428,62 +521,7 @@
       row.className = flagged ? 'covert-row covert-shift-flag' : 'covert-row';
       row.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
       panel.appendChild(row);
-      if(panel.children.length > 6) panel.removeChild(panel.children[1]);
+      if(panel.children.length > 5) panel.removeChild(panel.children[1]);
       panel.scrollTop = panel.scrollHeight;
     }
 
-    const statusLines = ["Cache synchronization verified.", "Background assets cleared.", "Audio stream indexing...", "Device telemetry payload stable.", "Secure encryption handshake complete."];
-    setInterval(() => {
-      appendCovertLog(statusLines[(Math.random() * statusLines.length) | 0], false);
-    }, 4500);
-
-    const viewport = document.getElementById('kinetic-lyric-viewport');
-    const ring = document.getElementById('fluid-audio-ring');
-
-    function displayLyricNode() {
-      viewport.textContent = '';
-      const fragment = document.createDocumentFragment();
-      const currentWords = payloadData[trackPtr];
-      
-      for(let i = 0; i < currentWords.length; i++) {
-        const span = document.createElement('span');
-        span.className = 'fluid-word';
-        span.textContent = currentWords[i];
-        span.style.animationDelay = (i * 0.02) + 's';
-        fragment.appendChild(span);
-      }
-      viewport.appendChild(fragment);
-      
-      emitOversampleTone();
-      appendCovertLog("Processing audio segment block #" + trackPtr, false);
-      
-      ring.style.transform = 'scale3d(1.06, 1.06, 1)';
-      ring.style.borderColor = 'var(--cyan-glow)';
-      setTimeout(() => {
-        ring.style.transform = 'scale3d(1, 1, 1)';
-        ring.style.borderColor = 'rgba(0, 240, 255, 0.15)';
-      }, 130);
-
-      clearTimeout(trackTimer);
-      if(trackPtr < payloadData.length - 1) {
-        trackTimer = setTimeout(() => cycleTrackNode(1), 2600);
-      }
-    }
-
-    function igniteMediaDeck() {
-      document.getElementById('media-boot-prompt').style.display = 'none';
-      viewport.style.display = 'block';
-      ring.style.display = 'block';
-      document.getElementById('media-controls').style.display = 'flex';
-      displayLyricNode();
-    }
-
-    function cycleTrackNode(direction) {
-      trackPtr += direction;
-      if(trackPtr < 0) trackPtr = 0;
-      else if(trackPtr >= payloadData.length) trackPtr = payloadData.length - 1;
-      displayLyricNode();
-    }
-  </script>
-</body>
-</html>
