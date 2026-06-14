@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <title>Arcade Space Battle</title>
     <style>
-        /* This grid layout forces the game to center perfectly on any monitor size */
+        /* This layout centers the 900x600 grid perfectly on your monitor size */
         body { margin: 0; background: #0c0c16; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
-        canvas { border: 4px solid #00ffff; background: #05050f; display: block; max-width: 100%; max-height: 100%; }
+        canvas { border: 4px solid #00ffff; background: #05050f; display: block; }
     </style>
 </head>
 <body>
 
-<!-- Hardcoded width and height to fix the narrow screen bug -->
+<!-- Hardcoded pixel resolution locks components on your display -->
 <canvas id="gameCanvas" width="900" height="600"></canvas>
 
 <script>
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Ensure the keyboard focus locks onto the game screen the second it loads
+// Locks keyboard detection instantly when the link opens
 window.focus();
 
-// GAME VARIABLES
+// STATE INITIALIZATIONS
 let gameOver = false;
 let victory = false;
 let score = 0;
 
-// YOUR UPGRADED PLAYER SPACE FIGHTER
+// YOUR CYBER SPACE FIGHTER
 let player = {
     x: 100, y: 280, w: 40, h: 40,
     speed: 7, health: 100, maxHealth: 100,
@@ -34,7 +34,7 @@ let player = {
     overchargeCooldown: 0
 };
 
-// THE 5-PHASE IMMUTABLE BOSS
+// THE 5-PHASE BOSS SHIP
 let boss = {
     x: 750, y: 230, w: 80, h: 140,
     health: 2000, maxHealth: 2000,
@@ -45,59 +45,59 @@ let playerBullets = [];
 let bossBullets = [];
 const keys = {};
 
-// CONFIG SCHEMES FOR EACH OF THE 5 DIFFICULTY PHASES
+// THEME SCHEMES FOR EACH OF THE 5 DIFFICULTY PHASES
 const phaseColors = { 1: "#00ffff", 2: "#ff00ff", 3: "#ffff00", 4: "#ff5500", 5: "#ff0000" };
 
-// CAPTURE INPUTS
+// INPUT LISTENERS
 window.addEventListener("keydown", function(e) { keys[e.key] = true; });
 window.addEventListener("keyup", function(e) { keys[e.key] = false; });
 
-// CORE MATHEMATICAL TRACKING STEPS
+// GAME PHYSICS ENGINE
 function update() {
     if (gameOver || victory) return;
 
-    // Tick down system superpower timers
+    // Cooldown clocks ticks
     if (player.timeSlowCooldown > 0) player.timeSlowCooldown--;
     if (player.timeSlowActive > 0) player.timeSlowActive--;
     if (player.overchargeCooldown > 0) player.overchargeCooldown--;
 
-    // Standard Flight Vectors (WASD / Arrow Keys)
+    // Standard Flight Mechanics (WASD / Arrow Keys)
     if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
     if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
     if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
     if (keys["d"] || keys["ArrowRight"]) player.x += player.speed;
 
-    // Boundaries containment
+    // Boundary constraints
     if (player.x < 10) player.x = 10;
-    if (player.x > 400) player.x = 400; // Keep player on left side of grid
+    if (player.x > 400) player.x = 400; 
     if (player.y < 10) player.y = 10;
     if (player.y > 600 - player.h - 10) player.y = 600 - player.h - 10;
 
-    // UPGRADED ATTACK ENGINE: Spacebar fires heavy 25 damage bullets
-    if (keys[" "] && playerBullets.length < 5) {
+    // ATTACK ENGAGEMENT: Spacebar hits for 25 damage
+    if (keys[" "] && playerBullets.length < 6) {
         playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, speed: 14 });
-        keys[" "] = false; // Requires single taps to prevent spam errors
+        keys[" "] = false; // Requires individual taps to fire
     }
 
-    // SUPERPOWER 1: Chronos Time Slow Mod (Shift Key Drops Threats To 20% Speed)
+    // POWER 1: Chronos Time Slow Mod [Shift Key]
     if (keys["Shift"] && player.timeSlowCooldown === 0) {
-        player.timeSlowActive = 120; // 2 full seconds of slow motion
+        player.timeSlowActive = 120; // 2 seconds of matrix slow motion
         player.timeSlowCooldown = 300; // 5 second recharge
     }
 
-    // SUPERPOWER 2: EMP Screen Reboot Wipe (Enter Key Vaporizes Bullets & Hits Boss)
+    // POWER 2: EMP Screen Reboot Wipe [Enter Key]
     if (keys["Enter"] && player.overchargeCooldown === 0) {
         player.overchargeCooldown = 240;
-        bossBullets = []; // Wipe the grid
-        boss.health -= 150; // Chunky direct damage drop
+        bossBullets = []; // Instantly clear the canvas field
+        boss.health -= 150; // Mass damage chunk strike
         score += 100;
         if (boss.health <= 0) victory = true;
     }
 
-    // Dynamic scale vector calculation
+    // Current slow velocity calculation coefficient
     let timeModifier = player.timeSlowActive > 0 ? 0.20 : 1.0;
 
-    // Calculate Phase Shifts (Automatically scales up as boss drops health)
+    // Evolve Boss Phases across health pools
     let hpPct = boss.health / boss.maxHealth;
     if (hpPct > 0.8) boss.phase = 1;
     else if (hpPct > 0.6) boss.phase = 2;
@@ -109,7 +109,7 @@ function update() {
     boss.y += boss.dir * 4 * timeModifier;
     if (boss.y <= 20 || boss.y >= 600 - boss.h - 20) boss.dir *= -1;
 
-    // Enemy Fire Logic (Speeds up based on phase difficulty)
+    // Boss Weapon Spawns (Speeds up dramatically at later phases)
     boss.timer += 1 * timeModifier;
     if (boss.timer >= (25 - (boss.phase * 3))) {
         boss.timer = 0;
@@ -120,28 +120,28 @@ function update() {
         } else if (boss.phase === 2) {
             bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -8, vy: (Math.random() - 0.5) * 4, color: c });
         } else if (boss.phase >= 3) {
-            // Tracking shots path logic targeting your ship coordinates
+            // Target intercept trajectories seeking your ship coordinates
             let angle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
             let bSpeed = boss.phase === 5 ? 12 : 9;
             bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(angle) * bSpeed, vy: Math.sin(angle) * bSpeed, color: c });
         }
     }
 
-    // Update Player Lasers (25 Raw Damage Impact Checked)
+    // Torpedo Trajectories (Deals 25 specification damage)
     for (let i = playerBullets.length - 1; i >= 0; i--) {
         let b = playerBullets[i];
         b.x += b.speed;
         if (b.x > 900) { playerBullets.splice(i, 1); continue; }
 
         if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
-            boss.health -= 25; // Hardcoded specification value
+            boss.health -= 25; 
             score += 50;
             playerBullets.splice(i, 1);
             if (boss.health <= 0) victory = true;
         }
     }
 
-    // Update Boss Threats (Controlled by Time Slow Coefficient)
+    // Threat Orb Trajectories (Slowed by Chronos matrix modifier)
     for (let i = bossBullets.length - 1; i >= 0; i--) {
         let b = bossBullets[i];
         b.x += b.vx * timeModifier;
@@ -156,43 +156,43 @@ function update() {
     }
 }
 
-// GRAPHICS RENDER LOOP
+// VISUAL RENDER PIPELINE
 function draw() {
     ctx.clearRect(0, 0, 900, 600);
 
     if (!gameOver && !victory) {
-        // Chronos Space-Slow Matrix Grid Tint Overlay
+        // Chronos Warp active overlay tint box
         if (player.timeSlowActive > 0) {
             ctx.fillStyle = "rgba(0, 255, 255, 0.07)";
             ctx.fillRect(0, 0, 900, 600);
         }
 
-        // Draw Spaceship Fighter (Cyan Block)
+        // Paint Player Ship (Cyan Block)
         ctx.fillStyle = "#00ffff";
         ctx.fillRect(player.x, player.y, player.w, player.h);
 
-        // Draw Dreadnought Alien Boss Box (Fluctuates hue based on current difficulty phase)
+        // Paint Dreadnought Boss (Changes color hex dynamically per phase)
         ctx.fillStyle = phaseColors[boss.phase];
         ctx.fillRect(boss.x, boss.y, boss.w, boss.h);
 
-        // Draw Your Lasers
+        // Paint Your Lasers
         ctx.fillStyle = "#00ffaa";
         playerBullets.forEach(b => ctx.fillRect(b.x, b.y - 3, 16, 6));
 
-        // Draw Enemy Threat Orbs
+        // Paint Enemy Threat Orbs
         bossBullets.forEach(b => {
             ctx.fillStyle = b.color;
             ctx.beginPath(); ctx.arc(b.x, b.y, 7, 0, Math.PI * 2); ctx.fill();
         });
 
-        // HEADS UP INTERFACE HUD PANEL
+        // HEADS UP MONITOR TERMINAL (HUD)
         ctx.fillStyle = "#ffffff"; ctx.font = "bold 14px monospace";
         ctx.fillText(`SHIP INTEGRITY HP: ${Math.max(0, player.health)}%`, 20, 35);
         ctx.fillText(`CHRONOS DRV [SHIFT]: ${player.timeSlowCooldown === 0 ? "READY" : "CHARGING"}`, 20, 60);
         ctx.fillText(`EMP DETONATOR [ENTER]: ${player.overchargeCooldown === 0 ? "READY" : "CHARGING"}`, 20, 85);
         ctx.fillText(`METRICS SCORE: ${score}`, 20, 110);
 
-        // Boss Metrics Indicators
+        // Enemy Health Gauges meters
         let hex = phaseColors[boss.phase];
         ctx.fillStyle = "#161626"; ctx.fillRect(500, 20, 370, 20);
         ctx.fillStyle = hex; ctx.fillRect(500, 20, Math.max(0, 370 * (boss.health / boss.maxHealth)), 20);
@@ -209,7 +209,7 @@ function draw() {
     }
 }
 
-// MAIN RECURSIVE ENGINE TRIGGER CLOCK
+// PRIMARY LOOP TICKS TIMER
 function runLoop() {
     update();
     draw();
@@ -220,4 +220,3 @@ runLoop();
 </script>
 </body>
 </html>
-de Cannon Spreads: Triple Laser", 280, 300);
