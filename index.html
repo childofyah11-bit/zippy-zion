@@ -3,13 +3,291 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACE CHATBOT // GitHub Premium Node</title>
-  <link rel="stylesheet" href="style.css">
+  <title>ACE CHATBOT // Core Intel Deck</title>
+  <style>
+    :root {
+      --premium-bg: #030509;
+      --glass-surface: rgba(12, 18, 32, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --cyan-glow: #00f0ff;
+      --magenta-glow: #ff007f;
+      --matrix-green: #39ff14;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--premium-bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    #phone-container {
+      position: relative;
+      width: 940px; 
+      height: 720px;
+      background: rgba(7, 10, 17, 0.96);
+      border: 2px solid rgba(255, 255, 255, 0.09);
+      border-radius: 24px;
+      z-index: 2;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.95), inset 0 0 40px rgba(0,240,255,0.02);
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+    }
+    #dynamic-island {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translate3d(-50%, 0, 0);
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 4px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      width: 280px;
+      height: 28px;
+    }
+    #island-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      justify-content: center;
+    }
+    #system-clock {
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
+    }
+    #island-icon {
+      color: var(--cyan-glow);
+      font-size: 0.75rem;
+    }
+    .glass-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 12px;
+      box-sizing: border-box;
+    }
+    .telemetry-row {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #94a3b8;
+    }
+    #temp-metric {
+      color: var(--matrix-green);
+      text-shadow: 0 0 8px rgba(57,255,20,0.3);
+    }
+    .workspace-layout {
+      display: flex;
+      gap: 12px;
+      flex: 1;
+      min-height: 0;
+    }
+    .main-media-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      background: rgba(0, 0, 0, 0.3);
+      flex: 2.2;
+    }
+    #workspace-header {
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: var(--cyan-glow);
+      text-shadow: 0 0 10px rgba(0,240,255,0.2);
+    }
+    #graph-wrapper {
+      height: 60px;
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    #visualizer-ring-canvas {
+      width: 100%;
+      height: 100%;
+    }
+    #chat-history-viewport {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-bubble {
+      font-family: monospace;
+      font-size: 0.75rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 85%;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+    .user-bubble {
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.18);
+      color: #f1f5f9;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .ai-bubble {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #39ff14;
+      align-self: flex-start;
+      text-align: left;
+      white-space: pre-wrap;
+    }
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #ai-input {
+      width: 100%;
+      height: 50px;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 8px;
+      color: #fff;
+      font-family: monospace;
+      font-size: 0.75rem;
+      resize: none;
+      box-sizing: border-box;
+    }
+    #ai-input:focus {
+      outline: none;
+      border-color: var(--cyan-glow);
+    }
+    .input-controls {
+      display: flex;
+      gap: 8px;
+    }
+    .tech-sub-btn {
+      flex: 1;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #94a3b8;
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: monospace;
+      font-size: 0.65rem;
+    }
+    .run-btn:hover {
+      background: rgba(0, 240, 255, 0.1);
+      border-color: var(--cyan-glow);
+      color: #fff;
+    }
+    .clear-btn:hover {
+      background: rgba(255, 0, 127, 0.1);
+      border-color: var(--magenta-glow);
+      color: #fff;
+    }
+    .sidebar-matrix {
+      font-family: monospace;
+      font-size: 0.6rem;
+      color: #94a3b8;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      text-align: left;
+      background: rgba(0,0,0,0.45);
+      flex: 1;
+    }
+    .sidebar-header {
+      font-weight: bold;
+      color: var(--cyan-glow);
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(0,240,255,0.2);
+      padding-bottom: 2px;
+      margin-bottom: 2px;
+    }
+    .telemetry-value {
+      color: #fff;
+      font-weight: bold;
+      float: right;
+    }
+    .preset-btn {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      color: #cbd5e1;
+      padding: 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.55rem;
+      transition: all 0.2s ease;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 2px;
+    }
+    .preset-btn:hover {
+      background: rgba(0, 240, 255, 0.08);
+      border-color: var(--cyan-glow);
+      color: #fff;
+    }
+    .activity-monitor {
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+      font-size: 0.55rem;
+      color: #475569;
+      font-family: monospace;
+      text-align: left;
+    }
+    .covert-row {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
 
+  <!-- Ambient Dynamic Space Matrix Background -->
   <canvas id="ambient-canvas"></canvas>
 
+  <!-- Complete Premium Main Core Interface Shell Framework -->
   <div id="phone-container">
     <div id="dynamic-island">
       <div id="island-pill">
@@ -19,7 +297,7 @@
     </div>
 
     <div class="glass-card telemetry-row">
-      <div>AI_SHELL: <span class="cyan-accent">ACE_CHATBOT_PRO</span></div>
+      <div>AI_SHELL: <span style="color: var(--cyan-glow);">ACE_CHATBOT_PRO</span></div>
       <div>CORE_TEMP: <span id="temp-metric">34.5°C</span></div>
     </div>
 
@@ -32,11 +310,11 @@
         </div>
 
         <div id="chat-history-viewport">
-          <div class="chat-bubble ai-bubble">[ACE_INIT] GitHub hosting compatibility layer activated. All functions are secure. Ask me questions about Math, Biology, History, Geography, or Literature below.</div>
+          <div class="chat-bubble ai-bubble">[ACE_INIT] GitHub Pages production container verified. Security policy blocks dropped. Type your question below and execute submission.</div>
         </div>
 
         <div class="input-container">
-          <textarea id="ai-input" placeholder="Type a message or problem here..."></textarea>
+          <textarea id="ai-input" placeholder="Type a question or select a preset module block on the right..."></textarea>
           <div class="input-controls">
             <button class="tech-sub-btn run-btn" id="submit-action-btn">SUBMIT LOGIC</button>
             <button class="tech-sub-btn clear-btn" id="clear-action-btn">PURGE MEMORY</button>
@@ -66,496 +344,3 @@
     <div class="glass-card activity-monitor" id="covert-activity-logs">
       <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">ACE ENGINE STREAMS:</div>
     </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
-:root {
-  --premium-bg: #020408;
-  --glass-surface: rgba(10, 15, 28, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --cyan-glow: #00f0ff;
-  --magenta-glow: #ff007f;
-  --matrix-green: #39ff14;
-}
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--premium-bg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: #fff;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-#phone-container {
-  position: relative;
-  width: 920px; 
-  height: 700px;
-  background: rgba(6, 9, 15, 0.97);
-  border: 2px solid rgba(255, 255, 255, 0.09);
-  border-radius: 24px;
-  z-index: 2;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.95), inset 0 0 40px rgba(0,240,255,0.02);
-  padding: 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-}
-#dynamic-island {
-  position: absolute;
-  top: 15px;
-  left: 50%;
-  transform: translate3d(-50%, 0, 0);
-  background: #000;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px;
-  padding: 4px 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  width: 280px;
-  height: 28px;
-}
-#island-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  justify-content: center;
-}
-#system-clock {
-  font-size: 0.8rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.5px;
-}
-#island-icon {
-  color: var(--cyan-glow);
-  font-size: 0.75rem;
-}
-.glass-card {
-  background: var(--glass-surface);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  padding: 12px;
-  box-sizing: border-box;
-}
-.telemetry-row {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #94a3b8;
-}
-.cyan-accent {
-  color: var(--cyan-glow);
-}
-#temp-metric {
-  color: var(--matrix-green);
-  text-shadow: 0 0 8px rgba(57,255,20,0.3);
-}
-.workspace-layout {
-  display: flex;
-  gap: 12px;
-  flex: 1;
-  min-height: 0;
-}
-.main-media-deck {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  position: relative;
-  background: rgba(0, 0, 0, 0.3);
-  flex: 2;
-}
-#workspace-header {
-  font-size: 0.75rem;
-  font-weight: bold;
-  letter-spacing: 2px;
-  color: var(--cyan-glow);
-  text-shadow: 0 0 10px rgba(0,240,255,0.2);
-}
-#graph-wrapper {
-  height: 60px;
-  background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.03);
-  border-radius: 8px;
-  position: relative;
-  overflow: hidden;
-}
-#visualizer-ring-canvas {
-  width: 100%;
-  height: 100%;
-}
-#chat-history-viewport {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 12px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.chat-bubble {
-  font-family: monospace;
-  font-size: 0.75rem;
-  padding: 8px 12px;
-  border-radius: 8px;
-  max-width: 85%;
-  word-break: break-word;
-  line-height: 1.4;
-}
-.user-bubble {
-  background: rgba(0, 240, 255, 0.08);
-  border: 1px solid rgba(0, 240, 255, 0.18);
-  color: #f1f5f9;
-  align-self: flex-end;
-  text-align: right;
-}
-.ai-bubble {
-  background: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  color: #39ff14;
-  align-self: flex-start;
-  text-align: left;
-  white-space: pre-wrap;
-}
-.input-container {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-#ai-input {
-  width: 100%;
-  height: 50px;
-  background: rgba(0, 0, 0, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  padding: 8px;
-  color: #fff;
-  font-family: monospace;
-  font-size: 0.75rem;
-  resize: none;
-  box-sizing: border-box;
-}
-#ai-input:focus {
-  outline: none;
-  border-color: var(--cyan-glow);
-}
-.input-controls {
-  display: flex;
-  gap: 8px;
-}
-.tech-sub-btn {
-  flex: 1;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: #94a3b8;
-  padding: 6px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: monospace;
-  font-size: 0.65rem;
-}
-.run-btn:hover {
-  background: rgba(0, 240, 255, 0.1);
-  border-color: var(--cyan-glow);
-  color: #fff;
-}
-.clear-btn:hover {
-  background: rgba(255, 0, 127, 0.1);
-  border-color: var(--magenta-glow);
-  color: #fff;
-}
-.sidebar-matrix {
-  font-family: monospace;
-  font-size: 0.6rem;
-  color: #94a3b8;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  text-align: left;
-  background: rgba(0,0,0,0.45);
-  flex: 1;
-}
-.sidebar-header {
-  font-weight: bold;
-  color: var(--cyan-glow);
-  letter-spacing: 1px;
-  border-bottom: 1px solid rgba(0,240,255,0.2);
-  padding-bottom: 2px;
-  margin-bottom: 2px;
-}
-.telemetry-value {
-  color: #fff;
-  font-weight: bold;
-  float: right;
-}
-.preset-btn {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.05);
-  color: #cbd5e1;
-  padding: 5px;
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: left;
-  font-size: 0.55rem;
-  transition: all 0.2s ease;
-  width: 100%;
-  box-sizing: border-box;
-  margin-bottom: 2px;
-}
-.preset-btn:hover {
-  background: rgba(0, 240, 255, 0.08);
-  border-color: var(--cyan-glow);
-  color: #fff;
-}
-.activity-monitor {
-  height: 60px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  overflow: hidden;
-  font-size: 0.55rem;
-  color: #475569;
-  font-family: monospace;
-  text-align: left;
-}
-.covert-row {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-// Strict Global State Space
-let queriesExecuted = 0;
-let coreOverclockActive = false;
-let realHardwareTemp = 34.5;
-
-let ambientCanvas, aCtx, graphCanvas, gCtx;
-let txtInput, chatArea, logPanel;
-let particleBuffer;
-const maxParticleCount = 20;
-
-// Standard DOM Content Resolver Event (100% Secure on GitHub Platforms)
-window.addEventListener('DOMContentLoaded', function() {
-  ambientCanvas = document.getElementById('ambient-canvas');
-  aCtx = ambientCanvas.getContext('2d');
-  graphCanvas = document.getElementById('visualizer-ring-canvas');
-  gCtx = graphCanvas.getContext('2d');
-  
-  txtInput = document.getElementById('ai-input');
-  chatArea = document.getElementById('chat-history-viewport');
-  logPanel = document.getElementById('covert-activity-logs');
-
-  // Fix Dimensions Safely
-  ambientCanvas.width = window.innerWidth;
-  ambientCanvas.height = window.innerHeight;
-  graphCanvas.width = graphCanvas.parentElement.clientWidth;
-  graphCanvas.height = graphCanvas.parentElement.clientHeight;
-
-  // Initialize Particle Buffer Float Matrix
-  particleBuffer = new Float32Array(maxParticleCount * 4);
-  for(let i = 0; i < maxParticleCount; i++) {
-    const idx = i * 4;
-    particleBuffer[idx] = Math.random() * window.innerWidth;
-    particleBuffer[idx+1] = Math.random() * window.innerHeight;
-    particleBuffer[idx+2] = Math.random() * 12 + 6;
-    particleBuffer[idx+3] = -(Math.random() * 0.2 + 0.1);
-  }
-
-  // Event Listeners Mapping (Replacing risky inline HTML event hooks)
-  document.getElementById('submit-action-btn').addEventListener('click', processQuerySubmission);
-  document.getElementById('clear-action-btn').addEventListener('click', wipeTerminalMemory);
-  document.getElementById('boost-btn').addEventListener('click', handleCoreOverclockBtn);
-
-  // Bind All Preset Action Arrays
-  const presetButtons = document.querySelectorAll('.preset-btn[data-preset]');
-  presetButtons.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const type = btn.getAttribute('data-preset');
-      triggerPresetSelection(type);
-    });
-  });
-
-  // Capture Physical Return Enter Key Actions
-  txtInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      processQuerySubmission();
-    }
-  });
-
-  // Background Redraw Execution Routine
-  function refreshVisualsGrid() {
-    aCtx.fillStyle = '#020408';
-    aCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
-    aCtx.fillStyle = coreOverclockActive ? 'rgba(255, 0, 127, 0.015)' : 'rgba(0, 240, 255, 0.015)';
-
-    for(let i = 0; i < maxParticleCount; i++) {
-      const idx = i * 4;
-      let y = particleBuffer[idx+1] + particleBuffer[idx+3];
-      if(y < -particleBuffer[idx+2]) {
-        y = ambientCanvas.height + particleBuffer[idx+2];
-        particleBuffer[idx] = Math.random() * ambientCanvas.width;
-      }
-      particleBuffer[idx+1] = y;
-      aCtx.beginPath();
-      aCtx.arc(particleBuffer[idx], y, particleBuffer[idx+2], 0, 6.28318);
-      aCtx.fill();
-    }
-    requestAnimationFrame(refreshVisualsGrid);
-  }
-  requestAnimationFrame(refreshVisualsGrid);
-
-  // Execute Continuous Performance Tickers
-  setInterval(hardwareMetricsClockTick, 33);
-});
-
-// Security-Compliant Text Processing Engine
-function processQuerySubmission() {
-  if(!txtInput) return;
-  const userText = txtInput.value.trim();
-  if(!userText) return;
-
-  const executionStart = performance.now();
-  queriesExecuted++;
-  
-  postChatBubble(userText, true);
-  txtInput.value = '';
-
-  document.getElementById('val-steps').textContent = String(queriesExecuted).padStart(6, '0');
-  document.getElementById('val-alloc').textContent = (userText.length * 2) + " bytes";
-  realHardwareTemp += coreOverclockActive ? 2.2 : 0.6;
-  postSystemLogStream("Parsing user tokens safely through secure sandbox environment...");
-
-  setTimeout(function() {
-    let outputResponse = "";
-    let normalizedText = userText.toLowerCase();
-
-    // Secure Parsing Array Filters (No eval blocks used)
-    if (normalizedText.includes("history") || normalizedText.includes("rome") || normalizedText.includes("war")) {
-      outputResponse = "[ACE HISTORY DISCIPLINE]\nSubject: Macro-Chronology Analysis\n\nSolution Output:\n-> Records show structural civilizations naturally expand via centralized trade routers.\n-> Rome optimized regional dominance using strict geometric road networks, minimizing distribution delay parameters.";
-      redrawOscilloscopeCurve(4);
-    } else if (normalizedText.includes("geography") || normalizedText.includes("geo") || normalizedText.includes("capital")) {
-      outputResponse = "[ACE GEOGRAPHY DISCIPLINE]\nSubject: Spatial Border Matrices\n\nSolution Output:\n-> Population grids gather continuously along maritime channels and tectonic features.\n-> Global capital hubs serve as data routers managing financial transactions and resource trades.";
-      redrawOscilloscopeCurve(7);
-    } else if (normalizedText.includes("literature") || normalizedText.includes("book") || normalizedText.includes("write")) {
-      outputResponse = "[ACE LITERATURE DISCIPLINE]\nSubject: Textual Syntax Processing\n\nSolution Output:\n-> Linguistic structures utilize thematic weight balances to embed context directly into text.\n-> Composition layers modulate grammar structure lengths to control reader memory buffers.";
-      redrawOscilloscopeCurve(5);
-    } else if (normalizedText.includes("dna") || normalizedText.includes("rna") || normalizedText.includes("biology")) {
-      outputResponse = "[ACE BIOLOGY DISCIPLINE]\nTarget: mRNA Transcription Sequence\n\nInput DNA Chain Detected.\nCalculated Transcription Array Base Rule: [A->U, T->A, C->G, G->C].\n\nResult: Core replication sequence mapped cleanly into localized memory registers.";
-      redrawOscilloscopeCurve(8);
-    } else if (/\d+/.test(normalizedText)) {
-      // Secure, non-eval, pure calculation regex block fallback
-      outputResponse = `[ACE MATHEMATICAL DECK]\nExpression Track Acknowledged.\n\nResult: Numerical validation matched cleanly. Advanced symbolic variables are fully parsed inside secure hosting rules.`;
-      redrawOscilloscopeCurve(3);
-    } else {
-      outputResponse = `[ACE CHATBOT PRO]\nQuery Received: "${userText}"\n\nI am configured for all major academic content layers. Ask me questions explicitly using words like history, biology, geography, or write equations to get precise responses.`;
-      redrawOscilloscopeCurve(2);
-    }
-
-    postChatBubble(outputResponse, false);
-    const latencyDelta = performance.now() - executionStart;
-    document.getElementById('val-latency').textContent = latencyDelta.toFixed(2) + "ms";
-  }, 250);
-}
-
-function postChatBubble(text, isUser) {
-  if(!chatArea) return;
-  const bubble = document.createElement('div');
-  bubble.className = isUser ? 'chat-bubble user-bubble' : 'chat-bubble ai-bubble';
-  bubble.textContent = text;
-  chatArea.appendChild(bubble);
-  chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-function redrawOscilloscopeCurve(factor) {
-  if(!gCtx || !graphCanvas) return;
-  gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
-  gCtx.strokeStyle = coreOverclockActive ? '#ff007f' : '#00f0ff';
-  gCtx.lineWidth = 1.5;
-  gCtx.beginPath();
-  const centerY = graphCanvas.height / 2;
-  const step = graphCanvas.width / 40;
-  for(let i=0; i<=40; i++) {
-    const x = i * step;
-    const y = Math.sin(i * 0.3 + factor) * (graphCanvas.height * 0.25);
-    if(i === 0) gCtx.moveTo(x, centerY + y);
-    else gCtx.lineTo(x, centerY + y);
-  }
-  gCtx.stroke();
-}
-
-function triggerPresetSelection(type) {
-  if(!txtInput) return;
-  if (type === 'math') txtInput.value = '144 / 12 * 4';
-  else if (type === 'biology') txtInput.value = 'biology dna strand analysis transcription profiles';
-  else if (type === 'history') txtInput.value = 'History: Explain the engineering strategies of the ancient Roman Empire.';
-  else if (type === 'geography') txtInput.value = 'Geography: What factors determine global capital hub placement?';
-  else if (type === 'literature') txtInput.value = 'Literature: Analyze how classical writers leverage semantic text weights.';
-  txtInput.focus();
-  processQuerySubmission();
-}
-
-function handleCoreOverclockBtn() {
-  coreOverclockActive = !coreOverclockActive;
-  this.style.color = coreOverclockActive ? 'var(--magenta-glow)' : '';
-  this.style.borderColor = coreOverclockActive ? 'var(--magenta-glow)' : '';
-  document.getElementById('val-precision').textContent = coreOverclockActive ? "9.6 GHz" : "5.2 GHz";
-  postSystemLogStream(coreOverclockActive ? "WARNING: CORE PROCESSING SPEEDS OVERCLOCKED." : "System processor clock frequencies normalized.");
-}
-
-function wipeTerminalMemory() {
-  if(!chatArea || !gCtx) return;
-  chatArea.innerHTML = `<div class="chat-bubble ai-bubble">[ACE_RESET] Volatile workspace cleared. Input nodes cleared and standing by.</div>`;
-  gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
-  postSystemLogStream("Flushed chat log history registers.");
-}
-
-function postSystemLogStream(msg) {
-  if(!logPanel) return;
-  const row = document.createElement('div');
-  row.className = 'covert-row';
-  row.textContent = "[" + new Date().toLocaleTimeString() + "] " + msg;
-  logPanel.appendChild(row);
-  if(logPanel.children.length > 3) logPanel.removeChild(logPanel.children[0]);
-  logPanel.scrollTop = logPanel.scrollHeight;
-}
-
-function hardwareMetricsClockTick() {
-  const t = new Date();
-  document.getElementById('system-clock').textContent = t.toTimeString().substring(0,8) + '.' + String(t.getMilliseconds()).padStart(3,'0').substring(0,2);
-  
-  if(realHardwareTemp > 34.0) realHardwareTemp -= 0.02;
-  if(coreOverclockActive) realHardwareTemp += Math.random() * 0.12 + 0.04;
-  
-  const tempView = document.getElementById('temp-metric');
-  const loadView = document.getElementById('val-load');
-  const throttleView = document.getElementById('val-throttle');
-  
-  tempView.textContent = realHardwareTemp.toFixed(1) + '°C';
-
-  <script>
