@@ -3,313 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Pulse Wave Synthesizer</title>
+    <title>Audio-Only Synthesizer</title>
     <style>
         body {
-            background-color: #030712;
-            color: #f9fafb;
-            font-family: monospace;
+            background-color: #121214;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+        }
+
+        .synth-box {
+            background: #1e1e24;
+            border: 2px solid #333;
+            border-radius: 8px;
             padding: 20px;
-            box-sizing: border-box;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .rack-mount {
-            background-color: #111827;
-            border: 3px solid #374151;
-            border-radius: 12px;
-            padding: 30px;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-        }
-
-        /* Power Overlay for Browser Security Bypass */
-        .power-screen {
-            background: rgba(17, 24, 39, 0.95);
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            border-radius: 9px;
-            backdrop-filter: blur(4px);
-        }
-
-        .power-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            font-size: 18px;
-            font-weight: bold;
-            font-family: monospace;
-            letter-spacing: 2px;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
-            transition: all 0.2s;
-        }
-
-        .power-btn:hover {
-            background: #f87171;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
-        }
-
-        .panel-header {
+        .controls {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 25px;
-            border-bottom: 2px dashed #374151;
-            padding-bottom: 15px;
-            position: relative;
-        }
-
-        .panel-header h1 {
-            margin: 0;
-            font-size: 20px;
-            letter-spacing: 3px;
-            color: #3b82f6;
-            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-        }
-
-        /* Frequency Wave Visualizer Box */
-        .scope-box {
-            background-color: #020617;
-            border: 2px solid #1e3a8a;
-            border-radius: 6px;
-            height: 120px;
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-
-        canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        /* Synth Parameters Rows */
-        .modules-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .module {
-            background: #1f2937;
-            border: 1px solid #4b5563;
-            border-radius: 6px;
+            background: #111;
             padding: 15px;
+            border-radius: 6px;
         }
 
-        .module-title {
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            width: 45%;
+        }
+
+        label {
             font-size: 12px;
-            color: #10b981;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            color: #aaa;
         }
 
-        .knob-row {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 12px;
-        }
-
-        .knob-row label {
-            font-size: 11px;
-            color: #9ca3af;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .knob-row label span {
-            color: #f59e0b;
-        }
-
-        input[type="range"], select {
-            width: 100%;
-            background: #111827;
-            color: #f3f4f6;
-            border: 1px solid #4b5563;
-            padding: 5px;
+        select, input[type="range"] {
+            padding: 8px;
+            background: #2a2a32;
+            color: white;
+            border: 1px solid #444;
             border-radius: 4px;
-            box-sizing: border-box;
         }
 
-        input[type="range"] {
-            -webkit-appearance: none;
-            height: 8px;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            background: #3b82f6;
-            border-radius: 2px;
-            cursor: pointer;
-            box-shadow: 0 0 8px #3b82f6;
-        }
-
-        /* Desktop Trigger Keys */
-        .piano-roll {
+        .keyboard {
             display: flex;
-            background: #090d16;
-            padding: 15px;
-            border-radius: 8px;
-            gap: 4px;
+            background: #000;
+            padding: 10px;
+            border-radius: 6px;
+            height: 150px;
         }
 
-        .ivory {
+        .key {
             flex: 1;
-            background: #f9fafb;
-            height: 140px;
+            background: #fff;
+            border: 1px solid #000;
             border-radius: 0 0 4px 4px;
             cursor: pointer;
-            position: relative;
-            transition: background 0.1s;
         }
 
-        .ivory.active {
-            background: #10b981 !important;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 0 10px #10b981;
-        }
-
-        .ebony {
-            background: #1f2937;
-            height: 85px;
-            width: 32px;
-            margin-left: -18px;
-            margin-right: -18px;
-            z-index: 5;
-            border-radius: 0 0 3px 3px;
-            cursor: pointer;
-            border: 1px solid #111827;
-            transition: background 0.1s;
-        }
-
-        .ebony.active {
-            background: #f59e0b !important;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 10px #f59e0b;
+        .key:active {
+            background: #00ff88;
         }
     </style>
 </head>
 <body>
 
-    <div class="rack-mount" style="position: relative;">
-        <!-- Audio Unlock Overlay Screen -->
-        <div class="power-screen" id="gatekeeper">
-            <button class="power-btn" id="power-on">BOOT SYSTEM</button>
-            <p style="color: #6b7280; font-size: 11px; margin-top: 15px;">ACTIVATE WEB AUDIO HARDWARE ENGINE</p>
-        </div>
-
-        <div class="panel-header">
-            <h1>ANALOG VOLTAGE SYNTHESIZER</h1>
-            <div style="font-size: 11px; color: #4b5563;">MODEL // 2026-X</div>
-        </div>
-
-        <!-- Oscilloscope Wave Engine Screen -->
-        <div class="scope-box">
-            <canvas id="scope"></canvas>
-        </div>
-
-        <div class="modules-grid">
-            <!-- Signal Generator -->
-            <div class="module">
-                <div class="module-title">1. Oscillator</div>
-                <div class="knob-row">
-                    <label>Wave Shape</label>
-                    <select id="wave-type">
-                        <option value="sawtooth">Sawtooth (Aggressive)</option>
-                        <option value="sine">Sine (Pure / Clean)</option>
-                        <option value="square">Square (Hollow / Retro)</option>
-                        <option value="triangle">Triangle (Flute-like)</option>
-                    </select>
-                </div>
-                <div class="knob-row">
-                    <label>Master Volume <span id="v-gain">70%</span></label>
-                    <input type="range" id="vol-level" min="0" max="1" step="0.05" value="0.7">
-                </div>
+    <div class="synth-box">
+        <h2 style="margin-top: 0; font-weight: 300; letter-spacing: 1px;">Audio Engine Output</h2>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>Waveform Type</label>
+                <select id="wave-type">
+                    <option value="sine">Sine (Soft Pure Tone)</option>
+                    <option value="triangle" selected>Triangle (Clear Flute)</option>
+                    <option value="sawtooth">Sawtooth (Buzzing Brass)</option>
+                    <option value="square">Square (Retro Arcade)</option>
+                </select>
             </div>
-
-            <!-- Signal Filtering -->
-            <div class="module">
-                <div class="module-title">2. Lowpass Filter</div>
-                <div class="knob-row">
-                    <label>Cutoff Freq <span id="v-cutoff">4000 Hz</span></label>
-                    <input type="range" id="cutoff-freq" min="100" max="10000" step="50" value="4000">
-                </div>
-                <div class="knob-row">
-                    <label>Resonance (Q) <span id="v-res">1.0</span></label>
-                    <input type="range" id="res-val" min="0.5" max="15" step="0.5" value="1.0">
-                </div>
-            </div>
-
-            <!-- Envelope Shaping -->
-            <div class="module">
-                <div class="module-title">3. Amp Envelope</div>
-                <div class="knob-row">
-                    <label>Attack Speed <span id="v-attack">0.05s</span></label>
-                    <input type="range" id="attack-time" min="0.01" max="1" step="0.01" value="0.05">
-                </div>
-                <div class="knob-row">
-                    <label>Release Fade <span id="v-release">0.30s</span></label>
-                    <input type="range" id="release-time" min="0.05" max="2" step="0.05" value="0.30">
-                </div>
+            
+            <div class="control-group">
+                <label>Volume Level</label>
+                <input type="range" id="volume-level" min="0" max="0.5" step="0.05" value="0.25">
             </div>
         </div>
 
-        <!-- Synthesizer Interaction Keys -->
-        <div class="piano-roll">
-            <div class="ivory" data-hz="261.63"></div>
-            <div class="ebony" data-hz="277.18"></div>
-            <div class="ivory" data-hz="293.66"></div>
-            <div class="ebony" data-hz="311.13"></div>
-            <div class="ivory" data-hz="329.63"></div>
-            <div class="ivory" data-hz="349.23"></div>
-            <div class="ebony" data-hz="369.99"></div>
-            <div class="ivory" data-hz="392.00"></div>
-            <div class="ebony" data-hz="415.30"></div>
-            <div class="ivory" data-hz="440.00"></div>
-            <div class="ebony" data-hz="466.16"></div>
-            <div class="ivory" data-hz="493.88"></div>
-            <div class="ivory" data-hz="523.25"></div>
+        <div class="keyboard">
+            <!-- Tones configured from Middle C (C4) upwards -->
+            <div class="key" data-frequency="261.63" title="C4"></div>
+            <div class="key" data-frequency="293.66" title="D4"></div>
+            <div class="key" data-frequency="329.63" title="E4"></div>
+            <div class="key" data-frequency="349.23" title="F4"></div>
+            <div class="key" data-frequency="392.00" title="G4"></div>
+            <div class="key" data-frequency="440.00" title="A4"></div>
+            <div class="key" data-frequency="493.88" title="B4"></div>
+            <div class="key" data-frequency="523.25" title="C5"></div>
         </div>
     </div>
 
     <script>
-        let audioContext = null;
-        let mainFilterNode = null;
-        let outputGainNode = null;
-        let signalAnalyser = null;
-        
-        // Tracking structure map for playing keys
-        const trackingVoices = new Map();
+        let audioCtx = null;
+        const activeVoices = new Map();
 
-        // Canvas Setup
-        const canvas = document.getElementById('scope');
-        const canvasCtx = canvas.getContext('2d');
-        
-        function fitCanvas() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
+        function startAudioEngine() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
-        window.addEventListener('resize', fitCanvas);
-        fitCanvas();
 
-        // Absolute Hardware Unlock Handler triggered by the BOOT Button
-.parentElement.clientWidth * window.devicePixelRatio;
-            canvas.height = canvas.parentElement.clientHeight * window.devicePixelRatio;
+        function playSound(frequency) {
+            // Force hardware initiation on every key touch event
+            startAudioEngine();
+
+            // Clear duplicate note if already triggered
+            if (activeVoices.has(frequency)) {
+                stopSound(frequency);
+            }
+
+            const waveForm = document.getElementById('wave-type').value;
+            const volumeSetting = parseFloat(document.getElementById('volume-level').value);
+
+            // Create generator and gain envelope nodes
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = waveForm;
+            oscillator.frequency.value = frequency;
+            
+            // Fixed instant attack parameter to avoid scheduling delay dropouts
+            gainNode.gain.setValueAtTime(volumeSetting, audioCtx.currentTime);
+
+            // Connect Generator -> Volume Controller -> Device Speakers
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.start();
+
+            // Keep pointers in memory array map
+            activeVoices.set(frequency, { osc: oscillator, gain: gainNode });
+        }
+
+        function stopSound(frequency) {
+            if (!activeVoices.has(frequency)) return;
+
+            const voice = activeVoices.get(frequency);
+            
+            // Hard stop sound cleanly to eliminate hanging feedback loops
+            try {
+                voice.osc.stop();
+                voice.osc.disconnect();
+                voice.gain.disconnect();
+            } catch(e) {
+                // Catch hardware block states gracefully
+            }
+
+            activeVoices.delete(frequency);
+        }
+
+        // Bind raw interaction events down to UI keyboard nodes
+        document.querySelectorAll('.key').forEach(key => {
+            const freq = parseFloat(key.getAttribute('data-frequency'));
+
+            // Click Handlers
+            key.addEventListener('mousedown', () => playSound(freq));
+            key.addEventListener('mouseup', () => stopSound(freq));
+            key.addEventListener('mouseleave', () => stopSound(freq));
+
+            // Mobile Device Touch Handlers
+            key.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                playSound(freq);
+            });
+            key.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                stopSound(freq);
+            });
+        });
+    </script>
+</body>
+</html>
