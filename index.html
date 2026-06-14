@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X-8 AUDIO HARDWARE</title>
     <style>
-        /* --- SYSTEM STYLING & CRT THEME --- */
+        /* Raw, Low-Res CRT Matrix Style */
         body {
             background-color: #000;
             color: #00ff66;
@@ -21,19 +21,7 @@
             user-select: none;
         }
 
-        /* --- CRT MONITOR SCANLINE OVERLAY --- */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            z-index: 99999;
-            background-size: 100% 4px;
-            pointer-events: none;
-        }
-
-        /* --- HARDWARE CHASSIS LAYOUT --- */
+        /* Main Blocky Console Framework */
         .console-chassis {
             background: #000;
             border: 8px solid #00ff66;
@@ -51,34 +39,8 @@
             font-size: 14px;
             text-align: center;
             margin-bottom: 15px;
-            letter-spacing: 1px;
         }
 
-        /* --- REALTIME CRT GRAPHICS MONITOR --- */
-        .monitor-display {
-            background: #051105;
-            border: 4px solid #ff0055;
-            margin-bottom: 15px;
-            height: 60px;
-            position: relative;
-        }
-
-        .monitor-display canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        .monitor-tag {
-            position: absolute;
-            top: 2px;
-            left: 6px;
-            font-size: 10px;
-            color: #ffaa00;
-            z-index: 10;
-        }
-
-        /* --- HARDWARE CONTROL GRID --- */
         .hardware-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -88,7 +50,7 @@
 
         .module-block {
             border: 4px solid #ffaa00;
-            padding: 10px;
+            padding: 8px;
             background: #111;
         }
 
@@ -96,9 +58,9 @@
             font-size: 11px;
             background: #ffaa00;
             color: #000;
-            padding: 2px 6px;
+            padding: 2px 4px;
             display: inline-block;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .input-row {
@@ -109,7 +71,7 @@
             font-size: 12px;
         }
 
-        /* --- INDUSTRIAL DIALS AND INPUT SELECTORS --- */
+        /* Pixel-art Raw Select Box and Text Sliders */
         select, input[type="range"] {
             background: #000;
             color: #ff0055;
@@ -118,7 +80,6 @@
             font-weight: 900;
             padding: 2px;
             outline: none;
-            cursor: pointer;
         }
 
         input[type="range"] {
@@ -136,7 +97,7 @@
             cursor: pointer;
         }
 
-        /* --- BRUTAL CHUNK HARDWARE PIANO KEYS --- */
+        /* Chunk-Style Piano Roll Intermediary Layout */
         .block-keyboard {
             display: flex;
             background: #000;
@@ -149,51 +110,39 @@
             flex: 1;
             background: #fff;
             color: #000;
-            height: 90px;
-            border: 4px solid #000;
+            height: 80px;
+            border: 6px solid #000;
             box-shadow: 0px 10px 0px #333;
             cursor: pointer;
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding-bottom: 6px;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
             box-sizing: border-box;
-            transition: transform 0.05s, box-shadow 0.05s;
+            font-weight: 900;
+            font-size: 14px;
         }
 
         .chunk-key:active {
-            background: #ff0055 !important;
-            color: #fff;
+            background: #ff0055;
             box-shadow: 0px 2px 0px #990022;
             transform: translateY(8px);
-        }
-
-        .key-tag {
-            font-size: 11px;
-            font-weight: 900;
-            pointer-events: none;
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
-    <!-- SYNTH PANEL HOUSING -->
+    <!-- MAIN SOUND GENERATOR SYSTEM CABINET -->
     <div class="console-chassis">
-        <div class="panel-stripe">=== SYSTEM ONLINE // CONTROLLER MATRIX OVERRIDE ===</div>
-        
-        <!-- Live Visualizer Tube -->
-        <div class="monitor-display">
-            <div class="monitor-tag">SIGNAL ANALYZER</div>
-            <canvas id="scope-canvas"></canvas>
-        </div>
-
+        <div class="panel-stripe">=== CONTROLLER MATRIX OVERRIDE V2 ===</div>
         <div class="hardware-grid">
-            <!-- 01: Core Waveform Shapes -->
+            
+            <!-- Signal Oscillators -->
             <div class="module-block">
                 <div class="module-tag">01// CORE WAVEFORM</div>
                 <div class="input-row">
-                    <label for="osc-wave-1">SHAPE 1</label>
+                    <label>SHAPE 1</label>
                     <select id="osc-wave-1">
                         <option value="square" selected>SQUARE</option>
                         <option value="sawtooth">SAW</option>
@@ -202,7 +151,7 @@
                     </select>
                 </div>
                 <div class="input-row">
-                    <label for="osc-wave-2">SHAPE 2</label>
+                    <label>SHAPE 2</label>
                     <select id="osc-wave-2">
                         <option value="sawtooth" selected>SAW</option>
                         <option value="square">SQUARE</option>
@@ -212,24 +161,24 @@
                 </div>
             </div>
 
-            <!-- 02: Arpeggiator Chip Controls -->
+            <!-- Pitch Modification Engine Controls -->
             <div class="module-block">
                 <div class="module-tag">02// CHIP MODULATORS</div>
                 <div class="input-row">
-                    <label for="arp-rate">ARP SPEED</label>
+                    <label>ARP SPEED</label>
                     <input type="range" id="arp-rate" min="0" max="15" step="1" value="0">
                 </div>
                 <div class="input-row">
-                    <label for="arp-interval">ARP INTERVAL</label>
+                    <label>ARP INTERVAL</label>
                     <input type="range" id="arp-interval" min="3" max="12" step="1" value="4">
                 </div>
             </div>
 
-            <!-- 03: Voltage Pitch Sweeper -->
+            <!-- Frequency Ramping Sweep Modification Elements -->
             <div class="module-block">
                 <div class="module-tag">03// VOLTAGE SWEEP</div>
                 <div class="input-row">
-                    <label for="sweep-dir">SWEEP DIR</label>
+                    <label>SWEEP DIR</label>
                     <select id="sweep-dir">
                         <option value="none">NONE</option>
                         <option value="down">DOWNPITCH</option>
@@ -237,52 +186,84 @@
                     </select>
                 </div>
                 <div class="input-row">
-                    <label for="sweep-speed">SWEEP RATE</label>
+                    <label>SWEEP RATE</label>
                     <input type="range" id="sweep-speed" min="0.05" max="0.8" step="0.05" value="0.2">
                 </div>
             </div>
 
-            <!-- 04: Gain Dynamics Amplifiers -->
+            <!-- Hard Dynamic Envelope Gate Configuration -->
             <div class="module-block">
                 <div class="module-tag">04// AMP DECAY ENVELOPE</div>
                 <div class="input-row">
-                    <label for="decay-time">DECAY FADE</label>
+                    <label>DECAY FADE</label>
                     <input type="range" id="decay-time" min="0.05" max="1.5" step="0.05" value="0.4">
                 </div>
                 <div class="input-row">
-                    <label for="gain-level">MASTER LEVEL</label>
-                    <input type="range" id="gain-level" min="0" max="0.4" step="0.05" value="0.20">
+                    <label>MASTER LEVEL</label>
+                    <input type="range" id="gain-level" min="0" max="0.4" step="0.02" value="0.25">
                 </div>
             </div>
         </div>
 
-        <!-- 8 Heavy Hardware Chunk Keys -->
+        <!-- 8 Heavy Raw Tone Output Blocks (Tuned higher for small laptop/phone speakers) -->
         <div class="block-keyboard">
-            <div class="chunk-key" data-pitch="220.00" style="background: #e5e5e5;"><span class="key-tag">A3</span></div>
-            <div class="chunk-key" data-pitch="261.63"><span class="key-tag">C4</span></div>
-            <div class="chunk-key" data-pitch="293.66" style="background: #e5e5e5;"><span class="key-tag">D4</span></div>
-            <div class="chunk-key" data-pitch="329.63"><span class="key-tag">E4</span></div>
-            <div class="chunk-key" data-pitch="392.00" style="background: #e5e5e5;"><span class="key-tag">G4</span></div>
-            <div class="chunk-key" data-pitch="440.00"><span class="key-tag">A4</span></div>
-            <div class="chunk-key" data-pitch="523.25" style="background: #e5e5e5;"><span class="key-tag">C5</span></div>
-            <div class="chunk-key" data-pitch="587.33"><span class="key-tag">D5</span></div>
+            <div class="chunk-key" data-pitch="220.00">A3</div>
+            <div class="chunk-key" data-pitch="261.63">C4</div>
+            <div class="chunk-key" data-pitch="293.66">D4</div>
+            <div class="chunk-key" data-pitch="329.63">E4</div>
+            <div class="chunk-key" data-pitch="392.00">G4</div>
+            <div class="chunk-key" data-pitch="440.00">A4</div>
+            <div class="chunk-key" data-pitch="523.25">C5</div>
+            <div class="chunk-key" data-pitch="587.33">D5</div>
         </div>
     </div>
 
-    <!-- --- WEB AUDIO ENGINE INFRASTRUCTURE --- -->
     <script>
-        let rawAudioContext = null;
-        let globalAnalyserNode = null;
-        const liveVoiceStack = new Map();
+        // Store running arpeggiation intervals universally
+        const activeIntervals = new Map();
 
-        // Safe Initialization Engine
-        function bootAudioEngine() {
-            if (rawAudioContext) return;
-            
-            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-            rawAudioContext = new AudioContextClass();
-            
-            // Build real-time graph visualization engine link
-            globalAnalyserNode = rawAudioContext.createAnalyser();
+        function playTone(frequency) {
+            try {
+                // Initialize audio instantly on click to force browser safety clearance
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContextClass();
+                
+                // Read configuration settings on runtime execution
+                const volume = parseFloat(document.getElementById('gain-level').value);
+                const wave1 = document.getElementById('osc-wave-1').value;
+                const wave2 = document.getElementById('osc-wave-2').value;
+                const sweepDir = document.getElementById('sweep-dir').value;
+                const sweepRate = parseFloat(document.getElementById('sweep-speed').value);
+                const arpRate = parseInt(document.getElementById('arp-rate').value);
+                const arpInterval = parseInt(document.getElementById('arp-interval').value);
+                const decay = parseFloat(document.getElementById('decay-time').value);
 
-            globalAnalyserNode = rawAudioContext.createAnalyser();
+                const now = ctx.currentTime;
+
+                // Build Core Synth Engine Architecture Nodes
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                const mainGain = ctx.createGain();
+
+                osc1.type = wave1;
+                osc2.type = wave2;
+
+                // Thick industrial detune layer
+                osc1.detune.setValueAtTime(-8, now);
+                osc2.detune.setValueAtTime(8, now);
+
+                osc1.frequency.setValueAtTime(frequency, now);
+                osc2.frequency.setValueAtTime(frequency, now);
+
+                // Voltage Frequency Sweep Math Execution
+                if (sweepDir === 'up') {
+                    osc1.frequency.exponentialRampToValueAtTime(frequency * 2, now + sweepRate);
+                    osc2.frequency.exponentialRampToValueAtTime(frequency * 2, now + sweepRate);
+                } else if (sweepDir === 'down') {
+                    osc1.frequency.exponentialRampToValueAtTime(frequency * 0.5, now + sweepRate);
+                    osc2.frequency.exponentialRampToValueAtTime(frequency * 0.5, now + sweepRate);
+                }
+
+                // Chiptune Step-Arpeggiator Engine Clock
+                if (arpRate > 0) {
+                    let step = 0;
