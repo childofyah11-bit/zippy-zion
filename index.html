@@ -1,385 +1,106 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Small Town Star - Interactive Lyrics</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Small Town Star</title>
+    <style>
+        :root { --bg: #0b0f19; }
+        body, html { margin:0; padding:0; width:100%; height:100%; background: var(--bg); font-family: sans-serif; color: #fff; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        canvas { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1; }
+        #ui { position: relative; z-index: 2; text-align: center; width: 90%; max-width: 800px; pointer-events: none; }
+        #start { pointer-events: auto; cursor: pointer; background: rgba(15,23,42,0.8); padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        h1 { font-size: 2.5rem; margin: 0 0 10px 0; background: linear-gradient(45deg, #38bdf8, #f43f5e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn { background: #38bdf8; color: #000; border: none; padding: 15px 40px; font-size: 1.2rem; font-weight: bold; border-radius: 50px; cursor: pointer; margin-top: 20px; }
+        #lyrics { display: none; font-size: 3rem; font-weight: 800; text-transform: uppercase; line-height: 1.4; }
+        .word { display: inline-block; margin: 0 8px; opacity: 0; transform: translateY(10px); animation: pop 0.3s forwards; }
+        @keyframes pop { to { opacity: 1; transform: translateY(0); } }
+        #controls { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 10; display: none; gap: 15px; }
+        .nav-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
+    </style>
 </head>
 <body>
-
-    <!-- Visual Canvas Layer -->
     <canvas id="canvas"></canvas>
-
-    <!-- User Interface Layer -->
-    <div id="ui-layer">
-        <div id="start-screen" onclick="startExperience()">
+    <div id="ui">
+        <div id="start" onclick="runShow()">
             <h1>SMALL TOWN STAR</h1>
-            <div class="subtitle">(Goofball Experience)</div>
-            <button class="play-btn">START SHOW</button>
+            <p style="color:#94a3b8">(Goofball Experience)</p>
+            <button class="btn">START SHOW</button>
         </div>
-
-        <div id="lyric-display"></div>
+        <div id="lyrics"></div>
     </div>
-
-    <!-- Navigation Control System -->
     <div id="controls">
-        <button class="nav-btn" onclick="changeLine(-1)">◀ BACK</button>
-        <button class="nav-btn" onclick="toggleAuto()">PAUSE/PLAY</button>
-        <button class="nav-btn" onclick="changeLine(1)">NEXT ▶</button>
+        <button class="nav-btn" onclick="go(-1)">◀ BACK</button>
+        <button class="nav-btn" onclick="toggle()">PAUSE</button>
+        <button class="nav-btn" onclick="go(1)">NEXT ▶</button>
     </div>
 
+    <script>
+        const txt = [
+            "Small Town Star (Goofball)","I’m a goofball bouncing-off-the-wall-ball","Everybody knows my name","Yeah I’ll be a little goofball","Staying in my own lane",
+            "I’m a low-key pretty goofy really-got-it-good-breezy","standing-pretty-tall-ball","Dancing in the quiet rain","Just a low-key goofball","And God made me perfectly okay",
+            "Woke up Clean slate","Sun's up Don't wait","Step out Big yard","Life's good Not hard","Green trees Clear breeze","Out here Do what I please",
+            "Big smile Spark eye","Watch the clouds roll right on by","No rush My pace","Wide open No race","Fresh air Cool shade","Sun shine High sky",
+            "No stress Time flies","Quiet space Ground solid","Real world Big knowledge","Just growth Big views","No stress Good news","Out back Chill state",
+            "Everything is looking great","Birds sing Warm air","No worries No cares","Right here My spot","Appreciate what I got","His design Right place",
+            "Full of purpose Full of grace","Phone rings Big crowd","They talk Real loud","They know me I'm known","But right now My zone","Feet up Chill mind",
+            "One of a kind Good joke","Fun time That's the end of the line","They call I decline","My space All mine","Top tier No fear","I’m the star around here",
+            "Screen bright App tapped","Class notes Book wrapped","Log in School grind","Sharp brain Good mind","Homework Done fast","A-plus First class",
+            "Next tab Beats play","Soundtrack for the day","Headphones No need","Speakers loud Top speed","Volume up Track rolls","Deep rhythm Takes control",
+            "Popular Well liked","But the focus is spiked","Peaceful Rest easy","Everything is going breezy","Music stops Heavy silence","World waits Big reliance",
+            "They look I stand","Take control Command","Lights fade Stage set","Moment they won't forget","No mistakes No flaws","Woven by His holy laws",
+            "Every detail Every strand","Held inside a higher hand","Take a breath Hear the call","God made me perfectly after all","Sun goes down Stars appear",
+            "Living life With no fear","Grateful heart Peaceful state","Everything is looking great","Walking forward Staying strong","This is where I belong",
+            "Deep breath Clear sky","Watch the days fly right on by","In His hands Every day","Everything is turning out okay 😁"
+        ];
+
+        let idx = 0, auto = true, timer, aCtx, p = [];
+        const cv = document.getElementById('canvas'), cx = cv.getContext('2d');
+        
+        function resize() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
+        window.onresize = resize; resize();
+
+        for(let i=0; i<80; i++) p.push({x:Math.random()*cv.width, y:Math.random()*cv.height, s:Math.random()*3+1, v:Math.random()*1+0.5});
+
+        function draw() {
+            cx.fillStyle = 'rgba(11,15,25,0.2)'; cx.fillRect(0,0,cv.width,cv.height);
+            cx.fillStyle = '#38bdf8';
+            p.forEach(i => {
+                i.y -= i.v; if(i.y < 0) i.y = cv.height;
+                cx.beginPath(); cx.arc(i.x, i.y, i.s, 0, Math.PI*2); cx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        function sound() {
+            if(!aCtx) aCtx = new(window.AudioContext||window.webkitAudioContext)();
+            let osc = aCtx.createOscillator(), g = aCtx.createGain();
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(idx % 2 === 0 ? 300 : 450, aCtx.currentTime);
+            g.gain.setValueAtTime(0.1, aCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, aCtx.currentTime + 0.3);
+            osc.connect(g); g.connect(aCtx.destination); osc.start(); osc.stop(aCtx.currentTime + 0.3);
+        }
+
+        function showLine() {
+            const box = document.getElementById('lyrics'); box.innerHTML = '';
+            txt[idx].split(' ').forEach((w, i) => {
+                let s = document.createElement('span'); s.className = 'word'; s.innerText = w;
+                s.style.animationDelay = `${i * 0.05}s`; box.appendChild(s);
+            });
+            sound();
+            clearTimeout(timer);
+            if(auto && idx < txt.length - 1) timer = setTimeout(() => go(1), 2500);
+        }
+
+        function runShow() {
+            document.getElementById('start').style.display = 'none';
+            document.getElementById('lyrics').style.display = 'block';
+            document.getElementById('controls').style.display = 'flex';
+            showLine();
+        }
+
+        function go(d) { idx += d; if(idx < 0) idx = 0; if(idx >= txt.length) idx = txt.length-1; showLine(); }
+        function toggle() { auto = !auto; if(auto) showLine(); }
+    </script>
 </body>
 </html>
-<style>
-    :root {
-        --bg-color: #0b0f19;
-        --text-color: #ffffff;
-        --accent-glow: #38bdf8;
-    }
-    
-    body, html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        background-color: var(--bg-color);
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        color: var(--text-color);
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 
-    #canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-    }
-
-    #ui-layer {
-        position: relative;
-        z-index: 2;
-        text-align: center;
-        width: 90%;
-        max-width: 800px;
-        pointer-events: none;
-    }
-
-    #start-screen {
-        pointer-events: auto;
-        cursor: pointer;
-        background: rgba(15, 23, 42, 0.6);
-        padding: 40px;
-        border-radius: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(12px);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    #start-screen:hover {
-        transform: scale(1.02);
-        box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
-    }
-
-    h1 {
-        font-size: 2.5rem;
-        margin-bottom: 10px;
-        letter-spacing: 2px;
-        background: linear-gradient(45deg, #38bdf8, #818cf8, #f43f5e);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .subtitle {
-        color: #94a3b8;
-        font-size: 1.1rem;
-        margin-bottom: 30px;
-    }
-
-    .play-btn {
-        background: linear-gradient(135deg, #38bdf8, #6366f1);
-        color: white;
-        border: none;
-        padding: 15px 40px;
-        font-size: 1.2rem;
-        font-weight: bold;
-        border-radius: 50px;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
-        transition: transform 0.2s;
-    }
-
-    .play-btn:active {
-        transform: scale(0.95);
-    }
-
-    #lyric-display {
-        display: none;
-        font-size: 3.5rem;
-        font-weight: 800;
-        line-height: 1.3;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .word {
-        display: inline-block;
-        margin: 0 8px;
-        opacity: 0;
-        transform: translateY(20px) scale(0.9);
-        animation: popIn 0.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @keyframes popIn {
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-    }
-
-    #controls {
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        display: none;
-        gap: 15px;
-        pointer-events: auto;
-    }
-
-    .nav-btn {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        padding: 10px 20px;
-        border-radius: 20px;
-        cursor: pointer;
-        backdrop-filter: blur(5px);
-        font-weight: 600;
-    }
-
-    .nav-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
-    }
-</style>
-<script>
-    // --- LYRICS DATA STRUCTURE WITH MOOD/THEME ENGINE ---
-    const lyrics = [
-        { text: "Small Town Star (Goofball)", theme: "intro" },
-        { text: "I’m a goofball bouncing-off-the-wall-ball", theme: "bouncy" },
-        { text: "Everybody knows my name", theme: "star" },
-        { text: "Yeah I’ll be a little goofball", theme: "bouncy" },
-        { text: "Staying in my own lane", theme: "chill" },
-        { text: "I’m a low-key pretty goofy really-got-it-good-breezy", theme: "bouncy" },
-        { text: "standing-pretty-tall-ball", theme: "star" },
-        { text: "Dancing in the quiet rain", theme: "rain" },
-        { text: "Just a low-key goofball", theme: "chill" },
-        { text: "And God made me perfectly okay", theme: "grace" },
-        { text: "Woke up Clean slate", theme: "morning" },
-        { text: "Sun's up Don't wait", theme: "morning" },
-        { text: "Step out Big yard", theme: "nature" },
-        { text: "Life's good Not hard", theme: "nature" },
-        { text: "Green trees Clear breeze", theme: "nature" },
-        { text: "Out here Do what I please", theme: "chill" },
-        { text: "Big smile Spark eye", theme: "star" },
-        { text: "Watch the clouds roll right on by", theme: "rain" },
-        { text: "No rush My pace", theme: "chill" },
-        { text: "Wide open No race", theme: "chill" },
-        { text: "Fresh air Cool shade", theme: "nature" },
-        { text: "Sun shine High sky", theme: "morning" },
-        { text: "No stress Time flies", theme: "chill" },
-        { text: "Quiet space Ground solid", theme: "nature" },
-        { text: "Real world Big knowledge", theme: "grace" },
-        { text: "Just growth Big views", theme: "nature" },
-        { text: "No stress Good news", theme: "chill" },
-        { text: "Out back Chill state", theme: "chill" },
-        { text: "Everything is looking great", theme: "star" },
-        { text: "Birds sing Warm air", theme: "nature" },
-        { text: "No worries No cares", theme: "chill" },
-        { text: "Right here My spot", theme: "chill" },
-        { text: "Appreciate what I got", theme: "grace" },
-        { text: "His design Right place", theme: "grace" },
-        { text: "Full of purpose Full of grace", theme: "grace" },
-        { text: "Phone rings Big crowd", theme: "frenetic" },
-        { text: "They talk Real loud", theme: "frenetic" },
-        { text: "They know me I'm known", theme: "star" },
-        { text: "But right now My zone", theme: "chill" },
-        { text: "Feet up Chill mind", theme: "chill" },
-        { text: "One of a kind Good joke", theme: "bouncy" },
-        { text: "Fun time That's the end of the line", theme: "chill" },
-        { text: "They call I decline", theme: "chill" },
-        { text: "My space All mine", theme: "chill" },
-        { text: "Top tier No fear", theme: "star" },
-        { text: "I’m the star around here", theme: "star" },
-        { text: "Screen bright App tapped", theme: "tech" },
-        { text: "Class notes Book wrapped", theme: "tech" },
-        { text: "Log in School grind", theme: "tech" },
-        { text: "Sharp brain Good mind", theme: "tech" },
-        { text: "Homework Done fast", theme: "tech" },
-        { text: "A-plus First class", theme: "star" },
-        { text: "Next tab Beats play", theme: "music" },
-        { text: "Soundtrack for the day", theme: "music" },
-        { text: "Headphones No need", theme: "music" },
-        { text: "Speakers loud Top speed", theme: "music" },
-        { text: "Volume up Track rolls", theme: "music" },
-        { text: "Deep rhythm Takes control", theme: "music" },
-        { text: "Popular Well liked", theme: "star" },
-        { text: "But the focus is spiked", theme: "star" },
-        { text: "Peaceful Rest easy", theme: "chill" },
-        { text: "Everything is going breezy", theme: "chill" },
-        { text: "Music stops Heavy silence", theme: "silence" },
-        { text: "World waits Big reliance", theme: "silence" },
-        { text: "They look I stand", theme: "stage" },
-        { text: "Take control Command", theme: "stage" },
-        { text: "Lights fade Stage set", theme: "stage" },
-        { text: "Moment they won't forget", theme: "stage" },
-        { text: "No mistakes No flaws", theme: "stage" },
-        { text: "Woven by His holy laws", theme: "grace" },
-        { text: "Every detail Every strand", theme: "grace" },
-        { text: "Held inside a higher hand", theme: "grace" },
-        { text: "Take a breath Hear the call", theme: "silence" },
-        { text: "God made me perfectly after all", theme: "grace" },
-        { text: "Sun goes down Stars appear", theme: "night" },
-        { text: "Living life With no fear", theme: "star" },
-        { text: "Grateful heart Peaceful state", theme: "grace" },
-        { text: "Everything is looking great", theme: "star" },
-        { text: "Walking forward Staying strong", theme: "stage" },
-        { text: "This is where I belong", theme: "star" },
-        { text: "Deep breath Clear sky", theme: "night" },
-        { text: "Watch the days fly right on by", theme: "chill" },
-        { text: "In His hands Every day", theme: "grace" },
-        { text: "Everything is turning out okay 😁", theme: "outro" }
-    ];
-
-    let currentLine = 0;
-    let isAuto = true;
-    let autoTimeout;
-    let audioCtx;
-    
-    function initAudio() {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-
-    function playSoundEffect(theme) {
-        if (!audioCtx) return;
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const now = audioCtx.currentTime;
-        
-        switch(theme) {
-            case 'bouncy':
-                playTone(440, 'triangle', 0.1, now);
-                playTone(880, 'triangle', 0.05, now + 0.08);
-                break;
-            case 'star':
-                playTone(1200, 'sine', 0.3, now, 0.01);
-                playTone(1500, 'sine', 0.2, now + 0.05, 0.01);
-                break;
-            case 'chill':
-                playTone(220, 'sine', 0.4, now, 0.1);
-                playTone(330, 'sine', 0.4, now, 0.1);
-                break;
-            case 'morning':
-            case 'nature':
-                playSweep(300, 600, 0.3, 'sine');
-                break;
-            case 'grace':
-                playTone(440, 'sine', 0.6, now, 0.2);
-                playTone(554.37, 'sine', 0.4, now + 0.05, 0.2);
-                playTone(659.25, 'sine', 0.4, now + 0.1, 0.2);
-                break;
-            case 'frenetic':
-            case 'tech':
-                playTone(150, 'square', 0.1, now);
-                playTone(180, 'square', 0.1, now + 0.05);
-                break;
-            case 'music':
-                playSweep(150, 40, 0.2, 'triangle');
-                break;
-            case 'stage':
-                playSweep(100, 300, 0.5, 'sawtooth', 0.1);
-                break;
-            case 'silence':
-                playSweep(80, 20, 0.6, 'sine');
-                break;
-            default:
-                playTone(300, 'sine', 0.2, now);
-        }
-    }
-
-    function playTone(freq, type, duration, time, attack = 0.02) {
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, time);
-        gainNode.gain.setValueAtTime(0, time);
-        gainNode.gain.linearRampToValueAtTime(0.3, time + attack);
-        gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
-        osc.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        osc.start(time);
-        osc.stop(time + duration);
-    }
-
-    function playSweep(startFreq, endFreq, duration, type, volume = 0.2) {
-        const now = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(startFreq, now);
-        osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
-        gainNode.gain.setValueAtTime(volume, now);
-        gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-        osc.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        osc.start(now);
-        osc.stop(now + duration);
-    }
-
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let globalTheme = "intro";
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Particle {
-        constructor() { this.reset(true); }
-        reset(init = false) {
-            this.x = Math.random() * canvas.width;
-            this.y = init ? Math.random() * canvas.height : canvas.height + 20;
-            this.size = Math.random() * 4 + 1;
-            this.speedX = (Math.random() - 0.5) * 1;
-            this.speedY = -(Math.random() * 2 + 0.5);
-            this.color = 'rgba(255, 255, 255, 0.5)';
-            this.hue = 200;
-        }
-        update(theme) {
-            switch(theme) {
-                case 'bouncy':
-                    this.speedY += (Math.random() - 0.5) * 0.5;
-                    this.y += this.speedY;
-                    if(this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-                    this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
-                    break;
-                case 'star':
-                case 'night':
-                    this.speedX = (Math.random() - 0.5) * 0.2;
-                    this.speedY = -(Math.random() * 0.2);
-                    this.size = Math.random() * 3 + 1;
-                    this.color = `rgba(255, 255, 255, ${Math.random()})`;
-                    break;
-                case 'rain':
-                    this.speedY = Math.random() * 8 + 6;
