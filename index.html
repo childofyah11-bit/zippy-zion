@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACE CHATBOT // Core Intel Deck</title>
+  <title>ACE CHATBOT // Symbolic Reasoning Engine</title>
   <style>
     :root {
       --premium-bg: #030509;
@@ -37,8 +37,8 @@
     }
     #phone-container {
       position: relative;
-      width: 940px; 
-      height: 720px;
+      width: 960px; 
+      height: 740px;
       background: rgba(7, 10, 17, 0.96);
       border: 2px solid rgba(255, 255, 255, 0.09);
       border-radius: 24px;
@@ -66,7 +66,7 @@
       align-items: center;
       justify-content: center;
       z-index: 100;
-      width: 280px;
+      width: 320px;
       height: 28px;
     }
     #island-pill {
@@ -284,62 +284,62 @@
 </head>
 <body>
 
-  <!-- Ambient Dynamic Space Matrix Background -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Complete Premium Main Core Interface Shell Framework -->
   <div id="phone-container">
     <div id="dynamic-island">
       <div id="island-pill">
-        <span id="island-icon">🤖</span>
+        <span id="island-icon">⚛️</span>
         <span id="system-clock">00:00:00.00</span>
       </div>
     </div>
 
     <div class="glass-card telemetry-row">
-      <div>AI_SHELL: <span style="color: var(--cyan-glow);">ACE_CHATBOT_PRO</span></div>
+      <div>LOGIC_ENGINE: <span style="color: var(--cyan-glow);">ACE_SYMBOLIC_v7.5</span></div>
       <div>CORE_TEMP: <span id="temp-metric">34.5°C</span></div>
     </div>
 
     <div class="workspace-layout">
       <div class="glass-card main-media-deck">
-        <div id="workspace-header">OMNI-SUBJECT CORE TERMINAL</div>
+        <div id="workspace-header">DETERMINISTIC PROCESSING UNIT</div>
         
         <div id="graph-wrapper">
           <canvas id="visualizer-ring-canvas"></canvas>
         </div>
 
         <div id="chat-history-viewport">
-          <div class="chat-bubble ai-bubble">[ACE_INIT] GitHub Pages production container verified. Security policy blocks dropped. Type your question below and execute submission.</div>
+          <div class="chat-bubble ai-bubble">[SYMBOLIC_CORE_ONLINE] GitHub compliance layers active. This system operates on deterministic code mechanics rather than semantic language approximation. Input exact parameters to calculate absolute mathematical, biological, and historical factual tracks.</div>
         </div>
 
         <div class="input-container">
-          <textarea id="ai-input" placeholder="Type a question or select a preset module block on the right..."></textarea>
+          <textarea id="ai-input" placeholder="Enter problem syntax or click an algorithmic preset module to investigate..."></textarea>
           <div class="input-controls">
-            <button class="tech-sub-btn run-btn" id="submit-action-btn">SUBMIT LOGIC</button>
-            <button class="tech-sub-btn clear-btn" id="clear-action-btn">PURGE MEMORY</button>
+            <button class="tech-sub-btn run-btn" id="submit-action-btn">COMPILE & EXECUTE</button>
+            <button class="tech-sub-btn clear-btn" id="clear-action-btn">FLUSH REGISTERS</button>
           </div>
         </div>
       </div>
 
       <div class="glass-card sidebar-matrix">
-        <div class="sidebar-header">ACE CONSOLE STATS</div>
+        <div class="sidebar-header">SYMBOLIC PARAMETERS</div>
         <div>THINK_TIME: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
-        <div>BUFFER_SIZE: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
-        <div>QUERIES_RUN: <span class="telemetry-value" id="val-steps">000000</span></div>
-        <div>ENGINE_FREQ: <span class="telemetry-value" id="val-precision">5.2 GHz</span></div>
-        <div>PROCESSOR_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
-        <div>THROTTLE_INDEX: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
+        <div>TOKEN_SIZE: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
+        <div>REASONING_STEPS: <span class="telemetry-value" id="val-steps">000000</span></div>
+        <div>COMPUTE_FREQ: <span class="telemetry-value" id="val-precision">5.2 GHz</span></div>
+        <div>ALGO_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
+        <div>SOLVER_STATUS: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
 
-        <div class="sidebar-header" style="margin-top: 12px;">GLOBAL KNOWLEDGE PRESETS</div>
-        <button class="preset-btn" data-preset="math">MATHEMATICS ENGINE</button>
-        <button class="preset-btn" data-preset="biology">BIOLOGY DNA TRANSCRIPT</button>
-        <button class="preset-btn" data-preset="history">WORLD HISTORY VECTOR</button>
-        <button class="preset-btn" data-preset="geography">GEOGRAPHY MATRIX</button>
-        <button class="preset-btn" data-preset="literature">LITERATURE ANALYSIS</button>
-        <button class="preset-btn" id="boost-btn">OVERCLOCK CORE</button>
+        <div class="sidebar-header" style="margin-top: 12px;">DETERMINISTIC PRESETS</div>
+        <button class="preset-btn" data-preset="math">RECURSIVE MATH SOLVER</button>
+        <button class="preset-btn" data-preset="biology">BIOLOGY CODON TRANSLATOR</button>
+        <button class="preset-btn" data-preset="history">HISTORICAL CHRONOLOGY</button>
+        <button class="preset-btn" data-preset="geography">GEOGRAPHIC DATA MATRIX</button>
+        <button class="preset-btn" data-preset="literature">LEXICAL DENSITY TRACE</button>
+        <button class="preset-btn" id="boost-btn">OVERCLOCK MATRIX</button>
       </div>
     </div>
+
+    <div class="glass-card activity-monitor" id="covert-activity-logs">
 
     <div class="glass-card activity-monitor" id="covert-activity-logs">
       <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">ACE ENGINE STREAMS:</div>
