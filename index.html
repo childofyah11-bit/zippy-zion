@@ -251,21 +251,21 @@
                 </div>
                 <div class="input-row">
                     <label for="gain-level">MASTER LEVEL</label>
-                    <input type="range" id="gain-level" min="0" max="0.4" step="0.05" value="0.2">
+                    <input type="range" id="gain-level" min="0" max="0.4" step="0.05" value="0.20">
                 </div>
             </div>
         </div>
 
         <!-- 8 Heavy Hardware Chunk Keys -->
         <div class="block-keyboard">
-            <div class="chunk-key" data-pitch="110.00" style="background: #e5e5e5;"><span class="key-tag">A2</span></div>
-            <div class="chunk-key" data-pitch="130.81"><span class="key-tag">C3</span></div>
-            <div class="chunk-key" data-pitch="146.83" style="background: #e5e5e5;"><span class="key-tag">D3</span></div>
-            <div class="chunk-key" data-pitch="164.81"><span class="key-tag">E3</span></div>
-            <div class="chunk-key" data-pitch="196.00" style="background: #e5e5e5;"><span class="key-tag">G3</span></div>
-            <div class="chunk-key" data-pitch="220.00"><span class="key-tag">A3</span></div>
-            <div class="chunk-key" data-pitch="261.63" style="background: #e5e5e5;"><span class="key-tag">C4</span></div>
-            <div class="chunk-key" data-pitch="293.66"><span class="key-tag">D4</span></div>
+            <div class="chunk-key" data-pitch="220.00" style="background: #e5e5e5;"><span class="key-tag">A3</span></div>
+            <div class="chunk-key" data-pitch="261.63"><span class="key-tag">C4</span></div>
+            <div class="chunk-key" data-pitch="293.66" style="background: #e5e5e5;"><span class="key-tag">D4</span></div>
+            <div class="chunk-key" data-pitch="329.63"><span class="key-tag">E4</span></div>
+            <div class="chunk-key" data-pitch="392.00" style="background: #e5e5e5;"><span class="key-tag">G4</span></div>
+            <div class="chunk-key" data-pitch="440.00"><span class="key-tag">A4</span></div>
+            <div class="chunk-key" data-pitch="523.25" style="background: #e5e5e5;"><span class="key-tag">C5</span></div>
+            <div class="chunk-key" data-pitch="587.33"><span class="key-tag">D5</span></div>
         </div>
     </div>
 
@@ -283,4 +283,6 @@
             rawAudioContext = new AudioContextClass();
             
             // Build real-time graph visualization engine link
+            globalAnalyserNode = rawAudioContext.createAnalyser();
+
             globalAnalyserNode = rawAudioContext.createAnalyser();
