@@ -4,83 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ACE CHATBOT // Core Terminal</title>
-</head>
-<body>
-
-  <!-- Background Processing Network Layer -->
-  <canvas id="ambient-canvas"></canvas>
-
-  <!-- High-Tech Supercomputer Shell Container Frame -->
-  <div id="phone-container">
-    
-    <!-- Dynamic Island System Clock Module -->
-    <div id="dynamic-island">
-      <div id="island-pill">
-        <span id="island-icon">🤖</span>
-        <span id="system-clock">00:00:00.00</span>
-      </div>
-      <div id="island-expanded-status">ACE_CORE_v7.0 // MASTER_ONLINE</div>
-    </div>
-
-    <!-- Active Hardware Diagnostic Strip -->
-    <div class="glass-card telemetry-row">
-      <div>AI_SHELL: <span class="premium-cyan">ACE_CHATBOT_PRO</span></div>
-      <div>CORE_TEMP: <span id="temp-metric">34.5°C</span></div>
-    </div>
-
-    <!-- Split Screen Specialized Workspace Layout -->
-    <div class="workspace-layout">
-      
-      <!-- Left Column: Dialogues and Interactive Chat Feed Area -->
-      <div class="glass-card main-media-deck">
-        <div id="workspace-header">OMNI-SUBJECT CORE TERMINAL</div>
-        
-        <!-- Live Waveform Graphic Display Screen -->
-        <div id="graph-wrapper">
-          <canvas id="visualizer-ring-canvas"></canvas>
-        </div>
-
-        <!-- Scrollable Message Feed Viewport Node -->
-        <div id="chat-history-viewport">
-          <div class="chat-bubble ai-bubble">[ACE_INIT] System core successfully synchronized. Every variable is locked in. Ask me anything about Math, Biology, History, Geography, Literature, or general topics. Enter your request below.</div>
-        </div>
-
-        <!-- Custom User Query Text Input Box -->
-        <div class="input-container">
-          <textarea id="ai-input" placeholder="Type a message or problem here... (Press Enter to send)"></textarea>
-          <div class="input-controls">
-            <button class="tech-sub-btn run-btn" id="submit-action-btn">SUBMIT LOGIC</button>
-            <button class="tech-sub-btn clear-btn" id="clear-action-btn">PURGE MEMORY</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Live Computing Parameter Side-Grid Module -->
-      <div class="glass-card sidebar-matrix">
-        <div class="sidebar-header">ACE CONSOLE STATS</div>
-        <div>THINK_TIME: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
-        <div>BUFFER_SIZE: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
-        <div>QUERIES_RUN: <span class="telemetry-value" id="val-steps">000000</span></div>
-        <div>ENGINE_FREQ: <span class="telemetry-value" id="val-precision">5.2 GHz</span></div>
-        <div>PROCESSOR_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
-        <div>THROTTLE_INDEX: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
-
-        <div class="sidebar-header" style="margin-top: 12px;">GLOBAL KNOWLEDGE PRESETS</div>
-        <button class="preset-btn" id="preset-math">MATHEMATICS ENGINE</button>
-        <button class="preset-btn" id="preset-biology">BIOLOGY DNA TRANSCRIPT</button>
-        <button class="preset-btn" id="preset-history">WORLD HISTORY VECTOR</button>
-        <button class="preset-btn" id="preset-geography">GEOGRAPHY MATRIX</button>
-        <button class="preset-btn" id="preset-literature">LITERATURE ANALYSIS</button>
-        <button class="preset-btn" id="boost-btn">OVERCLOCK CORE</button>
-      </div>
-    </div>
-
-    <!-- Active Diagnostics Activity Stream Ticker -->
-    <div class="glass-card activity-monitor" id="covert-activity-logs">
-      <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">ACE ENGINE STREAMS:</div>
-    </div>
-
-  </div>
   <style>
     :root {
       --premium-bg: #020408;
@@ -111,7 +34,6 @@
       height: 100%;
       z-index: 1;
       pointer-events: none;
-      contain: strict;
     }
     #phone-container {
       position: relative;
@@ -129,9 +51,6 @@
       gap: 12px;
       backdrop-filter: blur(40px);
       -webkit-backdrop-filter: blur(40px);
-      transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-      will-change: transform;
-      contain: content;
     }
     #dynamic-island {
       position: absolute;
@@ -149,7 +68,6 @@
       z-index: 100;
       width: 280px;
       height: 28px;
-      contain: layout;
     }
     #island-pill {
       display: flex;
@@ -168,21 +86,12 @@
       color: var(--cyan-glow);
       font-size: 0.75rem;
     }
-    #island-expanded-status {
-      display: none;
-      font-size: 0.55rem;
-      font-weight: bold;
-      color: var(--magenta-glow);
-      margin-top: 4px;
-    }
     .glass-card {
       background: var(--glass-surface);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
       padding: 12px;
       box-sizing: border-box;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
     }
     .telemetry-row {
       margin-top: 20px;
@@ -209,6 +118,7 @@
       gap: 8px;
       position: relative;
       background: rgba(0, 0, 0, 0.3);
+      flex: 2;
     }
     #workspace-header {
       font-size: 0.75rem;
@@ -320,6 +230,7 @@
       gap: 5px;
       text-align: left;
       background: rgba(0,0,0,0.45);
+      flex: 1;
     }
     .sidebar-header {
       font-weight: bold;
@@ -344,6 +255,9 @@
       text-align: left;
       font-size: 0.55rem;
       transition: all 0.2s ease;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 2px;
     }
     .preset-btn:hover {
       background: rgba(0, 240, 255, 0.08);
@@ -367,187 +281,67 @@
       overflow: hidden;
     }
   </style>
-  <script>
-    // Strict Execution Guarantee: Prevents browser processing before HTML layout settles
-    window.onload = function() {
-      let executedQueriesCounter = 0;
-      let isCoreOverclocked = false;
-      let baselineHardwareTemp = 34.5;
-      
-      const ambientCanvas = document.getElementById('ambient-canvas');
-      const aCtx = ambientCanvas.getContext('2d');
-      const graphCanvas = document.getElementById('visualizer-ring-canvas');
-      const gCtx = graphCanvas.getContext('2d');
-      
-      const inputField = document.getElementById('ai-input');
-      const chatViewport = document.getElementById('chat-history-viewport');
-      const logWindow = document.getElementById('covert-activity-logs');
+</head>
+<body>
 
-      function executeSystemScale() {
-        ambientCanvas.width = window.innerWidth;
-        ambientCanvas.height = window.innerHeight;
-        const holder = graphCanvas.parentElement;
-        graphCanvas.width = holder.clientWidth;
-        graphCanvas.height = holder.clientHeight;
-      }
-      window.addEventListener('resize', executeSystemScale, { passive: true });
-      executeSystemScale();
+  <canvas id="ambient-canvas"></canvas>
 
-      // Fluid Particle State Buffer
-      const nodeCount = 20;
-      const nodeBufferMatrix = new Float32Array(nodeCount * 4);
-      for(let i = 0; i < nodeCount; i++) {
-        const idx = i << 2;
-        nodeBufferMatrix[idx] = Math.random() * window.innerWidth;
-        nodeBufferMatrix[idx+1] = Math.random() * window.innerHeight;
-        nodeBufferMatrix[idx+2] = Math.random() * 15 + 5;
-        nodeBufferMatrix[idx+3] = -(Math.random() * 0.25 + 0.1);
-      }
+  <div id="phone-container">
+    <div id="dynamic-island">
+      <div id="island-pill">
+        <span id="island-icon">🤖</span>
+        <span id="system-clock">00:00:00.00</span>
+      </div>
+    </div>
 
-      function animateSystemMatrix() {
-        aCtx.fillStyle = '#020408';
-        aCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
-        aCtx.fillStyle = isCoreOverclocked ? 'rgba(255, 0, 127, 0.012)' : 'rgba(0, 240, 255, 0.012)';
+    <div class="glass-card telemetry-row">
+      <div>AI_SHELL: <span style="color: var(--cyan-glow);">ACE_CHATBOT_PRO</span></div>
+      <div>CORE_TEMP: <span id="temp-metric">34.5°C</span></div>
+    </div>
 
-        for(let i = 0; i < nodeCount; i++) {
-          const idx = i << 2;
-          let y = nodeBufferMatrix[idx+1] + nodeBufferMatrix[idx+3];
-          if(y < -nodeBufferMatrix[idx+2]) {
-            y = ambientCanvas.height + nodeBufferMatrix[idx+2];
-            nodeBufferMatrix[idx] = Math.random() * ambientCanvas.width;
-          }
-          nodeBufferMatrix[idx+1] = y;
-          aCtx.beginPath();
-          aCtx.arc(nodeBufferMatrix[idx], y, nodeBufferMatrix[idx+2], 0, 6.28318);
-          aCtx.fill();
-        }
-        requestAnimationFrame(animateSystemMatrix);
-      }
-      requestAnimationFrame(animateSystemMatrix);
-
-      function appendBubbleToHistory(msg, isUser) {
-        const element = document.createElement('div');
-        element.className = isUser ? 'chat-bubble user-bubble' : 'chat-bubble ai-bubble';
-        element.textContent = msg;
-        chatViewport.appendChild(element);
-        chatViewport.scrollTop = chatViewport.scrollHeight;
-      }
-
-      function renderOscilloscopeCurve(factor) {
-        gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
-        gCtx.strokeStyle = isCoreOverclocked ? '#ff007f' : '#00f0ff';
-        gCtx.lineWidth = 1.5;
-        gCtx.beginPath();
-        const midY = graphCanvas.height / 2;
-        const step = graphCanvas.width / 40;
-        for(let i=0; i<=40; i++) {
-          const x = i * step;
-          const y = Math.sin(i * 0.3 + factor) * (graphCanvas.height * 0.28);
-          if(i === 0) gCtx.moveTo(x, midY + y);
-          else gCtx.lineTo(x, midY + y);
-        }
-        gCtx.stroke();
-      }
-
-      function pushTelemetryLog(message) {
-        const row = document.createElement('div');
-        row.className = 'covert-row';
-        row.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-        logWindow.appendChild(row);
-        if(logWindow.children.length > 3) logWindow.removeChild(logWindow.children[1]);
-        logWindow.scrollTop = logWindow.scrollHeight;
-      }
-
-      // Safe, robust multi-subject routing processor
-      window.submitUserQuery = function() {
-        const queryText = inputField.value.trim();
-        if(!queryText) return;
-
-        const deltaStart = performance.now();
-        executedQueriesCounter++;
+    <div class="workspace-layout">
+      <div class="glass-card main-media-deck">
+        <div id="workspace-header">OMNI-SUBJECT CORE TERMINAL</div>
         
-        appendBubbleToHistory(queryText, true);
-        inputField.value = '';
+        <div id="graph-wrapper">
+          <canvas id="visualizer-ring-canvas"></canvas>
+        </div>
 
-        document.getElementById('val-steps').textContent = String(executedQueriesCounter).padStart(6, '0');
-        document.getElementById('val-alloc').textContent = (queryText.length * 2) + " bytes";
-        baselineHardwareTemp += isCoreOverclocked ? 2.5 : 0.7;
-        pushTelemetryLog("Routing subject index tokens...");
+        <div id="chat-history-viewport">
+          <div class="chat-bubble ai-bubble">[ACE_INIT] System core successfully stabilized. All controls are active. Enter your question below and click submit.</div>
+        </div>
 
-        setTimeout(() => {
-          let aiResponseText = "";
-          let cleanQuery = queryText.toLowerCase();
+        <div class="input-container">
+          <textarea id="ai-input" placeholder="Type a message or problem here..."></textarea>
+          <div class="input-controls">
+            <button class="tech-sub-btn run-btn" onclick="submitUserQuery()">SUBMIT LOGIC</button>
+            <button class="tech-sub-btn clear-btn" onclick="clearWorkspaceMemory()">PURGE MEMORY</button>
+          </div>
+        </div>
+      </div>
 
-          if (cleanQuery.includes("history") || cleanQuery.includes("rome") || cleanQuery.includes("war")) {
-            aiResponseText = `[ACE HISTORY NODE]\nSubject: Historical Macro-Cycles\n\nAnalysis Summary:\n-> Civilizations historically balance infrastructure scaling against geographic logistics barriers.\n-> Rome maximized speed via paved routing networks, while modern industrial iterations prioritize energy efficiency vectors.`;
-            renderOscilloscopeCurve(4);
-          } else if (cleanQuery.includes("geography") || cleanQuery.includes("geo") || cleanQuery.includes("capital")) {
-            aiResponseText = `[ACE GEOGRAPHY NODE]\nSubject: Terrestrial Coordinate Matrices\n\nAnalysis Summary:\n-> Global populations naturally cluster along water communication lanes and tectonic boundaries.\n-> Political capitals function as hardware load balancers for resource trading and migration fluxes.`;
-            renderOscilloscopeCurve(7);
-          } else if (cleanQuery.includes("literature") || cleanQuery.includes("book") || cleanQuery.includes("author")) {
-            aiResponseText = `[ACE LITERATURE NODE]\nSubject: Structural Prose Layers\n\nAnalysis Summary:\n-> Metaphor weights and narrative themes are programmed directly into texts via semantic architecture.\n-> Authors leverage grammar pacing rules to control reader attention buffers.`;
-            renderOscilloscopeCurve(5);
-          } else if (cleanQuery.includes("dna") || cleanQuery.includes("rna") || cleanQuery.includes("biology")) {
-            // Safe regular expression without fallback assignment errors
-            let matchResult = queryText.match(/(?:dna|rna|biology):\s*([A-Za-z]+)/i);
-            let extractedSeq = matchResult ? matchResult[1].toUpperCase() : "ATCG";
-            let rnaTranscript = "";
-            for(let i=0; i<extractedSeq.length; i++) {
-              let base = extractedSeq[i];
-              if (base === 'A') rnaTranscript += 'U';
-              else if (base === 'T') rnaTranscript += 'A';
-              else if (base === 'C') rnaTranscript += 'G';
-              else if (base === 'G') rnaTranscript += 'C';
-              else rnaTranscript += '?';
-            }
-            aiResponseText = `[ACE BIOLOGY NODE]\nInput DNA Template: 3' - ${extractedSeq} - 5'\nCalculated mRNA: 5' - ${rnaTranscript} - 3'\n\nResult: Genetic base replication arrays mapped successfully.`;
-            renderOscilloscopeCurve(extractedSeq.length);
-          } else if (cleanQuery.includes("solve") || /[\d+\-*/()]/.test(cleanQuery)) {
-            try {
-              const mathFormulaClean = queryText.replace(/[^0-9+\-*/().\s]/g, '');
-              const calculatedSum = new Function(`return (${mathFormulaClean})`)();
-              aiResponseText = `[ACE MATH NODE]\nParsed Formula: ${mathFormulaClean}\nResult Matrix: ${calculatedSum}\n\nOperation computed using direct primitive standard math registers.`;
-              renderOscilloscopeCurve(Number(calculatedSum) || 3);
-            } catch(e) {
-              aiResponseText = `[ACE KNOWLEDGE FALLBACK]\nQuery Context: Conceptual Concept Trace\n\nParsed text string "${queryText}" across conversational databases. If you need step-by-step problem tracking, ask an explicit question using keywords like math, dna, or history.`;
-              renderOscilloscopeCurve(2);
-            }
-          } else {
-            aiResponseText = `[ACE OMNI-SUBJECT KERNEL]\nQuery Processed: "${queryText}"\n\nMy processors are completely functional. I am fully loaded to analyze World History, Geography, Literature, Biology, or standard Mathematics. Specify your subject target anytime.`;
-            renderOscilloscopeCurve(2);
-          }
+      <div class="glass-card sidebar-matrix">
+        <div class="sidebar-header">ACE CONSOLE STATS</div>
+        <div>THINK_TIME: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
+        <div>BUFFER_SIZE: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
+        <div>QUERIES_RUN: <span class="telemetry-value" id="val-steps">000000</span></div>
+        <div>ENGINE_FREQ: <span class="telemetry-value" id="val-precision">5.2 GHz</span></div>
+        <div>PROCESSOR_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
+        <div>THROTTLE_INDEX: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
 
-          appendBubbleToHistory(aiResponseText, false);
-          const deltaTotal = performance.now() - deltaStart;
-          document.getElementById('val-latency').textContent = deltaTotal.toFixed(2) + "ms";
-        }, 200);
-      };
+        <div class="sidebar-header" style="margin-top: 12px;">GLOBAL KNOWLEDGE PRESETS</div>
+        <button class="preset-btn" onclick="triggerPreset('math')">MATHEMATICS ENGINE</button>
+        <button class="preset-btn" onclick="triggerPreset('biology')">BIOLOGY DNA TRANSCRIPT</button>
+        <button class="preset-btn" onclick="triggerPreset('history')">WORLD HISTORY VECTOR</button>
+        <button class="preset-btn" onclick="triggerPreset('geography')">GEOGRAPHY MATRIX</button>
+        <button class="preset-btn" onclick="triggerPreset('literature')">LITERATURE ANALYSIS</button>
+        <button class="preset-btn" id="boost-btn" onclick="toggleOverclockMode()">OVERCLOCK CORE</button>
+      </div>
+    </div>
 
-      // Event Binding Hooks
-      document.getElementById('submit-action-btn').onclick = window.submitUserQuery;
-      
-      inputField.addEventListener('keydown', (e) => {
-        if(e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          window.submitUserQuery();
-        }
-      });
+    <div class="glass-card activity-monitor" id="covert-activity-logs">
+      <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">ACE ENGINE STREAMS:</div>
+    </div>
+  </div>
 
-      document.getElementById('clear-action-btn').onclick = function() {
-        chatViewport.innerHTML = `<div class="chat-bubble ai-bubble">[ACE_RESET] System memory track cleared. Interface channels flushed and standing by.</div>`;
-        gCtx.clearRect(0,0,graphCanvas.width,graphCanvas.height);
-        pushTelemetryLog("Volatile conversation states purged.");
-      };
-
-      // Set up individual preset templates safely
-      function bindTemplate(id, val) {
-        document.getElementById(id).onclick = function() {
-          inputField.value = val;
-          inputField.focus();
-          window.submitUserQuery();
-        };
-      }
-      bindTemplate('preset-math', '(122 * 4) / Math.sqrt(16)');
-      bindTemplate('preset-biology', 'dna: TTAGCCGATCG');
-      bindTemplate('preset-history', 'History: Explain the timeline and road networks of the Roman Empire.');
-      bindTemplate('preset-geography', 'Geography: Detail the border frameworks of global capital clusters.');
+  <script>
