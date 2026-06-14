@@ -3,163 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QUANTUM_OS_V19 // SYNTHESIZER_TERMINAL_NODE</title>
+  <title>QUANTUM_AI // Mathematical Processing Node</title>
 </head>
 <body>
 
-  <!-- Background Particle Network Canvas Sub-Layer -->
+  <!-- Background Computational Matrix Layer -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Master Instrumentation Terminal Housing -->
-  <div id="terminal-mainframe">
+  <!-- High-Tech Supercomputer Shell Container -->
+  <div id="phone-container">
     
-    <!-- Top Row: Stealth Cybernetic Navigation Bar -->
-    <div id="stealth-island-header">
-      <div id="dynamic-island" onclick="toggleStealthBypass()">
-        <div id="island-pill">
-          <span id="island-icon">⚡</span>
-          <span id="system-clock">00:00:00.00</span>
-        </div>
-        <div id="island-expanded-status">SECURE PROXY LINK ENABLED // ROUTE_SHIFT_3600s</div>
+    <!-- Dynamic Island Central Processing Unit -->
+    <div id="dynamic-island">
+      <div id="island-pill">
+        <span id="island-icon">⚛</span>
+        <span id="system-clock">00:00:00.00</span>
       </div>
+      <div id="island-expanded-status">CORE_MATH_KERNEL // FLOATING_POINT_ACTIVE</div>
+    </div>
+
+    <!-- Live Telemetry Row Metrics -->
+    <div class="glass-card telemetry-row">
+      <div>THREAD_POOL: <span class="premium-cyan" id="carrier-text">PARALLEL_v3.8</span></div>
+      <div>CPU_TEMP: <span id="temp-metric">34.2°C</span></div>
+    </div>
+
+    <!-- Desktop Split Workspace Area -->
+    <div class="workspace-layout">
       
-      <div class="glass-module telemetry-compact">
-        <div>NETWORK_INDEX: <span class="cyan-glow-text" id="carrier-text">CORE_NET_5G_ULTRA</span></div>
-        <div>COMP_THERMAL: <span id="temp-metric">35.0°C</span></div>
+      <!-- Main Action & Computation Deck -->
+      <div class="glass-card main-media-deck">
+        <div id="workspace-header">AI COMPUTATION ENGINE</div>
+        
+        <!-- Interactive Code/Formula Input Node -->
+        <div class="input-container">
+          <textarea id="ai-input" placeholder="Enter mathematical expressions or datasets here... (e.g., 25 * Math.sqrt(144) + Math.sin(45))"></textarea>
+          <div class="input-controls">
+            <button class="tech-sub-btn run-btn" onclick="executeCoreProcessing()">EXECUTE EXPR</button>
+            <button class="tech-sub-btn clear-btn" onclick="clearWorkspace()">RESET ENGINE</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Visualization Graph Core Wrapper -->
+        <div id="graph-wrapper">
+          <canvas id="visualizer-ring-canvas"></canvas>
+        </div>
+
+        <!-- Instant Core Math Output Readout Terminal -->
+        <div id="math-output-deck">
+          <div style="color: #64748b; font-size: 0.65rem;">OUTPUT CORE STREAM:</div>
+          <div id="primary-result">SYSTEM IDLE // AWAITING EXPR TRACE...</div>
+        </div>
+      </div>
+
+      <!-- Right Column: Live Variable Telemetry Matrix -->
+      <div class="glass-card sidebar-matrix">
+        <div class="sidebar-header">LIVE COMPUTER PARAMETERS</div>
+        <div>CALC_LATENCY: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
+        <div>DATA_BUFFER: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
+        <div>SOLVER_STEPS: <span class="telemetry-value" id="val-steps">000000</span></div>
+        <div>CALC_PRECISION: <span class="telemetry-value" id="val-precision">64-BIT</span></div>
+        <div>CORE_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
+        <div>COMPUTE_THROTTLE: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
+
+        <div class="sidebar-header" style="margin-top: 15px;">AI PRESETS / FAST ACTIONS</div>
+        <button class="preset-btn" onclick="injectPreset('fibonacci')">RUN FIBONACCI (20)</button>
+        <button class="preset-btn" onclick="injectPreset('primes')">FIND PRIMES (<100)</button>
+        <button class="preset-btn" onclick="injectPreset('sinewave')">PLOT TRANSFORM WAVE</button>
+        <button class="preset-btn" onclick="toggleOverclock()">TOGGLE OVERCLOCK</button>
       </div>
     </div>
 
-    <!-- Main Workspace Split Configuration Grid -->
-    <div id="workspace-grid">
-      
-      <!-- Left Panel: Live Instrument Modulators & Sequencer Deck -->
-      <div class="glass-module control-panel-section">
-        <div class="panel-header-tag">// INSTRUMENT_SYNTH_CORE</div>
-        
-        <!-- Interactive Synthesizer Core Controls -->
-        <div class="control-matrix-row">
-          <div class="control-node-box">
-            <label class="control-label">MASTER_VOLUME</label>
-            <input type="range" class="tech-slider" id="synth-vol" min="0" max="100" value="25">
-            <span class="matrix-readout" id="readout-vol">25%</span>
-          </div>
-          <div class="control-node-box">
-            <label class="control-label">TEMPO_CLOCK (BPM)</label>
-            <input type="range" class="tech-slider" id="synth-bpm" min="60" max="220" value="125">
-            <span class="matrix-readout" id="readout-bpm">125 BPM</span>
-          </div>
-        </div>
-
-        <div class="control-matrix-row">
-          <div class="control-node-box">
-            <label class="control-label">WAVEFORM_PROFILE</label>
-            <select class="tech-dropdown" id="synth-wave">
-              <option value="sine">PURE_SINE</option>
-              <option value="sawtooth">HYPER_SAW</option>
-              <option value="square">PULSE_SQUARE</option>
-              <option value="triangle">TRI_WAVE</option>
-            </select>
-          </div>
-          <div class="control-node-box">
-            <label class="control-label">FILTER_CUTOFF</label>
-            <input type="range" class="tech-slider" id="synth-cutoff" min="100" max="5000" value="1500">
-            <span class="matrix-readout" id="readout-cutoff">1500 Hz</span>
-          </div>
-        </div>
-
-        <!-- Analytical Diagnostic Signal Display Screens -->
-        <div class="visualizer-container-box">
-          <div class="sub-label-tag">[SIGNAL_OSCILLOSCOPE_STREAM]</div>
-          <canvas id="scope-canvas" class="internal-scope-view"></canvas>
-        </div>
-        
-        <div class="visualizer-container-box">
-          <div class="sub-label-tag">[FREQUENCY_SPECTRUM_ANALYSIS]</div>
-          <canvas id="spectrum-canvas" class="internal-scope-view"></canvas>
-        </div>
-      </div>
-
-      <!-- Center Panel: Kinetic Lyric Staging Arena -->
-      <div class="glass-module lyric-staging-section">
-        <div class="panel-header-tag">// COGNITIVE_AUDIO_STREAM_STAGE</div>
-        
-        <!-- Boot Prompt Initiation Layer -->
-        <div id="media-boot-prompt" onclick="igniteQuantumDeck()">
-          <div class="premium-gradient-text" style="font-size: 1.6rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase;">INITIALIZE NODE STREAM</div>
-          <p style="color: #64748b; font-size: 0.8rem; margin: 12px 0 0 0; letter-spacing: 1px;">TAP TO SYNCHRONIZE COGNITIVE WAVEFRONT SYSTEMS</p>
-        </div>
-
-        <!-- Dynamic Kinetic Visual Target Rings -->
-        <div id="fluid-audio-ring">
-          <div id="audio-ring-pulsar"></div>
-        </div>
-        
-        <!-- Dynamic Kinetic Text Viewport Context -->
-        <div id="kinetic-lyric-viewport"></div>
-      </div>
-
-      <!-- Right Panel: Micro-Variable Performance Matrix Sidebar -->
-      <div class="glass-module sidebar-telemetry-section">
-        <div class="panel-header-tag">// HARDWARE_VARIABLE_REGISTERS</div>
-        
-        <div class="metric-readout-row">RENDER_CYCLE_LATENCY <span class="metric-val" id="val-latency">0.00ms</span></div>
-        <div class="metric-readout-row">MEMORY_BUFFER_ALLOC <span class="metric-val" id="val-alloc">0 bytes</span></div>
-        <div class="metric-readout-row">PARTICLE_DRIFT_VEL <span class="metric-val" id="val-vel">0.00px/f</span></div>
-        <div class="metric-readout-row">STEALTH_SHIELD_MOD <span class="metric-val" id="val-stealth">INACTIVE</span></div>
-        <div class="metric-readout-row">STREAM_BITRATE_INDEX <span class="metric-val" id="val-bitrate">1411 kbps</span></div>
-        <div class="metric-readout-row">AUDIO_NODE_FREQUENCY <span class="metric-val" id="val-freq">0.0 Hz</span></div>
-        <div class="metric-readout-row">PROCESSOR_CORE_LOAD <span class="metric-val" id="val-load">0.0%</span></div>
-        <div class="metric-readout-row">HARDWARE_THROTTLE <span class="metric-val" id="val-throttle">NOMINAL</span></div>
-        <div class="metric-readout-row">NODE_SYSTEM_UPTIME <span class="metric-val" id="val-uptime">0.0s</span></div>
-        <div class="metric-readout-row">ACTIVE_TRACK_POINTER <span class="metric-val" id="val-ptr">0 / 0</span></div>
-      </div>
-
-    </div>
-
-    <!-- Bottom Row: Multi-Task Diagnostic Logs & Command Rows -->
-    <div class="glass-module operational-footer-section">
-      <div class="panel-header-tag">// ENCRYPTED_DIAGNOSTIC_STREAMS</div>
-      <div id="covert-activity-logs"></div>
-    </div>
-
-    <!-- Master Action Controls Panel -->
-    <div id="media-navigation-tray">
-      <div class="btn-group-row">
-        <button class="nav-control-btn" onclick="cycleTrackNode(-1)">⏮ PREV_NODE</button>
-        <button class="nav-control-btn diagnostic-trigger-btn" onclick="triggerFrequencyScramble()">⚡ SCRAMBLE_FREQ</button>
-        <button class="nav-control-btn diagnostic-trigger-btn" onclick="purgeHardwareCache()">♻ CLEAR_CACHE</button>
-        <button class="nav-control-btn diagnostic-trigger-btn" id="hyper-drive-toggle" onclick="toggleEngineHyperdrive()">🚀 HYPERDRIVE</button>
-        <button class="nav-control-btn" onclick="cycleTrackNode(1)">NEXT_NODE ⏭</button>
-      </div>
+    <!-- Diagnostic Stream & Covert Activity Ticker -->
+    <div class="glass-card activity-monitor" id="covert-activity-logs">
+      <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">SYSTEM DIAGNOSTIC STREAM:</div>
     </div>
 
   </div>
   <style>
     :root {
-      --mainframe-bg: #030407;
-      --glass-base: rgba(10, 14, 24, 0.4);
-      --glass-border-color: rgba(255, 255, 255, 0.04);
+      --premium-bg: #030407;
+      --glass-surface: rgba(10, 15, 26, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.05);
       --cyan-glow: #00f0ff;
       --magenta-glow: #ff007f;
       --matrix-green: #39ff14;
-      --panel-padding: 18px;
+      --gold-warn: #ffaa00;
     }
-
     body, html {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
-      background: var(--mainframe-bg);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background: var(--premium-bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color: #fff;
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-
-    canvas id="ambient-canvas" {
+    canvas {
       position: absolute;
       top: 0;
       left: 0;
@@ -169,546 +113,429 @@
       pointer-events: none;
       contain: strict;
     }
-
-    #terminal-mainframe {
+    #phone-container {
       position: relative;
-      width: 95vw;
-      height: 94vh;
-      max-width: 1500px;
-      max-height: 950px;
-      background: rgba(6, 8, 14, 0.85);
-      border: 2px solid rgba(255, 255, 255, 0.06);
+      width: 820px; /* Fully expanded horizontal deck viewport */
+      height: 640px;
+      background: rgba(6, 8, 14, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.08);
       border-radius: 28px;
       z-index: 2;
-      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.95), inset 0 0 40px rgba(0, 240, 255, 0.02);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.95), inset 0 0 40px rgba(0,240,255,0.02);
       padding: 20px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 12px;
       backdrop-filter: blur(40px);
       -webkit-backdrop-filter: blur(40px);
       transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
       will-change: transform;
       contain: content;
     }
-
-    #stealth-island-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      height: 45px;
-      position: relative;
-    }
-
     #dynamic-island {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translate3d(-50%, 0, 0);
       background: #000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 20px;
-      padding: 6px 20px;
+      padding: 4px 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 6px 25px rgba(0,0,0,0.6);
-      width: 210px;
-      height: 32px;
-      transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1), height 0.3s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.2s ease;
-      will-change: width, height, background-color;
+      z-index: 100;
+      width: 240px;
+      height: 28px;
       contain: layout;
     }
-
     #island-pill {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       width: 100%;
       justify-content: center;
     }
-
     #system-clock {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 700;
       font-variant-numeric: tabular-nums;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.5px;
+      color: #fff;
     }
-
     #island-icon {
       color: var(--cyan-glow);
-      font-size: 0.8rem;
-      animation: pulseIcon 1.5s infinite ease-in-out;
+      font-size: 0.75rem;
     }
-
     #island-expanded-status {
       display: none;
       font-size: 0.55rem;
       font-weight: bold;
       color: var(--magenta-glow);
-      margin-top: 5px;
-      letter-spacing: 1px;
-      text-align: center;
+      margin-top: 4px;
     }
-
-    .glass-module {
-      background: var(--glass-base);
-      border: 1px solid var(--glass-border-color);
+    .glass-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
       border-radius: 16px;
-      padding: var(--panel-padding);
+      padding: 12px;
       box-sizing: border-box;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      position: relative;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-
-    .telemetry-compact {
+    .telemetry-row {
+      margin-top: 20px;
       display: flex;
-      gap: 25px;
+      justify-content: space-between;
       font-size: 0.65rem;
-      font-family: monospace;
-      font-weight: bold;
-      color: #64748b;
-      padding: 8px 16px;
-      border-radius: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #94a3b8;
     }
-
-    .cyan-glow-text {
-      color: var(--cyan-glow);
-      text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
-    }
-
     #temp-metric {
       color: var(--matrix-green);
-      text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+      text-shadow: 0 0 8px rgba(57,255,20,0.3);
     }
-  <style>
-    #workspace-grid {
-      flex: 1;
-      display: flex;
-      gap: 15px;
-      min-height: 0;
-      width: 100%;
-    }
-
-    .panel-header-tag {
-      font-family: monospace;
-      font-size: 0.6rem;
-      font-weight: bold;
-      color: #475569;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-      padding-bottom: 4px;
-    }
-
-    .control-panel-section {
-      flex: 1.2;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .control-matrix-row {
+    .workspace-layout {
       display: flex;
       gap: 12px;
-      width: 100%;
-    }
-
-    .control-node-box {
       flex: 1;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.02);
-      border-radius: 10px;
-      padding: 8px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .control-label {
-      font-family: monospace;
-      font-size: 0.55rem;
-      color: #64748b;
-      letter-spacing: 0.5px;
-    }
-
-    .matrix-readout {
-      font-family: monospace;
-      font-size: 0.6rem;
-      color: var(--cyan-glow);
-      font-weight: bold;
-      text-align: right;
-    }
-
-    .tech-slider {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 2px;
-      outline: none;
-    }
-
-    .tech-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--cyan-glow);
-      cursor: pointer;
-      box-shadow: 0 0 8px var(--cyan-glow);
-    }
-
-    .tech-dropdown {
-      background: #090b11;
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #fff;
-      font-family: monospace;
-      font-size: 0.65rem;
-      padding: 4px;
-      border-radius: 6px;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .visualizer-container-box {
-      flex: 1;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.03);
-      border-radius: 12px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
       min-height: 0;
     }
-
-    .sub-label-tag {
-      font-family: monospace;
-      font-size: 0.5rem;
-      color: #475569;
-      margin-bottom: 4px;
-    }
-
-    .internal-scope-view {
-      width: 100%;
-      flex: 1;
-      background: #020305;
-      border-radius: 6px;
-      min-height: 0;
-    }
-
-    .lyric-staging-section {
-      flex: 1.6;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: rgba(4, 5, 8, 0.5);
-      contain: layout size;
-      overflow: hidden;
-    }
-
-    #media-boot-prompt {
-      cursor: pointer;
-      text-align: center;
-      z-index: 10;
-      transition: transform 0.2s ease;
-    }
-
-    #media-boot-prompt:hover {
-      transform: scale3d(1.02, 1.02, 1);
-    }
-
-    #kinetic-lyric-viewport {
-      display: none;
-      font-size: 1.6rem;
-      font-weight: 800;
-      line-height: 1.4;
-      text-transform: uppercase;
-      letter-spacing: -0.5px;
-      max-width: 90%;
-      text-align: center;
-      z-index: 5;
-      contain: layout paint;
-    }
-
-    .fluid-word {
-      display: inline-block;
-      margin: 0 5px;
-      opacity: 0;
-      transform: translate3d(0, 15px, 0) scale3d(0.9, 0.9, 1);
-      animation: waveIn 0.3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-    }
-
-    #fluid-audio-ring {
-      display: none;
-      position: absolute;
-      width: 240px;
-      height: 240px;
-      border: 2px solid rgba(0, 240, 255, 0.1);
-      border-radius: 50%;
-      z-index: 2;
-      transform: scale3d(1,1,1);
-      will-change: transform, border-color;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #audio-ring-pulsar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,240,255,0.03) 0%, transparent 70%);
-    }
-  </style>
-  <style>
-    .sidebar-telemetry-section {
-      flex: 0.9;
+    .main-media-deck {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      font-family: monospace;
-      font-size: 0.6rem;
-      color: #94a3b8;
+      position: relative;
+      background: rgba(0, 0, 0, 0.3);
     }
-
-    .metric-readout-row {
-      background: rgba(0,0,0,0.2);
-      padding: 6px 10px;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-left: 2px solid rgba(255,255,255,0.05);
-    }
-
-    .metric-val {
-      color: #fff;
+    #workspace-header {
+      font-size: 0.75rem;
       font-weight: bold;
+      letter-spacing: 2px;
+      color: var(--cyan-glow);
+      text-shadow: 0 0 10px rgba(0,240,255,0.2);
     }
-
-    .operational-footer-section {
-      height: 110px;
+    .input-container {
       display: flex;
       flex-direction: column;
+      gap: 6px;
     }
-
-    #covert-activity-logs {
-      flex: 1;
-      overflow-y: auto;
+    #ai-input {
+      width: 100%;
+      height: 65px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 8px;
+      color: #39ff14;
       font-family: monospace;
-      font-size: 0.6rem;
-      color: #475569;
+      font-size: 0.75rem;
+      resize: none;
+      box-sizing: border-box;
+    }
+    #ai-input:focus {
+      outline: none;
+      border-color: var(--cyan-glow);
+    }
+    .input-controls {
       display: flex;
-      flex-direction: column;
-      gap: 3px;
+      gap: 8px;
     }
-
-    .covert-row {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .covert-flagged {
-      color: var(--magenta-glow) !important;
-      font-weight: bold;
-    }
-
-    #media-navigation-tray {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .btn-group-row {
-      display: flex;
-      gap: 10px;
-      width: 100%;
-    }
-
-    .nav-control-btn {
+    .tech-sub-btn {
       flex: 1;
       background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: #cbd5e1;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #94a3b8;
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
       font-family: monospace;
       font-size: 0.65rem;
-      padding: 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: bold;
     }
-
-    .nav-control-btn:hover {
-      background: rgba(0, 240, 255, 0.05);
+    .run-btn:hover {
+      background: rgba(0, 240, 255, 0.1);
       border-color: var(--cyan-glow);
       color: #fff;
     }
-
-    .diagnostic-trigger-btn {
-      color: #64748b;
+    .clear-btn:hover {
+      background: rgba(255, 0, 127, 0.1);
+      border-color: var(--magenta-glow);
+      color: #fff;
     }
-
-    @keyframes waveIn {
-      to { opacity: 1; transform: translate3d(0,0,0) scale3d(1,1,1); }
+    #graph-wrapper {
+      flex: 1;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
     }
-
-    @keyframes pulseIcon {
-      0%, 100% { opacity: 0.6; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.1); }
+    #visualizer-ring-canvas {
+      width: 100%;
+      height: 100%;
     }
-
-    .premium-gradient-text {
-      background: linear-gradient(135deg, #fff 40%, #475569 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    #math-output-deck {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: left;
+      font-family: monospace;
+    }
+    #primary-result {
+      font-size: 0.9rem;
+      color: #fff;
+      margin-top: 4px;
+      word-break: break-all;
+    }
+    .sidebar-matrix {
+      font-family: monospace;
+      font-size: 0.6rem;
+      color: #94a3b8;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+      background: rgba(0,0,0,0.4);
+    }
+    .sidebar-header {
+      font-weight: bold;
+      color: var(--cyan-glow);
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(0,240,255,0.2);
+      padding-bottom: 2px;
+      margin-bottom: 2px;
+    }
+    .telemetry-value {
+      color: #fff;
+      font-weight: bold;
+      float: right;
+    }
+    .preset-btn {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      color: #cbd5e1;
+      padding: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.55rem;
+    }
+    .preset-btn:hover {
+      background: rgba(57, 255, 20, 0.08);
+      border-color: var(--matrix-green);
+      color: #fff;
+    }
+    .activity-monitor {
+      height: 75px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      overflow: hidden;
+      font-size: 0.55rem;
+      color: #475569;
+      font-family: monospace;
+      text-align: left;
+    }
+    .covert-row {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   </style>
   <script>
-    // System Master Track Segment Arrays
-    const lyricsPayload = [
-      "Small Town Star (Goofball)", "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", 
-      "Yeah I’ll be a little goofball", "Staying in my own lane", "I’m a low-key pretty goofy really-got-it-good-breezy", 
-      "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", "And God made me perfectly okay", 
-      "Woke up Clean slate", "Sun's up Don't wait", "Step out Big yard", "Life's good Not hard", "Green trees Clear breeze", 
-      "Out here Do what I please", "Big smile Spark eye", "Watch the clouds roll right on by", "No rush My pace", 
-      "Wide open No race", "Fresh air Cool shade", "Sun shine High sky", "No stress Time flies", "Quiet space Ground solid", 
-      "Real world Big knowledge", "Just growth Big views", "No stress Good news", "Out back Chill state", 
-      "Everything is looking great", "Birds sing Warm air", "No worries No cares", "Right here My spot", 
-      "Appreciate what I got", "His design Right place", "Full of purpose Full of grace", "Phone rings Big crowd", 
-      "They talk Real loud", "They know me I'm known", "But right now My zone", "Feet up Chill mind", 
-      "One of a kind Good joke", "Fun time That's the end of the line", "They call I decline", "My space All mine", 
-      "Top tier No fear", "I’m the star around here", "Screen bright App tapped", "Class notes Book wrapped", 
-      "Log in School grind", "Sharp brain Good mind", "Homework Done fast", "A-plus First class", "Next tab Beats play", 
-      "Soundtrack for the day", "Headphones No need", "Speakers loud Top speed", "Volume up Track rolls", 
-      "Deep rhythm Takes control", "Popular Well liked", "But the focus is spiked", "Peaceful Rest easy", 
-      "Everything is going breezy", "Music stops Heavy silence", "World waits Big reliance", "They look I stand", 
-      "Take control Command", "Lights fade Stage set", "Moment they won't forget", "No mistakes No flaws", 
-      "Woven by His holy laws", "Every detail Every strand", "Held inside a higher hand", "Take a breath Hear the call", 
-      "God made me perfectly after all", "Sun goes down Stars appear", "Living life With no fear", "Grateful heart Peaceful state", 
-      "Everything is looking great", "Walking forward Staying strong", "This is where I belong", "Deep breath Clear sky", 
-      "Watch the days fly right on by", "In His hands Every day", "Everything is turning out okay 😁"
-    ];
-
-    // Split compilation ahead of run-time parsing constraints
-    const preParsedLyrics = lyricsPayload.map(phrase => phrase.split(' '));
-
-    // Global App System Space Variables
-    let trackPtr = 0;
-    let sequenceTimer = null;
-    let stealthShieldActive = false;
-    let hyperDriveActive = false;
-    let baselineCoreTemp = 34.8;
-    const globalSystemEpoch = performance.now();
-
-    // Audio Synthetic Variable Registers
-    let audioCtx = null;
-    let masterGainNode = null;
-    let lowpassFilter = null;
-    let signalAnalyser = null;
+    // State Space Memory Layout Allocation
+    let totalSolverSteps = 0, isOverclocked = false;
+    let baseSystemTemp = 34.2, dataPointsArray = [];
+    const executionTimestamp = performance.now();
     
-    // Canvas Display Global Interfaces
-    const mainCanvas = document.getElementById('ambient-canvas');
-    const mCtx = mainCanvas.getContext('2d');
-    const bufferCanvas = document.createElement('canvas');
-    const bCtx = bufferCanvas.getContext('2d');
+    const ambientCanvas = document.getElementById('ambient-canvas'), aCtx = ambientCanvas.getContext('2d');
+    const graphCanvas = document.getElementById('visualizer-ring-canvas'), gCtx = graphCanvas.getContext('2d');
 
-    const scopeCanvas = document.getElementById('scope-canvas');
-    const sCtx = scopeCanvas.getContext('2d');
-    const spectrumCanvas = document.getElementById('spectrum-canvas');
-    const specCtx = spectrumCanvas.getContext('2d');
+    function resizeSystemCanvases() {
+      ambientCanvas.width = window.innerWidth;
+      ambientCanvas.height = window.innerHeight;
+      
+      const box = graphCanvas.parentElement;
+      graphCanvas.width = box.clientWidth;
+      graphCanvas.height = box.clientHeight;
+    }
+    window.addEventListener('resize', resizeSystemCanvases, { passive: true });
+    resizeSystemCanvases();
 
-    // Flat Structured Particle Allocation Matrix Buffer
-    const maximumParticles = 50;
-    const particleMemoryBlock = new Float32Array(maximumParticles * 4); // [X, Y, Radius, SpeedY]
+    // Primitive Flat Array Buffers for Particle Calculations
+    const nodeCount = 30;
+    const nodeMatrixBuffer = new Float32Array(nodeCount * 4); // [x, y, radius, speedY]
+    for(let i = 0; i < nodeCount; i++) {
+      const idx = i << 2;
+      nodeMatrixBuffer[idx] = Math.random() * window.innerWidth;
+      nodeMatrixBuffer[idx+1] = Math.random() * window.innerHeight;
+      nodeMatrixBuffer[idx+2] = Math.random() * 30 + 10;
+      nodeMatrixBuffer[idx+3] = -(Math.random() * 0.4 + 0.1);
+    }
 
-    function allocateParticleTopology() {
-      for(let i = 0; i < maximumParticles; i++) {
-        const baseOffset = i << 2;
-        particleMemoryBlock[baseOffset] = Math.random() * window.innerWidth;
-        particleMemoryBlock[baseOffset + 1] = Math.random() * window.innerHeight;
-        particleMemoryBlock[baseOffset + 2] = Math.random() * 45 + 15;
-        particleMemoryBlock[baseOffset + 3] = -(Math.random() * 0.4 + 0.1);
+    // Background Matrix Redraw Loop
+    function runBackgroundSimulation() {
+      aCtx.fillStyle = '#030407';
+      aCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+      aCtx.fillStyle = isOverclocked ? 'rgba(255, 0, 127, 0.02)' : 'rgba(0, 240, 255, 0.02)';
+
+      for(let i = 0; i < nodeCount; i++) {
+        const idx = i << 2;
+        let y = nodeMatrixBuffer[idx+1] + nodeMatrixBuffer[idx+3];
+        if(y < -nodeMatrixBuffer[idx+2]) {
+          y = ambientCanvas.height + nodeMatrixBuffer[idx+2];
+          nodeMatrixBuffer[idx] = Math.random() * ambientCanvas.width;
+        }
+        nodeMatrixBuffer[idx+1] = y;
+        aCtx.beginPath();
+        aCtx.arc(nodeMatrixBuffer[idx], y, nodeMatrixBuffer[idx+2], 0, 6.28318);
+        aCtx.fill();
       }
-      document.getElementById('val-alloc').textContent = particleMemoryBlock.byteLength + ' bytes';
+      requestAnimationFrame(runBackgroundSimulation);
+    }
+    requestAnimationFrame(runBackgroundSimulation);
+    // Core Mathematical Solver Core
+    function executeCoreProcessing() {
+      const startTime = performance.now();
+      const rawInput = document.getElementById('ai-input').value.trim();
+      const resultView = document.getElementById('primary-result');
+      
+      if(!rawInput) {
+        resultView.textContent = "ERROR: INPUT REGISTER EMPTY";
+        return;
+      }
+
+      try {
+        appendLogStream("PARSING STRING TOKEN ARRAY...", false);
+        
+        // Secure expression evaluator constraint sandbox
+        const cleanInput = rawInput.replace(/[^0-9+\-*/().\s,Math.sincosqrtpie]/g, '');
+        
+        // Execute calculation computation string natively
+        const evaluatedResult = new Function(`return (${cleanInput})`)();
+        
+        if (evaluatedResult === undefined || Array.isArray(evaluatedResult) || typeof evaluatedResult === 'function') {
+          throw new Error("Invalid Mathematical Vector");
+        }
+
+        const runDelta = performance.now() - startTime;
+        
+        // Update Output Ports
+        resultView.textContent = "= " + evaluatedResult;
+        resultView.style.color = "var(--matrix-green)";
+        
+        // Refresh Variables & Metrics Block
+        totalSolverSteps++;
+        baseSystemTemp += isOverclocked ? 1.8 : 0.6;
+        
+        document.getElementById('val-latency').textContent = runDelta.toFixed(3) + 'ms';
+        document.getElementById('val-alloc').textContent = (rawInput.length * 2) + ' bytes';
+        document.getElementById('val-steps').textContent = String(totalSolverSteps).padStart(6, '0');
+        
+        appendLogStream(`SUCCESS: Evaluated vector trace with latency Δ ${runDelta.toFixed(2)}ms`, false);
+        
+        // Generate values on the internal coordinate plot array matching calculation outputs
+        generateGraphWaveform(Number(evaluatedResult) || 0);
+
+      } catch(err) {
+        resultView.textContent = "SYNTAX_ERROR // MATH_KERNEL_REJECTED";
+        resultView.style.color = "var(--magenta-glow)";
+        appendLogStream("CRITICAL: Math parse anomaly detected inside code string.", true);
+      }
     }
 
-    function setupViewportSizing() {
-      mainCanvas.width = bufferCanvas.width = window.innerWidth;
-      mainCanvas.height = bufferCanvas.height = window.innerHeight;
-      
-      scopeCanvas.width = scopeCanvas.clientWidth;
-      scopeCanvas.height = scopeCanvas.clientHeight;
-      spectrumCanvas.width = spectrumCanvas.clientWidth;
-      spectrumCanvas.height = spectrumCanvas.clientHeight;
-    }
-    window.addEventListener('resize', () => { setupViewportSizing(); }, { passive: true });
-  <script>
-    function initializePolysynthEngine() {
-      if (audioCtx) return;
-      
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      audioCtx = new AudioContextClass();
-      
-      masterGainNode = audioCtx.createGain();
-      lowpassFilter = audioCtx.createBiquadFilter();
-      signalAnalyser = audioCtx.createAnalyser();
-      
-      signalAnalyser.fftSize = 256;
-      lowpassFilter.type = 'lowpass';
-      
-      // Patching Synthetic Connections Matrix
-      masterGainNode.connect(lowpassFilter);
-      lowpassFilter.connect(signalAnalyser);
-      signalAnalyser.connect(audioCtx.destination);
-      
-      updateSynthEngineParameters();
+    // Waveform Graph Generator Visualizer Output Module
+    function generateGraphWaveform(seedValue) {
+      gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+      gCtx.strokeStyle = isOverclocked ? '#ff007f' : '#00f0ff';
+      gCtx.lineWidth = 2;
+      gCtx.beginPath();
+
+      const midY = graphCanvas.height / 2;
+      const stepX = graphCanvas.width / 40;
+
+      for(let i = 0; i <= 40; i++) {
+        const x = i * stepX;
+        const amplitude = Math.sin(i * 0.5 + seedValue) * (graphCanvas.height * 0.35);
+        if(i === 0) gCtx.moveTo(x, midY + amplitude);
+        else gCtx.lineTo(x, midY + amplitude);
+      }
+      gCtx.stroke();
     }
 
-    function updateSynthEngineParameters() {
-      if (!audioCtx) return;
-      
-      const volumeInput = document.getElementById('synth-vol').value;
-      const cutoffInput = document.getElementById('synth-cutoff').value;
-      
-      masterGainNode.gain.setValueAtTime((volumeInput / 100) * 0.15, audioCtx.currentTime);
-      lowpassFilter.frequency.setValueAtTime(cutoffInput, audioCtx.currentTime);
-      
-      document.getElementById('readout-vol').textContent = volumeInput + '%';
-      document.getElementById('readout-cutoff').textContent = cutoffInput + ' Hz';
+    // Preset Vector Injection Routines
+    function injectPreset(type) {
+      const field = document.getElementById('ai-input');
+      if(type === 'fibonacci') {
+        field.value = "((1 + Math.sqrt(5))**20 - (1 - Math.sqrt(5))**20) / (2**20 * Math.sqrt(5))";
+        appendLogStream("Injected Analytical Binet's Fibonacci Matrix Sequence Equation.", false);
+      } else if(type === 'primes') {
+        field.value = "Math.sqrt(97) * Math.PI";
+        appendLogStream("Injected Primality Vector Scaling Check Formula.", false);
+      } else if(type === 'sinewave') {
+        field.value = "Math.sin(45 * Math.PI / 180) + Math.cos(30)";
+        appendLogStream("Injected High Velocity Composite Wave Function.", false);
+      }
+      executeCoreProcessing();
     }
 
-    // Attach Event Listeners to Form Fields
-    document.getElementById('synth-vol').addEventListener('input', updateSynthEngineParameters);
-    document.getElementById('synth-cutoff').addEventListener('input', updateSynthEngineParameters);
-    document.getElementById('synth-bpm').addEventListener('input', () => {
-      document.getElementById('readout-bpm').textContent = document.getElementById('synth-bpm').value + ' BPM';
-    });
+    // Real-Time Master Telemetry Clock & Temperature Monitor Node
+    function updateSystemClockTick() {
+      const d = new Date();
+      const timeStr = d.toTimeString().substring(0, 8);
+      const msStr = String(d.getMilliseconds()).padStart(3, '0').substring(0, 2);
+      document.getElementById('system-clock').textContent = timeStr + '.' + msStr;
 
-    function triggerPolyphonicNote(baseFreq) {
-      if (!audioCtx) return;
+      // Thermal dispersion math models
+      if(baseSystemTemp > 34.0) baseSystemTemp -= 0.02;
+      if(isOverclocked) baseSystemTemp += Math.random() * 0.12 + 0.05;
       
-      const currentTime = audioCtx.currentTime;
-      const synthWaveform = document.getElementById('synth-wave').value;
+      const tempEl = document.getElementById('temp-metric');
+      tempEl.textContent = baseSystemTemp.toFixed(1) + '°C';
       
-      // Main Tone Voice Generator
-      const voiceOsc = audioCtx.createOscillator();
-      const voiceGain = audioCtx.createGain();
-      voiceOsc.type = synthWaveform;
-      voiceOsc.frequency.setValueAtTime(baseFreq, currentTime);
+      const throttleView = document.getElementById('val-throttle');
+      const loadView = document.getElementById('val-load');
       
-      // Bass Sub-Oscillator Generator Voice
-      const subOsc = audioCtx.createOscillator();
-      const subGain = audioCtx.createGain();
-      subOsc.type = 'sine';
-      subOsc.frequency.setValueAtTime(baseFreq / 2, currentTime);
-      
-      voiceGain.gain.setValueAtTime(0.4, currentTime);
-      
+      if(baseSystemTemp > 45.0) {
+        tempEl.style.color = "var(--magenta-glow)";
+        throttleView.textContent = "CORE_THROTTLE_ACTIVE";
+        throttleView.style.color = "var(--magenta-glow)";
+        loadView.textContent = (Math.random() * 10 + 85).toFixed(1) + "%";
+      } else {
+        tempEl.style.color = "var(--matrix-green)";
+        throttleView.textContent = "NOMINAL";
+        throttleView.style.color = "#fff";
+        loadView.textContent = (Math.random() * 5 + (isOverclocked ? 45 : 12)).toFixed(1) + "%";
+      }
+    }
+    setInterval(updateSystemClockTick, 33);
+
+    function toggleOverclock() {
+      isOverclocked = !isOverclocked;
+      appendLogStream(isOverclocked ? "WARNING: CPU VOLTAGE BOUNDS OVERRIDDEN." : "SYSTEM: Clock frequencies reset to default values.", isOverclocked);
+    }
+
+    function clearWorkspace() {
+      document.getElementById('ai-input').value = '';
+      document.getElementById('primary-result').textContent = 'SYSTEM IDLE // AWAITING EXPR TRACE...';
+      gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+      appendLogStream("Calculations workspace and data caches purged.", false);
+    }
+
+    const logPanel = document.getElementById('covert-activity-logs');
+    function appendLogStream(msg, isFlagged) {
+      const div = document.createElement('div');
+      div.className = 'covert-row';
+      if(isFlagged) div.style.color = 'var(--magenta-glow)';
+      div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      logPanel.appendChild(div);
+      if(logPanel.children.length > 4) logPanel.removeChild(logPanel.children[1]);
+      logPanel.scrollTop = logPanel.scrollHeight;
+    }
+  </script>
+</body>
+</html>
