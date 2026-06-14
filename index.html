@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cyber Hunter: Overclock Fixed</title>
+    <title>Cyber Hunter: Evolved Engine</title>
     <style>
-        body { margin: 0; background: #080810; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
-        canvas { border: 4px solid #00ffaa; background: #0c0c1a; box-shadow: 0 0 30px rgba(0, 255, 170, 0.2); }
+        body { margin: 0; background: #080810; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: sans-serif; }
+        canvas { border: 4px solid #00ffaa; background: #0c0c1a; }
     </style>
 </head>
 <body>
@@ -13,234 +13,215 @@
 <canvas id="gameCanvas" width="1000" height="700"></canvas>
 
 <script>
-// THIS SAFE WINDOW WRAPPER GUARANTEES CODE RUNS ONLY AFTER THE PAGE FINISHES LOADING
-window.onload = function() {
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
+// 1. ACQUIRE WINDOW LAYOUT ELEMENTS IMMEDIATELY
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
-    // GAME STATE MANAGER
-    let gameOver = false;
-    let victory = false;
-    let isShopActive = false;
-    let score = 0;
+// 2. PRIMARY TRACKING INITIALIZATIONS
+let gameOver = false;
+let victory = false;
+let isShopActive = false;
+let score = 0;
 
-    // PLAYER ENGINE
-    const player = {
-        x: 100, y: 350, w: 40, h: 40,
-        speed: 7, health: 100, maxHealth: 100,
-        timeSlowActive: 0, timeSlowCooldown: 0,
-        overchargeCooldown: 0,
-        hasShield: true, shieldCooldown: 0,
-        shootTimer: 0,
-        laserType: "normal", 
-        upgradePoints: 0
-    };
+// PLAYER CORE CONFIG
+const player = {
+    x: 100, y: 350, w: 40, h: 40,
+    speed: 7, health: 100, maxHealth: 100,
+    timeSlowActive: 0, timeSlowCooldown: 0,
+    overchargeCooldown: 0,
+    hasShield: true, shieldCooldown: 0,
+    shootTimer: 0,
+    laserType: "normal", 
+    upgradePoints: 0
+};
 
-    // 5-PHASE BOSS
-    const boss = {
-        x: 840, y: 280, w: 90, h: 140,
-        health: 3000, maxHealth: 3000,
-        phase: 1, lastPhase: 1, timer: 0, dir: 1
-    };
+// 5-PHASE AI BOSS CORES
+const boss = {
+    x: 840, y: 280, w: 90, h: 140,
+    health: 3000, maxHealth: 3000,
+    phase: 1, lastPhase: 1, timer: 0, dir: 1
+};
 
-    let playerBullets = [];
-    let bossBullets = [];
-    const keys = {};
+let playerBullets = [];
+let bossBullets = [];
+const keys = {};
 
-    // SYSTEM MATRIX CONFIGS
-    const phaseColors = { 1: "#00ffaa", 2: "#00bfff", 3: "#ffff00", 4: "#ffaa00", 5: "#ff0055" };
-    const phaseNames = { 1: "GRID DEFENSE", 2: "CYAN OVERLOAD", 3: "MATRIX WARNING", 4: "CRITICAL CORE", 5: "ROGUE GOD" };
+// HARDCODED PHASE TRACKERS
+const phaseColors = { 1: "#00ffaa", 2: "#00bfff", 3: "#ffff00", 4: "#ffaa00", 5: "#ff0055" };
+const phaseNames = { 1: "GRID DEFENSE", 2: "CYAN OVERLOAD", 3: "MATRIX WARNING", 4: "CRITICAL CORE", 5: "ROGUE GOD" };
 
-    // UPGRADE BAR BUTTON BOUNDS
-    const buttons = {
-        triple: { x: 350, y: 260, w: 300, h: 50, cost: 1, label: "Buy Triple Shot (1 Pt)" },
-        speed:  { x: 350, y: 340, w: 300, h: 50, cost: 1, label: "Upgrade Speed +2 (1 Pt)" },
-        health: { x: 350, y: 420, w: 300, h: 50, cost: 1, label: "Max HP Boost +50 (1 Pt)" },
-        resume: { x: 400, y: 520, w: 200, h: 50, cost: 0, label: "Resume Fight" }
-    };
+// INTERACTIVE UPGRADE SECTOR BOXES
+const buttons = {
+    triple: { x: 350, y: 260, w: 300, h: 50, cost: 1, label: "Buy Triple Shot (1 Pt)" },
+    speed:  { x: 350, y: 340, w: 300, h: 50, cost: 1, label: "Upgrade Speed +2 (1 Pt)" },
+    health: { x: 350, y: 420, w: 300, h: 50, cost: 1, label: "Max HP Boost +50 (1 Pt)" },
+    resume: { x: 400, y: 520, w: 200, h: 50, cost: 0, label: "Resume Fight" }
+};
 
-    // LISTENERS FOR CONTROLS
-    window.addEventListener("keydown", e => { keys[e.key] = true; });
-    window.addEventListener("keyup", e => { keys[e.key] = false; });
+// 3. EVENT BINDINGS FOR INPUT CONTROLS
+window.addEventListener("keydown", function(e) { keys[e.key] = true; });
+window.addEventListener("keyup", function(e) { keys[e.key] = false; });
 
-    // MOUSE INTERACTION SETUP FOR THE UPGRADE MENU
-    canvas.addEventListener("click", e => {
-        if (!isShopActive) return;
+// MOUSE INTERACTION DETECTOR FOR SHOP MENU BUTTONS
+canvas.addEventListener("click", function(e) {
+    if (!isShopActive) return;
 
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
 
-        function checkHit(btn) {
-            return mouseX >= btn.x && mouseX <= btn.x + btn.w && mouseY >= btn.y && mouseY <= btn.y + btn.h;
+    if (mouseX >= buttons.triple.x && mouseX <= buttons.triple.x + buttons.triple.w && mouseY >= buttons.triple.y && mouseY <= buttons.triple.y + buttons.triple.h) {
+        if (player.upgradePoints >= buttons.triple.cost && player.laserType !== "triple") {
+            player.laserType = "triple"; player.upgradePoints -= buttons.triple.cost;
         }
+    } 
+    else if (mouseX >= buttons.speed.x && mouseX <= buttons.speed.x + buttons.speed.w && mouseY >= buttons.speed.y && mouseY <= buttons.speed.y + buttons.speed.h) {
+        if (player.upgradePoints >= buttons.speed.cost) {
+            player.speed += 2; player.upgradePoints -= buttons.speed.cost;
+        }
+    } 
+    else if (mouseX >= buttons.health.x && mouseX <= buttons.health.x + buttons.health.w && mouseY >= buttons.health.y && mouseY <= buttons.health.y + buttons.health.h) {
+        if (player.upgradePoints >= buttons.health.cost) {
+            player.maxHealth += 50; player.health = player.maxHealth; player.upgradePoints -= buttons.health.cost;
+        }
+    } 
+    else if (mouseX >= buttons.resume.x && mouseX <= buttons.resume.x + buttons.resume.w && mouseY >= buttons.resume.y && mouseY <= buttons.resume.y + buttons.resume.h) {
+        isShopActive = false; 
+    }
+});
 
-        if (checkHit(buttons.triple) && player.upgradePoints >= buttons.triple.cost && player.laserType !== "triple") {
-            player.laserType = "triple";
-            player.upgradePoints -= buttons.triple.cost;
-        } 
-        else if (checkHit(buttons.speed) && player.upgradePoints >= buttons.speed.cost) {
-            player.speed += 2;
-            player.upgradePoints -= buttons.speed.cost;
-        } 
-        else if (checkHit(buttons.health) && player.upgradePoints >= buttons.health.cost) {
-            player.maxHealth += 50;
-            player.health = player.maxHealth; 
-            player.upgradePoints -= buttons.health.cost;
-        } 
-        else if (checkHit(buttons.resume)) {
-            isShopActive = false; 
+// 4. MAIN ENGINE PHYSICS COMPUTATION
+function update() {
+    if (gameOver || victory || isShopActive) return;
+
+    // Cooldown clocks ticks
+    if (player.timeSlowCooldown > 0) player.timeSlowCooldown--;
+    if (player.timeSlowActive > 0) player.timeSlowActive--;
+    if (player.overchargeCooldown > 0) player.overchargeCooldown--;
+    
+    if (!player.hasShield) {
+        player.shieldCooldown++;
+        if (player.shieldCooldown >= 360) { player.hasShield = true; player.shieldCooldown = 0; }
+    }
+
+    // Direction Axis Vectors
+    if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
+    if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
+    if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
+    if (keys["d"] || keys["ArrowRight"]) player.x += player.speed;
+
+    player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
+    player.y = Math.max(0, Math.min(canvas.height - player.h, player.y));
+
+    // WEAPON FIRE SYSTEM (Spacebar)
+    if (player.shootTimer > 0) player.shootTimer--;
+    
+    if (keys[" "] && player.shootTimer === 0) {
+        if (player.laserType === "triple") {
+            playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: -3 });
+            playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 0 });
+            playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 3 });
+        } else {
+            playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 0 });
+        }
+        player.shootTimer = 7; 
+    }
+
+    // POWER 1: Chronos Slow Engine (Shift Key)
+    if (keys["Shift"] && player.timeSlowCooldown <= 0) {
+        player.timeSlowActive = 120; player.timeSlowCooldown = 300; 
+    }
+
+    // POWER 2: Screen Wipe Strike (Enter Key)
+    if (keys["Enter"] && player.overchargeCooldown <= 0) {
+        player.overchargeCooldown = 240; bossBullets = []; boss.health -= 150; score += 100;
+        if (boss.health <= 0) victory = true;
+    }
+
+    let timeModifier = player.timeSlowActive > 0 ? 0.20 : 1.0;
+
+    // Calculate Boss Phase Shift Jumps
+    let hpPct = boss.health / boss.maxHealth;
+    if (hpPct > 0.8) boss.phase = 1;
+    else if (hpPct > 0.6) boss.phase = 2;
+    else if (hpPct > 0.4) boss.phase = 3;
+    else if (hpPct > 0.2) boss.phase = 4;
+    else boss.phase = 5;
+
+    // Open Shop Intermission on Phase Breakthrough
+    if (boss.phase > boss.lastPhase) {
+        player.upgradePoints += 1; boss.lastPhase = boss.phase; isShopActive = true; bossBullets = []; return;
+    }
+
+    // Oscillate Boss position
+    boss.y += boss.dir * 4 * timeModifier;
+    if (boss.y <= 30 || boss.y >= canvas.height - boss.h - 30) boss.dir *= -1;
+
+    // Boss Weapon Array Spawns
+    boss.timer += 1 * timeModifier;
+    let delay = 25 - (boss.phase * 4);
+    if (boss.timer >= delay) {
+        boss.timer = 0; let c = phaseColors[boss.phase];
+        
+        if (boss.phase === 1) {
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -8, vy: 0, r: 8, color: c });
+        } else if (boss.phase === 2) {
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -9, vy: (Math.random() - 0.5) * 5, r: 7, color: c });
+        } else if (boss.phase === 3) {
+            let angle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(angle) * 11, vy: Math.sin(angle) * 11, r: 7, color: c });
+        } else if (boss.phase === 4) {
+            bossBullets.push({ x: boss.x, y: boss.y + 20, vx: -10, vy: 0, r: 8, color: c });
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h - 20, vx: -10, vy: 0, r: 8, color: c });
+        } else if (boss.phase === 5) {
+            let base = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(base) * 13, vy: Math.sin(base) * 13, r: 9, color: "#ffffff" });
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(base + 0.2) * 11, vy: Math.sin(base + 0.2) * 11, r: 7, color: c });
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(base - 0.2) * 11, vy: Math.sin(base - 0.2) * 11, r: 7, color: c });
+        }
+    }
+
+    // Trajectory Tracking: Lasers (25 damage output)
+    playerBullets.forEach((b, idx) => {
+        b.x += b.vx; b.y += b.vy;
+        if (b.x > canvas.width || b.y < 0 || b.y > canvas.height) playerBullets.splice(idx, 1);
+        if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
+            boss.health -= 25; score += 50; playerBullets.splice(idx, 1);
+            if (boss.health <= 0) victory = true;
         }
     });
 
-    // MATHEMATICAL LOGIC SYSTEM
-    function update() {
-        if (gameOver || victory || isShopActive) return;
-
-        if (player.timeSlowCooldown > 0) player.timeSlowCooldown--;
-        if (player.timeSlowActive > 0) player.timeSlowActive--;
-        if (player.overchargeCooldown > 0) player.overchargeCooldown--;
-        
-        if (!player.hasShield) {
-            player.shieldCooldown++;
-            if (player.shieldCooldown >= 360) {
-                player.hasShield = true;
-                player.shieldCooldown = 0;
-            }
+    // Trajectory Tracking: Enemy Threats
+    bossBullets.forEach((b, idx) => {
+        b.x += b.vx * timeModifier; b.y += b.vy * timeModifier;
+        if (b.x < -20 || b.x > canvas.width + 20) { bossBullets.splice(idx, 1); return; }
+        if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
+            bossBullets.splice(idx, 1);
+            if (player.hasShield) { player.hasShield = false; player.shieldCooldown = 0; return; }
+            player.health -= 10; if (player.health <= 0) gameOver = true;
         }
+    });
+}
 
-        // Vector Controls
-        if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
-        if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
-        if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
-        if (keys["d"] || keys["ArrowRight"]) player.x += player.speed;
+// 5. GRAPHICS RENDERING LAYER
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
-        player.y = Math.max(0, Math.min(canvas.height - player.h, player.y));
+    if (isShopActive) {
+        // Render Shop Menu Layout Layer
+        ctx.fillStyle = "rgba(12, 12, 26, 0.9)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#00ffaa"; ctx.font = "30px monospace"; ctx.textAlign = "center";
+        ctx.fillText("PHASE BROKEN // UPGRADE PROTOCOL", canvas.width / 2, 120);
+        ctx.fillStyle = "#fff"; ctx.font = "18px monospace";
+        ctx.fillText("AVAILABLE POINT TOKENS: " + player.upgradePoints, canvas.width / 2, 180);
 
-        // GUN RELOAD LOOP
-        if (player.shootTimer > 0) player.shootTimer--;
-        
-        if (keys[" "] && player.shootTimer === 0) {
-            if (player.laserType === "triple") {
-                playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: -3 });
-                playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 0 });
-                playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 3 });
-            } else {
-                playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 0 });
-            }
-            player.shootTimer = 7; 
-        }
-
-        // Chronos Mod
-        if (keys["Shift"] && player.timeSlowCooldown <= 0) {
-            player.timeSlowActive = 120;   
-            player.timeSlowCooldown = 300; 
-        }
-
-        // Screen Reboot
-        if (keys["Enter"] && player.overchargeCooldown <= 0) {
-            player.overchargeCooldown = 240; 
-            bossBullets = []; 
-            boss.health -= 150; 
-            score += 100;
-            if (boss.health <= 0) victory = true;
-        }
-
-        let timeModifier = player.timeSlowActive > 0 ? 0.20 : 1.0;
-
-        // Evolving Phase Computations
-        let hpPct = boss.health / boss.maxHealth;
-        if (hpPct > 0.8) boss.phase = 1;
-        else if (hpPct > 0.6) boss.phase = 2;
-        else if (hpPct > 0.4) boss.phase = 3;
-        else if (hpPct > 0.2) boss.phase = 4;
-        else boss.phase = 5;
-
-        // Open Shop Menu on Phase Transition Break
-        if (boss.phase > boss.lastPhase) {
-            player.upgradePoints += 1; 
-            boss.lastPhase = boss.phase;
-            isShopActive = true; 
-            bossBullets = []; 
-            return;
-        }
-
-        // Boss Motion Oscillation
-        boss.y += boss.dir * 4 * timeModifier;
-        if (boss.y <= 30 || boss.y >= canvas.height - boss.h - 30) boss.dir *= -1;
-
-        // Boss Fire Array Systems
-        boss.timer += 1 * timeModifier;
-        let delay = 25 - (boss.phase * 4);
-        if (boss.timer >= delay) {
-            boss.timer = 0;
-            let c = phaseColors[boss.phase];
-            
-            if (boss.phase === 1) {
-                bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -8, vy: 0, r: 8, color: c });
-            } else if (boss.phase === 2) {
-                bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -9, vy: (Math.random() - 0.5) * 5, r: 7, color: c });
-            } else if (boss.phase === 3) {
-                let angle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
-                bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(angle) * 11, vy: Math.sin(angle) * 11, r: 7, color: c });
-            } else if (boss.phase === 4) {
-                bossBullets.push({ x: boss.x, y: boss.y + 20, vx: -10, vy: 0, r: 8, color: c });
-                bossBullets.push({ x: boss.x, y: boss.y + boss.h - 20, vx: -10, vy: 0, r: 8, color: c });
-            } else if (boss.phase === 5) {
-                let base = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
-                bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(base) * 13, vy: Math.sin(base) * 13, r: 9, color: "#ffffff" });
-                bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(base + 0.2) * 11, vy: Math.sin(base + 0.2) * 11, r: 7, color: c });
-                bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(base - 0.2) * 11, vy: Math.sin(base - 0.2) * 11, r: 7, color: c });
-            }
-        }
-
-        // Flight Physics - Player Lasers
-        playerBullets.forEach((b, idx) => {
-            b.x += b.vx;
-            b.y += b.vy;
-            if (b.x > canvas.width || b.y < 0 || b.y > canvas.height) playerBullets.splice(idx, 1);
-
-            if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
-                boss.health -= 25; // 25 Overcharged Damage [W3Schools]
-                score += 50;
-                playerBullets.splice(idx, 1);
-                if (boss.health <= 0) victory = true;
-            }
+        Object.keys(buttons).forEach(key => {
+            let b = buttons[key];
+            ctx.strokeStyle = key === "resume" ? "#00bfff" : "#00ffaa";
+            ctx.lineWidth = 2; ctx.strokeRect(b.x, b.y, b.w, b.h);
+            ctx.fillStyle = "#fff"; ctx.font = "15px monospace";
+            ctx.fillText(b.label, b.x + b.w/2, b.y + 30);
         });
-
-        // Flight Physics - Enemy Threat Orbs
-        bossBullets.forEach((b, idx) => {
-            b.x += b.vx * timeModifier;
-            b.y += b.vy * timeModifier;
-
-            if (b.x < -20 || b.x > canvas.width + 20) {
-                bossBullets.splice(idx, 1);
-                return;
-            }
-
-            if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
-                bossBullets.splice(idx, 1);
-                
-                if (player.hasShield) {
-                    player.hasShield = false; 
-                    player.shieldCooldown = 0; 
-                    return; 
-                }
-
-                player.health -= 10;
-                if (player.health <= 0) gameOver = true;
-            }
-        });
+        ctx.textAlign = "left"; return;
     }
 
-    // CANVAS DRAW ENGINE [MDN]
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); [MDN]
-
-        if (isShopActive) {
-            ctx.fillStyle = "rgba(12, 12, 26, 0.9)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height); [W3Schools]
-
-            ctx.fillStyle = "#00ffaa"; ctx.font = "bold 30px monospace"; ctx.textAlign = "center";
-            ctx.fillText("PHASE BROKEN // UPGRADE PROTOCOL", canvas.width / 2, 120);
