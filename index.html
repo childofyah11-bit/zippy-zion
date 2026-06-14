@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Retro Space Arcade: Scrap Currency</title>
+    <title>Retro Space Arcade: Fixed Damage Shop</title>
     <style>
+        /* Centers the 900x600 fixed gameplay screen flawlessly */
         body { margin: 0; background: #0c0c16; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
         canvas { border: 4px solid #00ffff; background: #05050f; display: block; }
     </style>
@@ -16,17 +17,17 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Locks browser keyboard controls onto the screen immediately
+// Pull browser window focus straight to the arena grid area
 window.focus();
 
-// STATE FLAGS
+// STATE MATRIX CONFIGS
 let gameOver = false;
 let victory = false;
 let isShopActive = false;
 let score = 0;
-let damageCurrency = 0; // YOUR NEW DAMAGE SCRAIP CURRENCY METER
+let damageCurrency = 0; // The damage score points you harvest from hitting the boss
 
-// USER SPACESHIP (CYAN)
+// CYAN SPACE CRUISER FIGHTER
 let pX = 100;
 let pY = 280;
 let pW = 40;
@@ -37,18 +38,18 @@ let pMaxHealth = 150;
 let timeSlowActive = 0;
 let timeSlowCooldown = 0;
 let overchargeCooldown = 0;
-let laserType = "normal"; // Can be upgraded to "triple"
+let laserType = "normal"; 
 
-// NEW SUPERPOWER 4: Overdrive Shield
+// POWER 4: Overdrive Shield variables
 let overdriveShieldActive = 0;
 let overdriveShieldCooldown = 0;
 
-// ALIEN BOSS 
+// CHRONOS ALIEN TITAN BOSS
 let bX = 760;
 let bY = 220;
 let bW = 80;
 let bH = 150;
-let bHealth = 5000; // Boosted to give you plenty of currency to farm
+let bHealth = 5000; 
 let bMaxHealth = 5000;
 let bPhase = 1;
 let bDir = 1;
@@ -59,71 +60,65 @@ let playerBullets = [];
 let bossBullets = [];
 const keys = {};
 
-// KEYBOARD HANDLING
+// SYSTEM KEYBOARD REGISTERING CONTROLS
 window.addEventListener("keydown", function(e) { 
-    // Prevent default scrolling for Spacebar and Arrow Keys
+    // Shield arrow jumping scrolling drops
     if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
         e.preventDefault();
     }
 
+    // Capture standard keys condition
     keys[e.key] = true; 
 
-    // --- INTERACTIVE SHOP CODE: DETECTS KEY PRESSES INSIDE THE PAUSE SHOP ---
+    // --- INTERACTIVE UPGRADE TERMINAL LOGIC: SEES TAPS ONLY INSIDE PAUSE SCREEN ---
     if (isShopActive) {
         if (e.key === "1" && damageCurrency >= 200 && laserType !== "triple") {
-            laserType = "triple";
-            damageCurrency -= 200;
+            laserType = "triple"; damageCurrency -= 200;
         }
         else if (e.key === "2" && damageCurrency >= 100) {
-            pSpeed += 2;
-            damageCurrency -= 100;
+            pSpeed += 2; damageCurrency -= 100;
         }
         else if (e.key === "3" && damageCurrency >= 150) {
-            pMaxHealth += 50;
-            pHealth = pMaxHealth; // Fully heals hull matrix
-            damageCurrency -= 150;
+            pMaxHealth += 50; pHealth = pMaxHealth; damageCurrency -= 150;
         }
         else if (e.key === "4" && damageCurrency >= 250 && overdriveShieldCooldown === 0) {
-            overdriveShieldCooldown = 1; // Unlocks the shield ability capability
-            damageCurrency -= 250;
+            overdriveShieldCooldown = 1; damageCurrency -= 250; // Unlocks capability slot 4
         }
-        // Pressing Right Shift again or Enter resumes the space battle
-        else if (e.key === "Shift" && e.location === 2) { 
-            isShopActive = false;
-        }
-        else if (e.key === "Enter") {
+        // Pressing P key or Enter again safely returns to full space combat action
+        else if (e.key === "p" || e.key === "P" || e.key === "Enter") { 
             isShopActive = false;
         }
         return;
     }
 
-    // --- HIT RIGHT SHIFT DURING BATTLE TO PAUSE AND OPEN SHOP ---
-    if (e.key === "Shift" && e.location === 2 && !gameOver && !victory) {
+    // --- PRESS P KEY AT ANY POINT DURING THE GAME TO SAFELY OPEN SHOP ---
+    if ((e.key === "p" || e.key === "P") && !gameOver && !victory) {
         isShopActive = true;
     }
 
-    // --- TRIGGER NEW SUPERPOWER 4: OVERDRIVE SHIELD (R Key) ---
-    if ((e.key === "r" || e.key === "R") && overdriveShieldCooldown === 0 && !gameOver && !victory) {
-        overdriveShieldActive = 180; // Invincible shield active for 3 seconds
-        overdriveShieldCooldown = 480; // 8 second recharge clock
+    // --- ACTIVATE PURCHASED SUPERPOWER 4: OVERDRIVE SHIELD (R Key) ---
+    if ((e.key === "r" || e.key === "R") && overdriveShieldCooldown === 0 && overdriveShieldActive === 0 && !gameOver && !victory) {
+        overdriveShieldActive = 180; // Total damage reflection ring bubble for 3 seconds
+        overdriveShieldCooldown = 480; // 8 second recharge ticker
     }
 });
 
 window.addEventListener("keyup", function(e) { keys[e.key] = false; });
 
-// PHYSICS LOGIC ENGINE
+// MATHEMATICAL ENGINE CALCULATION MATRIX STEP
 function update() {
     if (gameOver || victory || isShopActive) return;
 
+    // Cooldown clock step indices
     if (timeSlowCooldown > 0) timeSlowCooldown--;
     if (timeSlowActive > 0) timeSlowActive--;
     if (overchargeCooldown > 0) overchargeCooldown--;
     
-    // Only recharge shield if it has been unlocked/purchased from the damage shop
+    // Manage shield timers only if capability was bought from the currency database
     if (overdriveShieldCooldown > 0 && overdriveShieldActive === 0) overdriveShieldCooldown--;
     if (overdriveShieldActive > 0) overdriveShieldActive--;
 
-    // Movement Translation vectors
+    // Standard Flight Vector updates
     if (keys["w"] || keys["ArrowUp"]) pY -= pSpeed;
     if (keys["s"] || keys["ArrowDown"]) pY += pSpeed;
     if (keys["a"] || keys["ArrowLeft"]) pX -= pSpeed;
@@ -134,10 +129,10 @@ function update() {
     if (pY < 10) pY = 10;
     if (pY > 600 - pH - 10) pY = 600 - pH - 10;
 
-    // POWER 1: Spacebar fires lasers (35 Damage)
+    // PRIMARY CANNON POWER: Spacebar shoots Upgraded lasers (35 Damage output)
     if (keys[" "] && playerBullets.length < 8) {
         if (laserType === "triple") {
-            // Triple Shot: Fires 3 projectile vectors at distinct vertical angles
+            // Triple Shot array: launches 3 separate bullets tracking upward and downward slant arcs
             playerBullets.push({ x: pX + pW, y: pY + pH/2, vx: 15, vy: -3 });
             playerBullets.push({ x: pX + pW, y: pY + pH/2, vx: 15, vy: 0 });
             playerBullets.push({ x: pX + pW, y: pY + pH/2, vx: 15, vy: 3 });
@@ -147,26 +142,22 @@ function update() {
         keys[" "] = false; 
     }
 
-    // POWER 2: Chronos Time Slow Mod (Left Shift Key)
-    if (keys["Shift"] && timeSlowCooldown === 0 && !isShopActive) {
-        // Double check it wasn't the Right Shift key hit
-        timeSlowActive = 150; 
-        timeSlowCooldown = 360; 
+    // SUPERPOWER 1: Chronos Slow Warp Mod (Left Shift Key drops threats to 20% speed)
+    if (keys["Shift"] && timeSlowCooldown === 0) {
+        timeSlowActive = 150; timeSlowCooldown = 360; 
     }
 
-    // POWER 3: EMP Screen Wipe (Enter Key)
+    // SUPERPOWER 2: EMP Screen Cleanse Pulse (Enter Key wipes map field bullets)
     if (keys["Enter"] && overchargeCooldown === 0) {
         overchargeCooldown = 240;
-        bossBullets = []; 
-        bHealth -= 250; 
-        damageCurrency += 250; // EMP blast damage awards currency immediately!
+        bossBullets = []; bHealth -= 250; damageCurrency += 250; // Instantly adds 250 damage currency cash
         score += 150;
         if (bHealth <= 0) victory = true;
     }
 
     let timeModifier = timeSlowActive > 0 ? 0.20 : 1.0;
 
-    // Calculate Multi-Phase Shifts
+    // Process Boss Protocols Phase Shifting checks
     let hpPct = bHealth / bMaxHealth;
     if (hpPct > 0.8) bPhase = 1;
     else if (hpPct > 0.6) bPhase = 2;
@@ -174,7 +165,7 @@ function update() {
     else if (hpPct > 0.15) bPhase = 4;
     else bPhase = 5; 
 
-    // Boss Phase 5 Flight Patterns
+    // Overpowered Flight Pathing at Phase 5
     if (bPhase === 5) {
         let targetY = pY + pH/2 - bH/2;
         bY += (targetY - bY) * 0.08 * timeModifier;
@@ -184,10 +175,8 @@ function update() {
         if (bY <= 20 || bY >= 600 - bH - 20) bDir *= -1;
     }
 
-    // Boss Fire Loop Arrays
-    bTimer += 1 * timeModifier;
-    bAngle += 0.08 * timeModifier;
-
+    // Automated Boss Turret weapon firing loops
+    bTimer += 1 * timeModifier; bAngle += 0.08 * timeModifier;
     let fireDelay = 25 - (bPhase * 3);
     if (bPhase === 5) fireDelay = 4; 
 
@@ -201,42 +190,36 @@ function update() {
 
         if (bPhase === 1) {
             bossBullets.push({ x: bX, y: bY + bH/2, vx: -8, vy: 0, color: c });
-        } 
-        else if (bPhase === 2) {
+        } else if (bPhase === 2) {
             bossBullets.push({ x: bX, y: bY + bH/2, vx: -9, vy: (Math.random() - 0.5) * 5, color: c });
-        } 
-        else if (bPhase === 3) {
+        } else if (bPhase === 3) {
             let angle = Math.atan2((pY + pH/2) - (bY + bH/2), (pX + pW/2) - bX);
             bossBullets.push({ x: bX, y: bY + bH/2, vx: Math.cos(angle) * 10, vy: Math.sin(angle) * 10, color: c });
-        } 
-        else if (bPhase === 4) {
+        } else if (bPhase === 4) {
             bossBullets.push({ x: bX, y: bY + 20, vx: -11, vy: -1.5, color: c });
             bossBullets.push({ x: bX, y: bY + bH - 20, vx: -11, vy: 1.5, color: c });
-        } 
-        else if (bPhase === 5) {
+        } else if (bPhase === 5) {
             bossBullets.push({ x: bX, y: bY + bH/2, vx: -13, vy: Math.sin(bAngle) * 7, color: c });
             bossBullets.push({ x: bX, y: bY + bH/2, vx: -11, vy: Math.sin(bAngle + 0.8) * 5, color: "#ffffff" });
             bossBullets.push({ x: bX, y: bY + bH/2, vx: -11, vy: Math.sin(bAngle - 0.8) * 5, color: c });
         }
     }
 
-    // Move Player Bullets (Hits give 35 damage and convert directly to cash currency!)
+    // Trajectory tracking player lasers (Deals 35 points and transfers instantly into your cash currency pocket!)
     for (let i = playerBullets.length - 1; i >= 0; i--) {
-        let b = playerBullets[i]; 
-        b.x += b.vx || 15;
-        b.y += b.vy || 0;
+        let b = playerBullets[i]; b.x += b.vx || 15; b.y += b.vy || 0;
         if (b.x > 900 || b.y < 0 || b.y > 600) { playerBullets.splice(i, 1); continue; }
 
         if (b.x > bX && b.x < bX + bW && b.y > bY && b.y < bY + bH) {
             bHealth -= 35; 
-            damageCurrency += 35; // HARDCODED REQUIREMENT: DAMAGE BECOMES CURRENCY!
+            damageCurrency += 35; // SPECIFICATION HARDCODED RULE: HIT STRIKES ARE YOUR ACCUMULATED SHOP CASH!
             score += 50;
             playerBullets.splice(i, 1);
             if (bHealth <= 0) victory = true;
         }
     }
 
-    // Move Enemy Bullets
+    // Trajectory tracking enemy threat spheres
     for (let i = bossBullets.length - 1; i >= 0; i--) {
         let b = bossBullets[i]; b.x += b.vx * timeModifier; b.y += b.vy * timeModifier;
         if (b.x < -20 || b.x > 920 || b.y < -20 || b.y > 620) { bossBullets.splice(i, 1); continue; }
@@ -244,35 +227,28 @@ function update() {
         if (b.x > pX && b.x < pX + pW && b.y > pY && b.y < pY + pH) {
             bossBullets.splice(i, 1);
             
-            // Invincible protection check if Overdrive Shield superpower is active
-            if (overdriveShieldActive > 0) {
-                score += 25; // Bonus points for parrying hits
-                continue;
-            }
+            // Invincibility rule checks if superpower shield is running
+            if (overdriveShieldActive > 0) { score += 25; continue; }
 
             let dmg = bPhase === 5 ? 12 : 10; 
-            pHealth -= dmg;
-            if (pHealth <= 0) gameOver = true;
+            pHealth -= dmg; if (pHealth <= 0) gameOver = true;
         }
     }
 }
 
-// GRAPHICS LAYER DISPLAY PANEL
+// GRAPHICS LAYER ENGINES
 function draw() {
     ctx.clearRect(0, 0, 900, 600);
 
     if (isShopActive) {
-        // --- DAMAGE CASH SHOP INTERMISSION DRAW MENU ---
-        ctx.fillStyle = "rgba(10, 10, 32, 0.95)"; ctx.fillRect(0, 0, 900, 600);
+        // --- UPGRADE CONSOLE DRAW SCREEN OVERLAY PANEL ---
+        ctx.fillStyle = "rgba(10, 10, 32, 0.96)"; ctx.fillRect(0, 0, 900, 600);
         ctx.fillStyle = "#ff007f"; ctx.font = "bold 24px monospace"; ctx.textAlign = "center";
-        ctx.fillText("DAMAGE UPGRADE NETWORK TERMINAL", 450, 120);
+        ctx.fillText("DAMAGE REWARD EQUIPMENT TERMINAL ENGINE", 450, 120);
         
         ctx.fillStyle = "#ffffff"; ctx.font = "18px monospace";
-        ctx.fillText("CURRENT DAMAGE CURRENCY ACCUMULATED: " + damageCurrency + " DMG", 450, 180);
+        ctx.fillText("CURRENT DAMAGE CASH STORED: " + damageCurrency + " DMG", 450, 180);
         
         ctx.fillStyle = "#00ffff"; ctx.font = "15px monospace";
-        ctx.fillText("[PRESS 1] Buy Triple Shot Cannon Spread -------- Cost: 200 DMG", 450, 260);
-        ctx.fillText("[PRESS 2] Upgrade Flight Engines (+2 Speed) ---- Cost: 100 DMG", 450, 310);
-        ctx.fillText("[PRESS 3] Reinforce Hull Shield (+50 Max HP) --- Cost: 150 DMG", 450, 360);
-        
-
+        ctx.fillText("[PRESS 1] Buy Triple Laser Spread Cannon ------ Cost: 200 DMG", 450, 260);
+        ctx.fillText("[PRESS 2] Upgrade Flight Thrusters (+2 Speed) -- Cost: 100 DMG", 450, 310);
