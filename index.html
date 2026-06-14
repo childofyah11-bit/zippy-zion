@@ -1,253 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OS 19 // Fluid Audio Node</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OS 19 // Fluid Audio Node Quantum</title>
 </head>
 <body>
 
-    <!-- Liquid Reactive Premium Particle Sub-Layer -->
-    <canvas id="ambient-canvas"></canvas>
+  <!-- Offscreen-backed high-velocity background context -->
+  <canvas id="ambient-canvas"></canvas>
 
-    <!-- Smartphone Glass Frame Container -->
-    <div id="phone-container">
-        
-        <!-- The Dynamic Island Clock Rig (Stealth Interactive Trigger Zone) -->
-        <div id="dynamic-island" onmousedown="triggerStealthArray()" onmouseup="releaseStealthArray()">
-            <div id="island-pill">
-                <span id="island-icon">✦</span>
-                <span id="system-clock">12:00:00.00</span>
-            </div>
-            <div id="island-expanded-status">NETWORK SECURITY TUNNEL // ROUTE_SHIFT_-3600s</div>
-        </div>
-
-        <!-- Sleek Upper Telemetry Module -->
-        <div class="glass-card telemetry-row">
-            <div>SIGNAL: <span class="premium-cyan" id="carrier-text">5G_ULTRA</span></div>
-            <div>CORE_TEMP: <span class="premium-cyan" id="temp-metric">31°C</span></div>
-        </div>
-
-        <!-- Main Music Deck Media Staging Area -->
-        <div class="glass-card main-media-deck">
-            <div id="media-boot-prompt" onclick="igniteMediaDeck()">
-                <div class="premium-gradient-text" style="font-size: 1.4rem; font-weight: 700; letter-spacing: 2px;">STREAM AUDIO NODE</div>
-                <p style="color: #64748b; font-size: 0.8rem; margin: 10px 0 0 0;">TAP TO SYNCHRONIZE COGNITIVE WAVEFRONT</p>
-            </div>
-            
-            <!-- Fluid Audio Ring Visualizer Core -->
-            <div id="fluid-audio-ring"></div>
-            <div id="kinetic-lyric-viewport"></div>
-        </div>
-
-        <!-- Concealed Terminal Activity Monitor Widget -->
-        <div class="glass-card activity-monitor" id="covert-activity-logs">
-            <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">SYSTEM DIAGNOSTIC STREAM:</div>
-        </div>
-
-        <!-- Premium Navigation Slide Controller -->
-        <div id="media-controls">
-            <button class="nav-control-btn" onclick="cycleTrackNode(-1)">⏮</button>
-            <button class="nav-control-btn" onclick="cycleTrackNode(1)">⏭</button>
-        </div>
-
+  <!-- Hardware-isolated viewport module -->
+  <div id="phone-container">
+    
+    <!-- Dynamic Island System Clock Core -->
+    <div id="dynamic-island">
+      <div id="island-pill">
+        <span id="island-icon">✦</span>
+        <span id="system-clock">12:00:00.00</span>
+      </div>
+      <div id="island-expanded-status">NETWORK SECURITY TUNNEL // ROUTE_SHIFT_-3600s</div>
     </div>
 
-</body>
-</html>
-<style>
+    <!-- Live Hardware Telemetry Matrix -->
+    <div class="glass-card telemetry-row">
+      <div>SIGNAL: <span class="premium-cyan" id="carrier-text">5G_ULTRA</span></div>
+      <div>CORE_TEMP: <span class="premium-cyan" id="temp-metric">31°C</span></div>
+    </div>
+
+    <!-- Isolated Audio Node Viewport Layout -->
+    <div class="glass-card main-media-deck">
+      <div id="media-boot-prompt" onclick="igniteMediaDeck()">
+        <div class="premium-gradient-text" style="font-size: 1.4rem; font-weight: 700; letter-spacing: 2px;">STREAM AUDIO NODE</div>
+        <p style="color: #64748b; font-size: 0.8rem; margin: 10px 0 0 0;">TAP TO SYNCHRONIZE COGNITIVE WAVEFRONT</p>
+      </div>
+      <div id="fluid-audio-ring"></div>
+      <div id="kinetic-lyric-viewport"></div>
+    </div>
+
+    <!-- High-Velocity Encrypted Diagnostics Monitor -->
+    <div class="glass-card activity-monitor" id="covert-activity-logs">
+      <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">SYSTEM DIAGNOSTIC STREAM:</div>
+    </div>
+
+    <!-- Navigation Command Row Button Interface -->
+    <div id="media-controls">
+      <button class="nav-control-btn" onclick="cycleTrackNode(-1)">⏮</button>
+      <button class="nav-control-btn" onclick="cycleTrackNode(1)">⏭</button>
+    </div>
+  </div>
+  <style>
     :root {
-        --premium-bg: #090a0f;
-        --glass-surface: rgba(255, 255, 255, 0.03);
-        --glass-border: rgba(255, 255, 255, 0.06);
-        --cyan-glow: #00f0ff;
-        --magenta-glow: #ff007f;
+      --premium-bg: #090a0f;
+      --glass-surface: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.06);
+      --cyan-glow: #00f0ff;
+      --magenta-glow: #ff007f;
     }
-
-    body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--premium-bg); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #fff; overflow: hidden; display: flex; justify-content: center; align-items: center; }
-    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-
-    /* iPhone 17 Ultra Minimal Framing Layout */
-    #phone-container { position: relative; width: 400px; height: 840px; background: rgba(13, 15, 24, 0.8); border: 4px solid rgba(255,255,255,0.1); border-radius: 55px; z-index: 2; box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05); padding: 25px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; backdrop-filter: blur(30px); }
-
-    /* The Premium Dynamic Island */
-    #dynamic-island { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: #000; border-radius: 30px; padding: 8px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.5); pointer-events: auto; width: 180px; }
-    #island-pill { display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center; }
-    #system-clock { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: 0.5px; }
-    #island-icon { color: var(--cyan-glow); font-size: 0.8rem; animation: floatIcon 2s infinite ease-in-out; }
-    #island-expanded-status { display: none; font-size: 0.55rem; font-weight: bold; color: var(--magenta-glow); margin-top: 8px; letter-spacing: 1px; width: 100%; text-align: center; }
-
-    /* Glassmorphism Generic Card */
-    .glass-card { background: var(--glass-surface); border: 1px solid var(--glass-border); border-radius: 24px; padding: 15px; box-sizing: border-box; backdrop-filter: blur(10px); }
-    
-    .telemetry-row { margin-top: 25px; display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; color: #94a3b8; }
-    .premium-cyan { color: var(--cyan-glow); text-shadow: 0 0 8px rgba(0,240,255,0.4); }
-
-    /* Main Media Center Content */
-    .main-media-deck { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; relative; text-align: center; overflow: hidden; border-radius: 32px; }
-    #media-boot-prompt { pointer-events: auto; cursor: pointer; transition: transform 0.2s; }
-    #media-boot-prompt:hover { transform: scale(1.03); }
-    #kinetic-lyric-viewport { display: none; font-size: 1.8rem; font-weight: 800; line-height: 1.3; text-transform: uppercase; letter-spacing: -0.5px; max-width: 100%; z-index: 5; }
-
-    /* Premium Fluid Audio Ring Visualizer Graphic */
-    #fluid-audio-ring { display: none; position: absolute; width: 220px; height: 220px; border: 2px solid rgba(0, 240, 255, 0.15); border-radius: 50%; z-index: 2; transform: scale(1); transition: all 0.25s ease; box-shadow: 0 0 30px rgba(0,240,255,0.05); }
-
-    .fluid-word { display: inline-block; margin: 0 5px; opacity: 0; transform: translateY(15px) scale(0.85); animation: fluidWaveIn 0.3s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
-
-    /* Covert Activity Logging Widget disguised as background noise */
-    .activity-monitor { height: 110px; display: flex; flex-direction: column; gap: 4px; overflow: hidden; font-size: 0.6rem; color: #475569; font-family: monospace; text-align: left; }
-    .covert-row { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; transition: color 0.2s; }
-    .covert-shift-flag { color: var(--magenta-glow) !important; font-weight: bold; }
-
-    /* Audio Controls Row */
-    #media-controls { display: none; justify-content: center; gap: 40px; pointer-events: auto; width: 100%; margin-bottom: 10px; }
-    .nav-control-btn { background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; transition: opacity 0.2s, transform 0.2s; opacity: 0.6; }
-    .nav-control-btn:hover { opacity: 1; transform: scale(1.1); }
-
-    /* Master Animation Arrays */
-    @keyframes fluidWaveIn { to { opacity: 1; transform: translateY(0) scale(1); } }
-    @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-    .premium-gradient-text { background: linear-gradient(135deg, #fff 30%, #64748b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-</style>
-<script>
-    // FULL LYRICS RECORD SHEETS
-    const payloadData = [
-        "Small Town Star (Goofball)", "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", "Staying in my own lane",
-        "I’m a low-key pretty goofy really-got-it-good-breezy", "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", "And God made me perfectly okay",
-        "Woke up Clean slate", "Sun's up Don't wait", "Step out Big yard", "Life's good Not hard", "Green trees Clear breeze", "Out here Do what I please",
-        "Big smile Spark eye", "Watch the clouds roll right on by", "No rush My pace", "Wide open No race", "Fresh air Cool shade", "Sun shine High sky",
-        "No stress Time flies", "Quiet space Ground solid", "Real world Big knowledge", "Just growth Big views", "No stress Good news", "Out back Chill state",
-        "Everything is looking great", "Birds sing Warm air", "No worries No cares", "Right here My spot", "Appreciate what I got", "His design Right place",
-        "Full of purpose Full of grace", "Phone rings Big crowd", "They talk Real loud", "They know me I'm known", "But right now My zone", "Feet up Chill mind",
-        "One of a kind Good joke", "Fun time That's the end of the line", "They call I decline", "My space All mine", "Top tier No fear", "I’m the star around here",
-        "Screen bright App tapped", "Class notes Book wrapped", "Log in School grind", "Sharp brain Good mind", "Homework Done fast", "A-plus First class",
-        "Next tab Beats play", "Soundtrack for the day", "Headphones No need", "Speakers loud Top speed", "Volume up Track rolls", "Deep rhythm Takes control",
-        "Popular Well liked", "But the focus is spiked", "Peaceful Rest easy", "Everything is going breezy", "Music stops Heavy silence", "World waits Big reliance",
-        "They look I stand", "Take control Command", "Lights fade Stage set", "Moment they won't forget", "No mistakes No flaws", "Woven by His holy laws",
-        "Every detail Every strand", "Held inside a higher hand", "Take a breath Hear the call", "God made me perfectly after all", "Sun goes down Stars appear",
-        "Living life With no fear", "Grateful heart Peaceful state", "Everything is looking great", "Walking forward Staying strong", "This is where I belong",
-        "Deep breath Clear sky", "Watch the days fly right on by", "In His hands Every day", "Everything is turning out okay 😁"
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--premium-bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      contain: strict;
+    }
+    #phone-container {
+      position: relative;
+      width: 400px;
+      height: 840px;
+      background: rgba(13, 15, 24, 0.8);
+      border: 4px solid rgba(255,255,255,0.1);
+      border-radius: 55px;
+      z-index: 2;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05);
+      padding: 25px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+      will-change: transform;
+      contain: content;
+    }
+    #dynamic-island {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translate3d(-50%, 0, 0);
+      background: #000;
+      border-radius: 30px;
+      padding: 8px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: width 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), height 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), background-color 0.2s ease;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      pointer-events: auto;
+      width: 180px;
+      height: 34px;
+      will-change: width, height, background-color;
+      contain: layout;
+    }
+    #island-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      justify-content: center;
+    }
+    #system-clock {
+      font-size: 0.9rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
+    }
+    #island-icon {
+      color: var(--cyan-glow);
+      font-size: 0.8rem;
+      animation: floatIcon 2s infinite ease-in-out;
+    }
+    #island-expanded-status {
+      display: none;
+      font-size: 0.55rem;
+      font-weight: bold;
+      color: var(--magenta-glow);
+      margin-top: 8px;
+      letter-spacing: 1px;
+      width: 100%;
+      text-align: center;
+    }
+    .glass-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 15px;
+      box-sizing: border-box;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transform: translate3d(0,0,0);
+    }
+    .telemetry-row {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #94a3b8;
+      contain: layout paint;
+    }
+    .premium-cyan {
+      color: var(--cyan-glow);
+      text-shadow: 0 0 8px rgba(0,240,255,0.4);
+    }
+    .main-media-deck {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      overflow: hidden;
+      border-radius: 32px;
+      contain: layout size;
+    }
+    #media-boot-prompt {
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    #media-boot-prompt:hover {
+      transform: scale3d(1.03, 1.03, 1);
+    }
+    #kinetic-lyric-viewport {
+      display: none;
+      font-size: 1.8rem;
+      font-weight: 800;
+      line-height: 1.3;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      max-width: 100%;
+      z-index: 5;
+      contain: layout paint;
+    }
+    #fluid-audio-ring {
+      display: none;
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border: 2px solid rgba(0, 240, 255, 0.15);
+      border-radius: 50%;
+      z-index: 2;
+      transform: scale3d(1, 1, 1);
+      transition: transform 0.15s cubic-bezier(0.1, 0.9, 0.3, 1), border-color 0.15s ease;
+      box-shadow: 0 0 30px rgba(0,240,255,0.05);
+      will-change: transform, border-color;
+    }
+    .fluid-word {
+      display: inline-block;
+      margin: 0 5px;
+      opacity: 0;
+      transform: translate3d(0, 12px, 0) scale3d(0.9, 0.9, 1);
+      animation: fluidWaveIn 0.25s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    }
+    .activity-monitor {
+      height: 110px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow: hidden;
+      font-size: 0.6rem;
+      color: #475569;
+      font-family: monospace;
+      text-align: left;
+      contain: layout paint;
+    }
+    .covert-row {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .covert-shift-flag {
+      color: var(--magenta-glow) !important;
+      font-weight: bold;
+    }
+    #media-controls {
+      display: none;
+      justify-content: center;
+      gap: 40px;
+      pointer-events: auto;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .nav-control-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      opacity: 0.6;
+    }
+    .nav-control-btn:hover {
+      opacity: 1;
+      transform: scale3d(1.1, 1.1, 1);
+    }
+    @keyframes fluidWaveIn {
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+    }
+    @keyframes floatIcon {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -3px, 0); }
+    }
+    .premium-gradient-text {
+      background: linear-gradient(135deg, #fff 30%, #64748b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+  <script>
+    const rawPayload = [
+      "Small Town Star (Goofball)", "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", 
+      "Yeah I’ll be a little goofball", "Staying in my own lane", "I’m a low-key pretty goofy really-got-it-good-breezy", 
+      "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", "And God made me perfectly okay", 
+      "Woke up Clean slate", "Sun's up Don't wait", "Step out Big yard", "Life's good Not hard", "Green trees Clear breeze", 
+      "Out here Do what I please", "Big smile Spark eye", "Watch the clouds roll right on by", "No rush My pace", 
+      "Wide open No race", "Fresh air Cool shade", "Sun shine High sky", "No stress Time flies", "Quiet space Ground solid", 
+      "Real world Big knowledge", "Just growth Big views", "No stress Good news", "Out back Chill state", 
+      "Everything is looking great", "Birds sing Warm air", "No worries No cares", "Right here My spot", 
+      "Appreciate what I got", "His design Right place", "Full of purpose Full of grace", "Phone rings Big crowd", 
+      "They talk Real loud", "They know me I'm known", "But right now My zone", "Feet up Chill mind", 
+      "One of a kind Good joke", "Fun time That's the end of the line", "They call I decline", "My space All mine", 
+      "Top tier No fear", "I’m the star around here", "Screen bright App tapped", "Class notes Book wrapped", 
+      "Log in School grind", "Sharp brain Good mind", "Homework Done fast", "A-plus First class", "Next tab Beats play", 
+      "Soundtrack for the day", "Headphones No need", "Speakers loud Top speed", "Volume up Track rolls", 
+      "Deep rhythm Takes control", "Popular Well liked", "But the focus is spiked", "Peaceful Rest easy", 
+      "Everything is going breezy", "Music stops Heavy silence", "World waits Big reliance", "They look I stand", 
+      "Take control Command", "Lights fade Stage set", "Moment they won't forget", "No mistakes No flaws", 
+      "Woven by His holy laws", "Every detail Every strand", "Held inside a higher hand", "Take a breath Hear the call", 
+      "God made me perfectly after all", "Sun goes down Stars appear", "Living life With no fear", "Grateful heart Peaceful state", 
+      "Everything is looking great", "Walking forward Staying strong", "This is where I belong", "Deep breath Clear sky", 
+      "Watch the days fly right on by", "In His hands Every day", "Everything is turning out okay 😁"
     ];
 
-    let trackPtr = 0, trackTimer, audioCtx, visualNodes = [], stealthShieldActive = false;
-    const canvas = document.getElementById('ambient-canvas'), ctx = canvas.getContext('2d');
+    const payloadData = rawPayload.map(line => line.split(' '));
+    let trackPtr = 0, trackTimer, audioCtx, biquadFilter, stealthShieldActive = false;
     
-    function scaleViewport() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.onresize = scaleViewport; scaleViewport();
+    const canvas = document.getElementById('ambient-canvas'), ctx = canvas.getContext('2d');
+    const offscreen = document.createElement('canvas'), oCtx = offscreen.getContext('2d');
 
-    // Generate fluid background particles matching a premium lifestyle app
-    for(let i=0; i<40; i++) visualNodes.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*80+40, vy: -(Math.random()*0.4+0.1) });
+    function scaleViewport() {
+      canvas.width = offscreen.width = window.innerWidth;
+      canvas.height = offscreen.height = window.innerHeight;
+    }
+    window.addEventListener('resize', scaleViewport, { passive: true });
+    scaleViewport();
+
+    const particleCount = 45;
+    const particleBuffer = new Float32Array(particleCount * 4);
+    for(let i = 0; i < particleCount; i++) {
+      const idx = i << 2;
+      particleBuffer[idx] = Math.random() * window.innerWidth;
+      particleBuffer[idx+1] = Math.random() * window.innerHeight;
+      particleBuffer[idx+2] = Math.random() * 50 + 25;
+      particleBuffer[idx+3] = -(Math.random() * 0.6 + 0.15);
+    }
 
     function drawAmbientGraph() {
-        ctx.fillStyle = '#090a0f'; ctx.fillRect(0,0,canvas.width,canvas.height);
-        visualNodes.forEach(n => {
-            n.y += n.vy; if(n.y < -n.r) { n.y = canvas.height + n.r; n.x = Math.random()*canvas.width; }
-            let g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
-            g.addColorStop(0, stealthShieldActive ? 'rgba(255,0,127,0.03)' : 'rgba(0,240,255,0.03)');
-            g.addColorStop(1, 'transparent');
-            ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2); ctx.fill();
-        });
-        requestAnimationFrame(drawAmbientGraph);
-    }
-    drawAmbientGraph();
+      oCtx.fillStyle = '#090a0f';
+      oCtx.fillRect(0, 0, offscreen.width, offscreen.height);
+      oCtx.fillStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.025)' : 'rgba(0, 240, 255, 0.025)';
 
-    // Premium Micro-Frequency Sound Wave Generator
+      const w = offscreen.width, h = offscreen.height;
+
+      for (let i = 0; i < particleCount; i++) {
+        const idx = i << 2;
+        let y = particleBuffer[idx+1] + particleBuffer[idx+3];
+        const r = particleBuffer[idx+2];
+
+        if(y < -r) {
+          y = h + r;
+          particleBuffer[idx] = Math.random() * w;
+        }
+        particleBuffer[idx+1] = y;
+
+        oCtx.beginPath();
+        oCtx.arc(particleBuffer[idx], y, r, 0, 6.28318);
+        oCtx.fill();
+      }
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(offscreen, 0, 0);
+      requestAnimationFrame(drawAmbientGraph);
+    }
+    requestAnimationFrame(drawAmbientGraph);
+
     function emitOversampleTone() {
-        if(!audioCtx) audioCtx = new(window.AudioContext||window.webkitAudioContext)();
+      try {
+        if(!audioCtx) {
+          audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+          biquadFilter = audioCtx.createBiquadFilter();
+          biquadFilter.type = "lowpass";
+          biquadFilter.connect(audioCtx.destination);
+        }
         let now = audioCtx.currentTime, osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(stealthShieldActive ? 140 : 440 + (trackPtr * 2), now);
-        gain.gain.setValueAtTime(0.03, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(); osc.stop(now + 0.2);
+        osc.type = stealthShieldActive ? 'sawtooth' : 'sine';
+        osc.frequency.setValueAtTime(stealthShieldActive ? 90 : 380 + (trackPtr * 3), now);
+        biquadFilter.frequency.setValueAtTime(stealthShieldActive ? 200 : 1200, now);
+        
+        gain.gain.setValueAtTime(0.015, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+        osc.connect(gain);
+        gain.connect(biquadFilter);
+        osc.start();
+        osc.stop(now + 0.18);
+      } catch(e) {}
     }
 
-    // High Precision Dynamic Island Time System Override Logic
+    const clockEl = document.getElementById('system-clock');
+    const tempEl = document.getElementById('temp-metric');
+
     function processSystemClock() {
-        let clockDate = new Date();
-        if (stealthShieldActive) {
-            // Invisible Overriding Trigger: Deducts 1 hour strictly from the system array calculations
-            clockDate.setHours(clockDate.getHours() - 1);
-        }
-        let parts = clockDate.toTimeString().split(' ');
-        let ms = String(clockDate.getMilliseconds()).padStart(3, '0').substring(0,2);
-        document.getElementById('system-clock').innerText = `${parts[0]}.${ms}`;
-        
-        if(Math.random() > 0.8) {
-            document.getElementById('temp-metric').innerText = (Math.floor(Math.random()*4) + 30) + "°C";
-        }
+      const clockDate = new Date();
+      if (stealthShieldActive) clockDate.setHours(clockDate.getHours() - 1);
+      const parts = clockDate.toTimeString().substring(0, 8);
+      const ms = String(clockDate.getMilliseconds()).padStart(3, '0').substring(0,2);
+      clockEl.textContent = parts + '.' + ms;
+      if(Math.random() > 0.99) tempEl.textContent = (Math.floor(Math.random() * 4) + 30) + "°C";
     }
-    setInterval(processSystemClock, 10);
+    setInterval(processSystemClock, 30);
 
-    // Covert interaction layers mapped to the smartphone interface
-    function triggerStealthArray() {
-        stealthShieldActive = true;
-        let island = document.getElementById('dynamic-island');
-        island.style.width = "340px"; island.style.height = "55px"; island.style.background = "#110309"; island.style.borderColor = "var(--magenta-glow)";
-        document.getElementById('island-expanded-status').style.display = "block";
-        document.getElementById('carrier-text').innerText = "PROXY_TUNNEL";
-        document.getElementById('carrier-text').className = "premium-cyan covert-shift-flag";
-        
-        appendCovertLog("OVERRIDE EXECUTED: SIMULATED REGIONAL CLOCK DELAY SECURED (-3600s)", true);
-        emitOversampleTone();
-    }
-    
-    function releaseStealthArray() {
-        stealthShieldActive = false;
-        let island = document.getElementById('dynamic-island');
-        island.style.width = "180px"; island.style.height = "auto"; island.style.background = "#000"; island.style.borderColor = "transparent";
-        document.getElementById('island-expanded-status').style.display = "none";
-        document.getElementById('carrier-text').innerText = "5G_ULTRA";
-        document.getElementById('carrier-text').className = "premium-cyan";
-        
-        appendCovertLog("Telemetry re-synchronized to root gateway index.", false);
-    }
+    const island = document.getElementById('dynamic-island');
+    const expandedStatus = document.getElementById('island-expanded-status');
+    const carrierText = document.getElementById('carrier-text');
 
+    island.addEventListener('mousedown', () => {
+      stealthShieldActive = true;
+      island.style.width = "340px";
+      island.style.height = "55px";
+      island.style.backgroundColor = "#110309";
+      island.style.borderColor = "var(--magenta-glow)";
+      expandedStatus.style.display = "block";
+      carrierText.textContent = "PROXY_TUNNEL";
+      carrierText.className = "premium-cyan covert-shift-flag";
+      appendCovertLog("OVERRIDE EXECUTED: SIMULATED REGIONAL CLOCK DELAY SECURED (-3600s)", true);
+      emitOversampleTone();
+    }, { passive: true });
+
+    window.addEventListener('mouseup', () => {
+      if (!stealthShieldActive) return;
+      stealthShieldActive = false;
+      island.style.width = "180px";
+      island.style.height = "34px";
+      island.style.backgroundColor = "#000";
+      island.style.borderColor = "transparent";
+      expandedStatus.style.display = "none";
+      carrierText.textContent = "5G_ULTRA";
+      carrierText.className = "premium-cyan";
+      appendCovertLog("Telemetry re-synchronized to root gateway index.", false);
+    }, { passive: true });
+
+    const panel = document.getElementById('covert-activity-logs');
     function appendCovertLog(msg, flagged) {
-        const panel = document.getElementById('covert-activity-logs');
-        const row = document.createElement('div');
-        row.className = `covert-row ${flagged ? 'covert-shift-flag' : ''}`;
-        row.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
-        panel.appendChild(row);
-        if(panel.children.length > 6) panel.removeChild(panel.children[1]);
-        panel.scrollTop = panel.scrollHeight;
+      const row = document.createElement('div');
+      row.className = flagged ? 'covert-row covert-shift-flag' : 'covert-row';
+      row.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+      panel.appendChild(row);
+      if(panel.children.length > 6) panel.removeChild(panel.children[1]);
+      panel.scrollTop = panel.scrollHeight;
     }
 
+    const statusLines = ["Cache synchronization verified.", "Background assets cleared.", "Audio stream indexing...", "Device telemetry payload stable.", "Secure encryption handshake complete."];
     setInterval(() => {
-        const statusLines = ["Cache synchronization verified.", "Background background assets cleared.", "Audio stream indexing...", "Device telemetry payload stable.", "Secure encryption handshake complete."];
-        appendCovertLog(statusLines[Math.floor(Math.random()*statusLines.length)], false);
-    }, 4000);
+      appendCovertLog(statusLines[(Math.random() * statusLines.length) | 0], false);
+    }, 4500);
+
+    const viewport = document.getElementById('kinetic-lyric-viewport');
+    const ring = document.getElementById('fluid-audio-ring');
 
     function displayLyricNode() {
-        const viewport = document.getElementById('kinetic-lyric-viewport'); viewport.innerHTML = '';
-        payloadData[trackPtr].split(' ').forEach((w, i) => {
-            let span = document.createElement('span'); span.className = 'fluid-word'; span.innerText = w;
-            span.style.animationDelay = `${i * 0.03}s`; viewport.appendChild(span);
-        });
-        
-        emitOversampleTone();
-        appendCovertLog(`Processing audio segment block #${trackPtr}`, false);
-        
-        let ring = document.getElementById('fluid-audio-ring');
-        ring.style.transform = 'scale(1.1)'; ring.style.borderColor = 'var(--cyan-glow)';
-        setTimeout(() => { ring.style.transform = 'scale(1)'; ring.style.borderColor = 'rgba(0, 240, 255, 0.15)'; }, 200);
+      viewport.textContent = '';
+      const fragment = document.createDocumentFragment();
+      const currentWords = payloadData[trackPtr];
+      
+      for(let i = 0; i < currentWords.length; i++) {
+        const span = document.createElement('span');
+        span.className = 'fluid-word';
+        span.textContent = currentWords[i];
+        span.style.animationDelay = (i * 0.02) + 's';
+        fragment.appendChild(span);
+      }
+      viewport.appendChild(fragment);
+      
+      emitOversampleTone();
+      appendCovertLog("Processing audio segment block #" + trackPtr, false);
+      
+      ring.style.transform = 'scale3d(1.06, 1.06, 1)';
+      ring.style.borderColor = 'var(--cyan-glow)';
+      setTimeout(() => {
+        ring.style.transform = 'scale3d(1, 1, 1)';
+        ring.style.borderColor = 'rgba(0, 240, 255, 0.15)';
+      }, 130);
 
-        clearTimeout(trackTimer);
-        if(trackPtr < payloadData.length - 1) trackTimer = setTimeout(() => cycleTrackNode(1), 2600);
+      clearTimeout(trackTimer);
+      if(trackPtr < payloadData.length - 1) {
+        trackTimer = setTimeout(() => cycleTrackNode(1), 2600);
+      }
     }
 
     function igniteMediaDeck() {
-        document.getElementById('media-boot-prompt').style.display = 'none';
-        document.getElementById('kinetic-lyric-viewport').style.display = 'block';
-        document.getElementById('fluid-audio-ring').style.display = 'block';
-        document.getElementById('media-controls').style.display = 'flex';
-        displayLyricNode();
+      document.getElementById('media-boot-prompt').style.display = 'none';
+      viewport.style.display = 'block';
+      ring.style.display = 'block';
+      document.getElementById('media-controls').style.display = 'flex';
+      displayLyricNode();
     }
 
     function cycleTrackNode(direction) {
-        trackPtr += direction;
-        if(trackPtr < 0) trackPtr = 0;
-        if(trackPtr >= payloadData.length) trackPtr = payloadData.length - 1;
-        displayLyricNode();
+      trackPtr += direction;
+      if(trackPtr < 0) trackPtr = 0;
+      else if(trackPtr >= payloadData.length) trackPtr = payloadData.length - 1;
+      displayLyricNode();
     }
-</script>
+  </script>
+</body>
+</html>
