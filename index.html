@@ -16,15 +16,15 @@
     <!-- Dynamic Island System Clock Module -->
     <div id="dynamic-island">
       <div id="island-pill">
-        <span id="island-icon">🧠</span>
+        <span id="island-icon">🧬</span>
         <span id="system-clock">00:00:00.00</span>
       </div>
-      <div id="island-expanded-status">ACE_CORE_ONLINE // COGNITIVE_ARRAY</div>
+      <div id="island-expanded-status">ACE_CORE_ONLINE // BIO_GENETICS_ARRAY</div>
     </div>
 
     <!-- Active Device Hardware Diagnostic Strip -->
     <div class="glass-card telemetry-row">
-      <div>AI_SHELL: <span class="premium-cyan" id="carrier-text">ACE_CHATBOT_v5.0</span></div>
+      <div>AI_SHELL: <span class="premium-cyan" id="carrier-text">ACE_CHATBOT_v5.2</span></div>
       <div>CORE_TEMP: <span id="temp-metric">34.5°C</span></div>
     </div>
 
@@ -35,19 +35,19 @@
       <div class="glass-card main-media-deck">
         <div id="workspace-header">ACE CONVERSATION TERMINAL</div>
         
-        <!-- Live Mathematical & Text Graphic Plot Display Screen -->
+        <!-- Live Mathematical & Biological Graphic Plot Display Screen -->
         <div id="graph-wrapper">
           <canvas id="visualizer-ring-canvas"></canvas>
         </div>
 
         <!-- Chat History Window Node -->
         <div id="chat-history-viewport">
-          <div class="chat-bubble ai-bubble">[ACE_INIT] Greetings operator. I am Ace Chatbot. Supply any academic, logical, or conversational problem vector above and initialize execution.</div>
+          <div class="chat-bubble ai-bubble">[ACE_INIT] Greetings operator. Biology modules are fully compiled. I can transcribe DNA sequence strings, map mRNA codons to amino acids, or calculate monohybrid genetic crosses. Submit your problem string below.</div>
         </div>
 
         <!-- Custom User String Query Submission Box -->
         <div class="input-container">
-          <textarea id="ai-input" placeholder="Type a custom problem, question, or text string here... (Press Enter to Submit)"></textarea>
+          <textarea id="ai-input" placeholder="Type a query here... (e.g., dna: ATCGGTA, punnett: Bb x bb, or standard math)"></textarea>
           <div class="input-controls">
             <button class="tech-sub-btn run-btn" onclick="submitUserQuery()">SUBMIT LOGIC</button>
             <button class="tech-sub-btn clear-btn" onclick="resetChatHistory()">PURGE LOGS</button>
@@ -65,11 +65,11 @@
         <div>PROCESSOR_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
         <div>THROTTLE_INDEX: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
 
-        <div class="sidebar-header" style="margin-top: 15px;">ACADEMIC TEMPLATES</div>
+        <div class="sidebar-header" style="margin-top: 15px;">BIOLOGY & SCIENCE MODULES</div>
+        <button class="preset-btn" onclick="loadQueryTemplate('dna')">BIOLOGY: DNA TRANSCRIPTION</button>
+        <button class="preset-btn" onclick="loadQueryTemplate('punnett')">BIOLOGY: PUNNETT CROSS</button>
         <button class="preset-btn" onclick="loadQueryTemplate('math')">MATHEMATICS EXPRESSION</button>
-        <button class="preset-btn" onclick="loadQueryTemplate('history')">CHRONOLOGY MATRIX</button>
-        <button class="preset-btn" onclick="loadQueryTemplate('physics')">PHYSICS ENERGY COEFFICIENT</button>
-        <button class="preset-btn" onclick="loadQueryTemplate('chat')">CONVERSATIONAL TRACE</button>
+        <button class="preset-btn" onclick="loadQueryTemplate('physics')">PHYSICS COEFFICIENT</button>
         <button class="preset-btn" id="boost-btn" onclick="toggleOverclockEngine()">OVERCLOCK CORE</button>
       </div>
     </div>
@@ -114,7 +114,7 @@
     }
     #phone-container {
       position: relative;
-      width: 900px; /* Extended widescreen command center viewport */
+      width: 900px; 
       height: 680px;
       background: rgba(7, 10, 17, 0.96);
       border: 2px solid rgba(255, 255, 255, 0.09);
@@ -423,51 +423,86 @@
       const deltaStart = performance.now();
       executedQueriesCounter++;
       
-      // Render User Speech Bubble node into viewport
       appendBubbleToHistory(queryText, true);
       inputField.value = '';
 
-      // Update State Statistics Parameters
       document.getElementById('val-steps').textContent = String(executedQueriesCounter).padStart(6, '0');
       document.getElementById('val-alloc').textContent = (queryText.length * 2) + " bytes";
       baselineHardwareTemp += isCoreOverclocked ? 2.5 : 0.7;
-      pushTelemetryLog("Interpreting user payload configuration arrays...");
+      pushTelemetryLog("Interpreting payload configuration strings...");
 
-      // Structural Intent Parser Routines
       setTimeout(() => {
         let aiResponseText = "";
         let cleanQuery = queryText.toLowerCase();
 
-        if (cleanQuery.includes("solve") || /[\d+\-*/()]/.test(cleanQuery)) {
-          // Native Formula Math Evaluation Blocks
+        // 1. BIOLOGY CORE KERNEL PROCESSING BRANCH
+        if (cleanQuery.includes("dna:") || cleanQuery.includes("rna:") || cleanQuery.includes("transcribe")) {
+          const rawSequence = (queryText.match(/(?:dna|rna|transcribe):\s*([A-Za-z]+)/i)?.[1] || "ATCG").toUpperCase();
+          let transcribedRna = "";
+          let peptideChain = [];
+
+          // Transcription logic array mapping
+          for(let i=0; i<rawSequence.length; i++) {
+            let base = rawSequence[i];
+            if (base === 'A') transcribedRna += 'U';
+            else if (base === 'T') transcribedRna += 'A';
+            else if (base === 'C') transcribedRna += 'G';
+            else if (base === 'G') transcribedRna += 'C';
+            else transcribedRna += '?';
+          }
+
+          // Simple codon translator simulation sequence
+          const codons = transcribedRna.match(/.{1,3}/g) || [];
+          codons.forEach(c => {
+            if (c === "AUG") peptideChain.push("Met (START)");
+            else if (c.startsWith("UU")) peptideChain.push("Phe");
+            else if (c.startsWith("GG")) peptideChain.push("Gly");
+            else if (c.startsWith("CC")) peptideChain.push("Pro");
+            else if (c === "UAA" || c === "UAG" || c === "UGA") peptideChain.push("STOP");
+            else peptideChain.push("Aa");
+          });
+
+          aiResponseText = `[ACE BIOLOGY PROCESSING KERNEL]\nInput DNA Template: 3' - ${rawSequence} - 5'\n\nStep 1 (Transcription): Base pairs matched to form single-stranded mRNA.\nmRNA Transcript: 5' - ${transcribedRna} - 3'\n\nStep 2 (Translation Codon Map):\nCodon Blocks Analyzed: [ ${codons.join(" | ")} ]\nSynthesized Peptide Chain: ${peptideChain.join(" -> ")}`;
+          renderOscilloscopeCurve(rawSequence.length || 4);
+
+        } else if (cleanQuery.includes("punnett") || cleanQuery.includes("cross")) {
+          // Monohybrid cross pattern match (e.g., Bb x bb or AA x Aa)
+          const parents = queryText.match(/([A-Za-z]{2})\s*x\s*([A-Za-z]{2})/i);
+          if (parents) {
+            const p1 = parents[1].split(''), p2 = parents[2].split('');
+            let matrixOutcomes = [
+              p1[0]+p2[0], p1[0]+p2[1],
+              p1[1]+p2[0], p1[1]+p2[1]
+            ];
+            aiResponseText = `[ACE GENETICS DECK]\nParental Genotypes: ${parents[1]} × ${parents[2]}\n\nGenerated Punnett Matrix Array:\n  |  ${p2[0]}  |  ${p2[1]}  |\n===============\n${p1[0]} | ${matrixOutcomes[0]} | ${matrixOutcomes[1]} |\n${p1[1]} | ${matrixOutcomes[2]} | ${matrixOutcomes[3]} |\n\nGenotypic Frequency Output Matrix:\n${Array.from(new Set(matrixOutcomes)).map(g => `-> ${g}: ${(matrixOutcomes.filter(x=>x===g).length/4*100)}%`).join('\n')}`;
+          } else {
+            aiResponseText = `[ACE GENETICS DECK]\nError matching genetic pair layout formats. Correct target syntax: "punnett: Bb x Bb"`;
+          }
+          renderOscilloscopeCurve(5);
+
+        // 2. CONVERSATIONAL & STANDARD CALCULATIONS FALLBACK BRANCH
+        } else if (cleanQuery.includes("solve") || /[\d+\-*/()]/.test(cleanQuery)) {
           try {
             const mathFormulaClean = queryText.replace(/[^0-9+\-*/().\s]/g, '');
-            if(!mathFormulaClean) throw new Error();
             const calculatedSum = new Function(`return (${mathFormulaClean})`)();
             aiResponseText = `[ACE MATHEMATICAL LOGIC SYSTEM]\nExpression trace identified: ${mathFormulaClean}\nResult calculation value: ${calculatedSum}\n\nOperation completed with exact 128-bit parsing precision accuracy rules.`;
             renderOscilloscopeCurve(calculatedSum || 4);
           } catch(e) {
-            aiResponseText = `[ACE RESOLUTION MODULE]\nParsed Query: "${queryText}"\n\nI parsed your input query vectors, but no explicit formula constant bounds were captured. Specify standard math signs (+, -, *, /) for real-time trace solutions.`;
+            aiResponseText = `[ACE INTERACTIVE CHATBOT]\nQuery Acknowledged: "${queryText}"\n\nNo structured mathematics symbols detected. If this is a science concept or definition, my terminal frames are standing by for explicit field definitions.`;
             renderOscilloscopeCurve(2);
           }
-        } else if (cleanQuery.includes("history") || cleanQuery.includes("who") || cleanQuery.includes("war")) {
-          aiResponseText = `[ACE HISTORICAL DATABANKS]\nQuery Context: Chronology/Event Analysis\n\nSolution Blueprint:\n1. Cross-referencing historic node networks...\n2. Event timestamp correlation indexed.\n\nResult: Temporal records show the designated parameters correspond to complex historical macro-cycles inside standard text books.`;
-          renderOscilloscopeCurve(6);
         } else if (cleanQuery.includes("physics") || cleanQuery.includes("force") || cleanQuery.includes("energy")) {
           aiResponseText = `[ACE APPLIED PHYSICS KERNEL]\nDetected Equation Target: Kinematics / Energy Conservation\n\nFormula Profile:\n-> Force (F) = mass * acceleration\n-> Kinetic Energy (KE) = 0.5 * m * v²\n\nResult: Physics vectors stable. Input values are processed against normal universal physics constants seamlessly.`;
           renderOscilloscopeCurve(9);
         } else {
-          // Conversational Default Output Fallback Strategy
-          aiResponseText = `[ACE INTERACTIVE CHATBOT]\nQuery Acknowledged: "${queryText}"\n\nI have successfully received your custom question entry. My symbolic academic processors are fully armed and initialized to solve advanced science text patterns, homework expressions, or analytical structures you present next.`;
+          aiResponseText = `[ACE INTERACTIVE CHATBOT]\nQuery received: "${queryText}"\n\nI am configured for composite STEM queries. Try typing a biology request like "dna: ATCGGCTA" or a math operation like "15 * 45" to run my full problem solving tracks.`;
           renderOscilloscopeCurve(1);
         }
 
-        // Render AI Answer Node to Panel Screen
         appendBubbleToHistory(aiResponseText, false);
-        
         const deltaTotal = performance.now() - deltaStart;
         document.getElementById('val-latency').textContent = deltaTotal.toFixed(2) + "ms";
-      }, 350); // Fast 350ms computational artificial response gap
+      }, 350);
     }
 
     // Intercept Textarea Enter Key Event Actions
@@ -505,10 +540,10 @@
 
     function loadQueryTemplate(type) {
       const area = document.getElementById('ai-input');
-      if (type === 'math') area.value = "(45 * 12) / Math.sqrt(16)";
-      else if (type === 'history') area.value = "History: Describe the timeline of ancient Roman engineering infrastructure assets.";
-      else if (type === 'physics') area.value = "Physics: Determine total kinetic energy when velocity is equal to 15 m/s.";
-      else if (type === 'chat') area.value = "Hello Ace Chatbot, tell me how your cognitive multi-discipline network calculates logic.";
+      if (type === 'dna') area.value = "dna: TACGGCTAGCTAATC";
+      else if (type === 'punnett') area.value = "punnett: Tt x tt";
+      else if (type === 'math') area.value = "(15 * 4) + Math.sqrt(81)";
+      else if (type === 'physics') area.value = "Physics: Determine force vectors when mass=12kg and acceleration=9.8m/s2";
       area.focus();
     }
 
@@ -522,7 +557,7 @@
     }
 
     function resetChatHistory() {
-      document.getElementById('chat-history-viewport').innerHTML = `<div class="chat-bubble ai-bubble">[ACE_RESET] Conversation memory tracks cleared. Console is ready for fresh input configurations.</div>`;
+      document.getElementById('chat-history-viewport').innerHTML = `<div class="chat-bubble ai-bubble">[ACE_RESET] System threads flushed. All science and genetic databases standing by.</div>`;
       gCtx.clearRect(0,0,graphCanvas.width,graphCanvas.height);
       pushTelemetryLog("Volatile diagnostic and message state logs purged.");
     }
@@ -559,10 +594,4 @@
       row.className = 'covert-row';
       row.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
       logWindow.appendChild(row);
-      if(logWindow.children.length > 3) logWindow.removeChild(logWindow.children[1]);
-      logWindow.scrollTop = logWindow.scrollHeight;
-    }
-  </script>
-</body>
-</html>
-
+      if(logWindow.children.length > 3) logWindow.removeChild(logWindow.children);
