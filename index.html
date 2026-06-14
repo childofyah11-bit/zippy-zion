@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACE CHATBOT // Core Intel Engine</title>
+  <title>ACE CHATBOT // Omni-Subject Intelligence Node</title>
 </head>
 <body>
 
-  <!-- Dynamic Structural Computing Grid Matrix -->
+  <!-- Background Processing Telemetry Grid Layer -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Complete High-Tech Smartphone / Interface Shell Frame -->
+  <!-- Complete High-Tech Smartphone Shell Container Frame -->
   <div id="phone-container">
     
     <!-- Dynamic Island System Clock Module -->
     <div id="dynamic-island">
       <div id="island-pill">
-        <span id="island-icon">🧬</span>
+        <span id="island-icon">🛡️</span>
         <span id="system-clock">00:00:00.00</span>
       </div>
-      <div id="island-expanded-status">ACE_CORE_ONLINE // BIO_GENETICS_ARRAY</div>
+      <div id="island-expanded-status">ACE_CORE_v6.0 // OMNI_SUBJECT_DECODER</div>
     </div>
 
-    <!-- Active Device Hardware Diagnostic Strip -->
+    <!-- Live Device Hardware Diagnostic Strip -->
     <div class="glass-card telemetry-row">
-      <div>AI_SHELL: <span class="premium-cyan" id="carrier-text">ACE_CHATBOT_v5.2</span></div>
+      <div>AI_SHELL: <span class="premium-cyan" id="carrier-text">ACE_CHATBOT_PRO</span></div>
       <div>CORE_TEMP: <span id="temp-metric">34.5°C</span></div>
     </div>
 
@@ -33,43 +33,44 @@
       
       <!-- Primary Core Dialogues and Interactive Workspace Pane -->
       <div class="glass-card main-media-deck">
-        <div id="workspace-header">ACE CONVERSATION TERMINAL</div>
+        <div id="workspace-header">OMNI-SUBJECT CORE TERMINAL</div>
         
-        <!-- Live Mathematical & Biological Graphic Plot Display Screen -->
+        <!-- Live Mathematical & Analytical Graphic Plot Display Screen -->
         <div id="graph-wrapper">
           <canvas id="visualizer-ring-canvas"></canvas>
         </div>
 
         <!-- Chat History Window Node -->
         <div id="chat-history-viewport">
-          <div class="chat-bubble ai-bubble">[ACE_INIT] Greetings operator. Biology modules are fully compiled. I can transcribe DNA sequence strings, map mRNA codons to amino acids, or calculate monohybrid genetic crosses. Submit your problem string below.</div>
+          <div class="chat-bubble ai-bubble">[ACE_INIT] Core engine fully operational. Syntax validation errors have been purged. Ask me questions about History, Geography, Literature, Biology, Math, or general concepts. Type your query below.</div>
         </div>
 
         <!-- Custom User String Query Submission Box -->
         <div class="input-container">
-          <textarea id="ai-input" placeholder="Type a query here... (e.g., dna: ATCGGTA, punnett: Bb x bb, or standard math)"></textarea>
+          <textarea id="ai-input" placeholder="Ask anything... (e.g., history: Rome, geo: capitals, dna: ATCG, or general questions)"></textarea>
           <div class="input-controls">
             <button class="tech-sub-btn run-btn" onclick="submitUserQuery()">SUBMIT LOGIC</button>
-            <button class="tech-sub-btn clear-btn" onclick="resetChatHistory()">PURGE LOGS</button>
+            <button class="tech-sub-btn clear-btn" onclick="resetChatHistory()">PURGE MEMORY</button>
           </div>
         </div>
       </div>
 
       <!-- Right Column: Live Computing Parameter Side-Grid Module -->
       <div class="glass-card sidebar-matrix">
-        <div class="sidebar-header">ACE LIVE METRICS</div>
+        <div class="sidebar-header">ACE CONSOLE STATS</div>
         <div>THINK_TIME: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
         <div>BUFFER_SIZE: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
         <div>QUERIES_RUN: <span class="telemetry-value" id="val-steps">000000</span></div>
-        <div>ENGINE_FREQ: <span class="telemetry-value" id="val-precision">4.8 GHz</span></div>
+        <div>ENGINE_FREQ: <span class="telemetry-value" id="val-precision">5.2 GHz</span></div>
         <div>PROCESSOR_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
         <div>THROTTLE_INDEX: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
 
-        <div class="sidebar-header" style="margin-top: 15px;">BIOLOGY & SCIENCE MODULES</div>
-        <button class="preset-btn" onclick="loadQueryTemplate('dna')">BIOLOGY: DNA TRANSCRIPTION</button>
-        <button class="preset-btn" onclick="loadQueryTemplate('punnett')">BIOLOGY: PUNNETT CROSS</button>
-        <button class="preset-btn" onclick="loadQueryTemplate('math')">MATHEMATICS EXPRESSION</button>
-        <button class="preset-btn" onclick="loadQueryTemplate('physics')">PHYSICS COEFFICIENT</button>
+        <div class="sidebar-header" style="margin-top: 12px;">GLOBAL KNOWLEDGE PRESETS</div>
+        <button class="preset-btn" onclick="loadQueryTemplate('history')">WORLD HISTORY VECTOR</button>
+        <button class="preset-btn" onclick="loadQueryTemplate('geography')">GEOGRAPHY MATRIX</button>
+        <button class="preset-btn" onclick="loadQueryTemplate('literature')">LITERATURE ANALYSIS</button>
+        <button class="preset-btn" onclick="loadQueryTemplate('biology')">BIOLOGY DNA TRANSCRIPT</button>
+        <button class="preset-btn" onclick="loadQueryTemplate('math')">MATHEMATICS ENGINE</button>
         <button class="preset-btn" id="boost-btn" onclick="toggleOverclockEngine()">OVERCLOCK CORE</button>
       </div>
     </div>
@@ -82,9 +83,9 @@
   </div>
   <style>
     :root {
-      --premium-bg: #030509;
-      --glass-surface: rgba(11, 16, 28, 0.55);
-      --glass-border: rgba(255, 255, 255, 0.07);
+      --premium-bg: #020408;
+      --glass-surface: rgba(10, 15, 28, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.08);
       --cyan-glow: #00f0ff;
       --magenta-glow: #ff007f;
       --matrix-green: #39ff14;
@@ -114,9 +115,9 @@
     }
     #phone-container {
       position: relative;
-      width: 900px; 
-      height: 680px;
-      background: rgba(7, 10, 17, 0.96);
+      width: 920px; 
+      height: 700px;
+      background: rgba(6, 9, 15, 0.97);
       border: 2px solid rgba(255, 255, 255, 0.09);
       border-radius: 24px;
       z-index: 2;
@@ -146,7 +147,7 @@
       align-items: center;
       justify-content: center;
       z-index: 100;
-      width: 260px;
+      width: 280px;
       height: 28px;
       contain: layout;
     }
@@ -217,8 +218,8 @@
       text-shadow: 0 0 10px rgba(0,240,255,0.2);
     }
     #graph-wrapper {
-      height: 70px;
-      background: rgba(0,0,0,0.4);
+      height: 60px;
+      background: rgba(0,0,0,0.45);
       border: 1px solid rgba(255,255,255,0.03);
       border-radius: 8px;
       position: relative;
@@ -230,14 +231,14 @@
     }
     #chat-history-viewport {
       flex: 1;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.55);
       border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 8px;
-      padding: 10px;
+      padding: 12px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
     .chat-bubble {
       font-family: monospace;
@@ -250,14 +251,14 @@
     }
     .user-bubble {
       background: rgba(0, 240, 255, 0.08);
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      color: #e2e8f0;
+      border: 1px solid rgba(0, 240, 255, 0.18);
+      color: #f1f5f9;
       align-self: flex-end;
       text-align: right;
     }
     .ai-bubble {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       color: #39ff14;
       align-self: flex-start;
       text-align: left;
@@ -271,8 +272,8 @@
     #ai-input {
       width: 100%;
       height: 50px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 8px;
       padding: 8px;
       color: #fff;
@@ -318,7 +319,7 @@
       flex-direction: column;
       gap: 5px;
       text-align: left;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.45);
     }
     .sidebar-header {
       font-weight: bold;
@@ -383,7 +384,7 @@
     window.addEventListener('resize', executeSystemScale, { passive: true });
     executeSystemScale();
 
-    // Node Buffers for High Frame-rate Ambient Matrix Redraws
+    // Node Float Buffers for Ambient Graphics Engine Redraws
     const nodeCount = 20;
     const nodeBufferMatrix = new Float32Array(nodeCount * 4);
     for(let i = 0; i < nodeCount; i++) {
@@ -395,7 +396,7 @@
     }
 
     function animateSystemMatrix() {
-      aCtx.fillStyle = '#030509';
+      aCtx.fillStyle = '#020408';
       aCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
       aCtx.fillStyle = isCoreOverclocked ? 'rgba(255, 0, 127, 0.012)' : 'rgba(0, 240, 255, 0.012)';
 
@@ -429,74 +430,60 @@
       document.getElementById('val-steps').textContent = String(executedQueriesCounter).padStart(6, '0');
       document.getElementById('val-alloc').textContent = (queryText.length * 2) + " bytes";
       baselineHardwareTemp += isCoreOverclocked ? 2.5 : 0.7;
-      pushTelemetryLog("Interpreting payload configuration strings...");
+      pushTelemetryLog("Routing subject index references inside token arrays...");
 
       setTimeout(() => {
         let aiResponseText = "";
         let cleanQuery = queryText.toLowerCase();
 
-        // 1. BIOLOGY CORE KERNEL PROCESSING BRANCH
-        if (cleanQuery.includes("dna:") || cleanQuery.includes("rna:") || cleanQuery.includes("transcribe")) {
-          const rawSequence = (queryText.match(/(?:dna|rna|transcribe):\s*([A-Za-z]+)/i)?.[1] || "ATCG").toUpperCase();
-          let transcribedRna = "";
-          let peptideChain = [];
+        // 1. WORLD HISTORY DISCIPLINE
+        if (cleanQuery.includes("history") || cleanQuery.includes("rome") || cleanQuery.includes("war") || cleanQuery.includes("empire")) {
+          aiResponseText = `[ACE KNOWLEDGE NODE: HISTORY]\nSubject Scope: Ancient & Modern Chronologies\n\nAnalysis Summary:\n-> Historical vectors identify patterns of civilization scaling, political shift constants, and infrastructural frameworks.\n-> For instance, Rome maximized logistics through road routing algorithms, while the industrial eras shifted manufacturing velocity parameters.\n\nQuery Status: Parameters cataloged inside historical telemetry databanks.`;
+          renderOscilloscopeCurve(4);
 
-          // Transcription logic array mapping
-          for(let i=0; i<rawSequence.length; i++) {
-            let base = rawSequence[i];
-            if (base === 'A') transcribedRna += 'U';
-            else if (base === 'T') transcribedRna += 'A';
-            else if (base === 'C') transcribedRna += 'G';
-            else if (base === 'G') transcribedRna += 'C';
-            else transcribedRna += '?';
-          }
+        // 2. GLOBAL GEOGRAPHY DISCIPLINE
+        } else if (cleanQuery.includes("geography") || cleanQuery.includes("geo") || cleanQuery.includes("capital") || cleanQuery.includes("ocean") || cleanQuery.includes("country")) {
+          aiResponseText = `[ACE KNOWLEDGE NODE: GEOGRAPHY]\nSubject Scope: Spatial Terrestrial Coordinate Systems\n\nAnalysis Summary:\n-> Topographical matrices segment borders via geological dividers, oceans, and tectonic fault constants.\n-> Major geopolitical capital hubs function as network traffic routers for population clusters and planetary resource trades.\n\nQuery Status: Spatial coordinate trace completed successfully.`;
+          renderOscilloscopeCurve(7);
 
-          // Simple codon translator simulation sequence
-          const codons = transcribedRna.match(/.{1,3}/g) || [];
-          codons.forEach(c => {
-            if (c === "AUG") peptideChain.push("Met (START)");
-            else if (c.startsWith("UU")) peptideChain.push("Phe");
-            else if (c.startsWith("GG")) peptideChain.push("Gly");
-            else if (c.startsWith("CC")) peptideChain.push("Pro");
-            else if (c === "UAA" || c === "UAG" || c === "UGA") peptideChain.push("STOP");
-            else peptideChain.push("Aa");
-          });
-
-          aiResponseText = `[ACE BIOLOGY PROCESSING KERNEL]\nInput DNA Template: 3' - ${rawSequence} - 5'\n\nStep 1 (Transcription): Base pairs matched to form single-stranded mRNA.\nmRNA Transcript: 5' - ${transcribedRna} - 3'\n\nStep 2 (Translation Codon Map):\nCodon Blocks Analyzed: [ ${codons.join(" | ")} ]\nSynthesized Peptide Chain: ${peptideChain.join(" -> ")}`;
-          renderOscilloscopeCurve(rawSequence.length || 4);
-
-        } else if (cleanQuery.includes("punnett") || cleanQuery.includes("cross")) {
-          // Monohybrid cross pattern match (e.g., Bb x bb or AA x Aa)
-          const parents = queryText.match(/([A-Za-z]{2})\s*x\s*([A-Za-z]{2})/i);
-          if (parents) {
-            const p1 = parents[1].split(''), p2 = parents[2].split('');
-            let matrixOutcomes = [
-              p1[0]+p2[0], p1[0]+p2[1],
-              p1[1]+p2[0], p1[1]+p2[1]
-            ];
-            aiResponseText = `[ACE GENETICS DECK]\nParental Genotypes: ${parents[1]} × ${parents[2]}\n\nGenerated Punnett Matrix Array:\n  |  ${p2[0]}  |  ${p2[1]}  |\n===============\n${p1[0]} | ${matrixOutcomes[0]} | ${matrixOutcomes[1]} |\n${p1[1]} | ${matrixOutcomes[2]} | ${matrixOutcomes[3]} |\n\nGenotypic Frequency Output Matrix:\n${Array.from(new Set(matrixOutcomes)).map(g => `-> ${g}: ${(matrixOutcomes.filter(x=>x===g).length/4*100)}%`).join('\n')}`;
-          } else {
-            aiResponseText = `[ACE GENETICS DECK]\nError matching genetic pair layout formats. Correct target syntax: "punnett: Bb x Bb"`;
-          }
+        // 3. LITERATURE & TEXT ANALYSIS DISCIPLINE
+        } else if (cleanQuery.includes("literature") || cleanQuery.includes("book") || cleanQuery.includes("poem") || cleanQuery.includes("write") || cleanQuery.includes("author")) {
+          aiResponseText = `[ACE KNOWLEDGE NODE: LITERATURE]\nSubject Scope: Structural Linguistics & Text Analysis\n\nAnalysis Summary:\n-> Text analysis engines identify narrative frameworks, metaphor weights, and thematic motifs within composition modules.\n-> Authors leverage structural prose layers to program semantic contexts, emotional resonance values, and subtextual indicators into literature blocks.\n\nQuery Status: Semantic syntax analysis finalized.`;
           renderOscilloscopeCurve(5);
 
-        // 2. CONVERSATIONAL & STANDARD CALCULATIONS FALLBACK BRANCH
+        // 4. legacy MOLECULAR BIOLOGY CORE
+        } else if (cleanQuery.includes("dna") || cleanQuery.includes("rna") || cleanQuery.includes("biology") || cleanQuery.includes("gene")) {
+          const sequenceMatch = queryText.match(/(?:dna|rna|biology):\s*([A-Za-z]+)/i);
+          const rawSeq = (sequenceMatch ? sequenceMatch[1] : "ATCG").toUpperCase();
+          let rnaTranscript = "";
+          for(let i=0; i<rawSeq.length; i++) {
+            let base = rawSeq[i];
+            if (base === 'A') rnaTranscript += 'U';
+            else if (base === 'T') rnaTranscript += 'A';
+            else if (base === 'C') rnaTranscript += 'G';
+            else if (base === 'G') rnaTranscript += 'C';
+            else rnaTranscript += '?';
+          }
+          aiResponseText = `[ACE KNOWLEDGE NODE: BIOLOGY]\nInput DNA Template Sequence: 3' - ${rawSeq} - 5'\nCalculated mRNA Transcript String: 5' - ${rnaTranscript} - 3'\n\nResult: Molecular transcription vector mapped perfectly. Databases ready for protein synthesis calculations.`;
+          renderOscilloscopeCurve(rawSeq.length);
+
+        // 5. NATIVE MATHEMATICAL ENGINE 
         } else if (cleanQuery.includes("solve") || /[\d+\-*/()]/.test(cleanQuery)) {
           try {
             const mathFormulaClean = queryText.replace(/[^0-9+\-*/().\s]/g, '');
+            if (!mathFormulaClean) throw new Error();
             const calculatedSum = new Function(`return (${mathFormulaClean})`)();
-            aiResponseText = `[ACE MATHEMATICAL LOGIC SYSTEM]\nExpression trace identified: ${mathFormulaClean}\nResult calculation value: ${calculatedSum}\n\nOperation completed with exact 128-bit parsing precision accuracy rules.`;
-            renderOscilloscopeCurve(calculatedSum || 4);
+            aiResponseText = `[ACE KNOWLEDGE NODE: MATHEMATICS]\nExpression target identified: ${mathFormulaClean}\nComputed Output Value: ${calculatedSum}\n\nOperation complete. Floating-point registers parsed without deviation.`;
+            renderOscilloscopeCurve(calculatedSum || 3);
           } catch(e) {
-            aiResponseText = `[ACE INTERACTIVE CHATBOT]\nQuery Acknowledged: "${queryText}"\n\nNo structured mathematics symbols detected. If this is a science concept or definition, my terminal frames are standing by for explicit field definitions.`;
+            aiResponseText = `[ACE OMNI-SUBJECT FALLBACK]\nQuery Context: General Conceptual Trace\n\nI processed your general input sequence: "${queryText}". \n\nMy language parsing engines can map explicit questions across STEM or Humanities filters. Try selecting a module preset on the right menu console to see structural formats!`;
             renderOscilloscopeCurve(2);
           }
-        } else if (cleanQuery.includes("physics") || cleanQuery.includes("force") || cleanQuery.includes("energy")) {
-          aiResponseText = `[ACE APPLIED PHYSICS KERNEL]\nDetected Equation Target: Kinematics / Energy Conservation\n\nFormula Profile:\n-> Force (F) = mass * acceleration\n-> Kinetic Energy (KE) = 0.5 * m * v²\n\nResult: Physics vectors stable. Input values are processed against normal universal physics constants seamlessly.`;
-          renderOscilloscopeCurve(9);
+
+        // 6. DEFAULT GENERAL KNOWLEDGE CONTEXT
         } else {
-          aiResponseText = `[ACE INTERACTIVE CHATBOT]\nQuery received: "${queryText}"\n\nI am configured for composite STEM queries. Try typing a biology request like "dna: ATCGGCTA" or a math operation like "15 * 45" to run my full problem solving tracks.`;
-          renderOscilloscopeCurve(1);
+          aiResponseText = `[ACE OMNI-SUBJECT INTELLIGENCE]\nQuery Processed: "${queryText}"\n\nI have evaluated your question matrix. My underlying dataset models are calibrated to answer custom text structures across History, Geography, Literature, Math, or Biology. Present your specific inquiry topic whenever you are ready.`;
+          renderOscilloscopeCurve(2);
         }
 
         appendBubbleToHistory(aiResponseText, false);
@@ -540,10 +527,11 @@
 
     function loadQueryTemplate(type) {
       const area = document.getElementById('ai-input');
-      if (type === 'dna') area.value = "dna: TACGGCTAGCTAATC";
-      else if (type === 'punnett') area.value = "punnett: Tt x tt";
-      else if (type === 'math') area.value = "(15 * 4) + Math.sqrt(81)";
-      else if (type === 'physics') area.value = "Physics: Determine force vectors when mass=12kg and acceleration=9.8m/s2";
+      if (type === 'history') area.value = "History: Analyze how trade routes shaped the economic borders of the Roman Empire.";
+      else if (type === 'geography') area.value = "Geography: Explain the population density factors of major global capital hubs.";
+      else if (type === 'literature') area.value = "Literature: Break down the thematic structure and structural syntax of dramatic classical prose.";
+      else if (type === 'biology') area.value = "dna: ATCGGCTAGC";
+      else if (type === 'math') area.value = "(144 * 2) / Math.sqrt(64)";
       area.focus();
     }
 
@@ -552,12 +540,12 @@
       const btn = document.getElementById('boost-btn');
       btn.style.color = isCoreOverclocked ? 'var(--magenta-glow)' : '';
       btn.style.borderColor = isCoreOverclocked ? 'var(--magenta-glow)' : '';
-      document.getElementById('val-precision').textContent = isCoreOverclocked ? "8.2 GHz" : "4.8 GHz";
-      pushTelemetryLog(isCoreOverclocked ? "WARNING: CPU VOLTAGE OVERDRIVE ACTIVE." : "System clock thresholds normalized.");
+      document.getElementById('val-precision').textContent = isCoreOverclocked ? "9.6 GHz" : "5.2 GHz";
+      pushTelemetryLog(isCoreOverclocked ? "CRITICAL: THREAD CYCLE BUFFER OVERCLOCKED." : "System processing values stabilized.");
     }
 
     function resetChatHistory() {
-      document.getElementById('chat-history-viewport').innerHTML = `<div class="chat-bubble ai-bubble">[ACE_RESET] System threads flushed. All science and genetic databases standing by.</div>`;
+      document.getElementById('chat-history-viewport').innerHTML = `<div class="chat-bubble ai-bubble">[ACE_RESET] Conversational traces wiped. All general knowledge databases standing by for indexing.</div>`;
       gCtx.clearRect(0,0,graphCanvas.width,graphCanvas.height);
       pushTelemetryLog("Volatile diagnostic and message state logs purged.");
     }
@@ -589,9 +577,3 @@
     }, 33);
 
     const logWindow = document.getElementById('covert-activity-logs');
-    function pushTelemetryLog(message) {
-      const row = document.createElement('div');
-      row.className = 'covert-row';
-      row.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-      logWindow.appendChild(row);
-      if(logWindow.children.length > 3) logWindow.removeChild(logWindow.children);
