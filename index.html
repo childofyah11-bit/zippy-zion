@@ -1,129 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACE CHATBOT // Adaptive Learning Matrix</title>
-  <style>
-    :root { --premium-bg: #030509; --glass-surface: rgba(12, 18, 32, 0.7); --glass-border: rgba(255, 255, 255, 0.08); --cyan-glow: #00f0ff; --magenta-glow: #ff007f; --matrix-green: #39ff14; }
-    body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--premium-bg); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #fff; overflow: hidden; display: flex; justify-content: center; align-items: center; }
-    #phone-container { position: relative; width: 1100px; height: 740px; background: rgba(7, 10, 17, 0.96); border: 2px solid rgba(255, 255, 255, 0.09); border-radius: 24px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); }
-    #dynamic-island { position: absolute; top: 15px; left: 50%; transform: translate3d(-50%, 0, 0); background: #000; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 4px 15px; display: flex; align-items: center; justify-content: center; width: 320px; height: 28px; }
-    .glass-card { background: var(--glass-surface); border: 1px solid var(--glass-border); border-radius: 16px; padding: 15px; box-sizing: border-box; }
-    .telemetry-row { margin-top: 20px; display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 600; letter-spacing: 1px; color: #94a3b8; }
-    .workspace-layout { display: flex; gap: 12px; flex: 1; min-height: 0; }
-    .panel-column { display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; }
-    .panel-header { font-size: 0.75rem; font-weight: bold; letter-spacing: 2px; text-align: left; margin-bottom: 4px; }
-    #chat-history-viewport, #knowledge-database-viewport { flex: 1; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-    .chat-bubble { font-family: monospace; font-size: 0.75rem; padding: 8px 12px; border-radius: 8px; max-width: 90%; word-break: break-word; line-height: 1.4; }
-    .user-bubble { background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.18); color: #f1f5f9; align-self: flex-end; text-align: right; }
-    .ai-bubble { background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.06); color: #39ff14; align-self: flex-start; text-align: left; white-space: pre-wrap; }
-    .knowledge-bubble { background: rgba(255, 0, 127, 0.03); border: 1px solid rgba(255, 0, 127, 0.15); color: #e2e8f0; font-family: monospace; font-size: 0.7rem; padding: 6px 10px; border-radius: 6px; text-align: left; }
-    .input-box { width: 100%; height: 55px; background: rgba(0, 0, 0, 0.65); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 8px; padding: 8px; color: #fff; font-family: monospace; font-size: 0.75rem; resize: none; box-sizing: border-box; }
-    .tech-submit-btn { width: 100%; background: rgba(0, 240, 255, 0.05); border: 1px solid var(--cyan-glow); color: #fff; padding: 8px; border-radius: 6px; cursor: pointer; font-family: monospace; font-size: 0.7rem; font-weight: bold; margin-top: 4px; }
-    .teach-btn { border-color: var(--magenta-glow); background: rgba(255, 0, 127, 0.03); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Tech Web Synthesizer</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0a0a12;
+            color: #00ffcc;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        h1 {
+            margin: 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ffcc;
+            font-size: 1.5rem;
+        }
+        #viz {
+            width: 90vw;
+            max-width: 800px;
+            height: 200px;
+            background: #111122;
+            border: 2px solid #00ffcc;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            width: 90vw;
+            max-width: 800px;
+            margin: 20px 0;
+            background: #16162a;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333355;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            color: #8899a6;
+        }
+        select, input {
+            width: 100%;
+            background: #222244;
+            color: #fff;
+            border: 1px solid #00ffcc;
+            padding: 5px;
+            border-radius: 4px;
+            outline: none;
+        }
+        input[type="range"] {
+            appearance: none;
+            background: #222244;
+            height: 6px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #00ffcc;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .keyboard {
+            display: flex;
+            justify-content: center;
+            width: 90vw;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+        .key {
+            flex: 1;
+            height: 120px;
+            background: white;
+            border: 1px solid #333;
+            border-radius: 0 0 5px 5px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+        .key.black {
+            background: black;
+            height: 80px;
+            margin-left: -2.5%;
+            margin-right: -2.5%;
+            z-index: 2;
+            max-width: 35px;
+        }
+        .key:active, .key.active {
+            background: #00ffcc;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        .key.black:active, .key.black.active {
+            background: #00b399;
+        }
+    </style>
 </head>
 <body>
 
-  <div id="phone-container">
-    <div id="dynamic-island"><span style="font-family: monospace; color: var(--cyan-glow); font-weight: bold; font-size: 0.8rem;">ACE_INTELLIGENCE_DECK</span></div>
-    <div class="glass-card telemetry-row">
-      <div>CONTAINER: <span style="color: var(--cyan-glow);">STANDALONE_SECURE_v11.0</span></div>
-      <div>DATABASE: <span id="db-status-tracker" style="color: var(--matrix-green);">0 LOGS ACTIVE</span></div>
-    </div>
-    <div class="workspace-layout">
-      
-      <!-- INJECTION MATRIX -->
-      <div class="glass-card panel-column">
-        <div class="panel-header" style="color: var(--magenta-glow);">1. KNOWLEDGE INJECTION MATRIX</div>
-        <div id="knowledge-database-viewport">
-          <div class="knowledge-bubble" id="db-empty-notice">// Memory array blank. Inject custom facts or study notes below to teach the chatbot.</div>
+    <h1>CyberSynth API v1.0</h1>
+    <canvas id="viz"></canvas>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Waveform</label>
+            <select id="waveform">
+                <option value="sine">Sine (Pure)</option>
+                <option value="square">Square (Chiptune)</option>
+                <option value="sawtooth">Sawtooth (Aggressive)</option>
+                <option value="triangle">Triangle (Soft)</option>
+            </select>
         </div>
-        <textarea id="knowledge-input" class="input-box" placeholder="Type a fact here... (e.g., 'Chromebooks use ChromeOS software')"></textarea>
-        <button type="button" class="tech-submit-btn teach-btn" onclick="saveFact()">INJECT FACT TO CORE</button>
-      </div>
-
-      <!-- ACTIVE TERMINAL -->
-      <div class="glass-card panel-column">
-        <div class="panel-header" style="color: var(--cyan-glow);">2. ACTIVE CONVERSATION TERMINAL</div>
-        <div id="chat-history-viewport">
-          <div class="chat-bubble ai-bubble">[ACE] Connection secure. Inject facts on the left side, or type regular questions here to test my responses. Try typing 'hello' right now!</div>
+        <div class="control-group">
+            <label>Detune (Unison)</label>
+            <input type="range" id="detune" min="-100" max="100" value="0">
         </div>
-        <textarea id="ai-input" class="input-box" placeholder="Ask a question or talk to the chatbot here..."></textarea>
-        <button type="button" class="tech-submit-btn" onclick="submitQuery()">EXECUTE SEARCH QUERY</button>
-      </div>
-
+        <div class="control-group">
+            <label>Filter Cutoff</label>
+            <input type="range" id="cutoff" min="50" max="5000" value="2000">
+        </div>
+        <div class="control-group">
+            <label>FX Distortion</label>
+            <input type="range" id="distortion" min="0" max="100" value="0">
+        </div>
     </div>
-  </div>
 
-  <script>
-    var database = [];
+    <div class="keyboard" id="keyboard">
+        <div class="key" data-note="261.63"></div> <!-- C4 -->
+        <div class="key black" data-note="277.18"></div>
+        <div class="key" data-note="293.66"></div> <!-- D4 -->
+        <div class="key black" data-note="311.13"></div>
+        <div class="key" data-note="329.63"></div> <!-- E4 -->
+        <div class="key" data-note="349.23"></div> <!-- F4 -->
+        <div class="key black" data-note="369.99"></div>
+        <div class="key" data-note="392.00"></div> <!-- G4 -->
+        <div class="key black" data-note="415.30"></div>
+        <div class="key" data-note="440.00"></div> <!-- A4 -->
+        <div class="key black" data-note="466.16"></div>
+        <div class="key" data-note="493.88"></div> <!-- B4 -->
+        <div class="key" data-note="523.25"></div> <!-- C5 -->
+    </div>
 
-    function saveFact() {
-      var txt = document.getElementById('knowledge-input').value.trim();
-      if (!txt) return;
-      var view = document.getElementById('knowledge-database-viewport');
-      var notice = document.getElementById('db-empty-notice');
-      if (notice) view.removeChild(notice);
-      database.push(txt);
-      var bubble = document.createElement('div');
-      bubble.className = 'knowledge-bubble';
-      bubble.textContent = "[" + database.length + "] " + txt;
-      view.appendChild(bubble);
-      document.getElementById('knowledge-input').value = '';
-      view.scrollTop = view.scrollHeight;
-      document.getElementById('db-status-tracker').textContent = database.length + " LOGS LOADED";
-    }
+    <script>
+        // Audio Context Setup
+        let audioCtx;
+        let analyser;
+        let activeOscillators = {};
 
-    function submitQuery() {
-      var query = document.getElementById('ai-input').value.trim();
-      if (!query) return;
-      var chat = document.getElementById('chat-history-viewport');
-      var userBubble = document.createElement('div');
-      userBubble.className = 'chat-bubble user-bubble';
-      userBubble.textContent = query;
-      chat.appendChild(userBubble);
-      document.getElementById('ai-input').value = '';
-      chat.scrollTop = chat.scrollHeight;
+        // UI Elements
+        const canvas = document.getElementById('viz');
+        const canvasCtx = canvas.getContext('2d');
+        const waveformSelect = document.getElementById('waveform');
+        const detuneSlider = document.getElementById('detune');
+        const cutoffSlider = document.getElementById('cutoff');
+        const distortionSlider = document.getElementById('distortion');
 
-      var low = query.toLowerCase();
-      var response = "";
-      var found = false;
-
-      for (var i = 0; i < database.length; i++) {
-        var saved = database[i].toLowerCase();
-        var words = low.replace(/[?:!.,;]/g, "").split(" ");
-        for (var w = 0; w < words.length; w++) {
-          if (words[w].length > 3 && saved.indexOf(words[w]) !== -1) {
-            response = "[ACE MEMORY CORRELATION SUCCESS]\nFound matching fact inside my database memory:\n\n-> " + database[i];
-            found = true;
-            break;
-          }
+        // Resize Canvas dynamically
+        function resizeCanvas() {
+            canvas.width = canvas.clientWidth * window.devicePixelRatio;
+            canvas.height = canvas.clientHeight * window.devicePixelRatio;
         }
-        if (found) break;
-      }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-      if (!found) {
-        if (low.indexOf("hello") !== -1 || low.indexOf("hi") !== -1 || low.indexOf("hey") !== -1) {
-          response = "[ACE CHAT] Hello operator! My computational core is perfectly online. I am ready to absorb knowledge on the left side or solve academic questions here.";
-        } else if (low.indexOf("history") !== -1 || low.indexOf("rome") !== -1) {
-          response = "[ACE ACADEMIC: HISTORY]\n-> Macro-history states that civilizations scale up via trade routers.\n-> Ancient Rome optimized territorial control using geometric paved roads.";
-        } else if (low.indexOf("biology") !== -1 || low.indexOf("dna") !== -1) {
-          response = "[ACE ACADEMIC: BIOLOGY]\n-> Living systems store data matrices inside a double-helix configuration.\n-> Transcription processing mirrors template chains into single-stranded mRNA.";
-        } else if (/[0-9]/.test(low)) {
-          response = "[ACE ACADEMIC: MATH]\n-> Computational numeric layers are active.\n-> Inject custom formulas or rules into the left panel to teach me specific math profiles!";
-        } else {
-          response = "[ACE SYSTEM STANDBY]\nQuery received. I could not locate a matching custom fact on the left.\n\nQuick Checklist:\n1. Did you type a fact on the left?\n2. Did you click 'INJECT FACT'?\n3. Ensure your question shares matching keywords.";
+        // Initialize Audio System
+        function initAudio() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 2048;
+            analyser.connect(audioCtx.destination);
+            drawWaveform();
         }
-      }
 
-      var aiBubble = document.createElement('div');
-      aiBubble.className = 'chat-bubble ai-bubble';
-      aiBubble.textContent = response;
-      chat.appendChild(aiBubble);
-      chat.scrollTop = chat.scrollHeight;
-    }
-  </script>
-</body>
-</html>
+        // Distortion curve generator
+        function makeDistortionCurve(amount) {
+            let k = typeof amount === 'number' ? amount : 50,
+                n_samples = 44100,
+                curve = new Float32Array(n_samples),
+                deg = Math.PI / 180,
+                i = 0,
+                x;
+            for ( ; i < n_samples; ++i ) {
+                x = i * 2 / n_samples - 1;
+                curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+            }
+            return curve;
+        }
+
+        // Play Note Logic
+        function startNote(freq) {
+            initAudio();
+            if (activeOscillators[freq]) return;
+
+            // Create nodes
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+            const distortion = audioCtx.createWaveShaper();
+
+            // Configure Oscillator
+            osc.type = waveformSelect.value;
+            osc.frequency.value = freq;
+            osc.detune.value = parseFloat(detuneSlider.value);
+
+            // Configure Filter
+            filter.type = 'lowpass';
+            filter.frequency.value = parseFloat(cutoffSlider.value);
+
+            // Configure Distortion
+            const distVal = parseFloat(distortionSlider.value);
+            if (distVal > 0) {
+                distortion.curve = makeDistortionCurve(distVal);
+                distortion.oversampling = '4x';
+            }
+
+            // Smooth volume envelope to prevent clicking
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.4, audioCtx.currentTime + 0.05);
+
+            // Routing chain
+            osc.connect(distortion);
+            distortion.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(analyser);
+
+            osc.start();
+
+            // Store active nodes
+            activeOscillators[freq] = { osc, gainNode };
+        }
+
+        // Stop Note Logic
+        function stopNote(freq) {
+            if (!activeOscillators[freq]) return;
+            
+            const { osc, gainNode } = activeOscillators[freq];
+            gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            
+            setTimeout(() => {
+                try { osc.stop(); } catch(e){}
+                osc.disconnect();
+                gainNode.disconnect();
+            }, 300);
+
+            delete activeOscillators[freq];
+        }
+
+        // Visualizer Loop
+        function drawWaveform() {
+            requestAnimationFrame(drawWaveform);
+            if (!analyser) return;
+
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyser.getByteTimeDomainData(dataArray);
+
+            canvasCtx.fillStyle = '#111122';
+            canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+            canvasCtx.lineWidth = 3;
+            canvasCtx.strokeStyle = '#00ffcc';
+            canvasCtx.shadowBlur = 10;
+            canvasCtx.shadowColor = '#00ffcc';
+            canvasCtx.beginPath();
+
+            const sliceWidth = canvas.width / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = (v * canvas.height) / 2;
+
+                if (i === 0) {
+                    canvasCtx.moveTo(x, y);
+                } else {
+                    canvasCtx.lineTo(x, y);
+                }
+                x += sliceWidth;
+            }
+
