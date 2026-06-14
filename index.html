@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Archmage Duel: 5 Elemental Phases</title>
+    <title>Cyber Vanguard: Chronos Protocol</title>
     <style>
-        body { margin: 0; background: #030206; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: 'Georgia', serif; }
-        canvas { border: 4px solid #9370db; background: #08060f; box-shadow: 0 0 40px rgba(147, 112, 219, 0.3); }
+        body { margin: 0; background: #030307; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: 'Courier New', monospace; }
+        canvas { border: 4px solid #00ff88; background: #070712; box-shadow: 0 0 40px rgba(0, 255, 136, 0.2); }
     </style>
 </head>
 <body>
@@ -23,75 +23,90 @@ let score = 0;
 let screenShake = 0;
 let gameTime = 0;
 
-// PLAYER WIZARD OBJECT
+// PLAYER SCI-FI FIGHTER
 const player = {
-    x: 100, y: 350, w: 35, h: 45,
-    speed: 6, health: 100, maxHealth: 100,
-    timeZoneActive: 0, timeZoneCooldown: 0
+    x: 100, y: 350, w: 40, h: 40,
+    speed: 7, health: 100, maxHealth: 100,
+    timeSlowActive: 0, timeSlowCooldown: 0,
+    orbitalCooldown: 0
 };
 
-// 5-PHASE ELEMENTAL BOSS
+// 5-PHASE MECHA BOSS CORES
 const boss = {
-    x: 820, y: 280, w: 90, h: 140,
-    health: 3500, maxHealth: 3500, // Epic health pool split across 5 phases
+    x: 820, y: 280, w: 95, h: 140,
+    health: 4000, maxHealth: 4000, // Evolved health pool
     phase: 1, timer: 0, flash: 0
 };
 
-let playerSpells = [];
-let bossProjectiles = [];
-let magicSparks = [];
+let playerLasers = [];
+let orbitalStrikes = [];
+let bossOrbs = [];
+let cyberSparks = [];
 const keys = {};
 
-// ELEMENTAL PHASE THEME MAP
+// SYSTEM MATRIX THEMES PER PHASE
 const phaseThemes = {
-    1: { color: "#ff4500", name: "INFERNO PHASE" },  // Fire
-    2: { color: "#00bfff", name: "BLIZZARD PHASE" }, // Ice
-    3: { color: "#ffcc00", name: "TEMPEST PHASE" },  // Lightning
-    4: { color: "#8b5a2b", name: "TERRA PHASE" },    // Earth
-    5: { color: "#4b0082", name: "VOID GOD PHASE" }  // Void
+    1: { color: "#00ff88", name: "MATRIX PROTOCOL" },
+    2: { color: "#00ffff", name: "CYAN OVERLOAD" },
+    3: { color: "#ffaa00", name: "THERMAL CORE" },
+    4: { color: "#ff0055", name: "ALPHA STRIKE" },
+    5: { color: "#ffffff", name: "OVERCLOCK PROTOCOL" }
 };
 
-// SPARK PARTICLES VISUAL JUICE
+// VISUAL SPARKS
 function spawnSparks(x, y, color, count = 8) {
     for (let i = 0; i < count; i++) {
-        magicSparks.push({
+        cyberSparks.push({
             x: x, y: y,
-            vx: (Math.random() - 0.5) * 8,
-            vy: (Math.random() - 0.5) * 8,
+            vx: (Math.random() - 0.5) * 10,
+            vy: (Math.random() - 0.5) * 10,
             alpha: 1,
             color: color
         });
     }
 }
 
-// KEYBOARD INPUT ENGINE
+// KEYBOARD REGISTER INPUT
 window.addEventListener("keydown", e => {
     keys[e.key] = true;
+    
+    // Spacebar: Upgraded Bullet (Heavy Laser)
     if (e.key === " " && !gameOver && !victory) {
-        // Cast Arcane Spell
-        playerSpells.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 15 });
-        spawnSparks(player.x + player.w, player.y + player.h/2, "#da70d6", 3);
+        playerLasers.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 20 });
+        spawnSparks(player.x + player.w, player.y + player.h/2, "#00ff88", 2);
     }
-    if (e.key === "Shift" && player.timeZoneCooldown <= 0 && !gameOver && !victory) {
-        // Chronos Time-Slow Spell Power
-        player.timeZoneActive = 90; // Slows time down for 1.5 seconds
-        player.timeZoneCooldown = 240; // 4 second spell cooldown
-        screenShake = 6;
-        spawnSparks(player.x + player.w/2, player.y + player.h/2, "#00ffff", 20);
+    
+    // Shift: Chronos Time-Slow Superpower
+    if (e.key === "Shift" && player.timeSlowCooldown <= 0 && !gameOver && !victory) {
+        player.timeSlowActive = 120; // 2 seconds of pure slow motion
+        player.timeSlowCooldown = 300; // 5 second cool down matrix
+        screenShake = 8;
+        spawnSparks(player.x + player.w/2, player.y + player.h/2, "#00ffff", 25);
+    }
+    
+    // E Key: New Orbital Plasma Strike Power
+    if ((e.key === "e" || e.key === "E") && player.orbitalCooldown <= 0 && !gameOver && !victory) {
+        player.orbitalCooldown = 240; // 4 second weapon cool down
+        screenShake = 15;
+        // Spawns a targeting laser right over the boss center
+        orbitalStrikes.push({ x: boss.x + boss.w/2, y: 0, targetY: boss.y + boss.h/2, size: 0, active: 40 });
+        spawnSparks(boss.x + boss.w/2, boss.y + boss.h/2, "#ff0055", 30);
     }
 });
 window.addEventListener("keyup", e => keys[e.key] = false);
-// MAIN RUNTIME CALCULATIONS
+</html>
+// SYSTEM CALCULATIONS LOOP
 function update() {
     if (gameOver || victory) return;
 
     gameTime++;
     if (screenShake > 0) screenShake *= 0.88;
-    if (player.timeZoneCooldown > 0) player.timeZoneCooldown--;
-    if (player.timeZoneActive > 0) player.timeZoneActive--;
+    if (player.timeSlowCooldown > 0) player.timeSlowCooldown--;
+    if (player.timeSlowActive > 0) player.timeSlowActive--;
+    if (player.orbitalCooldown > 0) player.orbitalCooldown--;
     if (boss.flash > 0) boss.flash--;
 
-    // Standard Movement Logic
+    // High Speed Movement Logic
     if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
     if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
     if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
@@ -100,9 +115,9 @@ function update() {
     player.x = Math.max(10, Math.min(canvas.width - player.w - 10, player.x));
     player.y = Math.max(10, Math.min(canvas.height - player.h - 10, player.y));
 
-    // --- AUTOMATIC 5-PHASE SPLITTER ---
+    // --- AUTOMATIC MULTI-PHASE MATRIX CALCULATOR ---
     let hpPercent = boss.health / boss.maxHealth;
-    let oldPhase = boss.phase;
+    let priorPhase = boss.phase;
 
     if (hpPercent > 0.8) boss.phase = 1;
     else if (hpPercent > 0.6) boss.phase = 2;
@@ -110,104 +125,114 @@ function update() {
     else if (hpPercent > 0.2) boss.phase = 4;
     else boss.phase = 5;
 
-    // Explode sparks if switching element types
-    if (boss.phase !== oldPhase) {
-        screenShake = 20;
-        spawnSparks(boss.x + boss.w/2, boss.y + boss.h/2, phaseThemes[boss.phase].color, 45);
+    if (boss.phase !== priorPhase) {
+        screenShake = 22;
+        spawnSparks(boss.x + boss.w/2, boss.y + boss.h/2, phaseThemes[boss.phase].color, 50);
     }
 
-    // --- TIME SLOW POWER MATRIX ---
-    // If player's time spell is active, boss bullets move at 30% speed
-    let timeModifier = player.timeZoneActive > 0 ? 0.3 : 1.0;
+    // --- TIME SLOW SCI-FI MODIFIERS ---
+    // Drops enemy bullet velocities down to 25% speed when the mod is active
+    let engineSpeedModifier = player.timeSlowActive > 0 ? 0.25 : 1.0;
 
-    // --- ELEMENTAL BOSS SPELL CASTING PATTERNS ---
+    // --- MECHA BOSS FIREPOWER GENERATORS ---
     boss.timer++;
     let currentTheme = phaseThemes[boss.phase];
     
-    // Firing delay speeds up during later phases
-    let castDelay = 24;
-    if (boss.phase === 2) castDelay = 18;
-    if (boss.phase === 3) castDelay = 12;
-    if (boss.phase === 4) castDelay = 8;
-    if (boss.phase === 5) castDelay = 5; // Demonic spell speed
+    let fireDelay = 22;
+    if (boss.phase === 2) fireDelay = 16;
+    if (boss.phase === 3) fireDelay = 11;
+    if (boss.phase === 4) fireDelay = 7;
+    if (boss.phase === 5) fireDelay = 4; // Ultimate bullet velocity
 
-    if (boss.timer >= castDelay) {
+    if (boss.timer >= fireDelay) {
         boss.timer = 0;
 
         if (boss.phase === 1) {
-            // Inferno Fireball: Direct horizontal heavy projectiles
-            bossProjectiles.push({ x: boss.x, y: boss.y + boss.h/2, vx: -9, vy: 0, r: 9, color: currentTheme.color });
+            bossOrbs.push({ x: boss.x, y: boss.y + boss.h/2, vx: -9, vy: 0, r: 8, color: currentTheme.color });
         } 
         else if (boss.phase === 2) {
-            // Ice Shards: Up and down variable wave velocity
-            bossProjectiles.push({ x: boss.x, y: boss.y + Math.random()*boss.h, vx: -10, vy: (Math.random() - 0.5) * 5, r: 6, color: currentTheme.color });
+            bossOrbs.push({ x: boss.x, y: boss.y + Math.random()*boss.h, vx: -11, vy: (Math.random() - 0.5) * 6, r: 7, color: currentTheme.color });
         } 
         else if (boss.phase === 3) {
-            // Tempest Lightning: Instant direct tracking projectiles
             let angle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
-            bossProjectiles.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(angle) * 13, vy: Math.sin(angle) * 13, r: 5, color: currentTheme.color });
+            bossOrbs.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(angle) * 14, vy: Math.sin(angle) * 14, r: 6, color: currentTheme.color });
         } 
         else if (boss.phase === 4) {
-            // Terra Earth-Boulders: Large heavy crushing masses moving forward
-            bossProjectiles.push({ x: boss.x, y: Math.random() * canvas.height, vx: -7, vy: 0, r: 16, color: currentTheme.color });
+            bossOrbs.push({ x: boss.x, y: Math.random() * canvas.height, vx: -8, vy: 0, r: 15, color: currentTheme.color });
         } 
         else if (boss.phase === 5) {
-            // Void Phase Special Move: Catastrophic 3-directional track spray
-            let centerAngle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
-            bossProjectiles.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(centerAngle) * 12, vy: Math.sin(centerAngle) * 12, r: 8, color: "#ffffff" });
-            bossProjectiles.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(centerAngle + 0.2) * 10, vy: Math.sin(centerAngle + 0.2) * 10, r: 7, color: currentTheme.color });
-            bossProjectiles.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(centerAngle - 0.2) * 10, vy: Math.sin(centerAngle - 0.2) * 10, r: 7, color: currentTheme.color });
+            let baseAngle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
+            bossOrbs.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(baseAngle) * 15, vy: Math.sin(baseAngle) * 15, r: 9, color: "#ffffff" });
+            bossOrbs.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(baseAngle + 0.25) * 13, vy: Math.sin(baseAngle + 0.25) * 13, r: 7, color: currentTheme.color });
+            bossOrbs.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(baseAngle - 0.25) * 13, vy: Math.sin(baseAngle - 0.25) * 13, r: 7, color: currentTheme.color });
         }
     }
 
-    // Boss simple vertical movement code
-    boss.y = 280 + Math.sin(gameTime * 0.04) * 160;
+    // Boss vertical float tracking
+    boss.y = 280 + Math.sin(gameTime * 0.05) * 170;
 
-    // UPDATE PLAYER SPELLS
-    playerSpells.forEach((s, idx) => {
-        s.x += s.vx;
-        if (s.x > canvas.width) playerSpells.splice(idx, 1);
+    // UPDATE UPGRADED PLAYER BULLETS
+    playerLasers.forEach((l, idx) => {
+        l.x += l.vx;
+        if (l.x > canvas.width) playerLasers.splice(idx, 1);
 
-        // Box collision with boss hitbox
-        if (s.x > boss.x && s.x < boss.x + boss.w && s.y > boss.y && s.y < boss.y + boss.h) {
-            boss.health -= 12;
+        if (l.x > boss.x && l.x < boss.x + boss.w && l.y > boss.y && l.y < boss.y + boss.h) {
+            boss.health -= 25; // UPGRADED DAMAGE VALUE FROM 12 TO 25!
             boss.flash = 3;
-            score += 15 * boss.phase;
-            spawnSparks(s.x, s.y, phaseThemes[boss.phase].color, 5);
-            playerSpells.splice(idx, 1);
+            score += 40;
+            spawnSparks(l.x, l.y, currentTheme.color, 6);
+            playerLasers.splice(idx, 1);
             if (boss.health <= 0) victory = true;
         }
     });
 
-    // UPDATE BOSS SPELLS (Impacted by Time Modifier)
-    bossProjectiles.forEach((p, idx) => {
-        p.x += p.vx * timeModifier;
-        p.y += p.vy * timeModifier;
+    // UPDATE ORBITAL STRIKE ABILITY
+    orbitalStrikes.forEach((o, idx) => {
+        o.active--;
+        // Lock center directly tracking boss target point
+        o.x = boss.x + boss.w/2;
+        o.targetY = boss.y + boss.h/2;
+        
+        if (o.active > 15) {
+            o.size += 3; // Expanding targeting vector charging up
+        } else if (o.active === 15) {
+            // Weapon beam crashes down right on the boss!
+            boss.health -= 200; // Explodes boss for massive heavy impact damage
+            boss.flash = 5;
+            score += 250;
+            spawnSparks(o.x, o.targetY, "#ff0055", 25);
+        }
+        if (o.active <= 0) orbitalStrikes.splice(idx, 1);
+    });
 
-        if (p.x < -30 || p.x > canvas.width + 30) {
-            bossProjectiles.splice(idx, 1);
+    // UPDATE BOSS BALLS (Controlled by Time Slow Mod)
+    bossOrbs.forEach((b, idx) => {
+        b.x += b.vx * engineSpeedModifier;
+        b.y += b.vy * engineSpeedModifier;
+
+        if (b.x < -30 || b.x > canvas.width + 30) {
+            bossOrbs.splice(idx, 1);
             return;
         }
 
-        // Circular projectile collision with player rectangle
-        if (p.x > player.x && p.x < player.x + player.w && p.y > player.y && p.y < player.y + player.h) {
-            player.health -= 6;
+        if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
+            player.health -= 8;
             screenShake = 12;
-            spawnSparks(p.x, p.y, "#ff3333", 10);
-            bossProjectiles.splice(idx, 1);
+            spawnSparks(b.x, b.y, "#ff3355", 10);
+            bossOrbs.splice(idx, 1);
             if (player.health <= 0) gameOver = true;
         }
     });
 
-    // Particle Trail Decay
-    for (let i = magicSparks.length - 1; i >= 0; i--) {
-        magicSparks[i].x += magicSparks[i].vx * timeModifier;
-        magicSparks[i].y += magicSparks[i].vy * timeModifier;
-        magicSparks[i].alpha -= 0.03;
-        if (magicSparks[i].alpha <= 0) magicSparks.splice(i, 1);
+    // Spark Matrix Physics Decay
+    for (let i = cyberSparks.length - 1; i >= 0; i--) {
+        cyberSparks[i].x += cyberSparks[i].vx * engineSpeedModifier;
+        cyberSparks[i].y += cyberSparks[i].vy * engineSpeedModifier;
+        cyberSparks[i].alpha -= 0.035;
+        if (cyberSparks[i].alpha <= 0) cyberSparks.splice(i, 1);
     }
 }
-// ENGINE GRAPHICS RENDER PIPELINE
+// GRAPHICS ENGINE DRAW PIPELINE
 function draw() {
     ctx.save();
     if (screenShake > 0.5) {
@@ -217,72 +242,89 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (!gameOver && !victory) {
-        // Chronos Time Zone Field Ring Distortion Effect
-        if (player.timeZoneActive > 0) {
-            ctx.fillStyle = "rgba(0, 255, 255, 0.05)";
+        // Chronos Time Matrix Visual Overlay
+        if (player.timeSlowActive > 0) {
+            ctx.fillStyle = "rgba(0, 255, 255, 0.06)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = "rgba(0, 255, 255, 0.2)"; ctx.lineWidth = 2;
-            ctx.strokeRect(5, 5, canvas.width - 10, canvas.height - 10);
+            ctx.strokeStyle = "#00ffff"; ctx.lineWidth = 2;
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
         }
 
-        // Render Sparks Background Layer
-        magicSparks.forEach(s => {
+        // Render Sparks Grid Layer
+        cyberSparks.forEach(s => {
             ctx.fillStyle = s.color; ctx.globalAlpha = s.alpha;
             ctx.beginPath(); ctx.arc(s.x, s.y, 3, 0, Math.PI*2); ctx.fill();
         });
         ctx.globalAlpha = 1.0;
 
-        // Draw Player Wizard Block (Arcane Purple)
-        ctx.fillStyle = "#9370db";
+        // Draw Player Mecha (Glow Green Block)
+        ctx.fillStyle = "#00ff88";
         ctx.fillRect(player.x, player.y, player.w, player.h);
-        // Wizard Hat Decoration trim
-        ctx.fillStyle = "#da70d6";
-        ctx.fillRect(player.x, player.y, player.w, 8);
+        ctx.fillStyle = "#00ffff";
+        ctx.fillRect(player.x + player.w - 8, player.y + player.h/2 - 4, 8, 8); // Cannon blast tip
 
-        // Draw Boss Archmage Block (Changes color based on current element phase)
+        // Draw Boss Core Block (Handles Phase Flashes)
         let theme = phaseThemes[boss.phase];
         ctx.fillStyle = boss.flash > 0 ? "#ffffff" : theme.color;
         ctx.fillRect(boss.x, boss.y, boss.w, boss.h);
 
-        // Draw Player Magic Missiles
-        playerSpells.forEach(s => {
-            ctx.fillStyle = "#da70d6"; ctx.beginPath(); ctx.arc(s.x, s.y, 6, 0, Math.PI*2); ctx.fill();
+        // Draw Player Overcharged Heavy Lasers
+        playerLasers.forEach(l => {
+            ctx.fillStyle = "#00ff88"; ctx.fillRect(l.x, l.y - 3, 18, 6);
         });
 
-        // Draw Boss Elemental Spells
-        bossProjectiles.forEach(p => {
-            ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+        // Draw Orbital Laser Power Striking Down
+        orbitalStrikes.forEach(o => {
+            if (o.active > 15) {
+                // Warning Targeting Lines
+                ctx.strokeStyle = "rgba(255, 0, 85, 0.4)"; ctx.lineWidth = 2;
+                ctx.strokeRect(o.x - o.size/2, 0, o.size, canvas.height);
+            } else {
+                // MASSIVE CONE PLASMA BLAST DOWN FROM SKY
+                ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+                ctx.fillRect(o.x - 30, 0, 60, canvas.height);
+                ctx.fillStyle = "rgba(255, 0, 85, 0.5)";
+                ctx.fillRect(o.x - 50, 0, 100, canvas.height);
+            }
         });
 
-        // USER HUD CONTROLS TERMINAL
-        // Player HP
-        ctx.fillStyle = "#201010"; ctx.fillRect(25, 25, 240, 15);
-        ctx.fillStyle = "#32cd32"; ctx.fillRect(25, 25, Math.max(0, 240 * (player.health / player.maxHealth)), 15);
-        ctx.fillStyle = "#fff"; ctx.font = "bold 13px 'Courier New'"; ctx.fillText(`MAGE HP: ${Math.max(0, player.health)}%`, 25, 60);
-        ctx.fillText(`TIME SPELL: ${player.timeZoneCooldown === 0 ? "READY [SHIFT]" : "CHARGING"}`, 25, 78);
+        // Draw Boss Energy Projectiles
+        bossOrbs.forEach(b => {
+            ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill();
+        });
 
-        // 5-Phase Boss HP Meter Assembly
-        ctx.fillStyle = "#201010"; ctx.fillRect(580, 25, 395, 20);
-        ctx.fillStyle = theme.color; ctx.fillRect(580, 25, Math.max(0, 395 * (boss.health / boss.maxHealth)), 20);
-        ctx.fillStyle = "#fff"; ctx.fillText(`ARCHMAGE: ${boss.health} HP`, 580, 65);
+        // SCI-FI HUD TERMINAL PANEL
+        // Player Health
+        ctx.fillStyle = "#1a0a0a"; ctx.fillRect(25, 25, 240, 15);
+        ctx.fillStyle = "#00ff88"; ctx.fillRect(25, 25, Math.max(0, 240 * (player.health / player.maxHealth)), 15);
+        ctx.fillStyle = "#fff"; ctx.font = "bold 13px 'Courier New'"; ctx.fillText(`VANGUARD HP: ${Math.max(0, player.health)}%`, 25, 60);
         
-        // Element Phase Tracker Label
-        ctx.fillStyle = theme.color; ctx.font = "bold 14px 'Courier New'";
-        ctx.fillText(`[${theme.name} ${boss.phase}/5]`, 810, 85);
+        // Cooldown Power Indexes
+        ctx.fillText(`CHRONOS MOD: ${player.timeSlowCooldown === 0 ? "READY [SHIFT]" : "CHARGING"}`, 25, 78);
+        ctx.fillText(`PLASMA BEAM: ${player.orbitalCooldown === 0 ? "READY [E]" : "CHARGING"}`, 25, 96);
 
-        ctx.fillStyle = "#da70d6"; ctx.font = "bold 18px 'Courier New'"; ctx.fillText(`MANA RATING: ${score}`, 25, 115);
+        // Ultimate 5-Phase Boss Processing Meter
+        ctx.fillStyle = "#1a0a0a"; ctx.fillRect(580, 25, 395, 20);
+        ctx.fillStyle = theme.color; ctx.fillRect(580, 25, Math.max(0, 395 * (boss.health / boss.maxHealth)), 20);
+        ctx.fillStyle = "#fff"; ctx.fillText(`MECHA MATRIX: ${boss.health} HP`, 580, 65);
+        
+        // Phase Display Tracker Bar
+        ctx.fillStyle = theme.color; ctx.font = "bold 14px 'Courier New'";
+        ctx.fillText(`[${theme.name} ${boss.phase}/5]`, 780, 85);
+
+        ctx.fillStyle = "#00ffff"; ctx.font = "bold 18px 'Courier New'"; ctx.fillText(`COMBAT METRICS: ${score}`, 25, 130);
     } else {
         ctx.textAlign = "center";
         if (gameOver) {
-            ctx.fillStyle = "#ff4500"; ctx.font = "bold 50px Georgia"; ctx.fillText("DIED IN COMBAT / GAME OVER", canvas.width/2, canvas.height/2);
+            ctx.fillStyle = "#ff0055"; ctx.font = "bold 45px 'Courier New'"; ctx.fillText("CRITICAL FAILURE / VANGUARD DESTROYED", canvas.width/2, canvas.height/2);
         } else if (victory) {
-            ctx.fillStyle = "#00ffff"; ctx.font = "bold 50px Georgia"; ctx.fillText("ARCHMAGE DEFEATED / VICTORY", canvas.width/2, canvas.height/2);
+            ctx.fillStyle = "#00ff88"; ctx.font = "bold 45px 'Courier New'"; ctx.fillText("MECHA MATRIX PURGED / TOTAL VICTORY", canvas.width/2, canvas.height/2);
         }
     }
     ctx.restore();
 }
 
-// PRIMARY FRAME ENGINE TIMING LOOP
+// RUNTIME CLOCK MECHANISM LOOP
 function runLoop() { update(); draw(); requestAnimationFrame(runLoop); }
 runLoop();
 </script>
