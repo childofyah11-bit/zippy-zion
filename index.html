@@ -3,92 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACE CHATBOT // Knowledge Ingestion & Solver Deck</title>
-</head>
-<body>
-
-  <!-- Dynamic Processing Telemetry Grid Layer -->
-  <canvas id="ambient-canvas"></canvas>
-
-  <!-- Complete High-Tech Smartphone Shell Container Frame -->
-  <div id="phone-container">
-    
-    <!-- Dynamic Island System Clock Module -->
-    <div id="dynamic-island">
-      <div id="island-pill">
-        <span id="island-icon">🤖</span>
-        <span id="system-clock">00:00:00.00</span>
-      </div>
-    </div>
-
-    <!-- Live Device Hardware Diagnostic Strip -->
-    <div class="glass-card telemetry-row">
-      <div>AI_SHELL: <span class="premium-cyan">ACE_KNOWLEDGE_PRO_v9.5</span></div>
-      <div>CORE_TEMP: <span id="temp-metric">34.5°C</span></div>
-    </div>
-
-    <!-- Widescreen Dual-Workspace Split Layout Layout -->
-    <div class="workspace-layout">
-      
-      <!-- LEFT PANEL: Primary Dialogues and Question Submission Workspace -->
-      <div class="glass-card main-media-deck">
-        <div id="workspace-header">OMNI-SUBJECT CORE TERMINAL</div>
-        
-        <!-- Live Waveform Graphic Display Screen -->
-        <div id="graph-wrapper">
-          <canvas id="visualizer-ring-canvas"></canvas>
-        </div>
-
-        <!-- Scrollable Message Feed Viewport Node -->
-        <div id="chat-history-viewport">
-          <div class="chat-bubble ai-bubble">[ACE_INIT] System core fully stabilized. Paste custom facts into the Knowledge Ingestion Box on the right, then ask questions here to verify teaching tracks!</div>
-        </div>
-
-        <!-- User Question Submission Box -->
-        <div class="input-container">
-          <textarea id="ai-input" placeholder="Ask your question here... (e.g. Type standard math, biology or history queries)"></textarea>
-          <div class="input-controls">
-            <button class="tech-sub-btn run-btn" id="submit-action-btn">SUBMIT QUESTION</button>
-            <button class="tech-sub-btn clear-btn" id="clear-action-btn">PURGE CHAT</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT PANEL: Knowledge Ingestion & Memory Variable Modules -->
-      <div class="glass-card sidebar-matrix">
-        <div class="sidebar-header">KNOWLEDGE INGESTION PANEL</div>
-        <p style="font-size: 0.55rem; color: #64748b; margin: 2px 0 6px 0; line-height: 1.3;">Paste raw data, school notes, or custom facts into this box to teach the chatbot database natively:</p>
-        
-        <!-- Interactive Custom Data Ingestion Node -->
-        <textarea id="knowledge-input" placeholder="Paste data here... (e.g. 'The capital of France is Paris' or 'Mitochondria is the powerhouse of the cell')"></textarea>
-        <button class="tech-sub-btn inject-btn" id="inject-knowledge-btn" style="margin-bottom: 12px; width:100%;">INJECT MEMORY NODE</button>
-
-        <div class="sidebar-header">ACE REASONING STATS</div>
-        <div>THINK_TIME: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
-        <div>KNOWLEDGE_NODES: <span class="telemetry-value" id="val-kb-size">0 items</span></div>
-        <div>QUERIES_RUN: <span class="telemetry-value" id="val-steps">000000</span></div>
-        <div>ENGINE_FREQ: <span class="telemetry-value" id="val-precision">5.2 GHz</span></div>
-        <div>ALGO_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
-        <div>SOLVER_STATUS: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
-
-        <div class="sidebar-header" style="margin-top: 10px;">GLOBAL CHAT PRESETS</div>
-        <button class="preset-btn" id="preset-math">MATHEMATICS ENGINE</button>
-        <button class="preset-btn" id="preset-biology">BIOLOGY DNA TRANSCRIPT</button>
-        <button class="preset-btn" id="preset-history">WORLD HISTORY VECTOR</button>
-        <button class="preset-btn" id="boost-btn">OVERCLOCK CORE</button>
-      </div>
-    </div>
-
-    <!-- Active Diagnostics Activity Stream Ticker -->
-    <div class="glass-card activity-monitor" id="covert-activity-logs">
-      <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">ACE MEMORY TELEMETRY STREAMS:</div>
-    </div>
-
-  </div>
+  <title>ACE CHATBOT // Adaptive Learning Matrix</title>
   <style>
     :root {
-      --premium-bg: #020408;
-      --glass-surface: rgba(10, 15, 28, 0.6);
+      --premium-bg: #030509;
+      --glass-surface: rgba(12, 18, 32, 0.7);
       --glass-border: rgba(255, 255, 255, 0.08);
       --cyan-glow: #00f0ff;
       --magenta-glow: #ff007f;
@@ -107,25 +26,13 @@
       justify-content: center;
       align-items: center;
     }
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
-      contain: strict;
-    }
     #phone-container {
       position: relative;
-      width: 1020px; /* Expanded horizontally to host the double-workspace split */
+      width: 1100px; /* Expanded for side-by-side training workspaces */
       height: 740px;
-      background: rgba(6, 9, 15, 0.97);
+      background: rgba(7, 10, 17, 0.96);
       border: 2px solid rgba(255, 255, 255, 0.09);
       border-radius: 24px;
-      z-index: 2;
-      box-shadow: 0 40px 100px rgba(0,0,0,0.95), inset 0 0 40px rgba(0,240,255,0.02);
       padding: 20px;
       box-sizing: border-box;
       display: flex;
@@ -133,9 +40,6 @@
       gap: 12px;
       backdrop-filter: blur(40px);
       -webkit-backdrop-filter: blur(40px);
-      transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-      will-change: transform;
-      contain: content;
     }
     #dynamic-island {
       position: absolute;
@@ -147,39 +51,23 @@
       border-radius: 20px;
       padding: 4px 15px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 100;
-      width: 280px;
+      width: 320px;
       height: 28px;
-      contain: layout;
-    }
-    #island-pill {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
-      justify-content: center;
     }
     #system-clock {
       font-size: 0.8rem;
       font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.5px;
-    }
-    #island-icon {
+      font-family: monospace;
       color: var(--cyan-glow);
-      font-size: 0.75rem;
     }
     .glass-card {
       background: var(--glass-surface);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
-      padding: 12px;
+      padding: 15px;
       box-sizing: border-box;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
     }
     .telemetry-row {
       margin-top: 20px;
@@ -190,44 +78,27 @@
       letter-spacing: 1px;
       color: #94a3b8;
     }
-    #temp-metric {
-      color: var(--matrix-green);
-      text-shadow: 0 0 8px rgba(57,255,20,0.3);
-    }
     .workspace-layout {
       display: flex;
       gap: 12px;
       flex: 1;
       min-height: 0;
     }
-    .main-media-deck {
+    .panel-column {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      position: relative;
-      background: rgba(0, 0, 0, 0.3);
-      flex: 1.6;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
     }
-    #workspace-header {
+    .panel-header {
       font-size: 0.75rem;
       font-weight: bold;
       letter-spacing: 2px;
-      color: var(--cyan-glow);
-      text-shadow: 0 0 10px rgba(0,240,255,0.2);
+      text-align: left;
+      margin-bottom: 4px;
     }
-    #graph-wrapper {
-      height: 60px;
-      background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(255,255,255,0.03);
-      border-radius: 8px;
-      position: relative;
-      overflow: hidden;
-    }
-    #visualizer-ring-canvas {
-      width: 100%;
-      height: 100%;
-    }
-    #chat-history-viewport {
+    #chat-history-viewport, #knowledge-database-viewport {
       flex: 1;
       background: rgba(0, 0, 0, 0.55);
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -243,7 +114,7 @@
       font-size: 0.75rem;
       padding: 8px 12px;
       border-radius: 8px;
-      max-width: 85%;
+      max-width: 90%;
       word-break: break-word;
       line-height: 1.4;
     }
@@ -262,14 +133,25 @@
       text-align: left;
       white-space: pre-wrap;
     }
-    .input-container {
+    .knowledge-bubble {
+      background: rgba(255, 0, 127, 0.03);
+      border: 1px solid rgba(255, 0, 127, 0.15);
+      color: #e2e8f0;
+      font-family: monospace;
+      font-size: 0.7rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-align: left;
+    }
+    form {
       display: flex;
       flex-direction: column;
       gap: 6px;
-    }
-    #ai-input {
       width: 100%;
-      height: 50px;
+    }
+    textarea {
+      width: 100%;
+      height: 55px;
       background: rgba(0, 0, 0, 0.65);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 8px;
@@ -280,202 +162,154 @@
       resize: none;
       box-sizing: border-box;
     }
-    #knowledge-input {
-      width: 100%;
-      height: 130px;
-      background: rgba(0, 0, 0, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 8px;
-      color: #39ff14;
-      font-family: monospace;
-      font-size: 0.7rem;
-      resize: none;
-      box-sizing: border-box;
-      margin-bottom: 6px;
-    }
-    #ai-input:focus, #knowledge-input:focus {
+    textarea:focus {
       outline: none;
       border-color: var(--cyan-glow);
     }
-    .input-controls {
-      display: flex;
-      gap: 8px;
-    }
-    .tech-sub-btn {
-      flex: 1;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #94a3b8;
-      padding: 6px;
+    .tech-submit-btn {
+      width: 100%;
+      background: rgba(0, 240, 255, 0.05);
+      border: 1px solid var(--cyan-glow);
+      color: #fff;
+      padding: 8px;
       border-radius: 6px;
       cursor: pointer;
       font-family: monospace;
-      font-size: 0.65rem;
-    }
-    .run-btn:hover {
-      background: rgba(0, 240, 255, 0.1);
-      border-color: var(--cyan-glow);
-      color: #fff;
-    }
-    .inject-btn {
-      background: rgba(57, 255, 20, 0.02);
-      border-color: rgba(57, 255, 20, 0.2);
-      color: #39ff14;
+      font-size: 0.7rem;
       font-weight: bold;
     }
-    .inject-btn:hover {
-      background: rgba(57, 255, 20, 0.1);
-      border-color: var(--matrix-green);
-      color: #fff;
+    .tech-submit-btn:hover {
+      background: rgba(0, 240, 255, 0.15);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
     }
-    .clear-btn:hover {
-      background: rgba(255, 0, 127, 0.1);
+    .teach-btn {
       border-color: var(--magenta-glow);
-      color: #fff;
+      background: rgba(255, 0, 127, 0.03);
     }
-    .sidebar-matrix {
-      font-family: monospace;
-      font-size: 0.6rem;
-      color: #94a3b8;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      text-align: left;
-      background: rgba(0,0,0,0.45);
-      flex: 1;
-    }
-    .sidebar-header {
-      font-weight: bold;
-      color: var(--cyan-glow);
-      letter-spacing: 1px;
-      border-bottom: 1px solid rgba(0,240,255,0.2);
-      padding-bottom: 2px;
-      margin-bottom: 2px;
-    }
-    .telemetry-value {
-      color: #fff;
-      font-weight: bold;
-      float: right;
-    }
-    .preset-btn {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.05);
-      color: #cbd5e1;
-      padding: 5px;
-      border-radius: 4px;
-      cursor: pointer;
-      text-align: left;
-      font-size: 0.55rem;
-      transition: all 0.2s ease;
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 2px;
-    }
-    .preset-btn:hover {
-      background: rgba(0, 240, 255, 0.08);
-      border-color: var(--cyan-glow);
-      color: #fff;
-    }
-    .activity-monitor {
-      height: 60px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      overflow: hidden;
-      font-size: 0.55rem;
-      color: #475569;
-      font-family: monospace;
-      text-align: left;
-    }
-    .covert-row {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
+    .teach-btn:hover {
+      background: rgba(255, 0, 127, 0.15);
+      box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
     }
   </style>
-  <script>
-    // Safe Scope Global Anchoring Variables
-    let knowledgeBaseMemoryList = [];
-    let executedQueriesCounter = 0;
-    let isCoreOverclocked = false;
-    let baselineHardwareTemp = 34.5;
-    
-    let ambientCanvas, aCtx, graphCanvas, gCtx;
-    let txtInput, chatViewport, logPanel, knowledgeField;
+</head>
+<body>
 
-    window.addEventListener('DOMContentLoaded', function() {
-      ambientCanvas = document.getElementById('ambient-canvas');
-      aCtx = ambientCanvas.getContext('2d');
-      graphCanvas = document.getElementById('visualizer-ring-canvas');
-      gCtx = graphCanvas.getContext('2d');
+  <div id="phone-container">
+    <div id="dynamic-island">
+      <div id="island-pill">
+        <span id="system-clock">ACE_INTELLIGENCE_DECK</span>
+      </div>
+    </div>
+
+    <div class="glass-card telemetry-row">
+      <div>RUNTIME_SHELL: <span style="color: var(--cyan-glow);">CSP_COMPLIANT_O_v9.5</span></div>
+      <div>DATABASE_STATUS: <span id="db-status-tracker" style="color: var(--matrix-green);">0 LOGS LOADED</span></div>
+    </div>
+
+    <div class="workspace-layout">
       
-      txtInput = document.getElementById('ai-input');
-      chatViewport = document.getElementById('chat-history-viewport');
-      logPanel = document.getElementById('covert-activity-logs');
-      knowledgeField = document.getElementById('knowledge-input');
+      <!-- LEFT COLUMN: KNOWLEDGE INJECTION PANEL -->
+      <div class="glass-card panel-column">
+        <div class="panel-header" style="color: var(--magenta-glow);">1. KNOWLEDGE INJECTION MATRIX</div>
+        
+        <div id="knowledge-database-viewport">
+          <div class="knowledge-bubble" id="db-empty-notice">// Memory array blank. Inject custom text keywords or definitions below to anchor chatbot training.</div>
+        </div>
 
-      ambientCanvas.width = window.innerWidth;
-      ambientCanvas.height = window.innerHeight;
-      graphCanvas.width = graphCanvas.parentElement.clientWidth;
-      graphCanvas.height = graphCanvas.parentElement.clientHeight;
+        <form id="knowledge-form" onsubmit="saveKnowledgeToMemory(event)">
+          <textarea id="knowledge-input" placeholder="Type a fact or study notes here... (e.g., 'Rome was founded in 753 BCE by Romulus')"></textarea>
+          <button type="submit" class="tech-submit-btn teach-btn">INJECT FACT TO CORE</button>
+        </form>
+      </div>
 
-      const particleCount = 20;
-      const nodeBufferMatrix = new Float32Array(particleCount * 4);
-      for(let i = 0; i < particleCount; i++) {
-        const idx = i * 4;
-        nodeBufferMatrix[idx] = Math.random() * window.innerWidth;
-        nodeBufferMatrix[idx+1] = Math.random() * window.innerHeight;
-        nodeBufferMatrix[idx+2] = Math.random() * 12 + 6;
-        nodeBufferMatrix[idx+3] = -(Math.random() * 0.2 + 0.1);
+      <!-- RIGHT COLUMN: CHATBOT RESPONSE CONSOLE -->
+      <div class="glass-card panel-column">
+        <div class="panel-header" style="color: var(--cyan-glow);">2. ACTIVE CONVERSATION TERMINAL</div>
+        
+        <div id="chat-history-viewport">
+          <div class="chat-bubble ai-bubble">[ACE] Standing by. Paste facts into the left grid to update my memory. Type questions over here to check my retrieval variables.</div>
+        </div>
+
+        <form id="chat-form" onsubmit="executeChatSearch(event)">
+          <textarea id="ai-input" placeholder="Ask a question... (e.g., 'When was Rome founded?')"></textarea>
+          <button type="submit" class="tech-submit-btn">EXECUTE SEARCH QUERY</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Safe memory repository block (No risky browser prototypes or custom object assignments)
+    var customKnowledgeDatabaseArray = [];
+
+    // Safe Knowledge Submissions Pipeline
+    function saveKnowledgeToMemory(event) {
+      event.preventDefault();
+
+      var inputField = document.getElementById('knowledge-input');
+      var databaseView = document.getElementById('knowledge-database-viewport');
+      var statusTracker = document.getElementById('db-status-tracker');
+      
+      if (!inputField || !databaseView) { return; }
+      
+      var factText = inputField.value.trim();
+      if (!factText) { return; }
+
+      // Clear standard notice bubble if this is the first item entry
+      var notice = document.getElementById('db-empty-notice');
+      if (notice) {
+        databaseView.removeChild(notice);
       }
 
-      function animateSystemMatrix() {
-        aCtx.fillStyle = '#020408';
-        aCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
-        aCtx.fillStyle = isCoreOverclocked ? 'rgba(255, 0, 127, 0.012)' : 'rgba(0, 240, 255, 0.012)';
+      // Add to primitive global repository array strings
+      customKnowledgeDatabaseArray.push(factText);
 
-        for(let i = 0; i < particleCount; i++) {
-          const idx = i * 4;
-          let y = nodeBufferMatrix[idx+1] + nodeBufferMatrix[idx+3];
-          if(y < -nodeBufferMatrix[idx+2]) {
-            y = ambientCanvas.height + nodeBufferMatrix[idx+2];
-            nodeBufferMatrix[idx] = Math.random() * ambientCanvas.width;
-          }
-          nodeBufferMatrix[idx+1] = y;
-          aCtx.beginPath();
-          aCtx.arc(nodeBufferMatrix[idx], y, nodeBufferMatrix[idx+2], 0, 6.28318);
-          aCtx.fill();
-        }
-        requestAnimationFrame(animateSystemMatrix);
-      }
-      requestAnimationFrame(animateSystemMatrix);
+      // Render custom training block element inside the display sheet
+      var bubble = document.createElement('div');
+      bubble.className = 'knowledge-bubble';
+      bubble.textContent = "[" + customKnowledgeDatabaseArray.length + "] " + factText;
+      databaseView.appendChild(bubble);
 
-      // Explicit Event Binders (GitHub & Chrome Sandbox Compliant)
-      document.getElementById('submit-action-btn').addEventListener('click', processQuerySubmission);
-      document.getElementById('clear-action-btn').addEventListener('click', wipeTerminalMemory);
-      document.getElementById('inject-knowledge-btn').addEventListener('click', injectCustomKnowledgeNode);
-      document.getElementById('boost-btn').addEventListener('click', handleCoreOverclock);
+      // Reset values and scroll view to baseline index
+      inputField.value = '';
+      databaseView.scrollTop = databaseView.scrollHeight;
+      statusTracker.textContent = customKnowledgeDatabaseArray.length + " LOGS LOADED";
+    }
 
-      // Key Bindings
-      txtInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter' && !event.shiftKey) {
-          event.preventDefault();
-          processQuerySubmission();
-        }
-      });
+    // Safe Conversational Submission Search Pipeline
+    function executeChatSearch(event) {
+      event.preventDefault();
 
-      // Bind presets
-      function mapBtn(id, val) {
-        document.getElementById(id).addEventListener('click', function() {
-          txtInput.value = val;
-          txtInput.focus();
-          processQuerySubmission();
-        });
-      }
-      mapBtn('preset-math', '((25 * 4) + 50) / 2');
-      mapBtn('preset-biology', 'dna: TACGGCTAG');
-      mapBtn('preset-history', 'history timeline events of the Roman Empire');
+      var queryInput = document.getElementById('ai-input');
+      var chatHistoryView = document.getElementById('chat-history-viewport');
 
-      setInterval(hardwareMetricsClockTick, 33);
-    });
+      if (!queryInput || !chatHistoryView) { return; }
+      
+      var questionText = queryInput.value.trim();
+      if (!questionText) { return; }
+
+      // Append standard User message node bubble
+      var userBubble = document.createElement('div');
+      userBubble.className = 'chat-bubble user-bubble';
+      userBubble.textContent = questionText;
+      chatHistoryView.appendChild(userBubble);
+
+      // Clear input window instantly
+      queryInput.value = '';
+      chatHistoryView.scrollTop = chatHistoryView.scrollHeight;
+
+      // Executing search against internal items arrays
+      setTimeout(function() {
+        var aiAnswerString = "";
+        var lowQuestionText = questionText.toLowerCase();
+        var matchedFactsList = [];
+
+        // Loop through internal memories to hunt keywords
+        for (var i = 0; i < customKnowledgeDatabaseArray.length; i++) {
+          var individualFact = customKnowledgeDatabaseArray[i];
+          var splitWords = lowQuestionText.split(' ');
+          
+          var containsKeywordMatch = false;
+          for (var j = 0; j < splitWords.length; j++) {
+            var word = splitWords[j];
