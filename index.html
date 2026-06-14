@@ -3,136 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OS 19 // Autonomous Quantum Audio Matrix</title>
+  <title>QUANTUM_OS_V19 // SYNTHESIZER_TERMINAL_NODE</title>
 </head>
 <body>
 
-  <!-- Background Layer Interconnected Processing Matrix -->
+  <!-- Background Particle Network Canvas Sub-Layer -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Complete Main Spatial Interface Enclosure Container -->
-  <div id="phone-container">
+  <!-- Master Instrumentation Terminal Housing -->
+  <div id="terminal-mainframe">
     
-    <!-- Dynamic Island System Clock Module -->
-    <div id="dynamic-island">
-      <div id="island-pill">
-        <span id="island-icon">✦</span>
-        <span id="system-clock">12:00:00.00</span>
+    <!-- Top Row: Stealth Cybernetic Navigation Bar -->
+    <div id="stealth-island-header">
+      <div id="dynamic-island" onclick="toggleStealthBypass()">
+        <div id="island-pill">
+          <span id="island-icon">⚡</span>
+          <span id="system-clock">00:00:00.00</span>
+        </div>
+        <div id="island-expanded-status">SECURE PROXY LINK ENABLED // ROUTE_SHIFT_3600s</div>
       </div>
-      <div id="island-expanded-status">NETWORK SECURITY TUNNEL // ROUTE_SHIFT_-3600s</div>
-    </div>
-
-    <!-- Upper Signal and Advanced Thermal Telemetry HUD -->
-    <div class="glass-card telemetry-row">
-      <div>SIGNAL: <span class="premium-cyan" id="carrier-text">5G_ULTRA</span></div>
-      <div>CORE_TEMP: <span id="temp-metric">31.0°C</span></div>
-    </div>
-
-    <!-- Main Dual-Column Operational Workspace -->
-    <div class="split-viewport">
       
-      <!-- Primary Core Interaction Audio Workspace -->
-      <div class="glass-card main-media-deck">
+      <div class="glass-module telemetry-compact">
+        <div>NETWORK_INDEX: <span class="cyan-glow-text" id="carrier-text">CORE_NET_5G_ULTRA</span></div>
+        <div>COMP_THERMAL: <span id="temp-metric">35.0°C</span></div>
+      </div>
+    </div>
+
+    <!-- Main Workspace Split Configuration Grid -->
+    <div id="workspace-grid">
+      
+      <!-- Left Panel: Live Instrument Modulators & Sequencer Deck -->
+      <div class="glass-module control-panel-section">
+        <div class="panel-header-tag">// INSTRUMENT_SYNTH_CORE</div>
         
-        <!-- Interactive Initial Ignition Shield -->
-        <div id="media-boot-prompt" onclick="igniteMediaDeck()">
-          <div class="premium-gradient-text" style="font-size: 1.5rem; font-weight: 900; letter-spacing: 3px;">IGNITE SYNTHESIZER MATRIX</div>
-          <p style="color: #64748b; font-size: 0.75rem; margin: 12px 0 0 0; font-family: monospace;">TAP TO SYNCHRONIZE COGNITIVE WAVEFRONT</p>
+        <!-- Interactive Synthesizer Core Controls -->
+        <div class="control-matrix-row">
+          <div class="control-node-box">
+            <label class="control-label">MASTER_VOLUME</label>
+            <input type="range" class="tech-slider" id="synth-vol" min="0" max="100" value="25">
+            <span class="matrix-readout" id="readout-vol">25%</span>
+          </div>
+          <div class="control-node-box">
+            <label class="control-label">TEMPO_CLOCK (BPM)</label>
+            <input type="range" class="tech-slider" id="synth-bpm" min="60" max="220" value="125">
+            <span class="matrix-readout" id="readout-bpm">125 BPM</span>
+          </div>
         </div>
 
-        <!-- High-Velocity Oscilloscope Frequency Output Monitor -->
-        <canvas id="oscilloscope-canvas"></canvas>
+        <div class="control-matrix-row">
+          <div class="control-node-box">
+            <label class="control-label">WAVEFORM_PROFILE</label>
+            <select class="tech-dropdown" id="synth-wave">
+              <option value="sine">PURE_SINE</option>
+              <option value="sawtooth">HYPER_SAW</option>
+              <option value="square">PULSE_SQUARE</option>
+              <option value="triangle">TRI_WAVE</option>
+            </select>
+          </div>
+          <div class="control-node-box">
+            <label class="control-label">FILTER_CUTOFF</label>
+            <input type="range" class="tech-slider" id="synth-cutoff" min="100" max="5000" value="1500">
+            <span class="matrix-readout" id="readout-cutoff">1500 Hz</span>
+          </div>
+        </div>
 
-        <!-- Kinetic Audio Center Node Fluid Ring Frame -->
-        <div id="fluid-audio-ring"></div>
+        <!-- Analytical Diagnostic Signal Display Screens -->
+        <div class="visualizer-container-box">
+          <div class="sub-label-tag">[SIGNAL_OSCILLOSCOPE_STREAM]</div>
+          <canvas id="scope-canvas" class="internal-scope-view"></canvas>
+        </div>
+        
+        <div class="visualizer-container-box">
+          <div class="sub-label-tag">[FREQUENCY_SPECTRUM_ANALYSIS]</div>
+          <canvas id="spectrum-canvas" class="internal-scope-view"></canvas>
+        </div>
+      </div>
 
-        <!-- Text Injection Target Framework for Real-Time Lyrics -->
+      <!-- Center Panel: Kinetic Lyric Staging Arena -->
+      <div class="glass-module lyric-staging-section">
+        <div class="panel-header-tag">// COGNITIVE_AUDIO_STREAM_STAGE</div>
+        
+        <!-- Boot Prompt Initiation Layer -->
+        <div id="media-boot-prompt" onclick="igniteQuantumDeck()">
+          <div class="premium-gradient-text" style="font-size: 1.6rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase;">INITIALIZE NODE STREAM</div>
+          <p style="color: #64748b; font-size: 0.8rem; margin: 12px 0 0 0; letter-spacing: 1px;">TAP TO SYNCHRONIZE COGNITIVE WAVEFRONT SYSTEMS</p>
+        </div>
+
+        <!-- Dynamic Kinetic Visual Target Rings -->
+        <div id="fluid-audio-ring">
+          <div id="audio-ring-pulsar"></div>
+        </div>
+        
+        <!-- Dynamic Kinetic Text Viewport Context -->
         <div id="kinetic-lyric-viewport"></div>
       </div>
 
-      <!-- Advanced Technical Metric Telemetry Sidebar Matrix -->
-      <div class="glass-card sidebar-matrix">
-        <div class="matrix-section-title">LIVE SYSTEM MATRICES</div>
-        <div class="stat-row">RENDER_CYCLE: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
-        <div class="stat-row">BUFFER_ALLOC: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
-        <div class="stat-row">PARTICLE_VEL: <span class="telemetry-value" id="val-vel">0.00px/f</span></div>
-        <div class="stat-row">STEALTH_SHIELD: <span class="telemetry-value" id="val-stealth">INACTIVE</span></div>
-        <div class="stat-row">AUDIO_SYNTH: <span class="telemetry-value" id="val-synth-status">OFFLINE</span></div>
-        <div class="stat-row">SYNTH_FREQ: <span class="telemetry-value" id="val-freq">0.0 Hz</span></div>
+      <!-- Right Panel: Micro-Variable Performance Matrix Sidebar -->
+      <div class="glass-module sidebar-telemetry-section">
+        <div class="panel-header-tag">// HARDWARE_VARIABLE_REGISTERS</div>
         
-        <div class="matrix-section-title" style="margin-top: 15px;">HARDWARE PARAMETERS</div>
-        <div class="stat-row">CALC_CPU_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
-        <div class="stat-row">THERMAL_GATE: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
-        <div class="stat-row">SYSTEM_UPTIME: <span class="telemetry-value" id="val-uptime">000.0s</span></div>
-        <div class="stat-row">POLYPHONY_VCO: <span class="telemetry-value" id="val-polyphony">0/4 Node</span></div>
+        <div class="metric-readout-row">RENDER_CYCLE_LATENCY <span class="metric-val" id="val-latency">0.00ms</span></div>
+        <div class="metric-readout-row">MEMORY_BUFFER_ALLOC <span class="metric-val" id="val-alloc">0 bytes</span></div>
+        <div class="metric-readout-row">PARTICLE_DRIFT_VEL <span class="metric-val" id="val-vel">0.00px/f</span></div>
+        <div class="metric-readout-row">STEALTH_SHIELD_MOD <span class="metric-val" id="val-stealth">INACTIVE</span></div>
+        <div class="metric-readout-row">STREAM_BITRATE_INDEX <span class="metric-val" id="val-bitrate">1411 kbps</span></div>
+        <div class="metric-readout-row">AUDIO_NODE_FREQUENCY <span class="metric-val" id="val-freq">0.0 Hz</span></div>
+        <div class="metric-readout-row">PROCESSOR_CORE_LOAD <span class="metric-val" id="val-load">0.0%</span></div>
+        <div class="metric-readout-row">HARDWARE_THROTTLE <span class="metric-val" id="val-throttle">NOMINAL</span></div>
+        <div class="metric-readout-row">NODE_SYSTEM_UPTIME <span class="metric-val" id="val-uptime">0.0s</span></div>
+        <div class="metric-readout-row">ACTIVE_TRACK_POINTER <span class="metric-val" id="val-ptr">0 / 0</span></div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Row: Multi-Task Diagnostic Logs & Command Rows -->
+    <div class="glass-module operational-footer-section">
+      <div class="panel-header-tag">// ENCRYPTED_DIAGNOSTIC_STREAMS</div>
+      <div id="covert-activity-logs"></div>
+    </div>
+
+    <!-- Master Action Controls Panel -->
+    <div id="media-navigation-tray">
+      <div class="btn-group-row">
+        <button class="nav-control-btn" onclick="cycleTrackNode(-1)">⏮ PREV_NODE</button>
+        <button class="nav-control-btn diagnostic-trigger-btn" onclick="triggerFrequencyScramble()">⚡ SCRAMBLE_FREQ</button>
+        <button class="nav-control-btn diagnostic-trigger-btn" onclick="purgeHardwareCache()">♻ CLEAR_CACHE</button>
+        <button class="nav-control-btn diagnostic-trigger-btn" id="hyper-drive-toggle" onclick="toggleEngineHyperdrive()">🚀 HYPERDRIVE</button>
+        <button class="nav-control-btn" onclick="cycleTrackNode(1)">NEXT_NODE ⏭</button>
       </div>
     </div>
 
-    <!-- Active Encrypted Cryptographic Diagnostics Stream Widget -->
-    <div class="glass-card activity-monitor" id="covert-activity-logs">
-      <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">SYSTEM DIAGNOSTIC STREAM:</div>
-    </div>
-
-    <!-- Main Navigation Track Control Deck Controls -->
-    <div id="media-controls">
-      <div class="control-row-primary">
-        <button class="nav-control-btn icon-btn" onclick="cycleTrackNode(-1)">⏮</button>
-        <button class="nav-control-btn icon-btn" id="play-pause-indicator" style="color: var(--cyan-glow); font-size: 2.2rem;">⏵</button>
-        <button class="nav-control-btn icon-btn" onclick="cycleTrackNode(1)">⏭</button>
-      </div>
-
-      <!-- Advanced Hardware Sound Control Deck Array Options -->
-      <div class="hardware-control-grid">
-        <div class="control-knob-box">
-          <label>WAVEFORM TYPE</label>
-          <select id="synth-waveform-type" onchange="updateSynthParameters()">
-            <option value="sine">PURE SINE</option>
-            <option value="triangle">TRIANGLE WAVE</option>
-            <option value="sawtooth">SAWTOOTH OSC</option>
-            <option value="square">SQUARE NODE</option>
-          </select>
-        </div>
-        <div class="control-knob-box">
-          <label>ARPEGGIATOR SPEED</label>
-          <select id="synth-tempo-mod" onchange="updateSynthParameters()">
-            <option value="1.0">NORMAL TRACK</option>
-            <option value="0.5">HALF CLOCK</option>
-            <option value="2.0">HYPER SPEED</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Operational Utility Sub-Systems Action Triggers -->
-      <div class="utility-action-row">
-        <button class="tech-sub-btn" onclick="scrambleFrequencies()">SCRAMBLE FREQ</button>
-        <button class="tech-sub-btn" onclick="purgeMemoryBuffers()">PURGE CACHE</button>
-        <button class="tech-sub-btn" onclick="toggleHyperDrive()">HYPERDRIVE</button>
-      </div>
-    </div>
   </div>
   <style>
     :root {
-      --premium-bg: #030406;
-      --glass-surface: rgba(10, 14, 24, 0.45);
-      --glass-border: rgba(255, 255, 255, 0.05);
+      --mainframe-bg: #030407;
+      --glass-base: rgba(10, 14, 24, 0.4);
+      --glass-border-color: rgba(255, 255, 255, 0.04);
       --cyan-glow: #00f0ff;
       --magenta-glow: #ff007f;
       --matrix-green: #39ff14;
+      --panel-padding: 18px;
     }
+
     body, html {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
-      background: var(--premium-bg);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--mainframe-bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       color: #fff;
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    canvas {
+
+    canvas id="ambient-canvas" {
       position: absolute;
       top: 0;
       left: 0;
@@ -142,319 +169,411 @@
       pointer-events: none;
       contain: strict;
     }
-    #phone-container {
+
+    #terminal-mainframe {
       position: relative;
-      width: 720px; /* Enhanced wide desktop operational layout block dimensions */
-      height: 860px;
-      background: rgba(6, 8, 12, 0.95);
-      border: 4px solid rgba(255, 255, 255, 0.07);
-      border-radius: 40px;
+      width: 95vw;
+      height: 94vh;
+      max-width: 1500px;
+      max-height: 950px;
+      background: rgba(6, 8, 14, 0.85);
+      border: 2px solid rgba(255, 255, 255, 0.06);
+      border-radius: 28px;
       z-index: 2;
-      box-shadow: 0 40px 100px rgba(0,0,0,0.98), inset 0 0 40px rgba(0,240,255,0.04);
-      padding: 30px;
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.95), inset 0 0 40px rgba(0, 240, 255, 0.02);
+      padding: 20px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       gap: 15px;
-      backdrop-filter: blur(50px);
-      -webkit-backdrop-filter: blur(50px);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
       transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
       will-change: transform;
       contain: content;
     }
+
+    #stealth-island-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 45px;
+      position: relative;
+    }
+
     #dynamic-island {
-      position: absolute;
-      top: 15px;
-      left: 50%;
-      transform: translate3d(-50%, 0, 0);
       background: #000;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 30px;
-      padding: 8px 25px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 6px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: width 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), height 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), background-color 0.2s ease;
       cursor: pointer;
-      z-index: 100;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.6);
-      pointer-events: auto;
-      width: 220px;
-      height: 36px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.6);
+      width: 210px;
+      height: 32px;
+      transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1), height 0.3s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.2s ease;
       will-change: width, height, background-color;
       contain: layout;
     }
+
     #island-pill {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       width: 100%;
       justify-content: center;
     }
+
     #system-clock {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 700;
       font-variant-numeric: tabular-nums;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
     }
+
     #island-icon {
       color: var(--cyan-glow);
-      font-size: 0.85rem;
-      animation: floatIcon 2s infinite ease-in-out;
+      font-size: 0.8rem;
+      animation: pulseIcon 1.5s infinite ease-in-out;
     }
+
     #island-expanded-status {
       display: none;
       font-size: 0.55rem;
       font-weight: bold;
       color: var(--magenta-glow);
-      margin-top: 8px;
+      margin-top: 5px;
       letter-spacing: 1px;
-      width: 100%;
       text-align: center;
     }
-    .glass-card {
-      background: var(--glass-surface);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 20px;
+
+    .glass-module {
+      background: var(--glass-base);
+      border: 1px solid var(--glass-border-color);
+      border-radius: 16px;
+      padding: var(--panel-padding);
       box-sizing: border-box;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      transform: translate3d(0,0,0);
+      position: relative;
     }
-    .telemetry-row {
-      margin-top: 25px;
+
+    .telemetry-compact {
       display: flex;
-      justify-content: space-between;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      color: #94a3b8;
-      contain: layout paint;
+      gap: 25px;
+      font-size: 0.65rem;
+      font-family: monospace;
+      font-weight: bold;
+      color: #64748b;
+      padding: 8px 16px;
+      border-radius: 12px;
     }
+
+    .cyan-glow-text {
+      color: var(--cyan-glow);
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    }
+
     #temp-metric {
       color: var(--matrix-green);
-      text-shadow: 0 0 10px rgba(57,255,20,0.4);
-      transition: color 0.2s ease;
+      text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
     }
-    .split-viewport {
+  <style>
+    #workspace-grid {
+      flex: 1;
       display: flex;
       gap: 15px;
+      min-height: 0;
+      width: 100%;
+    }
+
+    .panel-header-tag {
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: bold;
+      color: #475569;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      padding-bottom: 4px;
+    }
+
+    .control-panel-section {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .control-matrix-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .control-node-box {
       flex: 1;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.02);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .control-label {
+      font-family: monospace;
+      font-size: 0.55rem;
+      color: #64748b;
+      letter-spacing: 0.5px;
+    }
+
+    .matrix-readout {
+      font-family: monospace;
+      font-size: 0.6rem;
+      color: var(--cyan-glow);
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .tech-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .tech-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--cyan-glow);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--cyan-glow);
+    }
+
+    .tech-dropdown {
+      background: #090b11;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      font-family: monospace;
+      font-size: 0.65rem;
+      padding: 4px;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .visualizer-container-box {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
       min-height: 0;
     }
-   <style>
-    .main-media-deck {
+
+    .sub-label-tag {
+      font-family: monospace;
+      font-size: 0.5rem;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .internal-scope-view {
+      width: 100%;
+      flex: 1;
+      background: #020305;
+      border-radius: 6px;
+      min-height: 0;
+    }
+
+    .lyric-staging-section {
+      flex: 1.6;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      position: relative;
-      text-align: center;
-      overflow: hidden;
-      border-radius: 24px;
+      background: rgba(4, 5, 8, 0.5);
       contain: layout size;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(0, 240, 255, 0.05);
+      overflow: hidden;
     }
+
     #media-boot-prompt {
-      z-index: 20;
-      pointer-events: auto;
       cursor: pointer;
-      transition: transform 0.2s;
+      text-align: center;
+      z-index: 10;
+      transition: transform 0.2s ease;
     }
+
     #media-boot-prompt:hover {
-      transform: scale3d(1.04, 1.04, 1);
+      transform: scale3d(1.02, 1.02, 1);
     }
-    #oscilloscope-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      pointer-events: none;
-      opacity: 0.75;
-    }
+
     #kinetic-lyric-viewport {
       display: none;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       font-weight: 800;
       line-height: 1.4;
       text-transform: uppercase;
       letter-spacing: -0.5px;
       max-width: 90%;
+      text-align: center;
       z-index: 5;
       contain: layout paint;
     }
+
+    .fluid-word {
+      display: inline-block;
+      margin: 0 5px;
+      opacity: 0;
+      transform: translate3d(0, 15px, 0) scale3d(0.9, 0.9, 1);
+      animation: waveIn 0.3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    }
+
     #fluid-audio-ring {
       display: none;
       position: absolute;
-      width: 200px;
-      height: 200px;
-      border: 2px solid rgba(0, 240, 255, 0.15);
+      width: 240px;
+      height: 240px;
+      border: 2px solid rgba(0, 240, 255, 0.1);
       border-radius: 50%;
-      z-index: 3;
-      transform: scale3d(1, 1, 1);
-      transition: transform 0.1s cubic-bezier(0.1, 0.9, 0.3, 1), border-color 0.1s ease;
-      box-shadow: 0 0 35px rgba(0,240,255,0.06);
+      z-index: 2;
+      transform: scale3d(1,1,1);
       will-change: transform, border-color;
-    }
-    .fluid-word {
-      display: inline-block;
-      margin: 0 4px;
-      opacity: 0;
-      transform: translate3d(0, 14px, 0) scale3d(0.88, 0.88, 1);
-      animation: fluidWaveIn 0.22s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-    }
-    .sidebar-matrix {
-      flex: 1;
-      font-family: monospace;
-      font-size: 0.65rem;
-      color: #94a3b8;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      text-align: left;
-      background: rgba(4, 5, 8, 0.6);
-      border-left: 2px solid var(--cyan-glow);
-    }
-    .matrix-section-title {
-      font-weight: bold;
-      color: var(--cyan-glow);
-      letter-spacing: 1px;
-      border-bottom: 1px solid rgba(0,240,255,0.2);
-      padding-bottom: 5px;
-    }
-    .stat-row {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .telemetry-value {
-      color: #fff;
-      font-weight: bold;
-      float: right;
-    }
-    .activity-monitor {
-      height: 110px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      overflow: hidden;
-      font-size: 0.62rem;
-      color: #475569;
-      font-family: monospace;
-      text-align: left;
-      contain: layout paint;
-    }
-    .covert-row {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-    .covert-shift-flag {
-      color: var(--magenta-glow) !important;
-      font-weight: bold;
-    }
-    #media-controls {
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-    }
-    .control-row-primary {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 40px;
-      pointer-events: auto;
+    }
+
+    #audio-ring-pulsar {
       width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,240,255,0.03) 0%, transparent 70%);
     }
-    .icon-btn {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.8rem;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.2s;
-      opacity: 0.6;
-    }
-    .icon-btn:hover {
-      opacity: 1;
-      transform: scale3d(1.1, 1.1, 1);
-    }
-    .hardware-control-grid {
-      display: flex;
-      gap: 15px;
-      width: 100%;
-    }
-    .control-knob-box {
-      flex: 1;
+  </style>
+  <style>
+    .sidebar-telemetry-section {
+      flex: 0.9;
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      text-align: left;
-    }
-    .control-knob-box label {
+      gap: 8px;
       font-family: monospace;
-      font-size: 0.55rem;
-      color: #64748b;
-      letter-spacing: 1px;
+      font-size: 0.6rem;
+      color: #94a3b8;
     }
-    .control-knob-box select {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #fff;
-      font-family: monospace;
-      font-size: 0.65rem;
-      padding: 6px;
+
+    .metric-readout-row {
+      background: rgba(0,0,0,0.2);
+      padding: 6px 10px;
       border-radius: 6px;
-      outline: none;
-      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 2px solid rgba(255,255,255,0.05);
     }
-    .control-knob-box select:focus {
-      border-color: var(--cyan-glow);
+
+    .metric-val {
+      color: #fff;
+      font-weight: bold;
     }
-    .utility-action-row {
+
+    .operational-footer-section {
+      height: 110px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #covert-activity-logs {
+      flex: 1;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.6rem;
+      color: #475569;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .covert-row {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .covert-flagged {
+      color: var(--magenta-glow) !important;
+      font-weight: bold;
+    }
+
+    #media-navigation-tray {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-group-row {
       display: flex;
       gap: 10px;
       width: 100%;
-      justify-content: space-between;
     }
-    .tech-sub-btn {
+
+    .nav-control-btn {
       flex: 1;
       background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #64748b;
-      padding: 8px;
-      border-radius: 8px;
-      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #cbd5e1;
       font-family: monospace;
-      font-size: 0.6rem;
+      font-size: 0.65rem;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
       transition: all 0.2s ease;
+      font-weight: bold;
     }
-    .tech-sub-btn:hover {
-      background: rgba(0, 240, 255, 0.06);
+
+    .nav-control-btn:hover {
+      background: rgba(0, 240, 255, 0.05);
       border-color: var(--cyan-glow);
       color: #fff;
     }
-    @keyframes fluidWaveIn {
-      to { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+
+    .diagnostic-trigger-btn {
+      color: #64748b;
     }
-    @keyframes floatIcon {
-      0%, 100% { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(0, -3px, 0); }
+
+    @keyframes waveIn {
+      to { opacity: 1; transform: translate3d(0,0,0) scale3d(1,1,1); }
     }
+
+    @keyframes pulseIcon {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
     .premium-gradient-text {
-      background: linear-gradient(135deg, #fff 30%, #64748b 100%);
+      background: linear-gradient(135deg, #fff 40%, #475569 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
   </style>
   <script>
-    const rawPayload = [
+    // System Master Track Segment Arrays
+    const lyricsPayload = [
       "Small Town Star (Goofball)", "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", 
       "Yeah I’ll be a little goofball", "Staying in my own lane", "I’m a low-key pretty goofy really-got-it-good-breezy", 
       "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", "And God made me perfectly okay", 
@@ -478,172 +597,118 @@
       "Watch the days fly right on by", "In His hands Every day", "Everything is turning out okay 😁"
     ];
 
-    const payloadData = rawPayload.map(line => line.split(' '));
-    let trackPtr = 0, trackTimer, audioCtx, analyserNode, biquadFilter, stealthShieldActive = false, hyperDriveActive = false;
-    let baseCompTemp = 36.4, frameStartTime = 0;
-    const startTimeStamp = performance.now();
+    // Split compilation ahead of run-time parsing constraints
+    const preParsedLyrics = lyricsPayload.map(phrase => phrase.split(' '));
+
+    // Global App System Space Variables
+    let trackPtr = 0;
+    let sequenceTimer = null;
+    let stealthShieldActive = false;
+    let hyperDriveActive = false;
+    let baselineCoreTemp = 34.8;
+    const globalSystemEpoch = performance.now();
+
+    // Audio Synthetic Variable Registers
+    let audioCtx = null;
+    let masterGainNode = null;
+    let lowpassFilter = null;
+    let signalAnalyser = null;
     
-    const canvas = document.getElementById('ambient-canvas'), ctx = canvas.getContext('2d');
-    const offscreen = document.createElement('canvas'), oCtx = offscreen.getContext('2d');
+    // Canvas Display Global Interfaces
+    const mainCanvas = document.getElementById('ambient-canvas');
+    const mCtx = mainCanvas.getContext('2d');
+    const bufferCanvas = document.createElement('canvas');
+    const bCtx = bufferCanvas.getContext('2d');
 
-    const oscCanvas = document.getElementById('oscilloscope-canvas'), octx = oscCanvas.getContext('2d');
+    const scopeCanvas = document.getElementById('scope-canvas');
+    const sCtx = scopeCanvas.getContext('2d');
+    const spectrumCanvas = document.getElementById('spectrum-canvas');
+    const specCtx = spectrumCanvas.getContext('2d');
 
-    function scaleViewport() {
-      canvas.width = offscreen.width = window.innerWidth;
-      canvas.height = offscreen.height = window.innerHeight;
-      oscCanvas.width = oscCanvas.clientWidth;
-      oscCanvas.height = oscCanvas.clientHeight;
-    }
-    window.addEventListener('resize', scaleViewport, { passive: true });
-    scaleViewport();
+    // Flat Structured Particle Allocation Matrix Buffer
+    const maximumParticles = 50;
+    const particleMemoryBlock = new Float32Array(maximumParticles * 4); // [X, Y, Radius, SpeedY]
 
-    // High performance flat buffer array mechanics
-    let particleCount = 55;
-    let particleBuffer = new Float32Array(particleCount * 4);
-    function buildParticleBuffers() {
-      for(let i = 0; i < particleCount; i++) {
-        const idx = i << 2;
-        particleBuffer[idx] = Math.random() * window.innerWidth;
-        particleBuffer[idx+1] = Math.random() * window.innerHeight;
-        particleBuffer[idx+2] = Math.random() * 45 + 15;
-        particleBuffer[idx+3] = -(Math.random() * 0.55 + 0.15);
+    function allocateParticleTopology() {
+      for(let i = 0; i < maximumParticles; i++) {
+        const baseOffset = i << 2;
+        particleMemoryBlock[baseOffset] = Math.random() * window.innerWidth;
+        particleMemoryBlock[baseOffset + 1] = Math.random() * window.innerHeight;
+        particleMemoryBlock[baseOffset + 2] = Math.random() * 45 + 15;
+        particleMemoryBlock[baseOffset + 3] = -(Math.random() * 0.4 + 0.1);
       }
-      document.getElementById('val-alloc').textContent = (particleBuffer.byteLength) + ' bytes';
-    }
-    buildParticleBuffers();
-
-    let oscBufferLength = 0, oscDataArray = null;
-
-    function drawAmbientGraph(timestamp) {
-      const start = performance.now();
-      oCtx.fillStyle = '#030406';
-      oCtx.fillRect(0, 0, offscreen.width, offscreen.height);
-      oCtx.fillStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.03)' : 'rgba(0, 240, 255, 0.03)';
-
-      const w = offscreen.width, h = offscreen.height;
-      let totalVel = 0;
-
-      for (let i = 0; i < particleCount; i++) {
-        const idx = i << 2;
-        let speedMultiplier = hyperDriveActive ? 7.5 : 1.0;
-        let y = particleBuffer[idx+1] + (particleBuffer[idx+3] * speedMultiplier);
-        const r = particleBuffer[idx+2];
-
-        if(y < -r) {
-          y = h + r;
-          particleBuffer[idx] = Math.random() * w;
-        }
-        particleBuffer[idx+1] = y;
-        totalVel += Math.abs(particleBuffer[idx+3] * speedMultiplier);
-
-        oCtx.beginPath();
-        oCtx.arc(particleBuffer[idx], y, r, 0, 6.28318);
-        oCtx.fill();
-      }
-
-      ctx.clearRect(0, 0, w, h);
-      ctx.drawImage(offscreen, 0, 0);
-      
-      // Update sidebar runtime telemetry elements
-      const renderTime = performance.now() - start;
-      document.getElementById('val-latency').textContent = renderTime.toFixed(2) + 'ms';
-      document.getElementById('val-vel').textContent = (totalVel / particleCount).toFixed(2) + 'px/f';
-      document.getElementById('val-uptime').textContent = ((performance.now() - startTimeStamp) / 1000).toFixed(1) + 's';
-      document.getElementById('val-load').textContent = (renderTime * 7.4).toFixed(1) + '%';
-
-      // Live Audio Scope Renderer Execution
-      if(analyserNode && oscDataArray) {
-        analyserNode.getByteTimeDomainData(oscDataArray);
-        octx.clearRect(0, 0, oscCanvas.width, oscCanvas.height);
-        octx.lineWidth = 2;
-        octx.strokeStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.4)' : 'rgba(0, 240, 255, 0.4)';
-        octx.beginPath();
-        
-        let sliceWidth = oscCanvas.width / oscBufferLength;
-        let x = 0;
-        for(let i = 0; i < oscBufferLength; i++) {
-          let v = oscDataArray[i] / 128.0;
-          let y = v * oscCanvas.height / 2;
-          if(i === 0) octx.moveTo(x, y);
-          else octx.lineTo(x, y);
-          x += sliceWidth;
-        }
-        octx.lineTo(oscCanvas.width, oscCanvas.height / 2);
-        octx.stroke();
-      }
-
-      requestAnimationFrame(drawAmbientGraph);
-    }
-    requestAnimationFrame(drawAmbientGraph);
-
-    // Dynamic Polyphonic Web Audio Engine Array
-    function emitOversampleTone() {
-      try {
-        if(!audioCtx) {
-          audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-          analyserNode = audioCtx.createAnalyser();
-          analyserNode.fftSize = 256;
-          oscBufferLength = analyserNode.frequencyBinCount;
-          oscDataArray = new Uint8Array(oscBufferLength);
-
-          biquadFilter = audioCtx.createBiquadFilter();
-          biquadFilter.type = "lowpass";
-          biquadFilter.connect(audioCtx.destination);
-          analyserNode.connect(biquadFilter);
-          
-          document.getElementById('val-synth-status').textContent = 'ACTIVE';
-          document.getElementById('val-synth-status').style.color = 'var(--matrix-green)';
-        }
-
-        const now = audioCtx.currentTime;
-        const waveType = document.getElementById('synth-waveform-type').value;
-        const tempoMod = parseFloat(document.getElementById('synth-tempo-mod').value);
-        
-        // Formulate Arpeggiated Multi-Chord Harmony based on lyrics track pointer
-        const baseFreq = stealthShieldActive ? 70 : 220 + (trackPtr * 3);
-        const chords = [baseFreq, baseFreq * 1.25, baseFreq * 1.5, baseFreq * 2.0];
-        
-        document.getElementById('val-freq').textContent = baseFreq.toFixed(1) + ' Hz';
-        document.getElementById('val-polyphony').textContent = chords.length + '/4 Node';
-
-        chords.forEach((freq, index) => {
-          let osc = audioCtx.createOscillator();
-          let gain = audioCtx.createGain();
-          
-          osc.type = waveType;
-          osc.frequency.setValueAtTime(freq, now + (index * 0.04 * tempoMod));
-          biquadFilter.frequency.setValueAtTime(stealthShieldActive ? 150 : 1500, now);
-          
-          gain.gain.setValueAtTime(0.015, now);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + (0.16 * tempoMod));
-          
-          osc.connect(gain);
-          gain.connect(analyserNode);
-          osc.start(now + (index * 0.04 * tempoMod));
-          osc.stop(now + (0.16 * tempoMod) + (index * 0.04 * tempoMod));
-        });
-        
-        baseCompTemp += 0.55; // Core calculation load drives temperature simulation
-      } catch(e) {}
+      document.getElementById('val-alloc').textContent = particleMemoryBlock.byteLength + ' bytes';
     }
 
-    const clockEl = document.getElementById('system-clock');
-    const tempEl = document.getElementById('temp-metric');
+    function setupViewportSizing() {
+      mainCanvas.width = bufferCanvas.width = window.innerWidth;
+      mainCanvas.height = bufferCanvas.height = window.innerHeight;
+      
+      scopeCanvas.width = scopeCanvas.clientWidth;
+      scopeCanvas.height = scopeCanvas.clientHeight;
+      spectrumCanvas.width = spectrumCanvas.clientWidth;
+      spectrumCanvas.height = spectrumCanvas.clientHeight;
+    }
+    window.addEventListener('resize', () => { setupViewportSizing(); }, { passive: true });
+  <script>
+    function initializePolysynthEngine() {
+      if (audioCtx) return;
+      
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContextClass();
+      
+      masterGainNode = audioCtx.createGain();
+      lowpassFilter = audioCtx.createBiquadFilter();
+      signalAnalyser = audioCtx.createAnalyser();
+      
+      signalAnalyser.fftSize = 256;
+      lowpassFilter.type = 'lowpass';
+      
+      // Patching Synthetic Connections Matrix
+      masterGainNode.connect(lowpassFilter);
+      lowpassFilter.connect(signalAnalyser);
+      signalAnalyser.connect(audioCtx.destination);
+      
+      updateSynthEngineParameters();
+    }
 
-    function processSystemClock() {
-      const clockDate = new Date();
-      if (stealthShieldActive) clockDate.setHours(clockDate.getHours() - 1);
-      const parts = clockDate.toTimeString().substring(0, 8);
-      const ms = String(clockDate.getMilliseconds()).padStart(3, '0').substring(0,2);
-      clockEl.textContent = parts + '.' + ms;
+    function updateSynthEngineParameters() {
+      if (!audioCtx) return;
       
-      if(baseCompTemp > 34.5) baseCompTemp -= 0.05;
-      if(hyperDriveActive) baseCompTemp += (Math.random() * 0.22);
+      const volumeInput = document.getElementById('synth-vol').value;
+      const cutoffInput = document.getElementById('synth-cutoff').value;
       
-      tempEl.textContent = baseCompTemp.toFixed(1) + '°C';
-      if(baseCompTemp > 44.0) {
-        tempEl.style.color = 'var(--magenta-glow)';
-        document.getElementById('val-throttle').textContent = 'THERMAL_THROTTLE';
-      } else {
-        tempEl.style.color = 'var(--matrix-green)';
-        document.getElementById('val
+      masterGainNode.gain.setValueAtTime((volumeInput / 100) * 0.15, audioCtx.currentTime);
+      lowpassFilter.frequency.setValueAtTime(cutoffInput, audioCtx.currentTime);
+      
+      document.getElementById('readout-vol').textContent = volumeInput + '%';
+      document.getElementById('readout-cutoff').textContent = cutoffInput + ' Hz';
+    }
+
+    // Attach Event Listeners to Form Fields
+    document.getElementById('synth-vol').addEventListener('input', updateSynthEngineParameters);
+    document.getElementById('synth-cutoff').addEventListener('input', updateSynthEngineParameters);
+    document.getElementById('synth-bpm').addEventListener('input', () => {
+      document.getElementById('readout-bpm').textContent = document.getElementById('synth-bpm').value + ' BPM';
+    });
+
+    function triggerPolyphonicNote(baseFreq) {
+      if (!audioCtx) return;
+      
+      const currentTime = audioCtx.currentTime;
+      const synthWaveform = document.getElementById('synth-wave').value;
+      
+      // Main Tone Voice Generator
+      const voiceOsc = audioCtx.createOscillator();
+      const voiceGain = audioCtx.createGain();
+      voiceOsc.type = synthWaveform;
+      voiceOsc.frequency.setValueAtTime(baseFreq, currentTime);
+      
+      // Bass Sub-Oscillator Generator Voice
+      const subOsc = audioCtx.createOscillator();
+      const subGain = audioCtx.createGain();
+      subOsc.type = 'sine';
+      subOsc.frequency.setValueAtTime(baseFreq / 2, currentTime);
+      
+      voiceGain.gain.setValueAtTime(0.4, currentTime);
+      
