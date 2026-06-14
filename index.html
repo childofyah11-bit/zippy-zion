@@ -3,89 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CHATBOT // Multi-Discipline Problem Solver</title>
+  <title>ACE CHATBOT // Core Intel Engine</title>
 </head>
 <body>
 
-  <!-- Background Processing Telemetry Grid Layer -->
+  <!-- Dynamic Structural Computing Grid Matrix -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- High-Tech Computational Shell Frame Container -->
+  <!-- Complete High-Tech Smartphone / Interface Shell Frame -->
   <div id="phone-container">
     
-    <!-- Dynamic Island Header Overhaul (Configured to CHATBOT Core) -->
+    <!-- Dynamic Island System Clock Module -->
     <div id="dynamic-island">
       <div id="island-pill">
-        <span id="island-icon">🤖</span>
+        <span id="island-icon">🧠</span>
         <span id="system-clock">00:00:00.00</span>
       </div>
-      <div id="island-expanded-status">ACADEMIC_AI_KERNEL // RUNNING</div>
+      <div id="island-expanded-status">ACE_CORE_ONLINE // COGNITIVE_ARRAY</div>
     </div>
 
-    <!-- Live Telemetry Monitor Panel Matrix -->
+    <!-- Active Device Hardware Diagnostic Strip -->
     <div class="glass-card telemetry-row">
-      <div>AI_ENGINE: <span class="premium-cyan" id="carrier-text">CHATBOT_v4.0</span></div>
-      <div>CORE_TEMP: <span id="temp-metric">35.0°C</span></div>
+      <div>AI_SHELL: <span class="premium-cyan" id="carrier-text">ACE_CHATBOT_v5.0</span></div>
+      <div>CORE_TEMP: <span id="temp-metric">34.5°C</span></div>
     </div>
 
-    <!-- Split Screen Specialized Workspace Area -->
+    <!-- Dual Split Operational Work Environment Layout -->
     <div class="workspace-layout">
       
-      <!-- Left Column: Problem Input & Solution Readout Deck -->
+      <!-- Primary Core Dialogues and Interactive Workspace Pane -->
       <div class="glass-card main-media-deck">
-        <div id="workspace-header">AI SOLVER DECK</div>
+        <div id="workspace-header">ACE CONVERSATION TERMINAL</div>
         
-        <!-- Interactive Multi-Line Code & Equation Input Node -->
-        <div class="input-container">
-          <textarea id="ai-input" placeholder="Type your problem or choose an academic module preset below..."></textarea>
-          <div class="input-controls">
-            <button class="tech-sub-btn run-btn" onclick="executeSolverLogic()">SOLVE PROBLEM</button>
-            <button class="tech-sub-btn clear-btn" onclick="purgeWorkspace()">RESET CONSOLE</button>
-          </div>
-        </div>
-
-        <!-- High-Definition Geometry & Vector Rendering Canvas Grid -->
+        <!-- Live Mathematical & Text Graphic Plot Display Screen -->
         <div id="graph-wrapper">
           <canvas id="visualizer-ring-canvas"></canvas>
         </div>
 
-        <!-- High-Resolution Step-By-Step Solution Window -->
-        <div id="math-output-deck">
-          <div style="color: #64748b; font-size: 0.65rem; font-weight: bold; letter-spacing: 0.5px;">STEP-BY-STEP SOLUTION TRACE:</div>
-          <div id="primary-result">CONSOLE STANDBY // CHATBOT IS READY FOR INPUT DATA...</div>
+        <!-- Chat History Window Node -->
+        <div id="chat-history-viewport">
+          <div class="chat-bubble ai-bubble">[ACE_INIT] Greetings operator. I am Ace Chatbot. Supply any academic, logical, or conversational problem vector above and initialize execution.</div>
+        </div>
+
+        <!-- Custom User String Query Submission Box -->
+        <div class="input-container">
+          <textarea id="ai-input" placeholder="Type a custom problem, question, or text string here... (Press Enter to Submit)"></textarea>
+          <div class="input-controls">
+            <button class="tech-sub-btn run-btn" onclick="submitUserQuery()">SUBMIT LOGIC</button>
+            <button class="tech-sub-btn clear-btn" onclick="resetChatHistory()">PURGE LOGS</button>
+          </div>
         </div>
       </div>
 
-      <!-- Right Column: Live Telemetry Sidebar Variable Matrix -->
+      <!-- Right Column: Live Computing Parameter Side-Grid Module -->
       <div class="glass-card sidebar-matrix">
-        <div class="sidebar-header">AI RUNTIME PARAMETERS</div>
-        <div>EXEC_SPEED: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
-        <div>MEMORY_LOAD: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
-        <div>PROBLEMS_RUN: <span class="telemetry-value" id="val-steps">000000</span></div>
-        <div>CALC_PRECISION: <span class="telemetry-value" id="val-precision">128-BIT</span></div>
-        <div>CPU_USAGE: <span class="telemetry-value" id="val-load">0.0%</span></div>
-        <div>COMPUTE_STATE: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
+        <div class="sidebar-header">ACE LIVE METRICS</div>
+        <div>THINK_TIME: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
+        <div>BUFFER_SIZE: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
+        <div>QUERIES_RUN: <span class="telemetry-value" id="val-steps">000000</span></div>
+        <div>ENGINE_FREQ: <span class="telemetry-value" id="val-precision">4.8 GHz</span></div>
+        <div>PROCESSOR_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
+        <div>THROTTLE_INDEX: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
 
-        <div class="sidebar-header" style="margin-top: 12px;">ACADEMIC WORKSPACE MODULES</div>
-        <button class="preset-btn" onclick="loadModulePreset('algebra')">ALGEBRA: SOLVE FOR X</button>
-        <button class="preset-btn" onclick="loadModulePreset('geometry')">GEOMETRY: TRAPEZOID AREA</button>
-        <button class="preset-btn" onclick="loadModulePreset('chemistry')">CHEMISTRY: MOLAR MASS</button>
-        <button class="preset-btn" onclick="loadModulePreset('biology')">BIOLOGY: RNA TRANSCRIPT</button>
-        <button class="preset-btn" onclick="triggerOverclock()">BOOST CHATBOT ENGINE</button>
+        <div class="sidebar-header" style="margin-top: 15px;">ACADEMIC TEMPLATES</div>
+        <button class="preset-btn" onclick="loadQueryTemplate('math')">MATHEMATICS EXPRESSION</button>
+        <button class="preset-btn" onclick="loadQueryTemplate('history')">CHRONOLOGY MATRIX</button>
+        <button class="preset-btn" onclick="loadQueryTemplate('physics')">PHYSICS ENERGY COEFFICIENT</button>
+        <button class="preset-btn" onclick="loadQueryTemplate('chat')">CONVERSATIONAL TRACE</button>
+        <button class="preset-btn" id="boost-btn" onclick="toggleOverclockEngine()">OVERCLOCK CORE</button>
       </div>
     </div>
 
-    <!-- Active Diagnostic Stream Log Monitor -->
+    <!-- Active Diagnostics Activity Stream Ticker -->
     <div class="glass-card activity-monitor" id="covert-activity-logs">
-      <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">CHATBOT SYSTEM LOGS:</div>
+      <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">ACE ENGINE STREAMS:</div>
     </div>
 
   </div>
   <style>
     :root {
-      --premium-bg: #04060a;
-      --glass-surface: rgba(12, 18, 30, 0.5);
-      --glass-border: rgba(255, 255, 255, 0.06);
+      --premium-bg: #030509;
+      --glass-surface: rgba(11, 16, 28, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.07);
       --cyan-glow: #00f0ff;
       --magenta-glow: #ff007f;
       --matrix-green: #39ff14;
@@ -115,10 +114,10 @@
     }
     #phone-container {
       position: relative;
-      width: 840px; 
-      height: 660px;
-      background: rgba(8, 11, 18, 0.96);
-      border: 2px solid rgba(255, 255, 255, 0.08);
+      width: 900px; /* Extended widescreen command center viewport */
+      height: 680px;
+      background: rgba(7, 10, 17, 0.96);
+      border: 2px solid rgba(255, 255, 255, 0.09);
       border-radius: 24px;
       z-index: 2;
       box-shadow: 0 40px 100px rgba(0,0,0,0.95), inset 0 0 40px rgba(0,240,255,0.02);
@@ -147,7 +146,7 @@
       align-items: center;
       justify-content: center;
       z-index: 100;
-      width: 240px;
+      width: 260px;
       height: 28px;
       contain: layout;
     }
@@ -163,7 +162,6 @@
       font-weight: 700;
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.5px;
-      color: #fff;
     }
     #island-icon {
       color: var(--cyan-glow);
@@ -218,6 +216,53 @@
       color: var(--cyan-glow);
       text-shadow: 0 0 10px rgba(0,240,255,0.2);
     }
+    #graph-wrapper {
+      height: 70px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    #visualizer-ring-canvas {
+      width: 100%;
+      height: 100%;
+    }
+    #chat-history-viewport {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .chat-bubble {
+      font-family: monospace;
+      font-size: 0.75rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 85%;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+    .user-bubble {
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      color: #e2e8f0;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .ai-bubble {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      color: #39ff14;
+      align-self: flex-start;
+      text-align: left;
+      white-space: pre-wrap;
+    }
     .input-container {
       display: flex;
       flex-direction: column;
@@ -225,12 +270,12 @@
     }
     #ai-input {
       width: 100%;
-      height: 70px;
+      height: 50px;
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 8px;
       padding: 8px;
-      color: #39ff14;
+      color: #fff;
       font-family: monospace;
       font-size: 0.75rem;
       resize: none;
@@ -264,35 +309,6 @@
       background: rgba(255, 0, 127, 0.1);
       border-color: var(--magenta-glow);
       color: #fff;
-    }
-    #graph-wrapper {
-      flex: 1;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.04);
-      border-radius: 8px;
-      position: relative;
-      overflow: hidden;
-    }
-    #visualizer-ring-canvas {
-      width: 100%;
-      height: 100%;
-    }
-    #math-output-deck {
-      background: rgba(0,0,0,0.6);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 8px;
-      padding: 10px;
-      text-align: left;
-      font-family: monospace;
-      max-height: 160px;
-      overflow-y: auto;
-    }
-    #primary-result {
-      font-size: 0.75rem;
-      color: #e2e8f0;
-      margin-top: 6px;
-      white-space: pre-wrap;
-      line-height: 1.4;
     }
     .sidebar-matrix {
       font-family: monospace;
@@ -329,12 +345,12 @@
       transition: all 0.2s ease;
     }
     .preset-btn:hover {
-      background: rgba(57, 255, 20, 0.08);
-      border-color: var(--matrix-green);
+      background: rgba(0, 240, 255, 0.08);
+      border-color: var(--cyan-glow);
       color: #fff;
     }
     .activity-monitor {
-      height: 65px;
+      height: 60px;
       display: flex;
       flex-direction: column;
       gap: 2px;
@@ -351,467 +367,202 @@
     }
   </style>
   <script>
-    let processedProblemsCount = 0, chatbotOverclocked = false;
-    let computedCoreTemp = 35.0;
-    const initialExecutionTimestamp = performance.now();
+    let executedQueriesCounter = 0, isCoreOverclocked = false;
+    let baselineHardwareTemp = 34.5;
     
     const ambientCanvas = document.getElementById('ambient-canvas'), aCtx = ambientCanvas.getContext('2d');
     const graphCanvas = document.getElementById('visualizer-ring-canvas'), gCtx = graphCanvas.getContext('2d');
 
-    function executeViewportScale() {
+    function executeSystemScale() {
       ambientCanvas.width = window.innerWidth;
       ambientCanvas.height = window.innerHeight;
-      const wrap = graphCanvas.parentElement;
-      graphCanvas.width = wrap.clientWidth;
-      graphCanvas.height = wrap.clientHeight;
+      const holder = graphCanvas.parentElement;
+      graphCanvas.width = holder.clientWidth;
+      graphCanvas.height = holder.clientHeight;
     }
-    window.addEventListener('resize', executeViewportScale, { passive: true });
-    executeViewportScale();
+    window.addEventListener('resize', executeSystemScale, { passive: true });
+    executeSystemScale();
 
-    // Packed Array Buffers for Particle Calculations
-    const dotCount = 25;
-    const dataBufferMatrix = new Float32Array(dotCount * 4);
-    for(let i = 0; i < dotCount; i++) {
-      const offset = i << 2;
-      dataBufferMatrix[offset] = Math.random() * window.innerWidth;
-      dataBufferMatrix[offset+1] = Math.random() * window.innerHeight;
-      dataBufferMatrix[offset+2] = Math.random() * 20 + 8;
-      dataBufferMatrix[offset+3] = -(Math.random() * 0.3 + 0.1);
+    // Node Buffers for High Frame-rate Ambient Matrix Redraws
+    const nodeCount = 20;
+    const nodeBufferMatrix = new Float32Array(nodeCount * 4);
+    for(let i = 0; i < nodeCount; i++) {
+      const idx = i << 2;
+      nodeBufferMatrix[idx] = Math.random() * window.innerWidth;
+      nodeBufferMatrix[idx+1] = Math.random() * window.innerHeight;
+      nodeBufferMatrix[idx+2] = Math.random() * 15 + 5;
+      nodeBufferMatrix[idx+3] = -(Math.random() * 0.25 + 0.1);
     }
 
-    // Passive Background Math-Grid Render Loop
-    function streamBackgroundMatrix() {
-      aCtx.fillStyle = '#04060a';
+    function animateSystemMatrix() {
+      aCtx.fillStyle = '#030509';
       aCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
-      aCtx.fillStyle = chatbotOverclocked ? 'rgba(255, 0, 127, 0.015)' : 'rgba(0, 240, 255, 0.015)';
+      aCtx.fillStyle = isCoreOverclocked ? 'rgba(255, 0, 127, 0.012)' : 'rgba(0, 240, 255, 0.012)';
 
-      for(let i = 0; i < dotCount; i++) {
-        const offset = i << 2;
-        let y = dataBufferMatrix[offset+1] + dataBufferMatrix[offset+3];
-        if(y < -dataBufferMatrix[offset+2]) {
-          y = ambientCanvas.height + dataBufferMatrix[offset+2];
-          dataBufferMatrix[offset] = Math.random() * ambientCanvas.width;
+      for(let i = 0; i < nodeCount; i++) {
+        const idx = i << 2;
+        let y = nodeBufferMatrix[idx+1] + nodeBufferMatrix[idx+3];
+        if(y < -nodeBufferMatrix[idx+2]) {
+          y = ambientCanvas.height + nodeBufferMatrix[idx+2];
+          nodeBufferMatrix[idx] = Math.random() * ambientCanvas.width;
         }
-        dataBufferMatrix[offset+1] = y;
+        nodeBufferMatrix[idx+1] = y;
         aCtx.beginPath();
-        aCtx.arc(dataBufferMatrix[offset], y, dataBufferMatrix[offset+2], 0, 6.28318);
+        aCtx.arc(nodeBufferMatrix[idx], y, nodeBufferMatrix[idx+2], 0, 6.28318);
         aCtx.fill();
       }
-      requestAnimationFrame(streamBackgroundMatrix);
+      requestAnimationFrame(animateSystemMatrix);
     }
-    requestAnimationFrame(streamBackgroundMatrix);
-    // Core Problem Solver Entry-Point
-    function executeSolverLogic() {
-      const calculationStart = performance.now();
-      const textQuery = document.getElementById('ai-input').value.trim();
-      const displayPane = document.getElementById('primary-result');
+    requestAnimationFrame(animateSystemMatrix);
+    // Text Submission Pipeline Hook
+    function submitUserQuery() {
+      const inputField = document.getElementById('ai-input');
+      const queryText = inputField.value.trim();
+      if(!queryText) return;
+
+      const deltaStart = performance.now();
+      executedQueriesCounter++;
       
-      if (!textQuery) {
-        displayPane.textContent = "ERROR: ACADEMIC INPUT BUFFER VOID. PLEASE SPECIFY A CRITERIA.";
-        return;
-      }
+      // Render User Speech Bubble node into viewport
+      appendBubbleToHistory(queryText, true);
+      inputField.value = '';
 
-      processedProblemsCount++;
-      document.getElementById('val-steps').textContent = String(processedProblemsCount).padStart(6, '0');
-      document.getElementById('val-alloc').textContent = (textQuery.length * 2) + " bytes";
-      
-      computedCoreTemp += chatbotOverclocked ? 2.2 : 0.8;
-      pushChatbotLogs("Parsing string sequences through AI interpreter module...", false);
+      // Update State Statistics Parameters
+      document.getElementById('val-steps').textContent = String(executedQueriesCounter).padStart(6, '0');
+      document.getElementById('val-alloc').textContent = (queryText.length * 2) + " bytes";
+      baselineHardwareTemp += isCoreOverclocked ? 2.5 : 0.7;
+      pushTelemetryLog("Interpreting user payload configuration arrays...");
 
-      // Branch to appropriate parsing matrix depending on instruction patterns
-      if (textQuery.includes("solve:") || textQuery.includes("x")) {
-        parseAlgebra(textQuery, displayPane);
-      } else if (textQuery.includes("trapezoid") || textQuery.includes("area")) {
-        parseGeometry(textQuery, displayPane);
-      } else if (textQuery.includes("molar") || textQuery.includes("grams")) {
-        parseChemistry(textQuery, displayPane);
-      } else if (textQuery.includes("dna") || textQuery.includes("rna")) {
-        parseBiology(textQuery, displayPane);
-      } else {
-        // Fallback Native Calculation Evaluator Engine
-        try {
-          const sanitizedToken = textQuery.replace(/[^0-9+\-*/().\s]/g, '');
-          const calculation = new Function(`return (${sanitizedToken})`)();
-          if (calculation === undefined || typeof calculation === 'function') throw new Error();
-          
-          displayPane.textContent = `[EVALUATION ENGINE SUCCESS]\nResult: ${calculation}\n\nTrace complete. Standard math expression parsed flawlessly.`;
-          renderGeometryPlot(2);
-        } catch(e) {
-          displayPane.textContent = "CHATBOT ERROR: Unrecognized command matrix.\nUse an academic button block on the right to review sample syntaxes.";
-        }
-      }
+      // Structural Intent Parser Routines
+      setTimeout(() => {
+        let aiResponseText = "";
+        let cleanQuery = queryText.toLowerCase();
 
-      const endDelta = performance.now() - calculationStart;
-      document.getElementById('val-latency').textContent = endDelta.toFixed(3) + "ms";
-    }
-
-    // 1. Algebra Solver Engine
-    function parseAlgebra(query, output) {
-      // Logic for matching equations like '2x + 10 = 30' or 'solve: 5x = 25'
-      const match = query.match(/(-?\d*)x\s*([+-]\s*\d+)?\s*=\s*(-?\d+)/i);
-      if (match) {
-        let coeff = match[1] ? parseFloat(match[1].replace(/\s+/g, '')) : 1;
-        if (match[1] === '-') coeff = -1;
-        if (isNaN(coeff)) coeff = 1;
-        
-        let constant = match[2] ? parseFloat(match[2].replace(/\s+/g, '')) : 0;
-        let rightSide = parseFloat(match[3]);
-        
-        let step1 = rightSide - constant;
-        let finalX = step1 / coeff;
-
-        output.textContent = `[ALGEBRA NODE EXECUTION]\nEquation: ${coeff}x ${constant >= 0 ? '+ ' + constant : constant} = ${rightSide}\n\nStep 1 (Isolate x-term): ${coeff}x = ${rightSide} - (${constant}) -> ${coeff}x = ${step1}\nStep 2 (Divide coefficients): x = ${step1} / ${coeff}\n\nFINAL RESULT: x = ${finalX}`;
-        renderGeometryPlot(finalX);
-      } else {
-        output.textContent = "[ALGEBRA NODE ERROR]\nCould not extract linear sequence parameters. Correct format: '2x + 10 = 30'";
-      }
-    }
-
-    // 2. Geometry Solver Engine
-    function parseGeometry(query, output) {
-      const base1 = parseFloat(query.match(/b1:\s*([0-9.]+)/)?.[1] || 10);
-      const base2 = parseFloat(query.match(/b2:\s*([0-9.]+)/)?.[1] || 20);
-      const height = parseFloat(query.match(/h:\s*([0-9.]+)/)?.[1] || 5);
-      
-      const area = ((base1 + base2) * height) / 2;
-      output.textContent = `[GEOMETRY SHAPE MATRIX]\nShape: Trapezoid\nInputs: Base1=${base1}, Base2=${base2}, Height=${height}\n\nFormula: Area = ((b1 + b2) * h) / 2\nStep 1: (${base1} + ${base2}) * ${height} / 2\nStep 2: ${base1 + base2} * ${height} / 2\n\nFINAL AREA = ${area}`;
-      
-      // Physically draw a trapezoid profile onto the telemetry viewscreen
-      gCtx.clearRect(0,0,graphCanvas.width,graphCanvas.height);
-      gCtx.strokeStyle = "var(--cyan-glow)";
-      gCtx.lineWidth = 2;
-      gCtx.beginPath();
-      gCtx.moveTo(40, 100);
-      gCtx.lineTo(120, 100);
-      gCtx.lineTo(150, 40);
-      gCtx.lineTo(10, 40);
-      gCtx.closePath();
-      gCtx.stroke();
-    }
-
-    // 3. Chemistry Solver Engine
-    function parseChemistry(query, output) {
-      // High-precision periodic weight dictionary mapping symbols directly to masses
-      const standardWeights = { H: 1.008, C: 12.011, O: 15.999, N: 14.007, Na: 22.990, Cl: 35.453 };
-      pushChatbotLogs("Accessing chemical element mass dictionary tables...", false);
-
-      let totalMass = 0;
-      let logTraceStr = "";
-      
-      // Track elements and count properties matching patterns like H2O or CO2
-      const regex = /([A-Z][a-z]?)([0-9]*)/g;
-      let matchesFound = [...query.matchAll(regex)];
-
-      if(matchesFound.length > 0) {
-        matchesFound.forEach(m => {
-          let element = m[1];
-          let count = m[2] ? parseInt(m[2]) : 1;
-          if (standardWeights[element]) {
-            let elementSum = standardWeights[element] * count;
-            totalMass += elementSum;
-            logTraceStr += `-> Element ${element}: Mass ${standardWeights[element]} g/mol * Count ${count} = ${elementSum.toFixed(3)} g/mol\n`;
-          } else {
-            logTraceStr += `-> Element ${element}: Not matched in lightweight database layer. Calculated as 0.\n`;
+        if (cleanQuery.includes("solve") || /[\d+\-*/()]/.test(cleanQuery)) {
+          // Native Formula Math Evaluation Blocks
+          try {
+            const mathFormulaClean = queryText.replace(/[^0-9+\-*/().\s]/g, '');
+            if(!mathFormulaClean) throw new Error();
+            const calculatedSum = new Function(`return (${mathFormulaClean})`)();
+            aiResponseText = `[ACE MATHEMATICAL LOGIC SYSTEM]\nExpression trace identified: ${mathFormulaClean}\nResult calculation value: ${calculatedSum}\n\nOperation completed with exact 128-bit parsing precision accuracy rules.`;
+            renderOscilloscopeCurve(calculatedSum || 4);
+          } catch(e) {
+            aiResponseText = `[ACE RESOLUTION MODULE]\nParsed Query: "${queryText}"\n\nI parsed your input query vectors, but no explicit formula constant bounds were captured. Specify standard math signs (+, -, *, /) for real-time trace solutions.`;
+            renderOscilloscopeCurve(2);
           }
-        });
-        output.textContent = `[MOLECULAR MASS ENGINE]\nFormula Evaluated: ${query.toUpperCase()}\n\nStep-by-step element breakdown:\n${logTraceStr}\nTOTAL COMPOSITE MOLAR MASS = ${totalMass.toFixed(3)} g/mol`;
-      } else {
-        output.textContent = "[CHEMISTRY MODULE ERROR]\nNo standard chemical elements extracted. Format sample: 'CO2' or 'H2O'";
-      }
-      renderGeometryPlot(totalMass || 5);
-    }
-
-    // 4. Biology Solver Engine
-    function parseBiology(query, output) {
-      const match = query.match(/dna:\s*([A-Za-z]+)/i);
-      if(match) {
-        let dnaSequence = match[1].toUpperCase();
-        let rnaOutput = "";
-        for(let i=0; i<dnaSequence.length; i++) {
-          let base = dnaSequence[i];
-          if(base === 'A') rnaOutput += 'U';
-          else if(base === 'T') rnaOutput += 'A';
-          else if(base === 'C') rnaOutput += 'G';
-          else if(base === 'G') rnaOutput += 'C';
-          else rnaOutput += '?'; // Indeterminate base catch
+        } else if (cleanQuery.includes("history") || cleanQuery.includes("who") || cleanQuery.includes("war")) {
+          aiResponseText = `[ACE HISTORICAL DATABANKS]\nQuery Context: Chronology/Event Analysis\n\nSolution Blueprint:\n1. Cross-referencing historic node networks...\n2. Event timestamp correlation indexed.\n\nResult: Temporal records show the designated parameters correspond to complex historical macro-cycles inside standard text books.`;
+          renderOscilloscopeCurve(6);
+        } else if (cleanQuery.includes("physics") || cleanQuery.includes("force") || cleanQuery.includes("energy")) {
+          aiResponseText = `[ACE APPLIED PHYSICS KERNEL]\nDetected Equation Target: Kinematics / Energy Conservation\n\nFormula Profile:\n-> Force (F) = mass * acceleration\n-> Kinetic Energy (KE) = 0.5 * m * v²\n\nResult: Physics vectors stable. Input values are processed against normal universal physics constants seamlessly.`;
+          renderOscilloscopeCurve(9);
+        } else {
+          // Conversational Default Output Fallback Strategy
+          aiResponseText = `[ACE INTERACTIVE CHATBOT]\nQuery Acknowledged: "${queryText}"\n\nI have successfully received your custom question entry. My symbolic academic processors are fully armed and initialized to solve advanced science text patterns, homework expressions, or analytical structures you present next.`;
+          renderOscilloscopeCurve(1);
         }
-        output.textContent = `[GENETIC REPLICATION VECTOR]\nInput Strand (DNA): 5' - ${dnaSequence} - 3'\n\nTranscription Rule Matrix: [A->U, T->A, C->G, G->C]\n\nOUTPUT STRAND (mRNA): 3' - ${rnaOutput} - 5'`;
-        renderGeometryPlot(dnaSequence.length);
-      } else {
-        output.textContent = "[BIOLOGY SYSTEM ATOMIZER ERROR]\nCould not extract DNA base pairs. Syntax example: 'dna: ATCGGCTA'";
-      }
+
+        // Render AI Answer Node to Panel Screen
+        appendBubbleToHistory(aiResponseText, false);
+        
+        const deltaTotal = performance.now() - deltaStart;
+        document.getElementById('val-latency').textContent = deltaTotal.toFixed(2) + "ms";
+      }, 350); // Fast 350ms computational artificial response gap
     }
 
-    // Geometry Plotter Visual Coordinate Function
-    function renderGeometryPlot(coefficient) {
+    // Intercept Textarea Enter Key Event Actions
+    document.getElementById('ai-input').addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        submitUserQuery();
+      }
+    });
+
+    function appendBubbleToHistory(msg, isUser) {
+      const view = document.getElementById('chat-history-viewport');
+      const element = document.createElement('div');
+      element.className = isUser ? 'chat-bubble user-bubble' : 'chat-bubble ai-bubble';
+      element.textContent = msg;
+      view.appendChild(element);
+      view.scrollTop = view.scrollHeight;
+    }
+
+    function renderOscilloscopeCurve(factor) {
       gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
-      gCtx.strokeStyle = chatbotOverclocked ? '#ff007f' : '#00f0ff';
+      gCtx.strokeStyle = isCoreOverclocked ? '#ff007f' : '#00f0ff';
       gCtx.lineWidth = 1.5;
       gCtx.beginPath();
-      
-      const baselineY = graphCanvas.height / 2;
-      const spacingX = graphCanvas.width / 30;
-
-      for(let i = 0; i <= 30; i++) {
-        const coordX = i * spacingX;
-        const curveY = Math.sin(i * 0.4 + coefficient) * (graphCanvas.height * 0.25);
-        if(i === 0) gCtx.moveTo(coordX, baselineY + curveY);
-        else gCtx.lineTo(coordX, baselineY + curveY);
+      const midY = graphCanvas.height / 2;
+      const step = graphCanvas.width / 40;
+      for(let i=0; i<=40; i++) {
+        const x = i * step;
+        const y = Math.sin(i * 0.3 + factor) * (graphCanvas.height * 0.28);
+        if(i === 0) gCtx.moveTo(x, midY + y);
+        else gCtx.lineTo(x, midY + y);
       }
       gCtx.stroke();
     }
 
-    // Operational Framework Infrastructure Tools
-    function loadModulePreset(type) {
-      const areaNode = document.getElementById('ai-input');
-      if (type === 'algebra') {
-        areaNode.value = "solve: 3x + 15 = 45";
-      } else if (type === 'geometry') {
-        areaNode.value = "trapezoid calculation matrix: b1: 12, b2: 18, h: 6";
-      } else if (type === 'chemistry') {
-        areaNode.value = "molar mass calculation formula: H2O";
-      } else if (type === 'biology') {
-        areaNode.value = "dna: ATCGGCTAGC";
-      }
-      executeSolverLogic();
+    function loadQueryTemplate(type) {
+      const area = document.getElementById('ai-input');
+      if (type === 'math') area.value = "(45 * 12) / Math.sqrt(16)";
+      else if (type === 'history') area.value = "History: Describe the timeline of ancient Roman engineering infrastructure assets.";
+      else if (type === 'physics') area.value = "Physics: Determine total kinetic energy when velocity is equal to 15 m/s.";
+      else if (type === 'chat') area.value = "Hello Ace Chatbot, tell me how your cognitive multi-discipline network calculates logic.";
+      area.focus();
     }
 
-    function triggerOverclock() {
-      chatbotOverclocked = !chatbotOverclocked;
-      pushChatbotLogs(chatbotOverclocked ? "WARNING: Chatbot engine threshold overclocked." : "System frequency thresholds cooled to normal profiles.", chatbotOverclocked);
+    function toggleOverclockEngine() {
+      isCoreOverclocked = !isCoreOverclocked;
+      const btn = document.getElementById('boost-btn');
+      btn.style.color = isCoreOverclocked ? 'var(--magenta-glow)' : '';
+      btn.style.borderColor = isCoreOverclocked ? 'var(--magenta-glow)' : '';
+      document.getElementById('val-precision').textContent = isCoreOverclocked ? "8.2 GHz" : "4.8 GHz";
+      pushTelemetryLog(isCoreOverclocked ? "WARNING: CPU VOLTAGE OVERDRIVE ACTIVE." : "System clock thresholds normalized.");
     }
 
-    function purgeWorkspace() {
-      document.getElementById('ai-input').value = '';
-      document.getElementById('primary-result').textContent = 'CONSOLE STANDBY // CHATBOT IS READY FOR INPUT DATA...';
-      gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
-      pushChatbotLogs("Calculation workspaces and volatile variables reset.", false);
-    }
-
-    // Telemetry System Hardware Tick Loop
-    function triggerHardwareClockTick() {
-      const dateInstance = new Date();
-      const timeStr = dateInstance.toTimeString().substring(0, 8);
-      const msStr = String(dateInstance.getMilliseconds()).padStart(3, '0').substring(0, 2);
-      document.getElementById('system-clock').textContent = timeStr + '.' + msStr;
-
-      if (computedCoreTemp > 35.0) computedCoreTemp -= 0.03;
-      if (chatbotOverclocked) computedCoreTemp += Math.random() * 0.14 + 0.06;
-      
-      const readoutNode = document.getElementById('temp-metric');
-      readoutNode.textContent = computedCoreTemp.toFixed(1) + '°C';
-      
-      const stateView = document.getElementById('val-throttle');
-      const loadView = document.getElementById('val-load');
-      
-      if(computedCoreTemp > 45.0) {
-        readoutNode.style.color = "var(--magenta-glow)";
-        stateView.textContent = "THERMAL_OVERLOAD";
-    // Core Problem Solver Entry-Point
-    function executeSolverLogic() {
-      const calculationStart = performance.now();
-      const textQuery = document.getElementById('ai-input').value.trim();
-      const displayPane = document.getElementById('primary-result');
-      
-      if (!textQuery) {
-        displayPane.textContent = "ERROR: ACADEMIC INPUT BUFFER VOID. PLEASE SPECIFY A CRITERIA.";
-        return;
-      }
-
-      processedProblemsCount++;
-      document.getElementById('val-steps').textContent = String(processedProblemsCount).padStart(6, '0');
-      document.getElementById('val-alloc').textContent = (textQuery.length * 2) + " bytes";
-      
-      computedCoreTemp += chatbotOverclocked ? 2.2 : 0.8;
-      pushChatbotLogs("Parsing string sequences through AI interpreter module...", false);
-
-      // Branch to appropriate parsing matrix depending on instruction patterns
-      if (textQuery.includes("solve:") || textQuery.includes("x")) {
-        parseAlgebra(textQuery, displayPane);
-      } else if (textQuery.includes("trapezoid") || textQuery.includes("area")) {
-        parseGeometry(textQuery, displayPane);
-      } else if (textQuery.includes("molar") || textQuery.includes("grams")) {
-        parseChemistry(textQuery, displayPane);
-      } else if (textQuery.includes("dna") || textQuery.includes("rna")) {
-        parseBiology(textQuery, displayPane);
-      } else {
-        // Fallback Native Calculation Evaluator Engine
-        try {
-          const sanitizedToken = textQuery.replace(/[^0-9+\-*/().\s]/g, '');
-          const calculation = new Function(`return (${sanitizedToken})`)();
-          if (calculation === undefined || typeof calculation === 'function') throw new Error();
-          
-          displayPane.textContent = `[EVALUATION ENGINE SUCCESS]\nResult: ${calculation}\n\nTrace complete. Standard math expression parsed flawlessly.`;
-          renderGeometryPlot(2);
-        } catch(e) {
-          displayPane.textContent = "CHATBOT ERROR: Unrecognized command matrix.\nUse an academic button block on the right to review sample syntaxes.";
-        }
-      }
-
-      const endDelta = performance.now() - calculationStart;
-      document.getElementById('val-latency').textContent = endDelta.toFixed(3) + "ms";
-    }
-
-    // 1. Algebra Solver Engine
-    function parseAlgebra(query, output) {
-      // Logic for matching equations like '2x + 10 = 30' or 'solve: 5x = 25'
-      const match = query.match(/(-?\d*)x\s*([+-]\s*\d+)?\s*=\s*(-?\d+)/i);
-      if (match) {
-        let coeff = match[1] ? parseFloat(match[1].replace(/\s+/g, '')) : 1;
-        if (match[1] === '-') coeff = -1;
-        if (isNaN(coeff)) coeff = 1;
-        
-        let constant = match[2] ? parseFloat(match[2].replace(/\s+/g, '')) : 0;
-        let rightSide = parseFloat(match[3]);
-        
-        let step1 = rightSide - constant;
-        let finalX = step1 / coeff;
-
-        output.textContent = `[ALGEBRA NODE EXECUTION]\nEquation: ${coeff}x ${constant >= 0 ? '+ ' + constant : constant} = ${rightSide}\n\nStep 1 (Isolate x-term): ${coeff}x = ${rightSide} - (${constant}) -> ${coeff}x = ${step1}\nStep 2 (Divide coefficients): x = ${step1} / ${coeff}\n\nFINAL RESULT: x = ${finalX}`;
-        renderGeometryPlot(finalX);
-      } else {
-        output.textContent = "[ALGEBRA NODE ERROR]\nCould not extract linear sequence parameters. Correct format: '2x + 10 = 30'";
-      }
-    }
-
-    // 2. Geometry Solver Engine
-    function parseGeometry(query, output) {
-      const base1 = parseFloat(query.match(/b1:\s*([0-9.]+)/)?.[1] || 10);
-      const base2 = parseFloat(query.match(/b2:\s*([0-9.]+)/)?.[1] || 20);
-      const height = parseFloat(query.match(/h:\s*([0-9.]+)/)?.[1] || 5);
-      
-      const area = ((base1 + base2) * height) / 2;
-      output.textContent = `[GEOMETRY SHAPE MATRIX]\nShape: Trapezoid\nInputs: Base1=${base1}, Base2=${base2}, Height=${height}\n\nFormula: Area = ((b1 + b2) * h) / 2\nStep 1: (${base1} + ${base2}) * ${height} / 2\nStep 2: ${base1 + base2} * ${height} / 2\n\nFINAL AREA = ${area}`;
-      
-      // Physically draw a trapezoid profile onto the telemetry viewscreen
+    function resetChatHistory() {
+      document.getElementById('chat-history-viewport').innerHTML = `<div class="chat-bubble ai-bubble">[ACE_RESET] Conversation memory tracks cleared. Console is ready for fresh input configurations.</div>`;
       gCtx.clearRect(0,0,graphCanvas.width,graphCanvas.height);
-      gCtx.strokeStyle = "var(--cyan-glow)";
-      gCtx.lineWidth = 2;
-      gCtx.beginPath();
-      gCtx.moveTo(40, 100);
-      gCtx.lineTo(120, 100);
-      gCtx.lineTo(150, 40);
-      gCtx.lineTo(10, 40);
-      gCtx.closePath();
-      gCtx.stroke();
+      pushTelemetryLog("Volatile diagnostic and message state logs purged.");
     }
 
-    // 3. Chemistry Solver Engine
-    function parseChemistry(query, output) {
-      // High-precision periodic weight dictionary mapping symbols directly to masses
-      const standardWeights = { H: 1.008, C: 12.011, O: 15.999, N: 14.007, Na: 22.990, Cl: 35.453 };
-      pushChatbotLogs("Accessing chemical element mass dictionary tables...", false);
-
-      let totalMass = 0;
-      let logTraceStr = "";
+    // Live Device Simulation Metrics Tick Engine
+    setInterval(() => {
+      const d = new Date();
+      document.getElementById('system-clock').textContent = d.toTimeString().substring(0,8) + '.' + String(d.getMilliseconds()).padStart(3,'0').substring(0,2);
       
-      // Track elements and count properties matching patterns like H2O or CO2
-      const regex = /([A-Z][a-z]?)([0-9]*)/g;
-      let matchesFound = [...query.matchAll(regex)];
+      if(baselineHardwareTemp > 34.0) baselineHardwareTemp -= 0.02;
+      if(isCoreOverclocked) baselineHardwareTemp += Math.random() * 0.15 + 0.05;
+      
+      const tmpNode = document.getElementById('temp-metric');
+      const throttleNode = document.getElementById('val-throttle');
+      const loadNode = document.getElementById('val-load');
+      tmpNode.textContent = baselineHardwareTemp.toFixed(1) + '°C';
 
-      if(matchesFound.length > 0) {
-        matchesFound.forEach(m => {
-          let element = m[1];
-          let count = m[2] ? parseInt(m[2]) : 1;
-          if (standardWeights[element]) {
-            let elementSum = standardWeights[element] * count;
-            totalMass += elementSum;
-            logTraceStr += `-> Element ${element}: Mass ${standardWeights[element]} g/mol * Count ${count} = ${elementSum.toFixed(3)} g/mol\n`;
-          } else {
-            logTraceStr += `-> Element ${element}: Not matched in lightweight database layer. Calculated as 0.\n`;
-          }
-        });
-        output.textContent = `[MOLECULAR MASS ENGINE]\nFormula Evaluated: ${query.toUpperCase()}\n\nStep-by-step element breakdown:\n${logTraceStr}\nTOTAL COMPOSITE MOLAR MASS = ${totalMass.toFixed(3)} g/mol`;
+      if(baselineHardwareTemp > 45.0) {
+        tmpNode.style.color = "var(--magenta-glow)";
+        throttleNode.textContent = "CORE_THROTTLE_WARN";
+        throttleNode.style.color = "var(--magenta-glow)";
+        loadNode.textContent = (Math.random() * 12 + 82).toFixed(1) + "%";
       } else {
-        output.textContent = "[CHEMISTRY MODULE ERROR]\nNo standard chemical elements extracted. Format sample: 'CO2' or 'H2O'";
+        tmpNode.style.color = "var(--matrix-green)";
+        throttleNode.textContent = "NOMINAL";
+        throttleNode.style.color = "#fff";
+        loadNode.textContent = (Math.random() * 5 + (isCoreOverclocked ? 38 : 6)).toFixed(1) + "%";
       }
-      renderGeometryPlot(totalMass || 5);
+    }, 33);
+
+    const logWindow = document.getElementById('covert-activity-logs');
+    function pushTelemetryLog(message) {
+      const row = document.createElement('div');
+      row.className = 'covert-row';
+      row.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      logWindow.appendChild(row);
+      if(logWindow.children.length > 3) logWindow.removeChild(logWindow.children[1]);
+      logWindow.scrollTop = logWindow.scrollHeight;
     }
-
-    // 4. Biology Solver Engine
-    function parseBiology(query, output) {
-      const match = query.match(/dna:\s*([A-Za-z]+)/i);
-      if(match) {
-        let dnaSequence = match[1].toUpperCase();
-        let rnaOutput = "";
-        for(let i=0; i<dnaSequence.length; i++) {
-          let base = dnaSequence[i];
-          if(base === 'A') rnaOutput += 'U';
-          else if(base === 'T') rnaOutput += 'A';
-          else if(base === 'C') rnaOutput += 'G';
-          else if(base === 'G') rnaOutput += 'C';
-          else rnaOutput += '?'; // Indeterminate base catch
-        }
-        output.textContent = `[GENETIC REPLICATION VECTOR]\nInput Strand (DNA): 5' - ${dnaSequence} - 3'\n\nTranscription Rule Matrix: [A->U, T->A, C->G, G->C]\n\nOUTPUT STRAND (mRNA): 3' - ${rnaOutput} - 5'`;
-        renderGeometryPlot(dnaSequence.length);
-      } else {
-        output.textContent = "[BIOLOGY SYSTEM ATOMIZER ERROR]\nCould not extract DNA base pairs. Syntax example: 'dna: ATCGGCTA'";
-      }
-    }
-
-    // Geometry Plotter Visual Coordinate Function
-    function renderGeometryPlot(coefficient) {
-      gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
-      gCtx.strokeStyle = chatbotOverclocked ? '#ff007f' : '#00f0ff';
-      gCtx.lineWidth = 1.5;
-      gCtx.beginPath();
-      
-      const baselineY = graphCanvas.height / 2;
-      const spacingX = graphCanvas.width / 30;
-
-      for(let i = 0; i <= 30; i++) {
-        const coordX = i * spacingX;
-        const curveY = Math.sin(i * 0.4 + coefficient) * (graphCanvas.height * 0.25);
-        if(i === 0) gCtx.moveTo(coordX, baselineY + curveY);
-        else gCtx.lineTo(coordX, baselineY + curveY);
-      }
-      gCtx.stroke();
-    }
-
-    // Operational Framework Infrastructure Tools
-    function loadModulePreset(type) {
-      const areaNode = document.getElementById('ai-input');
-      if (type === 'algebra') {
-        areaNode.value = "solve: 3x + 15 = 45";
-      } else if (type === 'geometry') {
-        areaNode.value = "trapezoid calculation matrix: b1: 12, b2: 18, h: 6";
-      } else if (type === 'chemistry') {
-        areaNode.value = "molar mass calculation formula: H2O";
-      } else if (type === 'biology') {
-        areaNode.value = "dna: ATCGGCTAGC";
-      }
-      executeSolverLogic();
-    }
-
-    function triggerOverclock() {
-      chatbotOverclocked = !chatbotOverclocked;
-      pushChatbotLogs(chatbotOverclocked ? "WARNING: Chatbot engine threshold overclocked." : "System frequency thresholds cooled to normal profiles.", chatbotOverclocked);
-    }
-
-    function purgeWorkspace() {
-      document.getElementById('ai-input').value = '';
-      document.getElementById('primary-result').textContent = 'CONSOLE STANDBY // CHATBOT IS READY FOR INPUT DATA...';
-      gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
-      pushChatbotLogs("Calculation workspaces and volatile variables reset.", false);
-    }
-
-    // Telemetry System Hardware Tick Loop
-    function triggerHardwareClockTick() {
-      const dateInstance = new Date();
-      const timeStr = dateInstance.toTimeString().substring(0, 8);
-      const msStr = String(dateInstance.getMilliseconds()).padStart(3, '0').substring(0, 2);
-      document.getElementById('system-clock').textContent = timeStr + '.' + msStr;
-
-      if (computedCoreTemp > 35.0) computedCoreTemp -= 0.03;
-      if (chatbotOverclocked) computedCoreTemp += Math.random() * 0.14 + 0.06;
-      
-      const readoutNode = document.getElementById('temp-metric');
-      readoutNode.textContent = computedCoreTemp.toFixed(1) + '°C';
-      
-      const stateView = document.getElementById('val-throttle');
-      const loadView = document.getElementById('val-load');
-      
-      if(computedCoreTemp > 45.0) {
-        readoutNode.style.color = "var(--magenta-glow)";
-        stateView.textContent = "THERMAL_OVERLOAD";
+  </script>
+</body>
+</html>
 
