@@ -2,236 +2,239 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Arcade Space Battle: Overpowered Phase 5</title>
+    <title>Retro Space Arcade</title>
     <style>
-        body { margin: 0; background: #06060c; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
-        canvas { border: 4px solid #00ffff; background: #030308; display: block; box-shadow: 0 0 40px rgba(0, 255, 255, 0.2); }
+        /* Forces the game window to center perfectly on your monitor display */
+        body { margin: 0; background: #080812; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
+        canvas { border: 4px solid #00ffff; background: #03030c; display: block; }
     </style>
 </head>
 <body>
 
-<canvas id="gameCanvas" width="950" height="650"></canvas>
+<!-- Hardcoded flat pixel resolution layout to guarantee visibility -->
+<canvas id="gameCanvas" width="900" height="600"></canvas>
 
 <script>
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Ensure keyboard permissions lock onto canvas
+// Locks browser keyboard controls onto the screen immediately
 window.focus();
 
-// STATE MATRIX KEYS
+// FLAT ENGINE VARIABLES
 let gameOver = false;
 let victory = false;
 let score = 0;
-let phase5Flash = 0; // Screen visual flare tracker
 
-// THE UPGRADED PILOT CRUISER
-let player = {
-    x: 100, y: 300, w: 45, h: 45,
-    speed: 8, health: 120, maxHealth: 120, // Boosted hull to handle Phase 5
-    timeSlowActive: 0, timeSlowCooldown: 0,
-    overchargeCooldown: 0,
-    singularityActive: 0, singularityCooldown: 0 // New Power variable slots
-};
+// PLAYER SPACESHIP VARIABLES
+let playerX = 100;
+let playerY = 280;
+let playerW = 40;
+let playerH = 40;
+let playerSpeed = 7;
+let playerHealth = 150; // Boosted HP to handle Phase 5
+let playerMaxHealth = 150;
+let timeSlowActive = 0;
+let timeSlowCooldown = 0;
+let overchargeCooldown = 0;
 
-// THE EVOLVED CHRONOS TITAN BOSS
-let boss = {
-    x: 780, y: 250, w: 90, h: 160,
-    health: 6000, maxHealth: 6000, // Massive pool split over 5 protocols
-    phase: 1, dir: 1, timer: 0, angle: 0
-};
+// 5-PHASE BOSS VARIABLES
+let bossX = 760;
+let bossY = 220;
+let bossW = 80;
+let bossH = 150;
+let bossHealth = 4000;
+let bossMaxHealth = 4000;
+let bossPhase = 1;
+let bossDir = 1;
+let bossTimer = 0;
+let bossAngle = 0; // Floating wave factor for Phase 5
 
 let playerBullets = [];
 let bossBullets = [];
 const keys = {};
 
-// HARDCODED GRAPHICS STYLES MAP PER PROTOCOL
-const phaseColors = { 1: "#00ffff", 2: "#ff00ff", 3: "#ffff00", 4: "#ff5500", 5: "#ff3300" };
-const phaseStatus = { 1: "GRID DEFENSE", 2: "CYAN OVERLOAD", 3: "SWARM MATRIX", 4: "CRITICAL CORE", 5: "OVERPOWERED TITAN PROTOCOL" };
-
-// WINDOW KEYBOARD LISTENERS
+// KEYBOARD REGISTER LISTENERS
 window.addEventListener("keydown", function(e) { keys[e.key] = true; });
 window.addEventListener("keyup", function(e) { keys[e.key] = false; });
 
-// MAIN COMPUTATION CYCLES
+// MAIN SYSTEM CALCULATIONS LOOP
 function update() {
     if (gameOver || victory) return;
 
-    // Tick down superpower system loops
-    if (player.timeSlowCooldown > 0) player.timeSlowCooldown--;
-    if (player.timeSlowActive > 0) player.timeSlowActive--;
-    if (player.overchargeCooldown > 0) player.overchargeCooldown--;
-    if (player.singularityCooldown > 0) player.singularityCooldown--;
-    if (player.singularityActive > 0) player.singularityActive--;
-    if (phase5Flash > 0) phase5Flash--;
+    // Tick down superpower system clocks
+    if (timeSlowCooldown > 0) timeSlowCooldown--;
+    if (timeSlowActive > 0) timeSlowActive--;
+    if (overchargeCooldown > 0) overchargeCooldown--;
 
-    // Standard Flight Vector translations (WASD / Arrow Keys)
-    if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
-    if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
-    if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
-    if (keys["d"] || keys["ArrowRight"]) player.x += player.speed;
+    // Flight Translations (WASD / Arrow Keys)
+    if (keys["w"] || keys["ArrowUp"]) playerY -= playerSpeed;
+    if (keys["s"] || keys["ArrowDown"]) playerY += playerSpeed;
+    if (keys["a"] || keys["ArrowLeft"]) playerX -= playerSpeed;
+    if (keys["d"] || keys["ArrowRight"]) playerX += playerSpeed;
 
-    // Boundary constraints
-    if (player.x < 10) player.x = 10;
-    if (player.x > 400) player.x = 400; 
-    if (player.y < 10) player.y = 10;
-    if (player.y > 650 - player.h - 10) player.y = 650 - player.h - 10;
+    // Arena wall boundary locks
+    if (playerX < 10) playerX = 10;
+    if (playerX > 400) playerX = 400; // Contain spaceship to left grid half
+    if (playerY < 10) playerY = 10;
+    if (playerY > 600 - playerH - 10) playerY = 600 - playerH - 10;
 
-    // --- POWER 1: HYPER-VOLTAIC RAILGUN BLAST (Spacebar) ---
-    if (keys[" "] && playerBullets.length < 8) {
-        playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, speed: 16 });
-        keys[" "] = false; // Requires individual click taps to launch
+    // POWER 1: Spacebar fires Upgraded 35-Damage Lasers
+    if (keys[" "] && playerBullets.length < 6) {
+        playerBullets.push({ x: playerX + playerW, y: playerY + playerH/2, vx: 15, vy: 0 });
+        keys[" "] = false; // Requires individual taps to shoot
     }
 
-    // --- POWER 2: CHRONOS TIME-SLOW ENGINE (Shift Key) ---
-    if (keys["Shift"] && player.timeSlowCooldown === 0) {
-        player.timeSlowActive = 150; // Active for 2.5 seconds
-        player.timeSlowCooldown = 360; // 6 second recharge loop
+    // POWER 2: Chronos Drive Time-Slow (Shift Key)
+    if (keys["Shift"] && timeSlowCooldown === 0) {
+        timeSlowActive = 150; // Active for 2.5 seconds
+        timeSlowCooldown = 360; // 6 second recharge loop
     }
 
-    // --- POWER 3: EMP SCREEN REBOOT RECTIFIER (Enter Key) ---
-    if (keys["Enter"] && player.overchargeCooldown === 0) {
-        player.overchargeCooldown = 300;
-        bossBullets = []; // Complete canvas wipe cleanse
-        boss.health -= 250; // Deals huge burst damage chunk
-        score += 200;
-        if (boss.health <= 0) victory = true;
+    // POWER 3: EMP Screen Reboot Wipe (Enter Key)
+    if (keys["Enter"] && overchargeCooldown === 0) {
+        overchargeCooldown = 240;
+        bossBullets = []; // Instantly vaporizes all active enemy projectiles
+        bossHealth -= 250; // Deals huge direct chunk damage
+        score += 150;
+        if (bossHealth <= 0) victory = true;
     }
 
-    // --- POWER 4: QUANTUM SINGULARITY VOID SHIELD (R Key) ---
-    if ((keys["r"] || keys["R"]) && player.singularityCooldown === 0) {
-        player.singularityActive = 180; // Creates a massive gravity field for 3 full seconds
-        player.singularityCooldown = 540; // 9 second long recharge
-    }
+    // Dynamic scale vector calculation coefficient
+    let timeModifier = timeSlowActive > 0 ? 0.20 : 1.0;
 
-    // Velocity scale calculation parameters
-    let timeModifier = player.timeSlowActive > 0 ? 0.20 : 1.0;
-    
-    // Quantum singularity checks: Locks boss and enemy shots to absolute zero movement frames
-    if (player.singularityActive > 0) {
-        timeModifier = 0.0;
-    }
+    // Calculate Boss Phase Shifts (1 through 5)
+    let hpPct = bossHealth / bossMaxHealth;
+    if (hpPct > 0.8) bossPhase = 1;
+    else if (hpPct > 0.6) bossPhase = 2;
+    else if (hpPct > 0.4) bossPhase = 3;
+    else if (hpPct > 0.15) bossPhase = 4;
+    else bossPhase = 5; // OVERPOWERED PROTOCOL ACTIVATED!
 
-    // Evolve Boss Protocols across health parameters
-    let hpPct = boss.health / boss.maxHealth;
-    let oldPhase = boss.phase;
-
-    if (hpPct > 0.8) boss.phase = 1;
-    else if (hpPct > 0.6) boss.phase = 2;
-    else if (hpPct > 0.4) boss.phase = 3;
-    else if (hpPct > 0.15) boss.phase = 4;
-    else boss.phase = 5; // OVERPOWERED FINALE UNLOCKED Under 15% HP!
-
-    // Trigger visual screen flare shake if entering Phase 5 god mode
-    if (boss.phase === 5 && oldPhase !== 5) {
-        phase5Flash = 35; // Bright warning layout tint flash
-        bossBullets = []; // Clean clear step
-    }
-
-    // --- BOSS MOTION FLIGHT SCRIPTS ---
-    if (boss.phase === 5) {
-        // OVERPOWERED PHYSICS: Boss tracks ship coordinates smoothly and flies up/down hyper fast!
-        let targetY = player.y + player.h/2 - boss.h/2;
-        boss.y += (targetY - boss.y) * 0.08 * timeModifier;
-        boss.x = 720 + Math.sin(Date.now() / 150) * 50 * timeModifier; // Glitches side to side unstable
+    // --- BOSS FLIGHT MOVEMENTS ---
+    if (bossPhase === 5) {
+        // Overpowered Behavior: Double the movement speed and track ship vertical position
+        let targetY = playerY + playerH/2 - bossH/2;
+        bossY += (targetY - bossY) * 0.08 * timeModifier;
+        bossX = 740 + Math.sin(Date.now() / 150) * 40 * timeModifier; // Shakes back and forth unstable
     } else {
-        // Classic vertical oscillation pacing
-        boss.y += boss.dir * 4 * timeModifier;
-        if (boss.y <= 20 || boss.y >= 650 - boss.h - 20) boss.dir *= -1;
+        // Standard up and down oscillation pacing
+        bossY += bossDir * 4 * timeModifier;
+        if (bossY <= 20 || bossY >= 600 - bossH - 20) bossDir *= -1;
     }
 
-    // --- BOSS FIRE ENGINE ARRAY LOOPS ---
-    boss.timer += 1 * timeModifier;
-    boss.angle += 0.06 * timeModifier; // Spinning variables matrix
+    // --- BOSS TURRET FIRING ENGINE ---
+    bossTimer += 1 * timeModifier;
+    bossAngle += 0.08 * timeModifier;
 
-    let attackInterval = 25 - (boss.phase * 3);
-    if (boss.phase === 5) attackInterval = 3; // ABSOLUTE BULLET HELL DELAY RATIO IN PROTOCOL 5!
+    let fireDelay = 25 - (bossPhase * 3);
+    if (bossPhase === 5) fireDelay = 4; // Absolute bullet hell gatling speed in Phase 5!
 
-    if (boss.timer >= attackInterval) {
-        boss.timer = 0;
-        let c = phaseColors[boss.phase];
+    if (bossTimer >= fireDelay) {
+        bossTimer = 0;
         
-        if (boss.phase === 1) {
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -8, vy: 0, r: 7, color: c });
+        // Define color hex string based on active phase step
+        let c = "#00ffff"; // Phase 1 (Cyan)
+        if (bossPhase === 2) c = "#ff00ff"; // Phase 2 (Magenta)
+        if (bossPhase === 3) c = "#ffff00"; // Phase 3 (Yellow)
+        if (bossPhase === 4) c = "#ff5500"; // Phase 4 (Orange)
+        if (bossPhase === 5) c = "#ff3300"; // Phase 5 (Overpowered Crimson Red)
+
+        if (bossPhase === 1) {
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: -8, vy: 0, r: 7, color: c });
         } 
-        else if (boss.phase === 2) {
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -9, vy: (Math.random() - 0.5) * 5, r: 7, color: c });
+        else if (bossPhase === 2) {
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: -9, vy: (Math.random() - 0.5) * 5, r: 7, color: c });
         } 
-        else if (boss.phase === 3) {
-            let angle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(angle) * 10, vy: Math.sin(angle) * 10, r: 7, color: c });
+        else if (bossPhase === 3) {
+            // Target locked aiming pathing vectors tracking player ship
+            let angle = Math.atan2((playerY + playerH/2) - (bossY + bossH/2), (playerX + playerW/2) - bossX);
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: Math.cos(angle) * 10, vy: Math.sin(angle) * 10, r: 7, color: c });
         } 
-        else if (boss.phase === 4) {
-            bossBullets.push({ x: boss.x, y: boss.y + 20, vx: -11, vy: -1.5, r: 8, color: c });
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h - 20, vx: -11, vy: 1.5, r: 8, color: c });
+        else if (bossPhase === 4) {
+            bossBullets.push({ x: bossX, y: bossY + 20, vx: -11, vy: -1.5, r: 8, color: c });
+            bossBullets.push({ x: bossX, y: bossY + bossH - 20, vx: -11, vy: 1.5, r: 8, color: c });
         } 
-        else if (boss.phase === 5) {
-            // OVERPOWERED METHOD: Spiral Wave Gatling Burst pattern shoots 3 orbs continuously in spread patterns
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -13, vy: Math.sin(boss.angle) * 8, r: 6, color: c });
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -11, vy: Math.sin(boss.angle + 1) * 6, r: 6, color: "#ffffff" });
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -11, vy: Math.sin(boss.angle - 1) * 6, r: 6, color: c });
+        else if (bossPhase === 5) {
+            // Overpowered Barrage: Constantly shoots 3 weapon waves in rapid rotating patterns
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: -13, vy: Math.sin(bossAngle) * 7, r: 6, color: c });
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: -11, vy: Math.sin(bossAngle + 0.8) * 5, r: 6, color: "#ffffff" });
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: -11, vy: Math.sin(bossAngle - 0.8) * 5, r: 6, color: c });
         }
     }
 
-    // Track Player Railgun lasers (Deals 35 hyper structural damage output)
+    // Process Laser Projectiles (Hits for 35 Damage Chunks)
     for (let i = playerBullets.length - 1; i >= 0; i--) {
-        let b = playerBullets[i]; b.x += b.speed;
-        if (b.x > 950) { playerBullets.splice(i, 1); continue; }
+        let b = playerBullets[i]; b.x += b.vx;
+        if (b.x > 900) { playerBullets.splice(i, 1); continue; }
 
-        if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
-            boss.health -= 35; // UPGRADED INTENSITY SPECIFICATION DAMAGE CHUNKS!
-            score += 75;
+        if (b.x > bossX && b.x < bossX + bossW && b.y > bossY && b.y < bossY + bossH) {
+            bossHealth -= 35; // 35 Heavy Damage specification
+            score += 50;
             playerBullets.splice(i, 1);
-            if (boss.health <= 0) victory = true;
+            if (bossHealth <= 0) victory = true;
         }
     }
 
-    // Track Enemy Threat Projectiles
+    // Process Enemy Threats (Impacted by Chronos Modifier)
     for (let i = bossBullets.length - 1; i >= 0; i--) {
         let b = bossBullets[i]; b.x += b.vx * timeModifier; b.y += b.vy * timeModifier;
-        if (b.x < -20 || b.x > 970 || b.y < -20 || b.y > 670) { bossBullets.splice(i, 1); continue; }
+        if (b.x < -20 || b.x > 920 || b.y < -20 || b.y > 620) { bossBullets.splice(i, 1); continue; }
 
-        if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
-            let dmg = boss.phase === 5 ? 12 : 10; // Phase 5 bullets sting harder
-            player.health -= dmg;
+        if (b.x > playerX && b.x < playerX + playerW && b.y > playerY && b.y < playerY + playerH) {
+            let dmg = bossPhase === 5 ? 12 : 10; // Phase 5 hits slightly harder
+            playerHealth -= dmg;
             bossBullets.splice(i, 1);
-            if (player.health <= 0) gameOver = true;
+            if (playerHealth <= 0) gameOver = true;
         }
     }
 }
 
-// GRAPHICS LAYER DISPLAY PANEL
+// VISUALS GRAPHICS PAINTER
 function draw() {
-    ctx.clearRect(0, 0, 950, 650);
+    ctx.clearRect(0, 0, 900, 600);
 
     if (!gameOver && !victory) {
-        // Chronos space distortion background grid matrix tints
-        if (player.timeSlowActive > 0) {
-            ctx.fillStyle = "rgba(0, 255, 255, 0.08)"; ctx.fillRect(0, 0, 950, 650);
-        }
-        
-        // Quantum singularity field cosmic grid block draw
-        if (player.singularityActive > 0) {
-            ctx.fillStyle = "rgba(147, 112, 219, 0.12)"; ctx.fillRect(0, 0, 950, 650);
-            ctx.strokeStyle = "#9370db"; ctx.lineWidth = 3;
-            ctx.strokeRect(15, 15, 920, 620);
+        // Chronos space matrix tint box background overlay
+        if (timeSlowActive > 0) {
+            ctx.fillStyle = "rgba(0, 255, 255, 0.08)"; ctx.fillRect(0, 0, 900, 600);
         }
 
-        // Phase 5 catastrophic initialization alert flash layout overlay
-        if (phase5Flash > 0) {
-            ctx.fillStyle = "rgba(255, 51, 0, 0.35)"; ctx.fillRect(0, 0, 950, 650);
-        }
+        // Draw Player Space Fighter (Cyan Block Frame)
+        ctx.fillStyle = "#00ffff"; ctx.fillRect(playerX, playerY, playerW, playerH);
 
-        // Paint Space Fighter (Cyan Block Frame)
-        ctx.fillStyle = "#00ffff"; ctx.fillRect(player.x, player.y, player.w, player.h);
+        // Define color hex string dynamically for boss rendering
+        let bossColor = "#00ffff";
+        let phaseTitle = "GRID DEFENSE";
+        if (bossPhase === 2) { bossColor = "#ff00ff"; phaseTitle = "CYAN OVERLOAD"; }
+        if (bossPhase === 3) { bossColor = "#ffff00"; phaseTitle = "SWARM MATRIX"; }
+        if (bossPhase === 4) { bossColor = "#ff5500"; phaseTitle = "CRITICAL CORE"; }
+        if (bossPhase === 5) { bossColor = "#ff3300"; phaseTitle = "OVERPOWERED TITAN"; }
 
-        // Paint Titan Overlord Dreadnought box (Changes color dynamically per active protocol mode)
-        ctx.fillStyle = phaseColors[boss.phase]; ctx.fillRect(boss.x, boss.y, boss.w, boss.h);
+        // Draw Dreadnought Alien Boss Box
+        ctx.fillStyle = bossColor; ctx.fillRect(bossX, bossY, bossW, bossH);
 
-        // Draw Player Voltaic Railgun Lasers
+        // Draw Player Railgun Lasers
         ctx.fillStyle = "#00ffaa";
-        playerBullets.forEach(b => ctx.fillRect(b.x, b.y - 3, 20, 6)); // Extra elongated projectile look
+        playerBullets.forEach(b => ctx.fillRect(b.x, b.y - 3, 16, 6));
 
-        // Draw Enemy Threat spheres
+        // Draw Enemy Threat Orbs
         bossBullets.forEach(b => {
+            ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
+        });
 
+        // HEADS UP USER DASHBOARD (HUD)
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 13px monospace";
+        ctx.fillText(`FIGHTER INTEGRITY HP: ${Math.max(0, playerHealth)}/${playerMaxHealth}`, 20, 35);
+        ctx.fillText(`CHRONOS CLOCK [SHIFT]: ${timeSlowCooldown === 0 ? "READY" : "CHARGING"}`, 20, 60);
+        ctx.fillText(`EMP REBOOT    [ENTER]: ${overchargeCooldown === 0 ? "READY" : "CHARGING"}`, 20, 85);
+        ctx.fillText(`MISSION DATA METRICS SC: ${score}`, 20, 110);
+
+        // Enemy Boss Health Gauges
+        ctx.fillStyle = "#161626"; ctx.fillRect(500, 20, 370, 20);
+        ctx.fillStyle = bossColor; ctx.fillRect(500, 20, Math.max(0, 370 * (bossHealth / bossMaxHealth)), 20);
+        ctx.fillStyle = "#ffffff"; ctx.fillText(`BOSS MATRIX HP: ${bossHealth}`, 500, 58);
+        ctx.fillStyle = bossColor; ctx.font = "bold 14px monospace";
+        ctx.fillText(`[ PROTOCOL MODE ${bossPhase}/5 : ${phaseTitle} ]`, 500, 80);
+
+    } else {
