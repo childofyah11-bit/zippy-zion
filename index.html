@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kraken Hunter: Evolved Sea Engine</title>
+    <title>Synthwave Fighter: Chronos Protocol</title>
     <style>
-        /* MINIMAL STYLE RULES TO PREVENT RENDERING COMPONENT CRASHES */
-        body { margin: 0; background: #02050d; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: sans-serif; }
-        canvas { border: 4px solid #00aaff; background: #040e24; box-shadow: 0 0 30px rgba(0, 170, 255, 0.3); }
+        body { margin: 0; background: #050510; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
+        canvas { border: 4px solid #ff007f; background: #0a0a20; box-shadow: 0 0 30px rgba(255, 0, 127, 0.3); }
     </style>
 </head>
 <body>
@@ -14,206 +13,241 @@
 <canvas id="gameCanvas" width="1000" height="700"></canvas>
 
 <script>
-// 1. ISOLATE CANVAS ELEMENT ENTIRELY
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// 2. STABLE GAME STATE FLAGS
+// 1. FLAT GAME STATE FLAGS
 let gameOver = false;
 let victory = false;
 let isShopActive = false;
 let score = 0;
 
-// PLAYER NAUTICAL CONFIG (YELLOW SUBMARINE)
-const player = {
-    x: 480, y: 580, w: 50, h: 30, // Positioned at bottom of sea arena
-    speed: 6, health: 100, maxHealth: 100,
-    timeSlowActive: 0, timeSlowCooldown: 0,
-    overchargeCooldown: 0,
-    hasShield: true, shieldCooldown: 0,
-    shootTimer: 0,
-    laserType: "normal", 
-    upgradePoints: 0
-};
+// 2. FLAT PLAYER VARIABLES (NEON SPACE COMBAT CRUISER)
+let playerX = 100;
+let playerY = 350;
+let playerW = 40;
+let playerH = 40;
+let playerSpeed = 7;
+let playerHealth = 100;
+let playerMaxHealth = 100;
+let timeSlowActive = 0;
+let timeSlowCooldown = 0;
+let overchargeCooldown = 0;
+let hasShield = true;
+let shieldCooldown = 0;
+let shootTimer = 0;
+let laserType = "normal";
+let upgradePoints = 0;
 
-// 5-PHASE SEABEAST BOSS (RED KRAKEN)
-const boss = {
-    x: 450, y: 50, w: 120, h: 80, // Positioned at the top of the screen
-    health: 3000, maxHealth: 3000,
-    phase: 1, lastPhase: 1, timer: 0, dir: 1
-};
+// 3. FLAT BOSS VARIABLES (ROGUE AI DREADNOUGHT)
+let bossX = 840;
+let bossY = 280;
+let bossW = 90;
+let bossH = 140;
+let bossHealth = 3000;
+let bossMaxHealth = 3000;
+let bossPhase = 1;
+let bossLastPhase = 1;
+let bossTimer = 0;
+let bossDir = 1;
 
+// Projectile Storage Pools
 let playerBullets = [];
 let bossBullets = [];
 const keys = {};
 
-// IMMUTABLE HEX DATA SCHEMES FOR THE SEABEAST
-const phaseColors = { 1: "#ff3333", 2: "#ff6600", 3: "#ffcc00", 4: "#cc00ff", 5: "#ffffff" };
-const phaseNames = { 1: "SURFACE THREAT", 2: "DEEP TENTACLES", 3: "OCEAN MAELSTROM", 4: "ABYSSAL RAGE", 5: "LEVIATHAN AWAKENED" };
+// Hardcoded Array Mappings to keep rendering logic error-proof
+const phaseColors = ["#00ffff", "#00ffff", "#ff007f", "#ffff00", "#ffaa00", "#ffffff"];
+const phaseNames = ["", "GRID DEFENSE", "CYAN OVERLOAD", "MATRIX WARNING", "CRITICAL CORE", "ROGUE GOD"];
 
-// HARCODED BUTTON DIMENSIONS FOR THE INTERMISSION SHOP
-const buttons = {
-    triple: { x: 350, y: 260, w: 300, h: 50, cost: 1, label: "Buy Triple Torpedo (1 Pt)" },
-    speed:  { x: 350, y: 340, w: 300, h: 50, cost: 1, label: "Upgrade Engines +2 (1 Pt)" },
-    health: { x: 350, y: 420, w: 300, h: 50, cost: 1, label: "Reinforce Hull +50 (1 Pt)" },
-    resume: { x: 400, y: 520, w: 200, h: 50, cost: 0, label: "Dive Deeper (Resume)" }
-};
+// 4. ACTION LISTENERS FOR FLIGHT CONTROLS
+window.addEventListener("keydown", function(e) { 
+    keys[e.key] = true; 
 
-// 3. KEYBOARD EVENT CAPTURE PIPELINES
-window.addEventListener("keydown", function(e) { keys[e.key] = true; });
-window.addEventListener("keyup", function(e) { keys[e.key] = false; });
-
-// MOUSE CLICK PROCESSING FOR UPGRADE SCREEN CHOICE BUTTONS
-canvas.addEventListener("click", function(e) {
-    if (!isShopActive) return;
-
-    // Isolate mouse location offset bounds
-    const rect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    if (mouseX >= buttons.triple.x && mouseX <= buttons.triple.x + buttons.triple.w && mouseY >= buttons.triple.y && mouseY <= buttons.triple.y + buttons.triple.h) {
-        if (player.upgradePoints >= buttons.triple.cost && player.laserType !== "triple") {
-            player.laserType = "triple"; player.upgradePoints -= buttons.triple.cost;
+    // Handle Keyboard Choices Inside the Upgrade Shop Menu
+    if (isShopActive) {
+        if (e.key === "1" && upgradePoints >= 1 && laserType !== "triple") {
+            laserType = "triple";
+            upgradePoints -= 1;
         }
-    } 
-    else if (mouseX >= buttons.speed.x && mouseX <= buttons.speed.x + buttons.speed.w && mouseY >= buttons.speed.y && mouseY <= buttons.speed.y + buttons.speed.h) {
-        if (player.upgradePoints >= buttons.speed.cost) {
-            player.speed += 2; player.upgradePoints -= buttons.speed.cost;
+        else if (e.key === "2" && upgradePoints >= 1) {
+            playerSpeed += 2;
+            upgradePoints -= 1;
         }
-    } 
-    else if (mouseX >= buttons.health.x && mouseX <= buttons.health.x + buttons.health.w && mouseY >= buttons.health.y && mouseY <= buttons.health.y + buttons.health.h) {
-        if (player.upgradePoints >= buttons.health.cost) {
-            player.maxHealth += 50; player.health = player.maxHealth; player.upgradePoints -= buttons.health.cost;
+        else if (e.key === "3" && upgradePoints >= 1) {
+            playerMaxHealth += 50;
+            playerHealth = playerMaxHealth; // Instantly repairs hull integrity
+            upgradePoints -= 1;
         }
-    } 
-    else if (mouseX >= buttons.resume.x && mouseX <= buttons.resume.x + buttons.resume.w && mouseY >= buttons.resume.y && mouseY <= buttons.resume.y + buttons.resume.h) {
-        isShopActive = false; 
+        else if (e.key === "4" || e.key === "Enter") {
+            isShopActive = false; // Close Shop Intermission
+        }
     }
 });
+window.addEventListener("keyup", function(e) { keys[e.key] = false; });
 
-// 4. CORE ENGINE STEP MATHEMATICS
+// 5. RUNTIME PHYSICS CALCULATION CORE
 function update() {
     if (gameOver || victory || isShopActive) return;
 
-    // Step cooldown timers
-    if (player.timeSlowCooldown > 0) player.timeSlowCooldown--;
-    if (player.timeSlowActive > 0) player.timeSlowActive--;
-    if (player.overchargeCooldown > 0) player.overchargeCooldown--;
+    // Tick down system cooldowns
+    if (timeSlowCooldown > 0) timeSlowCooldown--;
+    if (timeSlowActive > 0) timeSlowActive--;
+    if (overchargeCooldown > 0) overchargeCooldown--;
     
-    if (!player.hasShield) {
-        player.shieldCooldown++;
-        if (player.shieldCooldown >= 360) { player.hasShield = true; player.shieldCooldown = 0; }
+    if (!hasShield) {
+        shieldCooldown++;
+        if (shieldCooldown >= 360) { hasShield = true; shieldCooldown = 0; }
     }
 
-    // Move submarine via WASD / Arrow key directional flags
-    if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
-    if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
-    if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
-    if (keys["d"] || keys["ArrowRight"]) player.x += player.speed;
+    // Process Flight Vectors
+    if (keys["w"] || keys["ArrowUp"]) playerY -= playerSpeed;
+    if (keys["s"] || keys["ArrowDown"]) playerY += playerSpeed;
+    if (keys["a"] || keys["ArrowLeft"]) playerX -= playerSpeed;
+    if (keys["d"] || keys["ArrowRight"]) playerX += playerSpeed;
 
-    player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
-    player.y = Math.max(0, Math.min(canvas.height - player.h, player.y));
+    // Bound boxes check
+    if (playerX < 0) playerX = 0;
+    if (playerX > 1000 - playerW) playerX = 1000 - playerW;
+    if (playerY < 0) playerY = 0;
+    if (playerY > 700 - playerH) playerY = 700 - playerH;
 
-    // TORPEDO AUTO RAPID FIRE LOOPS
-    if (player.shootTimer > 0) player.shootTimer--;
+    // RAPID FIRE TORPEDO SYSTEM (Spacebar)
+    if (shootTimer > 0) shootTimer--;
     
-    if (keys[" "] && player.shootTimer === 0) {
-        if (player.laserType === "triple") {
-            // Triple Shot pattern shoots three torpedos flying upwards at angles
-            playerBullets.push({ x: player.x + player.w/2, y: player.y, vx: -3, vy: -15 });
-            playerBullets.push({ x: player.x + player.w/2, y: player.y, vx: 0,  vy: -15 });
-            playerBullets.push({ x: player.x + player.w/2, y: player.y, vx: 3,  vy: -15 });
+    if (keys[" "] && shootTimer === 0) {
+        if (laserType === "triple") {
+            // Triple spread trajectory arrays
+            playerBullets.push({ x: playerX + playerW, y: playerY + playerH/2, vx: 18, vy: -3 });
+            playerBullets.push({ x: playerX + playerW, y: playerY + playerH/2, vx: 18, vy: 0 });
+            playerBullets.push({ x: playerX + playerW, y: playerY + playerH/2, vx: 18, vy: 3 });
         } else {
-            playerBullets.push({ x: player.x + player.w/2, y: player.y, vx: 0, vy: -15 });
+            playerBullets.push({ x: playerX + playerW, y: playerY + playerH/2, vx: 18, vy: 0 });
         }
-        player.shootTimer = 8; 
+        shootTimer = 7; 
     }
 
-    // SYSTEM SPELL POWER 1: Hydro-Anchor Current Slow (Shift Key)
-    if (keys["Shift"] && player.timeSlowCooldown <= 0) {
-        player.timeSlowActive = 120; player.timeSlowCooldown = 300; 
+    // POWER 1: Chronos Warp Drive Time-Slow (Shift Key)
+    if (keys["Shift"] && timeSlowCooldown <= 0) {
+        timeSlowActive = 120; timeSlowCooldown = 300; 
     }
 
-    // SYSTEM SPELL POWER 2: Depth Charge Shockwave (Enter Key)
-    if (keys["Enter"] && player.overchargeCooldown <= 0) {
-        player.overchargeCooldown = 240; bossBullets = []; boss.health -= 150; score += 100;
-        if (boss.health <= 0) victory = true;
+    // POWER 2: EMP Screen Reboot Wipe (Enter Key)
+    if (keys["Enter"] && overchargeCooldown <= 0) {
+        overchargeCooldown = 240; bossBullets = []; bossHealth -= 150; score += 100;
+        if (bossHealth <= 0) victory = true;
     }
 
-    // Current slow velocity calculation modifier
-    let timeModifier = player.timeSlowActive > 0 ? 0.20 : 1.0;
+    // Matrix slow velocity tracking calculation factor
+    let timeModifier = timeSlowActive > 0 ? 0.20 : 1.0;
 
-    // Kraken phase checking limits
-    let hpPct = boss.health / boss.maxHealth;
-    if (hpPct > 0.8) boss.phase = 1;
-    else if (hpPct > 0.6) boss.phase = 2;
-    else if (hpPct > 0.4) boss.phase = 3;
-    else if (hpPct > 0.2) boss.phase = 4;
-    else boss.phase = 5;
+    // Calculate Boss Phase Breakpoints
+    let hpPct = bossHealth / bossMaxHealth;
+    if (hpPct > 0.8) bossPhase = 1;
+    else if (hpPct > 0.6) bossPhase = 2;
+    else if (hpPct > 0.4) bossPhase = 3;
+    else if (hpPct > 0.2) bossPhase = 4;
+    else bossPhase = 5;
 
-    // Trigger upgrade shop pop-up overlay on phase breakpoint
-    if (boss.phase > boss.lastPhase) {
-        player.upgradePoints += 1; boss.lastPhase = boss.phase; isShopActive = true; bossBullets = []; return;
+    // Trigger Upgrade Bar menu screen immediately on breakthrough
+    if (bossPhase > bossLastPhase) {
+        upgradePoints += 1; bossLastPhase = bossPhase; isShopActive = true; bossBullets = []; return;
     }
 
-    // Horizontally float Kraken across top of scene arena
-    boss.x += boss.dir * 5 * timeModifier;
-    if (boss.x <= 20 || boss.x >= canvas.width - boss.w - 20) boss.dir *= -1;
+    // Boss vertical float tracking
+    bossY += bossDir * 4 * timeModifier;
+    if (bossY <= 30 || bossY >= 700 - bossH - 30) bossDir *= -1;
 
-    // Kraken Ink Orb firing system
-    boss.timer += 1 * timeModifier;
-    let delay = 26 - (boss.phase * 4);
-    if (boss.timer >= delay) {
-        boss.timer = 0; let c = phaseColors[boss.phase];
+    // Boss automatic plasma sphere weapons generator
+    bossTimer += 1 * timeModifier;
+    let delay = 25 - (bossPhase * 4);
+    if (bossTimer >= delay) {
+        bossTimer = 0; let currentHex = phaseColors[bossPhase];
         
-        if (boss.phase === 1) {
-            // Phase 1: Straight downward drops
-            bossBullets.push({ x: boss.x + boss.w/2, y: boss.y + boss.h, vx: 0, vy: 7, r: 8, color: c });
-        } else if (boss.phase === 2) {
-            // Phase 2: Spray down spreads
-            bossBullets.push({ x: boss.x + boss.w/2, y: boss.y + boss.h, vx: (Math.random() - 0.5) * 6, vy: 8, r: 7, color: c });
-        } else if (boss.phase === 3) {
-            // Phase 3: Track and home targets towards submarine
-            let angle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h), (player.x + player.w/2) - (boss.x + boss.w/2));
-            bossBullets.push({ x: boss.x + boss.w/2, y: boss.y + boss.h, vx: Math.cos(angle) * 10, vy: Math.sin(angle) * 10, r: 7, color: c });
-        } else if (boss.phase === 4) {
-            // Phase 4: Dual scatter arrays
-            bossBullets.push({ x: boss.x + 20, y: boss.y + boss.h, vx: -2, vy: 9, r: 8, color: c });
-            bossBullets.push({ x: boss.x + boss.w - 20, y: boss.y + boss.h, vx: 2, vy: 9, r: 8, color: c });
-        } else if (boss.phase === 5) {
-            // Phase 5: 3-way targeting barrage
-            let base = Math.atan2((player.y + player.h/2) - (boss.y + boss.h), (player.x + player.w/2) - (boss.x + boss.w/2));
-            bossBullets.push({ x: boss.x + boss.w/2, y: boss.y + boss.h, vx: Math.cos(base) * 12, vy: Math.sin(base) * 12, r: 9, color: "#ffffff" });
-            bossBullets.push({ x: boss.x + boss.w/2, y: boss.y + boss.h, vx: Math.cos(base + 0.2) * 11, vy: Math.sin(base + 0.2) * 11, r: 7, color: c });
-            bossBullets.push({ x: boss.x + boss.w/2, y: boss.y + boss.h, vx: Math.cos(base - 0.2) * 11, vy: Math.sin(base - 0.2) * 11, r: 7, color: c });
+        if (bossPhase === 1) {
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: -8, vy: 0, r: 8, color: currentHex });
+        } else if (bossPhase === 2) {
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: -9, vy: (Math.random() - 0.5) * 5, r: 7, color: currentHex });
+        } else if (bossPhase === 3) {
+            let angle = Math.atan2((playerY + playerH/2) - (bossY + bossH/2), (playerX + playerW/2) - bossX);
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: Math.cos(angle) * 11, vy: Math.sin(angle) * 11, r: 7, color: currentHex });
+        } else if (bossPhase === 4) {
+            bossBullets.push({ x: bossX, y: bossY + 20, vx: -10, vy: 0, r: 8, color: currentHex });
+            bossBullets.push({ x: bossX, y: bossY + bossH - 20, vx: -10, vy: 0, r: 8, color: currentHex });
+        } else if (bossPhase === 5) {
+            let base = Math.atan2((playerY + playerH/2) - (bossY + bossH/2), (playerX + playerW/2) - bossX);
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: Math.cos(base) * 13, vy: Math.sin(base) * 13, r: 9, color: "#ffffff" });
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: Math.cos(base + 0.2) * 11, vy: Math.sin(base + 0.2) * 11, r: 7, color: currentHex });
+            bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: Math.cos(base - 0.2) * 11, vy: Math.sin(base - 0.2) * 11, r: 7, color: currentHex });
         }
     }
 
-    // Torpedo trajectories (Deals 25 massive damage on impact)
-    playerBullets.forEach((b, idx) => {
+    // Torpedo Trajectories (Deals 25 overcharged damage on target hits)
+    for (let i = playerBullets.length - 1; i >= 0; i--) {
+        let b = playerBullets[i];
         b.x += b.vx; b.y += b.vy;
-        if (b.y < 0 || b.x < 0 || b.x > canvas.width) playerBullets.splice(idx, 1);
-        if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
-            boss.health -= 25; score += 50; playerBullets.splice(idx, 1);
-            if (boss.health <= 0) victory = true;
+        if (b.x > 1000 || b.y < 0 || b.y > 700) { playerBullets.splice(i, 1); continue; }
+        
+        // Simple bounding box hit detection
+        if (b.x > bossX && b.x < bossX + bossW && b.y > bossY && b.y < bossY + bossH) {
+            bossHealth -= 25; score += 50; playerBullets.splice(i, 1);
+            if (bossHealth <= 0) victory = true;
         }
-    });
+    }
 
-    // Ink Orb trajectories
-    bossBullets.forEach((b, idx) => {
+    // Plasma Sphere Trajectories
+    for (let i = bossBullets.length - 1; i >= 0; i--) {
+        let b = bossBullets[i];
         b.x += b.vx * timeModifier; b.y += b.vy * timeModifier;
-        if (b.y > canvas.height + 20 || b.x < -20 || b.x > canvas.width + 20) { bossBullets.splice(idx, 1); return; }
-        if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
-            bossBullets.splice(idx, 1);
-            if (player.hasShield) { player.hasShield = false; player.shieldCooldown = 0; return; }
-            player.health -= 10; if (player.health <= 0) gameOver = true;
+        if (b.x < -20 || b.x > 1020) { bossBullets.splice(i, 1); continue; }
+        
+        if (b.x > playerX && b.x < playerX + playerW && b.y > playerY && b.y < playerY + playerH) {
+            bossBullets.splice(i, 1);
+            if (hasShield) { hasShield = false; shieldCooldown = 0; continue; }
+            playerHealth -= 10; if (playerHealth <= 0) gameOver = true;
         }
-    });
+    }
 }
 
-// 5. GRAPHICS PAINT LAYER
+// 6. STABLE RENDERING LAYER (NO EXTERNAL COMPONENT LIFTS)
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, 1000, 700); [MDN]
 
     if (isShopActive) {
+        // FLAT SHOP UI OVERLAY LAYER (NO MOUSE OVERLAYS TO BREAK INPUT)
+        ctx.fillStyle = "rgba(10, 10, 32, 0.95)"; ctx.fillRect(0, 0, 1000, 700); [W3Schools]
+        ctx.fillStyle = "#ff007f"; ctx.font = "bold 25px monospace";
+        ctx.fillText("PHASE CRACKED // STATION INTERMISSION", 250, 150);
+        
+        ctx.fillStyle = "#ffffff"; ctx.font = "18px monospace";
+        ctx.fillText("UPGRADE TOKENS AVAILABLE: " + upgradePoints, 350, 220);
+        
+        ctx.fillStyle = "#00ffff";
+        ctx.fillText("[PRESS 1] Buy Triple Shot Spread", 320, 300);
+        ctx.fillText("[PRESS 2] Upgrade Thrusters (+2 Speed)", 320, 350);
+        ctx.fillText("[PRESS 3] Reinforce Hull Matrix (+50 Max HP)", 320, 400);
+        
+        ctx.fillStyle = "#ff007f";
+        ctx.fillText("[PRESS 4 / ENTER] Resume Space Duel", 320, 480);
+        return;
+    }
+
+    if (!gameOver && !victory) {
+        // Warp Drive Blue Screen Space Matrix Tint
+        if (timeSlowActive > 0) {
+            ctx.fillStyle = "rgba(0, 255, 255, 0.08)"; ctx.fillRect(0, 0, 1000, 700); [W3Schools]
+        }
+
+        // Draw Player Cruiser (Cyan Ship)
+        ctx.fillStyle = "#00ffff"; ctx.fillRect(playerX, playerY, playerW, playerH); [W3Schools]
+
+        // Safe Aegis Shield Outer Ring
+        if (hasShield) {
+            ctx.strokeStyle = "#32cd32"; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.arc(playerX + playerW/2, playerY + playerH/2, playerW, 0, Math.PI * 2); ctx.stroke();
+        }
+
+        // Draw Rogue AI Dreadnought Box (Changes color per phase)
+        ctx.fillStyle = phaseColors[bossPhase]; ctx.fillRect(bossX, bossY, bossW, bossH); [W3Schools]
+
+
