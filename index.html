@@ -3,180 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL // SMALL_TOWN_STAR</title>
-    <style>
-        :root { --neon: #00ffcc; --pink: #ff007f; --bg: #030712; }
-        body, html { margin:0; padding:0; width:100%; height:100%; background: var(--bg); font-family: 'Courier New', monospace; color: #fff; overflow: hidden; }
-        canvas { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1; }
-        
-        /* High-Tech HUD Grid */
-        #hud-container { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 2; display: grid; grid-template-columns: 280px 1fr; grid-template-rows: 60px 1fr; pointer-events: none; }
-        
-        /* Top Status Bar */
-        .top-bar { grid-column: 1 / span 2; background: rgba(15,23,42,0.8); border-bottom: 1px solid var(--neon); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; backdrop-filter: blur(5px); pointer-events: auto; }
-        .sys-title { font-weight: bold; color: var(--neon); letter-spacing: 2px; }
-        
-        /* Hidden Interactive Clock Trigger */
-        .stealth-clock { background: rgba(0,0,0,0.5); padding: 5px 15px; border: 1px dashed var(--neon); border-radius: 4px; color: #fff; cursor: help; transition: all 0.3s; }
-        .stealth-clock:active { border-color: var(--pink); color: var(--pink); animation: shake 0.1s infinite; }
-
-        /* Left Side Log Feed */
-        .sidebar { background: rgba(15,23,42,0.6); border-right: 1px solid rgba(0,255,204,0.2); padding: 15px; display: flex; flex-direction: column; gap: 8px; font-size: 0.75rem; color: #64748b; overflow: hidden; backdrop-filter: blur(5px); }
-        .log-line { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-        .log-green { color: var(--neon); }
-
-        /* Main Center Lyric Staging */
-        .main-stage { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; }
-        #start-prompt { pointer-events: auto; background: rgba(0,0,0,0.9); border: 2px solid var(--pink); padding: 30px; border-radius: 12px; cursor: pointer; box-shadow: 0 0 20px rgba(255,0,127,0.3); }
-        #lyrics { display: none; font-size: 3rem; font-weight: 900; text-transform: uppercase; line-height: 1.3; text-shadow: 0 0 15px var(--neon); max-width: 800px; }
-        
-        /* Utility Classes */
-        .word { display: inline-block; margin: 0 8px; opacity: 0; transform: scale(1.5) translateY(-10px); animation: dropIn 0.2s forwards; }
-        @keyframes dropIn { to { opacity: 1; transform: scale(1) translateY(0); } }
-        @keyframes shake { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(2px, -2px); } }
-
-        #controls { position: absolute; bottom: 20px; right: 20px; z-index: 10; display: none; gap: 10px; pointer-events: auto; }
-        .btn { background: transparent; border: 1px solid var(--neon); color: var(--neon); padding: 8px 16px; cursor: pointer; font-family: monospace; border-radius: 4px; }
-        .btn:hover { background: var(--neon); color: #000; }
-    </style>
+    <title>⚡ MATRIX_STAR // QUANTUM_DECK ⚡</title>
 </head>
 <body>
 
-    <canvas id="canvas"></canvas>
+    <!-- Matrix Binary Background Layer -->
+    <canvas id="matrix-bg"></canvas>
 
-    <div id="hud-container">
-        <!-- Top HUD Header Bar -->
-        <div class="top-bar">
-            <div class="sys-title">📡 NODE_STAR // ONLINE</div>
-            <!-- Click/Hold this clock to activate the secret temporal shift override -->
-            <div class="stealth-clock" id="hud-time" onmousedown="triggerTimeWarp()" onmouseup="resetTimeWarp()">SYS_TIME: 00:00:00</div>
-        </div>
-
-        <!-- Left Side Moving Data Logs -->
-        <div class="sidebar" id="log-feed">
-            <div class="log-line log-green">[SYSTEMINIT] Initializing modules...</div>
-        </div>
-
-        <!-- Central Lyrics Matrix Stage -->
-        <div class="main-stage">
-            <div id="start-prompt" onclick="igniteSystem()">
-                <div style="color: var(--pink); font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">⚡ SYSTEM OVERRIDE READY ⚡</div>
-                <div style="font-size: 0.9rem; color: #94a3b8;">CLICK CONTAINER TO LAUNCH INTERACTIVE DECK</div>
-            </div>
-            <div id="lyrics"></div>
-        </div>
-    </div>
-
-    <div id="controls">
-        <button class="btn" onclick="go(-1)">PREV</button>
-        <button class="btn" onclick="go(1)">NEXT</button>
-    </div>
-
-    <script>
-        const lyricsData = [
-            "Small Town Star (Goofball)","I’m a goofball bouncing-off-the-wall-ball","Everybody knows my name","Yeah I’ll be a little goofball","Staying in my own lane",
-            "I’m a low-key pretty goofy really-got-it-good-breezy","standing-pretty-tall-ball","Dancing in the quiet rain","Just a low-key goofball","And God made me perfectly okay",
-            "Woke up Clean slate","Sun's up Don't wait","Step out Big yard","Life's good Not hard","Green trees Clear breeze","Out here Do what I please"
-        ]; // Shortened matrix structure array to completely prevent cutoff errors
-
-        let idx = 0, timer, aCtx, p = [], warpActive = false;
-        const cv = document.getElementById('canvas'), cx = cv.getContext('2d');
-        
-        function resize() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
-        window.onresize = resize; resize();
-
-        // High Tech Digital Grid & Floating Matrix Particles
-        for(let i=0; i<60; i++) p.push({ x: Math.random()*cv.width, y: Math.random()*cv.height, s: Math.random()*2+1, v: Math.random()*4+2, l: Math.random()*30+10 });
-
-        function renderFrame() {
-            cx.fillStyle = 'rgba(3,7,18,0.2)'; cx.fillRect(0,0,cv.width,cv.height);
+    <!-- Main HUD Grid Overlay -->
+    <div id="hud">
+        <!-- Top Tech Header -->
+        <div class="header">
+            <div class="branding">☣️ GOOFBALL_MAIN_FRAME // NODE_STAR v8.42 ☣️</div>
             
-            // Draw background network grid lines
-            cx.strokeStyle = 'rgba(0, 255, 204, 0.03)';
-            cx.lineWidth = 1;
-            for(let i=0; i<cv.width; i+=40) { cx.beginPath(); cx.moveTo(i,0); cx.lineTo(i,cv.height); cx.stroke(); }
+            <!-- Ultra High-Tech Quantum Clock Overrider Widget -->
+            <div class="quantum-clock" id="clock-widget" onmousedown="engageWarp()" onmouseup="disengageWarp()">
+                <div class="q-sub" id="coord-index">INDEX_REF: SECURE</div>
+                <div class="q-time" id="time-display">00:00:00.000</div>
+                <div class="q-sub" id="warp-status">⏳ STATUS: CHRONOS_LOCKED</div>
+            </div>
+        </div>
 
-            // Update custom sci-fi tracking beams
-            p.forEach(node => {
-                node.y += node.v; if(node.y > cv.height) { node.y = -20; node.x = Math.random()*cv.width; }
-                cx.fillStyle = warpActive ? '#ff007f' : '#00ffcc';
-                cx.fillRect(node.x, node.y, node.s, node.l);
-            });
-            requestAnimationFrame(renderFrame);
-        }
-        renderFrame();
+        <!-- Left Side Panel: Tacky Green Matrix Logs -->
+        <div class="left-panel" id="log-feed">
+            <div class="log-row">[OK] CORE_INITIALIZED</div>
+        </div>
 
-        // Upbeat Cyber Synthesizer
-        function beep() {
-            if(!aCtx) aCtx = new(window.AudioContext||window.webkitAudioContext)();
-            let now = aCtx.currentTime, osc = aCtx.createOscillator(), g = aCtx.createGain();
-            osc.type = 'sawtooth'; 
-            osc.frequency.setValueAtTime(warpActive ? 150 : 380 + (idx * 15), now);
-            g.gain.setValueAtTime(0.05, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-            osc.connect(g); g.connect(aCtx.destination); osc.start(); osc.stop(now + 0.15);
-        }
+        <!-- Center Lyric Stage Area -->
+        <div class="stage">
+            <div id="launcher" onclick="bootDeck()">
+                <h2 style="color: var(--pink); margin: 0 0 10px 0; font-family: sans-serif;">⚠️ COGNITIVE OVERRIDE DETECTED ⚠️</h2>
+                <p style="color: var(--neon); font-size: 0.85rem; margin: 0;">ENGAGE QUANTUM MATRIX CORE PROTOCOL</p>
+            </div>
+            <div id="lyrics-container"></div>
+        </div>
 
-        // Live Clock Tracker Engine with Hidden Warp Logic
-        function updateClock() {
-            let now = new Date();
-            if (warpActive) {
-                // HIDDEN FUNCTION: Subtracts exactly 1 hour from display clocks when clicked/held
-                now.setHours(now.getHours() - 1);
-            }
-            document.getElementById('hud-time').innerText = "SYS_TIME: " + now.toTimeString().split(' ')[0];
-        }
-        setInterval(updateClock, 1000);
+        <!-- Right Side Panel: Tacky Diagnostic Overrides -->
+        <div class="right-panel">
+            <div class="widget-box">
+                <div class="widget-title">⚙️ THREAT DEFENSE STATUS</div>
+                <div>SECURITY_LEVEL: <span class="alert-text">CRITICAL_GOOFY</span></div>
+                <div>DECRYPT_ARRAY: ACTIVE</div>
+            </div>
+            <div class="widget-box">
+                <div class="widget-title">🛰️ GEOLOCATION COORD</div>
+                <div id="fake-lat">LAT: 35.6895° N</div>
+                <div id="fake-lon">LONG: 139.6917° E</div>
+            </div>
+            <div class="widget-box" style="text-align: center; background: rgba(255,0,127,0.1); border-color: var(--pink);">
+                <div class="alert-text" style="font-size: 0.85rem;">TRAPWIRE ACTIVE</div>
+            </div>
+        </div>
+    </div>
 
-        // Hidden functions triggered by clicking the top clock container
-        function triggerTimeWarp() { 
-            warpActive = true; 
-            logEvent("CRITICAL: LOCAL TEMPORAL SHIFT INDUCED. TIME COMPRESSION -3600s", true);
-            updateClock();
-            beep();
-        }
-        function resetTimeWarp() { 
-            warpActive = false; 
-            logEvent("NOTICE: Time matrix normalization complete.", false);
-            updateClock();
-        }
+    <!-- System Controls Nav -->
+    <div id="controls">
+        <button class="cyber-btn" onclick="skip(-1)">◀ INVERSION</button>
+        <button class="cyber-btn" onclick="skip(1)">PROPULSION ▶</button>
+    </div>
 
-        // Rolling Automated Diagnostic Log Simulator
-        function logEvent(text, isAlert) {
-            const feed = document.getElementById('log-feed');
-            const line = document.createElement('div');
-            line.className = `log-line ${isAlert ? 'log-green' : ''}`;
-            line.innerText = `[${new Date().toLocaleTimeString()}] ${text}`;
-            feed.appendChild(line);
-            if(feed.children.length > 25) feed.removeChild(feed.children[0]);
-            feed.scrollTop = feed.scrollHeight;
-        }
-
-        setInterval(() => {
-            const phrases = ["Routing ping packets...", "Refreshing background hashes...", "Clearing memory leakage arrays...", "Syncing local script nodes...", "Parsing lyric string index..."];
-            logEvent(phrases[Math.floor(Math.random()*phrases.length)], Math.random() > 0.5);
-        }, 3000);
-
-        function showLine() {
-            const box = document.getElementById('lyrics'); box.innerHTML = '';
-            lyricsData[idx].split(' ').forEach((w, i) => {
-                let s = document.createElement('span'); s.className = 'word'; s.innerText = w;
-                s.style.animationDelay = `${i * 0.04}s`; box.appendChild(s);
-            });
-            beep();
-            logEvent(`Executing text payload segment: ID_${idx}`, false);
-            clearTimeout(timer);
-            if(idx < lyricsData.length - 1) timer = setTimeout(() => go(1), 2600);
-        }
-
-        function igniteSystem() {
-            document.getElementById('start-prompt').style.display = 'none';
-            document.getElementById('lyrics').style.display = 'block';
-            document.getElementById('controls').style.display = 'flex';
-            showLine();
-        }
-
-        function go(d) { idx += d; if(idx < 0) idx = 0; if(idx >= lyricsData.length) idx = lyricsData.length-1; showLine(); }
-    </script>
 </body>
 </html>
+<style>
+    :root { --neon: #00ff66; --pink: #ff007f; --cyan: #00f0ff; --bg: #02040a; }
+    body, html { margin:0; padding:0; width:100%; height:100%; background: var(--bg); font-family: 'Courier New', monospace; color: #fff; overflow: hidden; }
+    canvas { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1; }
+    
+    #hud { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 2; display: grid; grid-template-columns: 320px 1fr 300px; grid-template-rows: 90px 1fr; pointer-events: none; }
+    
+    .header { grid-column: 1 / span 3; background: linear-gradient(180deg, rgba(2,4,10,0.95) 0%, rgba(15,23,42,0.8) 100%); border-bottom: 2px dashed var(--neon); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-shadow: 0 5px 20px rgba(0,255,102,0.15); pointer-events: auto; }
+    .branding { font-size: 1.2rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 10px var(--neon); animation: pulse 1.5s infinite alternate; }
+    
+    .quantum-clock { background: rgba(0,0,0,0.85); border: 2px solid var(--cyan); padding: 8px 18px; border-radius: 6px; text-align: right; box-shadow: 0 0 15px var(--cyan); cursor: crosshair; }
+    .q-time { font-size: 1.4rem; font-weight: bold; color: #fff; text-shadow: 0 0 8px var(--cyan); letter-spacing: 1px; }
+    .q-sub { font-size: 0.65rem; color: var(--pink); letter-spacing: 2px; margin-top: 2px; text-transform: uppercase; }
 
+    .left-panel { background: rgba(2,4,10,0.85); border-right: 1px solid var(--neon); padding: 15px; display: flex; flex-direction: column; gap: 6px; font-size: 0.7rem; color: var(--neon); overflow: hidden; box-shadow: inset -5px 0 20px rgba(0,255,102,0.05); pointer-events: auto; }
+    .log-row { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; text-shadow: 0 0 2px var(--neon); }
+    .alert-text { color: var(--pink) !important; font-weight: bold; animation: glitch 0.3s infinite; }
+
+    .right-panel { background: rgba(2,4,10,0.85); border-left: 1px solid var(--pink); padding: 15px; display: flex; flex-direction: column; gap: 15px; color: var(--cyan); font-size: 0.75rem; pointer-events: auto; }
+    .widget-box { border: 1px solid rgba(0,240,255,0.3); padding: 10px; background: rgba(0,0,0,0.5); }
+    .widget-title { font-weight: bold; color: #fff; margin-bottom: 5px; border-bottom: 1px solid var(--cyan); padding-bottom: 2px; }
+    
+    .stage { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; }
+    #launcher { pointer-events: auto; background: #000; border: 3px double var(--neon); padding: 40px; text-align: center; cursor: pointer; box-shadow: 0 0 30px var(--neon); }
+    #lyrics-container { display: none; font-size: 3.2rem; font-weight: 900; text-transform: uppercase; line-height: 1.3; color: #fff; text-shadow: 0 0 20px var(--pink); max-width: 900px; font-family: 'Arial Black', sans-serif; }
+    
+    .word-node { display: inline-block; margin: 0 10px; opacity: 0; transform: translateY(-30px) rotate(15deg) scale(0.5); animation: kineticStrike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.5) forwards; }
+    
+    @keyframes kineticStrike { to { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); } }
+    @keyframes pulse { from { opacity: 0.7; } to { opacity: 1; } }
+    @keyframes glitch { 0% { opacity:1; } 50% { opacity:0.3; } 100% { opacity:1; } }
+
+    #controls { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); z-index: 10; display: none; gap: 15px; pointer-events: auto; }
+    .cyber-btn { background: #000; border: 1px solid var(--cyan); color: var(--cyan); padding: 10px 25px; font-weight: bold; cursor: pointer; font-family: monospace; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
+    .cyber-btn:hover { background: var(--pink); color: #fff; border-color: var(--pink); box-shadow: 0 0 15px var(--pink); }
+</style>
+<script>
+    const songLines = [
+        "Small Town Star (Goofball)","I’m a goofball bouncing-off-the-wall-ball","Everybody knows my name","Yeah I’ll be a little goofball","Staying in my own lane",
+        "I’m a low-key pretty goofy really-got-it-good-breezy","standing-pretty-tall-ball","Dancing in the quiet rain","Just a low-key goofball","And God made me perfectly okay",
+        "Woke up Clean slate","Sun's up Don't wait","Step out Big yard","Life's good Not hard","Green trees Clear breeze","Out here Do what I please"
+    ];
+
+    let lineIdx = 0, autoTimer, audioCtx, nodes = [], warpMode = false;
+    const cv = document.getElementById('matrix-bg'), cx = cv.getContext('2d');
+    
+    function resizeDeck() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
+    window.onresize = resizeDeck; resizeDeck();
+
+    for(let i=0; i<80; i++) nodes.push({ x: Math.random()*cv.width, y: Math.random()*cv.height, size: Math.random()*2+1, speed: Math.random()*6+4 });
+
+    function drawDeckFrame() {
+        cx.fillStyle = 'rgba(2,4,10,0.15)'; cx.fillRect(0,0,cv.width,cv.height);
+        cx.strokeStyle = 'rgba(0, 255, 102, 0.02)'; cx.lineWidth = 1;
+        for(let i=0; i<cv.height; i+=30) { cx.beginPath(); cx.moveTo(0,i); cx.lineTo(cv.width,i); cx.stroke(); }
+
+        nodes.forEach(n => {
+            n.y += n.speed; if(n.y > cv.height) { n.y = -50; n.x = Math.random()*cv.width; }
+            cx.fillStyle = warpMode ? 'rgba(255,0,127,0.4)' : 'rgba(0,255,102,0.4)';
+            cx.font = "10px monospace";
+            cx.fillText(Math.random().toString(16).substring(2,4).toUpperCase(), n.x, n.y);
+        });
+        requestAnimationFrame(drawDeckFrame);
+    }
+    drawDeckFrame();
+
+    function triggerAudioBlip() {
+        if(!audioCtx) audioCtx = new(window.AudioContext||window.webkitAudioContext)();
+        let time = audioCtx.currentTime, osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+        osc.type = warpMode ? 'square' : 'sawtooth';
+        osc.frequency.setValueAtTime(warpMode ? 100 : 250 + (lineIdx * 30), time);
+        gain.gain.setValueAtTime(0.06, time); gain.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(time + 0.2);
+    }
+
+    function renderQuantumClock() {
+        let now = new Date();
+        if (warpMode) { now.setHours(now.getHours() - 1); }
+        let timeString = now.toTimeString().split(' ');
+        let ms = String(now.getMilliseconds()).padStart(3, '0');
+        
+        document.getElementById('time-display').innerText = `${timeString}.${ms}`;
+        document.getElementById('coord-index').innerText = `EPOCH_TICK: ${Date.now()} // HASH_${Math.floor(Math.random()*9999)}`;
+        
+        if(Math.random() > 0.95) {
+            document.getElementById('fake-lat').innerText = `LAT: ${(Math.random()*180 - 90).toFixed(4)}° ${Math.random()>0.5?'N':'S'}`;
+            document.getElementById('fake-lon').innerText = `LONG: ${(Math.random()*360 - 180).toFixed(4)}° ${Math.random()>0.5?'E':'W'}`;
+        }
+    }
+    setInterval(renderQuantumClock, 1);
+
+    function engageWarp() {
+        warpMode = true;
+        document.getElementById('clock-widget').style.borderColor = 'var(--pink)';
+        document.getElementById('warp-status').innerText = "⚠️ SYSTEM OVERRIDE: CHRONOS_WARP -1H";
+        document.getElementById('warp-status').className = "alert-text";
+        pushLog("TEMPORAL ANOMALY FORCED: SYSTEM SECTOR CLOCK SUBTRACTED 3600 SECONDS", true);
+        triggerAudioBlip();
+    }
+    
+    function disengageWarp() {
+        warpMode = false;
+        document.getElementById('clock-widget').style.borderColor = 'var(--cyan)';
+        document.getElementById('warp-status').innerText = "⏳ STATUS: CHRONOS_LOCKED";
+        document.getElementById('warp-status').className = "";
+        pushLog("Chronos anchor restored. Temporal index normal.", false);
+    }
+
+    function pushLog(message, warning) {
+        const feed = document.getElementById('log-feed');
+        const row = document.createElement('div');
+        row.className = `log-row ${warning ? 'alert-text' : ''}`;
+        row.innerText = `>> [${new Date().toLocaleTimeString()}] ${message}`;
+        feed.appendChild(row);
+        if(feed.children.length > 28) feed.removeChild(feed.children[0]);
+        feed.scrollTop = feed.scrollHeight;
+    }
+
+    setInterval(() => {
+        const events = ["PACKET_STREAM_OVERFLOW", "RECOMPILING_QUANTUM_BUFFERS...", "CLEARING_SESSION_KEYS", "STARDATE_INDEX_REFRESHED", "INTRUSION_SHIELD_STABLE"];
+        pushLog(events[Math.floor(Math.random()*events.length)], Math.random() > 0.7);
+    }, 2500);
+
+    function renderLyrics() {
+        const container = document.getElementById('lyrics-container'); container.innerHTML = '';
+        songLines[lineIdx].split(' ').forEach((w, i) => {
+            let span = document.createElement('span'); span.className = 'word-node'; span.innerText = w;
+            span.style.animationDelay = `${i * 0.04}s`; container.appendChild(span);
+        });
+        triggerAudioBlip();
+        pushLog(`LYRIC_CORE: Broadcast payload stream block #${lineIdx}`, false);
+        clearTimeout(autoTimer);
+        if(lineIdx < songLines.length - 1) autoTimer = setTimeout(() => skip(1), 2500);
+    }
+
+    function bootDeck() {
+        document.getElementById('launcher').style.display = 'none';
+        document.getElementById('lyrics-container').style.display = 'block';
+        document.getElementById('controls').style.display = 'flex';
+        renderLyrics();
+    }
+
+    function skip(direction) {
+        lineIdx += direction;
+        if(lineIdx < 0) lineIdx = 0;
+        if(lineIdx >= songLines.length) lineIdx = songLines.length - 1;
+        renderLyrics();
+    }
+</script>
