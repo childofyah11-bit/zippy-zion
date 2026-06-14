@@ -3,237 +3,456 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OS 19 // QUANTUM POLY-SYNTH ENGINE</title>
+  <title>OS 19 // Autonomous Quantum Audio Matrix</title>
 </head>
 <body>
 
-  <!-- Background Processing Particle Sub-Layer -->
+  <!-- Background Layer Interconnected Processing Matrix -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Main Command Rig Viewport -->
+  <!-- Complete Main Spatial Interface Enclosure Container -->
   <div id="phone-container">
     
-    <!-- Interactive Dynamic Island Telemetry System Override -->
+    <!-- Dynamic Island System Clock Module -->
     <div id="dynamic-island">
       <div id="island-pill">
         <span id="island-icon">✦</span>
         <span id="system-clock">12:00:00.00</span>
       </div>
-      <div id="island-expanded-status">FM_SYNTH // CORE_POLYPHONY_ACTIVE</div>
+      <div id="island-expanded-status">NETWORK SECURITY TUNNEL // ROUTE_SHIFT_-3600s</div>
     </div>
 
-    <!-- Live System Critical Rows -->
+    <!-- Upper Signal and Advanced Thermal Telemetry HUD -->
     <div class="glass-card telemetry-row">
-      <div>NETWORK_LINK: <span class="premium-cyan" id="carrier-text">QUANTUM_SECURE</span></div>
-      <div>CPU_COMPUTE_TEMP: <span id="temp-metric">36.4°C</span></div>
+      <div>SIGNAL: <span class="premium-cyan" id="carrier-text">5G_ULTRA</span></div>
+      <div>CORE_TEMP: <span id="temp-metric">31.0°C</span></div>
     </div>
 
-    <!-- Primary Control Deck Split Interface Layout -->
-    <div style="display: flex; gap: 15px; flex: 1; min-height: 0;">
+    <!-- Main Dual-Column Operational Workspace -->
+    <div class="split-viewport">
       
-      <!-- Left Staging Deck: Visualizer Arrays, Lyrics, and Live Keyboard Grid -->
-      <div class="glass-card main-media-deck" style="flex: 1.5; padding: 10px;">
+      <!-- Primary Core Interaction Audio Workspace -->
+      <div class="glass-card main-media-deck">
+        
+        <!-- Interactive Initial Ignition Shield -->
         <div id="media-boot-prompt" onclick="igniteMediaDeck()">
-          <div class="premium-gradient-text" style="font-size: 1.4rem; font-weight: 800; letter-spacing: 3px;">BOOT SYNTH NODE</div>
-          <p style="color: #475569; font-size: 0.75rem; margin: 8px 0 0 0; font-family: monospace;">INITIALIZE REAL-TIME AUDIO SYNTHESIS FABRIC</p>
+          <div class="premium-gradient-text" style="font-size: 1.5rem; font-weight: 900; letter-spacing: 3px;">IGNITE SYNTHESIZER MATRIX</div>
+          <p style="color: #64748b; font-size: 0.75rem; margin: 12px 0 0 0; font-family: monospace;">TAP TO SYNCHRONIZE COGNITIVE WAVEFRONT</p>
         </div>
-        
-        <!-- Live Real-Time Frequency Waveform Canvas Node -->
+
+        <!-- High-Velocity Oscilloscope Frequency Output Monitor -->
         <canvas id="oscilloscope-canvas"></canvas>
+
+        <!-- Kinetic Audio Center Node Fluid Ring Frame -->
         <div id="fluid-audio-ring"></div>
+
+        <!-- Text Injection Target Framework for Real-Time Lyrics -->
         <div id="kinetic-lyric-viewport"></div>
-
-        <!-- Integrated Polyphonic Interactive Keyboard Synthesizer Grid -->
-        <div id="synth-keyboard-grid">
-          <div class="synth-key" data-note="C4" onmousedown="triggerPolyNote('C4')" onmouseup="releasePolyNote('C4')" onmouseleave="releasePolyNote('C4')"><span>C4</span></div>
-          <div class="synth-key key-black" data-note="C#4" onmousedown="triggerPolyNote('C#4')" onmouseup="releasePolyNote('C#4')" onmouseleave="releasePolyNote('C#4')"></div>
-          <div class="synth-key" data-note="D4" onmousedown="triggerPolyNote('D4')" onmouseup="releasePolyNote('D4')" onmouseleave="releasePolyNote('D4')"><span>D4</span></div>
-          <div class="synth-key key-black" data-note="D#4" onmousedown="triggerPolyNote('D#4')" onmouseup="releasePolyNote('D#4')" onmouseleave="releasePolyNote('D#4')"></div>
-          <div class="synth-key" data-note="E4" onmousedown="triggerPolyNote('E4')" onmouseup="releasePolyNote('E4')" onmouseleave="releasePolyNote('E4')"><span>E4</span></div>
-          <div class="synth-key" data-note="F4" onmousedown="triggerPolyNote('F4')" onmouseup="releasePolyNote('F4')" onmouseleave="releasePolyNote('F4')"><span>F4</span></div>
-          <div class="synth-key key-black" data-note="F#4" onmousedown="triggerPolyNote('F#4')" onmouseup="releasePolyNote('F#4')" onmouseleave="releasePolyNote('F#4')"></div>
-          <div class="synth-key" data-note="G4" onmousedown="triggerPolyNote('G4')" onmouseup="releasePolyNote('G4')" onmouseleave="releasePolyNote('G4')"><span>G4</span></div>
-          <div class="synth-key key-black" data-note="G#4" onmousedown="triggerPolyNote('G#4')" onmouseup="releasePolyNote('G#4')" onmouseleave="releasePolyNote('G#4')"></div>
-          <div class="synth-key" data-note="A4" onmousedown="triggerPolyNote('A4')" onmouseup="releasePolyNote('A4')" onmouseleave="releasePolyNote('A4')"><span>A4</span></div>
-          <div class="synth-key key-black" data-note="A#4" onmousedown="triggerPolyNote('A#4')" onmouseup="releasePolyNote('A#4')" onmouseleave="releasePolyNote('A#4')"></div>
-          <div class="synth-key" data-note="B4" onmousedown="triggerPolyNote('B4')" onmouseup="releasePolyNote('B4')" onmouseleave="releasePolyNote('B4')"><span>B4</span></div>
-          <div class="synth-key" data-note="C5" onmousedown="triggerPolyNote('C5')" onmouseup="releasePolyNote('C5')" onmouseleave="releasePolyNote('C5')"><span>C5</span></div>
-        </div>
       </div>
-      <!-- Right Staging Deck: Cyber Instrument Engine Sliders and Live Matrix Variables -->
-      <div class="glass-card sidebar-matrix" style="flex: 1; font-family: monospace; display: flex; flex-direction: column; gap: 6px; text-align: left;">
-        <div style="font-weight: bold; color: var(--cyan-glow); letter-spacing: 1px; border-bottom: 1px solid rgba(0,240,255,0.2); padding-bottom: 4px; font-size: 0.65rem;">SYNTHESIZER OSC CHANNELS</div>
-        
-        <!-- Live Slider Modification Nodes -->
-        <div class="control-slider-group">
-          <label>CUTOFF_FREQ: <span id="lbl-cutoff">1200Hz</span></label>
-          <input type="range" min="100" max="5000" value="1200" id="sld-cutoff" oninput="updateSynthParameters()">
-        </div>
-        <div class="control-slider-group">
-          <label>RESONANCE_Q: <span id="lbl-q">1.0</span></label>
-          <input type="range" min="0" max="20" step="0.5" value="1" id="sld-q" oninput="updateSynthParameters()">
-        </div>
-        <div class="control-slider-group">
-          <label>FM_MOD_DEPTH: <span id="lbl-mod">40</span></label>
-          <input type="range" min="0" max="500" value="40" id="sld-mod" oninput="updateSynthParameters()">
-        </div>
-        <div class="control-slider-group">
-          <label>LFO_RATE_HZ: <span id="lbl-lfo">5Hz</span></label>
-          <input type="range" min="0" max="30" value="5" id="sld-lfo" oninput="updateSynthParameters()">
-        </div>
 
-        <div style="font-weight: bold; color: var(--magenta-glow); letter-spacing: 1px; border-bottom: 1px solid rgba(255,0,127,0.2); padding-bottom: 4px; margin-top: 5px; font-size: 0.65rem;">LIVE COMPUTER VARIABLE MATRIX</div>
-        <div class="telemetry-item">RENDER_TIME: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
-        <div class="telemetry-item">ARRAY_ALLOC: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
-        <div class="telemetry-item">NODE_STABILITY: <span class="telemetry-value" id="val-stabil">99.8%</span></div>
-        <div class="telemetry-item">SYNTH_POLYPHONY: <span class="telemetry-value" id="val-poly">0 active</span></div>
-        <div class="telemetry-item">AUDIO_BITRATE: <span class="telemetry-value" id="val-bitrate">1411kbps</span></div>
-        <div class="telemetry-item">COMPUTE_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
-        <div class="telemetry-item">UPTIME_CLOCK: <span class="telemetry-value" id="val-uptime">0.0s</span></div>
+      <!-- Advanced Technical Metric Telemetry Sidebar Matrix -->
+      <div class="glass-card sidebar-matrix">
+        <div class="matrix-section-title">LIVE SYSTEM MATRICES</div>
+        <div class="stat-row">RENDER_CYCLE: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
+        <div class="stat-row">BUFFER_ALLOC: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
+        <div class="stat-row">PARTICLE_VEL: <span class="telemetry-value" id="val-vel">0.00px/f</span></div>
+        <div class="stat-row">STEALTH_SHIELD: <span class="telemetry-value" id="val-stealth">INACTIVE</span></div>
+        <div class="stat-row">AUDIO_SYNTH: <span class="telemetry-value" id="val-synth-status">OFFLINE</span></div>
+        <div class="stat-row">SYNTH_FREQ: <span class="telemetry-value" id="val-freq">0.0 Hz</span></div>
+        
+        <div class="matrix-section-title" style="margin-top: 15px;">HARDWARE PARAMETERS</div>
+        <div class="stat-row">CALC_CPU_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
+        <div class="stat-row">THERMAL_GATE: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
+        <div class="stat-row">SYSTEM_UPTIME: <span class="telemetry-value" id="val-uptime">000.0s</span></div>
+        <div class="stat-row">POLYPHONY_VCO: <span class="telemetry-value" id="val-polyphony">0/4 Node</span></div>
       </div>
     </div>
 
-    <!-- Active High-Velocity Continuous Terminal Event Streams -->
+    <!-- Active Encrypted Cryptographic Diagnostics Stream Widget -->
     <div class="glass-card activity-monitor" id="covert-activity-logs">
       <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">SYSTEM DIAGNOSTIC STREAM:</div>
     </div>
 
-    <!-- Master Control Rows and Macro-Execution Operations -->
+    <!-- Main Navigation Track Control Deck Controls -->
     <div id="media-controls">
-      <div style="display: flex; justify-content: center; gap: 40px; width: 100%;">
-        <button class="nav-control-btn" onclick="cycleTrackNode(-1)">⏮</button>
-        <button class="nav-control-btn" style="color: var(--cyan-glow); font-size: 2rem;" onclick="scrambleFrequencies()">⚡</button>
-        <button class="nav-control-btn" onclick="cycleTrackNode(1)">⏭</button>
+      <div class="control-row-primary">
+        <button class="nav-control-btn icon-btn" onclick="cycleTrackNode(-1)">⏮</button>
+        <button class="nav-control-btn icon-btn" id="play-pause-indicator" style="color: var(--cyan-glow); font-size: 2.2rem;">⏵</button>
+        <button class="nav-control-btn icon-btn" onclick="cycleTrackNode(1)">⏭</button>
       </div>
-      <div style="display: flex; gap: 8px; width: 100%; justify-content: space-between; margin-top: 5px;">
-        <button class="tech-sub-btn" onclick="switchWaveform('sine')">SINE</button>
-        <button class="tech-sub-btn" onclick="switchWaveform('triangle')">TRIANGLE</button>
-        <button class="tech-sub-btn" onclick="switchWaveform('sawtooth')">SAWTOOTH</button>
-        <button class="tech-sub-btn" onclick="switchWaveform('square')">SQUARE</button>
+
+      <!-- Advanced Hardware Sound Control Deck Array Options -->
+      <div class="hardware-control-grid">
+        <div class="control-knob-box">
+          <label>WAVEFORM TYPE</label>
+          <select id="synth-waveform-type" onchange="updateSynthParameters()">
+            <option value="sine">PURE SINE</option>
+            <option value="triangle">TRIANGLE WAVE</option>
+            <option value="sawtooth">SAWTOOTH OSC</option>
+            <option value="square">SQUARE NODE</option>
+          </select>
+        </div>
+        <div class="control-knob-box">
+          <label>ARPEGGIATOR SPEED</label>
+          <select id="synth-tempo-mod" onchange="updateSynthParameters()">
+            <option value="1.0">NORMAL TRACK</option>
+            <option value="0.5">HALF CLOCK</option>
+            <option value="2.0">HYPER SPEED</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Operational Utility Sub-Systems Action Triggers -->
+      <div class="utility-action-row">
+        <button class="tech-sub-btn" onclick="scrambleFrequencies()">SCRAMBLE FREQ</button>
+        <button class="tech-sub-btn" onclick="purgeMemoryBuffers()">PURGE CACHE</button>
+        <button class="tech-sub-btn" onclick="toggleHyperDrive()">HYPERDRIVE</button>
       </div>
     </div>
   </div>
   <style>
     :root {
-      --premium-bg: #030407;
+      --premium-bg: #030406;
       --glass-surface: rgba(10, 14, 24, 0.45);
-      --glass-border: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.05);
       --cyan-glow: #00f0ff;
       --magenta-glow: #ff007f;
       --matrix-green: #39ff14;
     }
     body, html {
-      margin: 0; padding: 0; width: 100%; height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
       background: var(--premium-bg);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: #fff; overflow: hidden;
-      display: flex; justify-content: center; align-items: center;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     canvas {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 1; pointer-events: none; contain: strict;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      contain: strict;
     }
     #phone-container {
-      position: relative; width: 720px; height: 860px;
-      background: rgba(6, 8, 14, 0.93);
-      border: 4px solid rgba(255,255,255,0.06); border-radius: 40px;
-      z-index: 2; padding: 25px; box-sizing: border-box;
-      display: flex; flex-direction: column; gap: 15px;
-      box-shadow: 0 40px 100px rgba(0,0,0,0.95), inset 0 0 40px rgba(0,240,255,0.02);
-      backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+      position: relative;
+      width: 720px; /* Enhanced wide desktop operational layout block dimensions */
+      height: 860px;
+      background: rgba(6, 8, 12, 0.95);
+      border: 4px solid rgba(255, 255, 255, 0.07);
+      border-radius: 40px;
+      z-index: 2;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.98), inset 0 0 40px rgba(0,240,255,0.04);
+      padding: 30px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
       transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-      will-change: transform; contain: content;
+      will-change: transform;
+      contain: content;
     }
     #dynamic-island {
-      position: absolute; top: 15px; left: 50%; transform: translate3d(-50%, 0, 0);
-      background: #000; border: 1px solid rgba(255,255,255,0.05); border-radius: 30px;
-      padding: 8px 20px; display: flex; flex-direction: column; align-items: center;
-      width: 240px; height: 34px; z-index: 100; contain: layout;
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translate3d(-50%, 0, 0);
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 30px;
+      padding: 8px 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: width 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), height 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), background-color 0.2s ease;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.6);
+      pointer-events: auto;
+      width: 220px;
+      height: 36px;
+      will-change: width, height, background-color;
+      contain: layout;
     }
-    #island-pill { display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center; }
-    #system-clock { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; }
-    #island-icon { color: var(--cyan-glow); animation: floatIcon 2s infinite ease-in-out; }
-    #island-expanded-status { display: none; font-size: 0.55rem; font-weight: bold; color: var(--magenta-glow); margin-top: 6px; text-align: center; }
+    #island-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      justify-content: center;
+    }
+    #system-clock {
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
+    }
+    #island-icon {
+      color: var(--cyan-glow);
+      font-size: 0.85rem;
+      animation: floatIcon 2s infinite ease-in-out;
+    }
+    #island-expanded-status {
+      display: none;
+      font-size: 0.55rem;
+      font-weight: bold;
+      color: var(--magenta-glow);
+      margin-top: 8px;
+      letter-spacing: 1px;
+      width: 100%;
+      text-align: center;
+    }
     .glass-card {
-      background: var(--glass-surface); border: 1px solid var(--glass-border);
-      border-radius: 20px; padding: 12px; box-sizing: border-box;
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       transform: translate3d(0,0,0);
     }
-    .telemetry-row { margin-top: 25px; display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 600; color: #64748b; }
-    #temp-metric { color: var(--matrix-green); text-shadow: 0 0 6px rgba(57,255,20,0.3); }
-    .main-media-deck { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; background: rgba(0,0,0,0.3); }
-  </style>
-  <style>
-    #oscilloscope-canvas {
-      display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 1; opacity: 0.15; pointer-events: none; contain: strict;
+    .telemetry-row {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #94a3b8;
+      contain: layout paint;
     }
-    #media-boot-prompt { pointer-events: auto; cursor: pointer; text-align: center; z-index: 10; }
+    #temp-metric {
+      color: var(--matrix-green);
+      text-shadow: 0 0 10px rgba(57,255,20,0.4);
+      transition: color 0.2s ease;
+    }
+    .split-viewport {
+      display: flex;
+      gap: 15px;
+      flex: 1;
+      min-height: 0;
+    }
+   <style>
+    .main-media-deck {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      overflow: hidden;
+      border-radius: 24px;
+      contain: layout size;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(0, 240, 255, 0.05);
+    }
+    #media-boot-prompt {
+      z-index: 20;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    #media-boot-prompt:hover {
+      transform: scale3d(1.04, 1.04, 1);
+    }
+    #oscilloscope-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.75;
+    }
     #kinetic-lyric-viewport {
-      display: none; font-size: 1.4rem; font-weight: 900; line-height: 1.2;
-      text-transform: uppercase; max-width: 100%; z-index: 5; margin-bottom: 20px; contain: layout paint;
+      display: none;
+      font-size: 1.4rem;
+      font-weight: 800;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      max-width: 90%;
+      z-index: 5;
+      contain: layout paint;
     }
     #fluid-audio-ring {
-      display: none; position: absolute; width: 150px; height: 150px;
-      border: 2px solid rgba(0, 240, 255, 0.12); border-radius: 50%; z-index: 2;
-      transition: transform 0.1s ease, border-color 0.1s ease; will-change: transform;
+      display: none;
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border: 2px solid rgba(0, 240, 255, 0.15);
+      border-radius: 50%;
+      z-index: 3;
+      transform: scale3d(1, 1, 1);
+      transition: transform 0.1s cubic-bezier(0.1, 0.9, 0.3, 1), border-color 0.1s ease;
+      box-shadow: 0 0 35px rgba(0,240,255,0.06);
+      will-change: transform, border-color;
     }
-    .fluid-word { display: inline-block; margin: 0 4px; opacity: 0; transform: translate3d(0,10px,0); animation: fIn 0.2s cubic-bezier(0.1,0.9,0.2,1) forwards; }
-    @keyframes fIn { to { opacity: 1; transform: translate3d(0,0,0); } }
-    
-    /* Synth Control Slider Styles */
-    .sidebar-matrix { font-size: 0.58rem; color: #94a3b8; gap: 4px; background: rgba(0,0,0,0.2); border-left: 2px solid var(--cyan-glow); }
-    .control-slider-group { display: flex; flex-direction: column; gap: 2px; margin-bottom: 4px; }
-    .control-slider-group label { color: #64748b; font-weight: bold; }
-    .control-slider-group label span { float: right; color: #fff; }
-    .control-slider-group input[type="range"] {
-      -webkit-appearance: none; appearance: none; width: 100%; background: rgba(255,255,255,0.05);
-      height: 4px; border-radius: 2px; outline: none;
+    .fluid-word {
+      display: inline-block;
+      margin: 0 4px;
+      opacity: 0;
+      transform: translate3d(0, 14px, 0) scale3d(0.88, 0.88, 1);
+      animation: fluidWaveIn 0.22s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
     }
-    .control-slider-group input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%; background: var(--cyan-glow); cursor: pointer;
+    .sidebar-matrix {
+      flex: 1;
+      font-family: monospace;
+      font-size: 0.65rem;
+      color: #94a3b8;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+      background: rgba(4, 5, 8, 0.6);
+      border-left: 2px solid var(--cyan-glow);
     }
-    .telemetry-item { border-bottom: 1px solid rgba(255,255,255,0.02); padding: 2px 0; }
-    .telemetry-value { float: right; color: #fff; font-weight: bold; }
-    
-    /* Interactive Keyboard Key Layouts */
-    #synth-keyboard-grid {
-      display: none; width: 100%; height: 75px; background: #000; margin-top: auto;
-      border-radius: 10px; position: relative; overflow: hidden; pointer-events: auto; z-index: 10;
+    .matrix-section-title {
+      font-weight: bold;
+      color: var(--cyan-glow);
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(0,240,255,0.2);
+      padding-bottom: 5px;
     }
-    .synth-key {
-      id: key; float: left; width: calc(100% / 8); height: 100%; background: #fff;
-      border-right: 1px solid #111; box-sizing: border-box; cursor: pointer;
-      position: relative; display: flex; align-items: flex-end; justify-content: center;
-      padding-bottom: 4px; color: #333; font-size: 0.55rem; font-weight: bold;
-      user-select: none; -webkit-user-select: none;
+    .stat-row {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .synth-key:active, .synth-key.active-press { background: var(--cyan-glow); color: #000; }
-    .key-black {
-      position: absolute; width: calc((100% / 8) * 0.6); height: 60%; background: #111;
-      border: 1px solid rgba(255,255,255,0.1); z-index: 2; margin-left: calc((100% / 8) * -0.3);
+    .telemetry-value {
+      color: #fff;
+      font-weight: bold;
+      float: right;
     }
-    .key-black:active, .key-black.active-press { background: var(--magenta-glow); }
-    
-    /* Black Key Absolute Positioning Configurations */
-    .synth-key[data-note="C#4"] { left: calc(100% / 8); }
-    .synth-key[data-note="D#4"] { left: calc((100% / 8) * 2); }
-    .synth-key[data-note="F#4"] { left: calc((100% / 8) * 4); }
-    .synth-key[data-note="G#4"] { left: calc((100% / 8) * 5); }
-    .synth-key[data-note="A#4"] { left: calc((100% / 8) * 6); }
-
-    .activity-monitor { height: 95px; display: flex; flex-direction: column; gap: 3px; overflow: hidden; font-size: 0.58rem; color: #475569; font-family: monospace; text-align: left; }
-    .covert-row { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .covert-shift-flag { color: var(--magenta-glow) !important; font-weight: bold; }
-    #media-controls { display: none; flex-direction: column; width: 100%; }
-    .nav-control-btn { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; transition: transform 0.2s, opacity 0.2s; opacity: 0.6; }
-    .nav-control-btn:hover { opacity: 1; transform: scale3d(1.1,1.1,1); }
-    .tech-sub-btn { flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); color: #475569; padding: 4px; border-radius: 6px; cursor: pointer; font-family: monospace; font-size: 0.52rem; }
-    .tech-sub-btn:hover { background: rgba(0,240,255,0.05); border-color: var(--cyan-glow); color: #fff; }
-    .premium-gradient-text { background: linear-gradient(135deg, #fff 40%, #475569 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .activity-monitor {
+      height: 110px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      overflow: hidden;
+      font-size: 0.62rem;
+      color: #475569;
+      font-family: monospace;
+      text-align: left;
+      contain: layout paint;
+    }
+    .covert-row {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .covert-shift-flag {
+      color: var(--magenta-glow) !important;
+      font-weight: bold;
+    }
+    #media-controls {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+    .control-row-primary {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      pointer-events: auto;
+      width: 100%;
+    }
+    .icon-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      opacity: 0.6;
+    }
+    .icon-btn:hover {
+      opacity: 1;
+      transform: scale3d(1.1, 1.1, 1);
+    }
+    .hardware-control-grid {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+    }
+    .control-knob-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      text-align: left;
+    }
+    .control-knob-box label {
+      font-family: monospace;
+      font-size: 0.55rem;
+      color: #64748b;
+      letter-spacing: 1px;
+    }
+    .control-knob-box select {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      font-family: monospace;
+      font-size: 0.65rem;
+      padding: 6px;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+    }
+    .control-knob-box select:focus {
+      border-color: var(--cyan-glow);
+    }
+    .utility-action-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .tech-sub-btn {
+      flex: 1;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #64748b;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: monospace;
+      font-size: 0.6rem;
+      transition: all 0.2s ease;
+    }
+    .tech-sub-btn:hover {
+      background: rgba(0, 240, 255, 0.06);
+      border-color: var(--cyan-glow);
+      color: #fff;
+    }
+    @keyframes fluidWaveIn {
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+    }
+    @keyframes floatIcon {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -3px, 0); }
+    }
+    .premium-gradient-text {
+      background: linear-gradient(135deg, #fff 30%, #64748b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
   </style>
-
   <script>
     const rawPayload = [
       "Small Town Star (Goofball)", "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", 
@@ -260,103 +479,171 @@
     ];
 
     const payloadData = rawPayload.map(line => line.split(' '));
-    let trackPtr = 0, trackTimer, stealthShieldActive = false;
-    let baseCompTemp = 36.4, startTimeStamp = performance.now();
+    let trackPtr = 0, trackTimer, audioCtx, analyserNode, biquadFilter, stealthShieldActive = false, hyperDriveActive = false;
+    let baseCompTemp = 36.4, frameStartTime = 0;
+    const startTimeStamp = performance.now();
     
-    // Web Audio Synthesizer Structural Maps
-    let audioCtx = null, masterGainNode = null, masterFilterNode = null, masterAnalyserNode = null;
-    let activePolyVoices = {};
-    let masterWaveformType = 'sine';
-
-    const noteFrequencyMap = {
-      'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13, 'E4': 329.63,
-      'F4': 349.23, 'F#4': 369.99, 'G4': 392.00, 'G#4': 415.30, 'A4': 440.00,
-      'A#4': 466.16, 'B4': 493.88, 'C5': 523.25
-    };
-
     const canvas = document.getElementById('ambient-canvas'), ctx = canvas.getContext('2d');
     const offscreen = document.createElement('canvas'), oCtx = offscreen.getContext('2d');
-    const oscCanvas = document.getElementById('oscilloscope-canvas'), oscCtx = oscCanvas.getContext('2d');
+
+    const oscCanvas = document.getElementById('oscilloscope-canvas'), octx = oscCanvas.getContext('2d');
 
     function scaleViewport() {
       canvas.width = offscreen.width = window.innerWidth;
       canvas.height = offscreen.height = window.innerHeight;
-      oscCanvas.width = oscCanvas.parentElement.clientWidth;
-      oscCanvas.height = oscCanvas.parentElement.clientHeight;
+      oscCanvas.width = oscCanvas.clientWidth;
+      oscCanvas.height = oscCanvas.clientHeight;
     }
     window.addEventListener('resize', scaleViewport, { passive: true });
     scaleViewport();
 
-    // High performance primitive float array setup
-    const particleCount = 40;
-    const particleBuffer = new Float32Array(particleCount * 4);
-    for(let i = 0; i < particleCount; i++) {
-      const idx = i << 2;
-      particleBuffer[idx] = Math.random() * window.innerWidth;
-      particleBuffer[idx+1] = Math.random() * window.innerHeight;
-      particleBuffer[idx+2] = Math.random() * 35 + 15;
-      particleBuffer[idx+3] = -(Math.random() * 0.4 + 0.1);
+    // High performance flat buffer array mechanics
+    let particleCount = 55;
+    let particleBuffer = new Float32Array(particleCount * 4);
+    function buildParticleBuffers() {
+      for(let i = 0; i < particleCount; i++) {
+        const idx = i << 2;
+        particleBuffer[idx] = Math.random() * window.innerWidth;
+        particleBuffer[idx+1] = Math.random() * window.innerHeight;
+        particleBuffer[idx+2] = Math.random() * 45 + 15;
+        particleBuffer[idx+3] = -(Math.random() * 0.55 + 0.15);
+      }
+      document.getElementById('val-alloc').textContent = (particleBuffer.byteLength) + ' bytes';
     }
-    document.getElementById('val-alloc').textContent = particleBuffer.byteLength + ' bytes';
-    function drawAmbientGraph() {
+    buildParticleBuffers();
+
+    let oscBufferLength = 0, oscDataArray = null;
+
+    function drawAmbientGraph(timestamp) {
       const start = performance.now();
-      oCtx.fillStyle = '#030407';
+      oCtx.fillStyle = '#030406';
       oCtx.fillRect(0, 0, offscreen.width, offscreen.height);
-      oCtx.fillStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.02)' : 'rgba(0, 240, 255, 0.02)';
+      oCtx.fillStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.03)' : 'rgba(0, 240, 255, 0.03)';
 
       const w = offscreen.width, h = offscreen.height;
+      let totalVel = 0;
+
       for (let i = 0; i < particleCount; i++) {
         const idx = i << 2;
-        let y = particleBuffer[idx+1] + particleBuffer[idx+3];
+        let speedMultiplier = hyperDriveActive ? 7.5 : 1.0;
+        let y = particleBuffer[idx+1] + (particleBuffer[idx+3] * speedMultiplier);
         const r = particleBuffer[idx+2];
-        if(y < -r) { y = h + r; particleBuffer[idx] = Math.random() * w; }
-        particleBuffer[idx+1] = y;
-        oCtx.beginPath(); oCtx.arc(particleBuffer[idx], y, r, 0, 6.28318); oCtx.fill();
-      }
-      ctx.clearRect(0, 0, w, h); ctx.drawImage(offscreen, 0, 0);
 
-      // Render the audio oscilloscope visualizer spectrum screen
-      if(masterAnalyserNode && oscCtx) {
-        const bufferLength = masterAnalyserNode.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-        masterAnalyserNode.getByteTimeDomainData(dataArray);
+        if(y < -r) {
+          y = h + r;
+          particleBuffer[idx] = Math.random() * w;
+        }
+        particleBuffer[idx+1] = y;
+        totalVel += Math.abs(particleBuffer[idx+3] * speedMultiplier);
+
+        oCtx.beginPath();
+        oCtx.arc(particleBuffer[idx], y, r, 0, 6.28318);
+        oCtx.fill();
+      }
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(offscreen, 0, 0);
+      
+      // Update sidebar runtime telemetry elements
+      const renderTime = performance.now() - start;
+      document.getElementById('val-latency').textContent = renderTime.toFixed(2) + 'ms';
+      document.getElementById('val-vel').textContent = (totalVel / particleCount).toFixed(2) + 'px/f';
+      document.getElementById('val-uptime').textContent = ((performance.now() - startTimeStamp) / 1000).toFixed(1) + 's';
+      document.getElementById('val-load').textContent = (renderTime * 7.4).toFixed(1) + '%';
+
+      // Live Audio Scope Renderer Execution
+      if(analyserNode && oscDataArray) {
+        analyserNode.getByteTimeDomainData(oscDataArray);
+        octx.clearRect(0, 0, oscCanvas.width, oscCanvas.height);
+        octx.lineWidth = 2;
+        octx.strokeStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.4)' : 'rgba(0, 240, 255, 0.4)';
+        octx.beginPath();
         
-        oscCtx.clearRect(0, 0, oscCanvas.width, oscCanvas.height);
-        oscCtx.lineWidth = 2;
-        oscCtx.strokeStyle = stealthShieldActive ? 'var(--magenta-glow)' : 'var(--cyan-glow)';
-        oscCtx.beginPath();
-        
-        const sliceWidth = oscCanvas.width / bufferLength;
+        let sliceWidth = oscCanvas.width / oscBufferLength;
         let x = 0;
-        for(let i = 0; i < bufferLength; i++) {
-          const v = dataArray[i] / 128.0;
-          const y = (v * oscCanvas.height) / 2;
-          if(i === 0) oscCtx.moveTo(x, y); else oscCtx.lineTo(x, y);
+        for(let i = 0; i < oscBufferLength; i++) {
+          let v = oscDataArray[i] / 128.0;
+          let y = v * oscCanvas.height / 2;
+          if(i === 0) octx.moveTo(x, y);
+          else octx.lineTo(x, y);
           x += sliceWidth;
         }
-        oscCtx.lineTo(oscCanvas.width, oscCanvas.height / 2);
-        oscCtx.stroke();
+        octx.lineTo(oscCanvas.width, oscCanvas.height / 2);
+        octx.stroke();
       }
-
-      const latency = performance.now() - start;
-      document.getElementById('val-latency').textContent = latency.toFixed(2) + 'ms';
-      document.getElementById('val-load').textContent = (latency * 7.5).toFixed(1) + '%';
-      document.getElementById('val-uptime').textContent = ((performance.now() - startTimeStamp) / 1000).toFixed(1) + 's';
 
       requestAnimationFrame(drawAmbientGraph);
     }
     requestAnimationFrame(drawAmbientGraph);
 
-    // Dynamic Thermal cooling calculation logic loop
-    setInterval(() => {
+    // Dynamic Polyphonic Web Audio Engine Array
+    function emitOversampleTone() {
+      try {
+        if(!audioCtx) {
+          audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+          analyserNode = audioCtx.createAnalyser();
+          analyserNode.fftSize = 256;
+          oscBufferLength = analyserNode.frequencyBinCount;
+          oscDataArray = new Uint8Array(oscBufferLength);
+
+          biquadFilter = audioCtx.createBiquadFilter();
+          biquadFilter.type = "lowpass";
+          biquadFilter.connect(audioCtx.destination);
+          analyserNode.connect(biquadFilter);
+          
+          document.getElementById('val-synth-status').textContent = 'ACTIVE';
+          document.getElementById('val-synth-status').style.color = 'var(--matrix-green)';
+        }
+
+        const now = audioCtx.currentTime;
+        const waveType = document.getElementById('synth-waveform-type').value;
+        const tempoMod = parseFloat(document.getElementById('synth-tempo-mod').value);
+        
+        // Formulate Arpeggiated Multi-Chord Harmony based on lyrics track pointer
+        const baseFreq = stealthShieldActive ? 70 : 220 + (trackPtr * 3);
+        const chords = [baseFreq, baseFreq * 1.25, baseFreq * 1.5, baseFreq * 2.0];
+        
+        document.getElementById('val-freq').textContent = baseFreq.toFixed(1) + ' Hz';
+        document.getElementById('val-polyphony').textContent = chords.length + '/4 Node';
+
+        chords.forEach((freq, index) => {
+          let osc = audioCtx.createOscillator();
+          let gain = audioCtx.createGain();
+          
+          osc.type = waveType;
+          osc.frequency.setValueAtTime(freq, now + (index * 0.04 * tempoMod));
+          biquadFilter.frequency.setValueAtTime(stealthShieldActive ? 150 : 1500, now);
+          
+          gain.gain.setValueAtTime(0.015, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + (0.16 * tempoMod));
+          
+          osc.connect(gain);
+          gain.connect(analyserNode);
+          osc.start(now + (index * 0.04 * tempoMod));
+          osc.stop(now + (0.16 * tempoMod) + (index * 0.04 * tempoMod));
+        });
+        
+        baseCompTemp += 0.55; // Core calculation load drives temperature simulation
+      } catch(e) {}
+    }
+
+    const clockEl = document.getElementById('system-clock');
+    const tempEl = document.getElementById('temp-metric');
+
+    function processSystemClock() {
       const clockDate = new Date();
+      if (stealthShieldActive) clockDate.setHours(clockDate.getHours() - 1);
       const parts = clockDate.toTimeString().substring(0, 8);
       const ms = String(clockDate.getMilliseconds()).padStart(3, '0').substring(0,2);
-      document.getElementById('system-clock').textContent = parts + '.' + ms;
-
-      if(baseCompTemp > 35.8) baseCompTemp -= 0.05;
-      const keys = Object.keys(activePolyVoices).length;
-      baseCompTemp += (keys * 0.12);
-      document.getElementById('temp-metric').textContent = baseCompTemp.toFixed(1) + '°C';
-      document.getElementById('val-poly').textContent = keys + ' active';
-    }, 30);
+      clockEl.textContent = parts + '.' + ms;
+      
+      if(baseCompTemp > 34.5) baseCompTemp -= 0.05;
+      if(hyperDriveActive) baseCompTemp += (Math.random() * 0.22);
+      
+      tempEl.textContent = baseCompTemp.toFixed(1) + '°C';
+      if(baseCompTemp > 44.0) {
+        tempEl.style.color = 'var(--magenta-glow)';
+        document.getElementById('val-throttle').textContent = 'THERMAL_THROTTLE';
+      } else {
+        tempEl.style.color = 'var(--matrix-green)';
+        document.getElementById('val
