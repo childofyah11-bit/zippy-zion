@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUDE 8-BIT MACHINE</title>
+    <title>X-8 AUDIO HARDWARE</title>
     <style>
+        /* Raw, Low-Res CRT Matrix Style */
         body {
-            background-color: #000000;
-            color: #ff00ff;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
+            background-color: #000;
+            color: #00ff66;
+            font-family: "Courier New", Courier, monospace;
+            font-weight: 900;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -19,8 +20,8 @@
             image-rendering: pixelated;
         }
 
-        /* Brutalist Boot Wall */
-        #boot-screen {
+        /* Brutalist Boot Wall Overlay */
+        #gatekeeper-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
@@ -28,245 +29,249 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 999;
-            border: 10px solid #ff00ff;
+            z-index: 9999;
+            border: 14px solid #ff0055;
             box-sizing: border-box;
         }
 
-        .coin-btn {
-            background: #00ffff;
-            color: #000;
-            border: 5px solid #fff;
-            padding: 20px 40px;
+        .giant-boot-btn {
+            background: #000;
+            color: #00ff66;
+            border: 8px solid #00ff66;
+            padding: 30px 60px;
             font-family: inherit;
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 28px;
+            font-weight: 900;
             cursor: pointer;
-            box-shadow: 8px 8px 0px #00aaaa;
+            box-shadow: 12px 12px 0px #ff0055;
         }
 
-        /* Clunky Cabinet Shell */
-        .ugly-box {
-            background: #111;
-            border: 6px solid #ff00ff;
+        .giant-boot-btn:active {
+            transform: translate(6px, 6px);
+            box-shadow: 6px 6px 0px #ff0055;
+        }
+
+        /* Main Blocky Console Framework */
+        .console-chassis {
+            background: #000;
+            border: 8px solid #00ff66;
             padding: 15px;
             width: 95%;
-            max-width: 650px;
-            box-shadow: 12px 12px 0px #00ffff;
+            max-width: 700px;
+            box-shadow: 16px 16px 0px #220044;
         }
 
-        .section-title {
-            background: #ff00ff;
+        .panel-stripe {
+            background: #00ff66;
             color: #000;
-            padding: 4px;
+            padding: 5px;
             font-size: 14px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 15px;
         }
 
-        .grid-layout {
+        .hardware-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
             margin-bottom: 20px;
         }
 
-        .control-card {
-            background: #000;
-            border: 3px solid #00ffff;
-            padding: 10px;
+        .module-block {
+            border: 4px solid #ffaa00;
+            padding: 8px;
+            background: #111;
         }
 
-        .param-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .module-tag {
+            font-size: 11px;
+            background: #ffaa00;
+            color: #000;
+            padding: 2px 4px;
+            display: inline-block;
             margin-bottom: 10px;
         }
 
-        label {
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
             font-size: 12px;
-            color: #00ff00;
         }
 
+        /* Pixel-art Raw Select Box and Text Sliders */
         select, input[type="range"] {
             background: #000;
-            color: #ffff00;
-            border: 2px solid #ffff00;
+            color: #ff0055;
+            border: 4px solid #ff0055;
             font-family: inherit;
-            font-weight: bold;
-            padding: 4px;
+            font-weight: 900;
+            padding: 2px;
             outline: none;
         }
 
         input[type="range"] {
-            width: 130px;
+            width: 100px;
+            -webkit-appearance: none;
+            height: 14px;
         }
 
-        /* Blocky Piano Keys Grid Layout */
-        .keyboard-grid {
-            display: flex;
-            background: #000;
-            border: 4px solid #ff00ff;
-            padding: 5px;
-            gap: 4px;
-        }
-
-        .block-key {
-            flex: 1;
-            background: #ffffff;
-            height: 100px;
-            border: 4px solid #000000;
-            box-shadow: 0px 8px 0px #555555;
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 20px;
+            background: #00ff66;
+            border: 2px solid #fff;
             cursor: pointer;
         }
 
-        .block-key:active {
-            background: #ffff00;
-            box-shadow: 0px 2px 0px #aaaa00;
-            transform: translateY(6px);
+        /* Chunk-Style Piano Roll Intermediary Layout */
+        .block-keyboard {
+            display: flex;
+            background: #000;
+            border: 6px solid #00ff66;
+            padding: 6px;
+            gap: 6px;
+        }
+
+        .chunk-key {
+            flex: 1;
+            background: #fff;
+            height: 80px;
+            border: 6px solid #000;
+            box-shadow: 0px 10px 0px #333;
+            cursor: pointer;
+        }
+
+        .chunk-key:active {
+            background: #ff0055;
+            box-shadow: 0px 2px 0px #990022;
+            transform: translateY(8px);
         }
     </style>
 </head>
 <body>
 
-    <!-- BROWSER SECURITY BYPASS SCREEN -->
-    <div id="boot-screen">
-        <h1 style="font-size: 32px; margin-bottom: 40px; color: #ffff00; text-align:center;">RAW AUDIO ENGINE</h1>
-        <button class="coin-btn" id="boot-btn">INSERT COIN</button>
+    <!-- ABSOLUTE AUDIO LOCK UNLOCK OVERLAY -->
+    <div id="gatekeeper-screen">
+        <h1 style="font-size: 32px; margin-bottom: 30px; color: #ffaa00;">SYSTEM LOCKOUT</h1>
+        <button class="giant-boot-btn" id="ignition-btn">[ BOOT MACHINE ]</button>
+        <p style="margin-top: 25px; font-size: 12px; color: #ff0055;">WARNING: AUDIO FREQUENCIES WILL PLAY IMMEDIATELY</p>
     </div>
 
-    <!-- MAIN CRUDE CONTROLLER PANEL -->
-    <div class="ugly-box">
-        <div style="text-align: center; margin-bottom: 15px; color: #00ff00;">-- AUDIO CORE ONLINE --</div>
+    <!-- MAIN SOUND GENERATOR SYSTEM CABINET -->
+    <div class="console-chassis">
+        <div class="panel-stripe">=== CONTROLLER MATRIX OVERRIDE V2 ===</div>
 
-        <div class="grid-layout">
-            <!-- Instrumental Voice Presets -->
-            <div class="control-card">
-                <div class="section-title">1. Instrument Preset</div>
-                <div class="param-row">
-                    <label>SOUND BANK</label>
-                    <select id="inst-select">
-                        <option value="chip">8-BIT CHIPTUNE LEAD</option>
-                        <option value="sub">DEEP SUB BASS</option>
-                        <option value="laser">RETRO FX LASER</option>
-                        <option value="space">SPACE FLUTE W/ VIBRATO</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Custom Waveform Generation Hardware -->
-            <div class="control-card">
-                <div class="section-title">2. Manual Wave Blocks</div>
-                <div class="param-row">
-                    <label>OSC 1 SHAPE</label>
-                    <select id="wave1">
-                        <option value="square">SQUARE</option>
-                        <option value="sawtooth">SAWTOOTH</option>
-                        <option value="triangle">TRIANGLE</option>
+        <div class="hardware-grid">
+            <!-- Signal Oscillators -->
+            <div class="module-block">
+                <div class="module-tag">01// CORE WAVEFORM</div>
+                <div class="input-row">
+                    <label>SHAPE 1</label>
+                    <select id="osc-wave-1">
+                        <option value="square" selected>SQUARE</option>
+                        <option value="sawtooth">SAW</option>
+                        <option value="triangle">TRI</option>
                         <option value="sine">SINE</option>
                     </select>
                 </div>
-                <div class="param-row">
-                    <label>OSC 2 SHAPE</label>
-                    <select id="wave2">
-                        <option value="sawtooth">SAWTOOTH</option>
+                <div class="input-row">
+                    <label>SHAPE 2</label>
+                    <select id="osc-wave-2">
+                        <option value="sawtooth" selected>SAW</option>
                         <option value="square">SQUARE</option>
-                        <option value="triangle">TRIANGLE</option>
+                        <option value="triangle">TRI</option>
                         <option value="sine">SINE</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Extra Fine Tuning Modification Knobs -->
-            <div class="control-card">
-                <div class="section-title">3. Tweak Parameters</div>
-                <div class="param-row">
-                    <label>OSC DETUNE</label>
-                    <input type="range" id="detune-knob" min="-50" max="50" step="1" value="15">
+            <!-- Pitch Modification Engine Controls -->
+            <div class="module-block">
+                <div class="module-tag">02// CHIP MODULATORS</div>
+                <div class="input-row">
+                    <label>ARP SPEED</label>
+                    <input type="range" id="arp-rate" min="0" max="15" step="1" value="0">
                 </div>
-                <div class="param-row">
-                    <label>VIBRATO RATE</label>
-                    <input type="range" id="vibe-knob" min="0" max="20" step="1" value="0">
+                <div class="input-row">
+                    <label>ARP INTERVAL</label>
+                    <input type="range" id="arp-interval" min="3" max="12" step="1" value="4">
                 </div>
             </div>
 
-            <div class="control-card">
-                <div class="section-title">4. Mix Levels</div>
-                <div class="param-row">
-                    <label>MASTER VOL</label>
-                    <input type="range" id="master-vol" min="0" max="0.5" step="0.05" value="0.25">
+            <!-- Frequency Ramping Sweep Modification Elements -->
+            <div class="module-block">
+                <div class="module-tag">03// VOLTAGE SWEEP</div>
+                <div class="input-row">
+                    <label>SWEEP DIR</label>
+                    <select id="sweep-dir">
+                        <option value="none">NONE</option>
+                        <option value="down">DOWNPITCH</option>
+                        <option value="up">UPPITCH</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <label>SWEEP RATE</label>
+                    <input type="range" id="sweep-speed" min="0.05" max="0.8" step="0.05" value="0.2">
+                </div>
+            </div>
+
+            <!-- Hard Dynamic Envelope Gate Configuration -->
+            <div class="module-block">
+                <div class="module-tag">04// AMP DECAY ENVELOPE</div>
+                <div class="input-row">
+                    <label>DECAY FADE</label>
+                    <input type="range" id="decay-time" min="0.05" max="1.5" step="0.05" value="0.4">
+                </div>
+                <div class="input-row">
+                    <label>MASTER LEVEL</label>
+                    <input type="range" id="gain-level" min="0" max="0.4" step="0.05" value="0.2">
                 </div>
             </div>
         </div>
 
-        <!-- Clunky Playing Interface Keys -->
-        <div class="keyboard-grid">
-            <div class="block-key" data-note="130.81" title="C3 (Low)"></div>
-            <div class="block-key" data-note="146.83" title="D3"></div>
-            <div class="block-key" data-note="164.81" title="E3"></div>
-            <div class="block-key" data-note="196.00" title="G3"></div>
-            <div class="block-key" data-note="220.00" title="A3"></div>
-            <div class="block-key" data-note="261.63" title="C4 (Mid)"></div>
-            <div class="block-key" data-note="293.66" title="D4"></div>
-            <div class="block-key" data-note="329.63" title="E4"></div>
-            <div class="block-key" data-note="392.00" title="G4"></div>
-            <div class="block-key" data-note="440.00" title="A4"></div>
+        <!-- 8 Heavy Raw Tone Output Blocks -->
+        <div class="block-keyboard">
+            <div class="chunk-key" data-pitch="110.00" title="A2"></div>
+            <div class="chunk-key" data-pitch="130.81" title="C3"></div>
+            <div class="chunk-key" data-pitch="146.83" title="D3"></div>
+            <div class="chunk-key" data-pitch="164.81" title="E3"></div>
+            <div class="chunk-key" data-pitch="196.00" title="G3"></div>
+            <div class="chunk-key" data-pitch="220.00" title="A3"></div>
+            <div class="chunk-key" data-pitch="261.63" title="C4"></div>
+            <div class="chunk-key" data-pitch="293.66" title="D4"></div>
         </div>
     </div>
 
     <script>
-        let synthCtx = null;
-        const executingVoices = new Map();
+        let rawAudioContext = null;
+        const liveVoiceStack = new Map();
 
-        // Kill landing blocker screen and link audio engine thread directly to user choice
-        document.getElementById('boot-btn').addEventListener('click', () => {
-            synthCtx = new (window.AudioContext || window.webkitAudioContext)();
-            synthCtx.resume();
-            document.getElementById('boot-screen').style.display = 'none';
+        // Sever the security blocker overlay and immediately register system hardware permissions
+        document.getElementById('ignition-btn').addEventListener('click', () => {
+            rawAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            rawAudioContext.resume();
+            document.getElementById('gatekeeper-screen').style.display = 'none';
         });
 
-        function runInstrumentEngine(targetHz) {
-            if (!synthCtx) return;
-            if (synthCtx.state === 'suspended') synthCtx.resume();
+        function initiateAudioOutput(baseFrequency) {
+            if (!rawAudioContext) return;
+            if (rawAudioContext.state === 'suspended') rawAudioContext.resume();
 
-            // Guard against duplicate overlapping note registers
-            if (executingVoices.has(targetHz)) {
-                haltInstrumentEngine(targetHz);
+            // Clear hanging overlapping sound streams instantly
+            if (liveVoiceStack.has(baseFrequency)) {
+                terminateAudioOutput(baseFrequency);
             }
 
-            const currentInstrument = document.getElementById('inst-select').value;
-            const globalVolume = parseFloat(document.getElementById('master-vol').value);
-            const userDetune = parseFloat(document.getElementById('detune-knob').value);
-            const vibratoSpeed = parseFloat(document.getElementById('vibe-knob').value);
-
-            // Base component audio graph nodes
-            const oscPrimary = synthCtx.createOscillator();
-            const oscSecondary = synthCtx.createOscillator();
-            const routingGain = synthCtx.createGain();
-
-            routingGain.gain.setValueAtTime(globalVolume, synthCtx.currentTime);
-
-            // Core Instrumental Configuration Subroutines
-            if (currentInstrument === 'chip') {
-                // Classic 8-bit lead pairing raw block waves
-                oscPrimary.type = 'square';
-                oscSecondary.type = 'sawtooth';
-                oscPrimary.frequency.value = targetHz;
-                oscSecondary.frequency.value = targetHz / 2; // Drop octave
-                oscSecondary.detune.value = userDetune;
-            } 
-            else if (currentInstrument === 'sub') {
-                // Clean deep sine/triangle sub drop bass voicing
-                oscPrimary.type = 'sine';
-                oscSecondary.type = 'triangle';
-                oscPrimary.frequency.value = targetHz / 2; // Shift octave down
-                oscSecondary.frequency.value = targetHz / 2;
-                oscSecondary.detune.value = 4; // Tiny widening
-            } 
-            else if (currentInstrument === 'laser') {
-                // Linear slide down ramp sweep simulation
-                oscPrimary.type = 'sawtooth';
-                oscSecondary.type = 'square';
-                
+            const masterOutputLevel = parseFloat(document.getElementById('gain-level').value);
+            const chosenWave1 = document.getElementById('osc-wave-1').value;
+            const chosenWave2 = document.getElementById('osc-wave-2').value;
+            
+            const pitchSweepDirection = document.getElementById('sweep-dir').value;
+            const pitchSweepDuration = parseFloat(document.getElementById('sweep-speed').value);
+            
+            const arpeggiatorSpeed = parseInt(document.getElementById('arp-rate').value);
+            const arpeggiatorIntervalSteps = parseInt(document.getElementById('arp-interval').value);
+            
