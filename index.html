@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-8 AUDIO HARDWARE // VERIFIED</title>
+    <title>X-8 AUDIO HARDWARE</title>
     <style>
-        /* --- SYSTEM STYLING & CRT MATRIX THEME --- */
+        /* --- SYSTEM STYLING & CRT THEME --- */
         body {
             background-color: #000;
             color: #00ff66;
@@ -19,63 +19,27 @@
             margin: 0;
             image-rendering: pixelated;
             user-select: none;
-            overflow-x: hidden;
         }
 
-        /* --- CRT VINTAGE SCANLINE SIMULATION OVERLAY --- */
+        /* --- CRT MONITOR SCANLINE OVERLAY --- */
         body::before {
             content: " ";
             display: block;
             position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
             z-index: 99999;
-            background-size: 100% 4px, 6px 100%;
+            background-size: 100% 4px;
             pointer-events: none;
         }
 
-        /* --- GATEKEEPER SCREEN OVERLAY (AUDIO INTERLOCK) --- */
-        #gatekeeper-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            border: 14px solid #ff0055;
-            box-sizing: border-box;
-        }
-
-        .giant-boot-btn {
-            background: #000;
-            color: #00ff66;
-            border: 8px solid #00ff66;
-            padding: 30px 60px;
-            font-family: inherit;
-            font-size: 28px;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 12px 12px 0px #ff0055;
-            transition: transform 0.05s, box-shadow 0.05s;
-        }
-
-        .giant-boot-btn:active {
-            transform: translate(6px, 6px);
-            box-shadow: 6px 6px 0px #ff0055;
-        }
-
-        /* --- HARDWARE CHASSIS CONSOLE FRAMEWORK --- */
+        /* --- HARDWARE CHASSIS LAYOUT --- */
         .console-chassis {
             background: #000;
             border: 8px solid #00ff66;
             padding: 15px;
             width: 95%;
-            max-width: 720px;
+            max-width: 700px;
             box-shadow: 16px 16px 0px #220044;
             box-sizing: border-box;
         }
@@ -83,48 +47,41 @@
         .panel-stripe {
             background: #00ff66;
             color: #000;
-            padding: 6px;
+            padding: 5px;
             font-size: 14px;
             text-align: center;
             margin-bottom: 15px;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
-        /* --- REALTIME CRT OSCILLOSCOPE MONITOR --- */
+        /* --- REALTIME CRT GRAPHICS MONITOR --- */
         .monitor-display {
             background: #051105;
             border: 4px solid #ff0055;
             margin-bottom: 15px;
-            height: 80px;
+            height: 60px;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .monitor-display canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
+            display: block;
         }
 
         .monitor-tag {
             position: absolute;
-            top: 4px;
+            top: 2px;
             left: 6px;
             font-size: 10px;
             color: #ffaa00;
             z-index: 10;
-            background: #051105;
-            padding: 0 4px;
         }
 
-        /* --- GRID MATRIX FOR MODULE CONTROLS --- */
+        /* --- HARDWARE CONTROL GRID --- */
         .hardware-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 12px;
             margin-bottom: 20px;
         }
@@ -132,7 +89,7 @@
         .module-block {
             border: 4px solid #ffaa00;
             padding: 10px;
-            background: #0b0b0b;
+            background: #111;
         }
 
         .module-tag {
@@ -148,7 +105,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-size: 12px;
         }
 
@@ -162,11 +119,10 @@
             padding: 2px;
             outline: none;
             cursor: pointer;
-            box-sizing: border-box;
         }
 
         input[type="range"] {
-            width: 110px;
+            width: 100px;
             -webkit-appearance: none;
             height: 14px;
         }
@@ -201,20 +157,20 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
             box-sizing: border-box;
-            transition: transform 0.04s, box-shadow 0.04s, background-color 0.04s;
+            transition: transform 0.05s, box-shadow 0.05s;
         }
 
-        .chunk-key:active, .chunk-key.active {
+        .chunk-key:active {
             background: #ff0055 !important;
             color: #fff;
             box-shadow: 0px 2px 0px #990022;
             transform: translateY(8px);
         }
 
-        .key-label {
-            font-size: 12px;
+        .key-tag {
+            font-size: 11px;
             font-weight: 900;
             pointer-events: none;
         }
@@ -222,25 +178,18 @@
 </head>
 <body>
 
-    <!-- INTERLOCK AUDIO SYSTEM SECURITY BLOCKER -->
-    <div id="gatekeeper-screen">
-        <h1 style="font-size: 32px; margin-bottom: 30px; color: #ffaa00;">SYSTEM LOCKOUT</h1>
-        <button class="giant-boot-btn" id="ignition-btn">[ BOOT MACHINE ]</button>
-        <p style="margin-top: 25px; font-size: 12px; color: #ff0055;">WARNING: AUDIO FREQUENCIES WILL PLAY IMMEDIATELY</p>
-    </div>
-
-    <!-- SYNTH ENGINE SYSTEM CABINET -->
+    <!-- SYNTH PANEL HOUSING -->
     <div class="console-chassis">
-        <div class="panel-stripe">=== CONTROLLER MATRIX OVERRIDE V2.5 ===</div>
+        <div class="panel-stripe">=== SYSTEM ONLINE // CONTROLLER MATRIX OVERRIDE ===</div>
         
-        <!-- CRT Oscilloscope Screen Block -->
+        <!-- Live Visualizer Tube -->
         <div class="monitor-display">
-            <div class="monitor-tag">LIVE WAVEFORM OSCILLOSCOPE</div>
+            <div class="monitor-tag">SIGNAL ANALYZER</div>
             <canvas id="scope-canvas"></canvas>
         </div>
 
         <div class="hardware-grid">
-            <!-- 01: Core Waveforms -->
+            <!-- 01: Core Waveform Shapes -->
             <div class="module-block">
                 <div class="module-tag">01// CORE WAVEFORM</div>
                 <div class="input-row">
@@ -263,7 +212,7 @@
                 </div>
             </div>
 
-            <!-- 02: Arpeggiator Chip Execution Controls -->
+            <!-- 02: Arpeggiator Chip Controls -->
             <div class="module-block">
                 <div class="module-tag">02// CHIP MODULATORS</div>
                 <div class="input-row">
@@ -272,11 +221,11 @@
                 </div>
                 <div class="input-row">
                     <label for="arp-interval">ARP INTERVAL</label>
-                    <input type="range" id="arp-interval" min="1" max="12" step="1" value="4">
+                    <input type="range" id="arp-interval" min="3" max="12" step="1" value="4">
                 </div>
             </div>
 
-            <!-- 03: Voltage Envelope Pitch Sweeper -->
+            <!-- 03: Voltage Pitch Sweeper -->
             <div class="module-block">
                 <div class="module-tag">03// VOLTAGE SWEEP</div>
                 <div class="input-row">
@@ -298,3 +247,40 @@
                 <div class="module-tag">04// AMP DECAY ENVELOPE</div>
                 <div class="input-row">
                     <label for="decay-time">DECAY FADE</label>
+                    <input type="range" id="decay-time" min="0.05" max="1.5" step="0.05" value="0.4">
+                </div>
+                <div class="input-row">
+                    <label for="gain-level">MASTER LEVEL</label>
+                    <input type="range" id="gain-level" min="0" max="0.4" step="0.05" value="0.2">
+                </div>
+            </div>
+        </div>
+
+        <!-- 8 Heavy Hardware Chunk Keys -->
+        <div class="block-keyboard">
+            <div class="chunk-key" data-pitch="110.00" style="background: #e5e5e5;"><span class="key-tag">A2</span></div>
+            <div class="chunk-key" data-pitch="130.81"><span class="key-tag">C3</span></div>
+            <div class="chunk-key" data-pitch="146.83" style="background: #e5e5e5;"><span class="key-tag">D3</span></div>
+            <div class="chunk-key" data-pitch="164.81"><span class="key-tag">E3</span></div>
+            <div class="chunk-key" data-pitch="196.00" style="background: #e5e5e5;"><span class="key-tag">G3</span></div>
+            <div class="chunk-key" data-pitch="220.00"><span class="key-tag">A3</span></div>
+            <div class="chunk-key" data-pitch="261.63" style="background: #e5e5e5;"><span class="key-tag">C4</span></div>
+            <div class="chunk-key" data-pitch="293.66"><span class="key-tag">D4</span></div>
+        </div>
+    </div>
+
+    <!-- --- WEB AUDIO ENGINE INFRASTRUCTURE --- -->
+    <script>
+        let rawAudioContext = null;
+        let globalAnalyserNode = null;
+        const liveVoiceStack = new Map();
+
+        // Safe Initialization Engine
+        function bootAudioEngine() {
+            if (rawAudioContext) return;
+            
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            rawAudioContext = new AudioContextClass();
+            
+            // Build real-time graph visualization engine link
+            globalAnalyserNode = rawAudioContext.createAnalyser();
