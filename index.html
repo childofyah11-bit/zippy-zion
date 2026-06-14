@@ -2,223 +2,222 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Spaceship Combat: Chronos Engine</title>
+    <title>Arcade Space Battle</title>
     <style>
-        body { margin: 0; background: #050510; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
-        canvas { border: 4px solid #00ffff; background: #0a0a20; box-shadow: 0 0 30px rgba(0, 255, 255, 0.3); }
+        /* This grid layout forces the game to center perfectly on any monitor size */
+        body { margin: 0; background: #0c0c16; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
+        canvas { border: 4px solid #00ffff; background: #05050f; display: block; max-width: 100%; max-height: 100%; }
     </style>
 </head>
 <body>
 
-<canvas id="gameCanvas" width="1000" height="700"></canvas>
+<!-- Hardcoded width and height to fix the narrow screen bug -->
+<canvas id="gameCanvas" width="900" height="600"></canvas>
 
 <script>
-// SAFE WRAPPER TO FORCIBLY RUN THE LOOPS AFTER WINDOW LOADS
-window.addEventListener("load", function() {
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    
-    // FORCE WINDOW FOCUS SO KEYBOARDINPUTS RECOGNITION TRIGGERS IMMEDIATELY
-    window.focus();
-    canvas.focus();
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
-    // 1. GAME STATE MATRIX FLAGS
-    let gameOver = false;
-    let victory = false;
-    let isShopActive = false;
-    let score = 0;
+// Ensure the keyboard focus locks onto the game screen the second it loads
+window.focus();
 
-    // 2. FLAT PLAYER VARIABLES (NEON SPACESHIP)
-    let playerX = 100;
-    let playerY = 350;
-    let playerW = 40;
-    let playerH = 40;
-    let playerSpeed = 7;
-    let playerHealth = 100;
-    let playerMaxHealth = 100;
-    let timeSlowActive = 0;
-    let timeSlowCooldown = 0;
-    let overchargeCooldown = 0;
-    let hasShield = true;
-    let shieldCooldown = 0;
-    let shootTimer = 0;
-    let laserType = "normal";
-    let upgradePoints = 0;
+// GAME VARIABLES
+let gameOver = false;
+let victory = false;
+let score = 0;
 
-    // 3. FLAT BOSS VARIABLES (ROGUE AI ALIEN BOSS)
-    let bossX = 840;
-    let bossY = 280;
-    let bossW = 90;
-    let bossH = 140;
-    let bossHealth = 3000;
-    let bossMaxHealth = 3000;
-    let bossPhase = 1;
-    let bossLastPhase = 1;
-    let bossTimer = 0;
-    let bossDir = 1;
+// YOUR UPGRADED PLAYER SPACE FIGHTER
+let player = {
+    x: 100, y: 280, w: 40, h: 40,
+    speed: 7, health: 100, maxHealth: 100,
+    timeSlowActive: 0, timeSlowCooldown: 0,
+    overchargeCooldown: 0
+};
 
-    let playerBullets = [];
-    let bossBullets = [];
-    const keys = {};
+// THE 5-PHASE IMMUTABLE BOSS
+let boss = {
+    x: 750, y: 230, w: 80, h: 140,
+    health: 2000, maxHealth: 2000,
+    phase: 1, dir: 1, timer: 0
+};
 
-    // Configurations array schemas
-    const phaseColors = ["#00ffff", "#00ffff", "#ff007f", "#ffff00", "#ffaa00", "#ffffff"];
-    const phaseNames = ["", "GRID DEFENSE", "CYAN OVERLOAD", "MATRIX WARNING", "CRITICAL CORE", "ROGUE GOD"];
+let playerBullets = [];
+let bossBullets = [];
+const keys = {};
 
-    // 4. CAPTURE ACTIONS LISTENER FOR FLIGHT KEYS
-    window.addEventListener("keydown", function(e) { 
-        keys[e.key] = true; 
+// CONFIG SCHEMES FOR EACH OF THE 5 DIFFICULTY PHASES
+const phaseColors = { 1: "#00ffff", 2: "#ff00ff", 3: "#ffff00", 4: "#ff5500", 5: "#ff0000" };
 
-        // Handle keyboard button inputs choices inside upgrade shop screen menu intermission
-        if (isShopActive) {
-            if (e.key === "1" && upgradePoints >= 1 && laserType !== "triple") {
-                laserType = "triple"; upgradePoints -= 1;
-            }
-            else if (e.key === "2" && upgradePoints >= 1) {
-                playerSpeed += 2; upgradePoints -= 1;
-            }
-            else if (e.key === "3" && upgradePoints >= 1) {
-                playerMaxHealth += 50; playerHealth = playerMaxHealth; upgradePoints -= 1;
-            }
-            else if (e.key === "4" || e.key === "Enter") {
-                isShopActive = false; // Resume fight sequence
-            }
-        }
-    });
-    window.addEventListener("keyup", function(e) { keys[e.key] = false; });
+// CAPTURE INPUTS
+window.addEventListener("keydown", function(e) { keys[e.key] = true; });
+window.addEventListener("keyup", function(e) { keys[e.key] = false; });
 
-    // 5. ENGINE MATH COMPUTATION LOOP STEP
-    function update() {
-        if (gameOver || victory || isShopActive) return;
+// CORE MATHEMATICAL TRACKING STEPS
+function update() {
+    if (gameOver || victory) return;
 
-        // Tick down state meters
-        if (timeSlowCooldown > 0) timeSlowCooldown--;
-        if (timeSlowActive > 0) timeSlowActive--;
-        if (overchargeCooldown > 0) overchargeCooldown--;
+    // Tick down system superpower timers
+    if (player.timeSlowCooldown > 0) player.timeSlowCooldown--;
+    if (player.timeSlowActive > 0) player.timeSlowActive--;
+    if (player.overchargeCooldown > 0) player.overchargeCooldown--;
+
+    // Standard Flight Vectors (WASD / Arrow Keys)
+    if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
+    if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
+    if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
+    if (keys["d"] || keys["ArrowRight"]) player.x += player.speed;
+
+    // Boundaries containment
+    if (player.x < 10) player.x = 10;
+    if (player.x > 400) player.x = 400; // Keep player on left side of grid
+    if (player.y < 10) player.y = 10;
+    if (player.y > 600 - player.h - 10) player.y = 600 - player.h - 10;
+
+    // UPGRADED ATTACK ENGINE: Spacebar fires heavy 25 damage bullets
+    if (keys[" "] && playerBullets.length < 5) {
+        playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, speed: 14 });
+        keys[" "] = false; // Requires single taps to prevent spam errors
+    }
+
+    // SUPERPOWER 1: Chronos Time Slow Mod (Shift Key Drops Threats To 20% Speed)
+    if (keys["Shift"] && player.timeSlowCooldown === 0) {
+        player.timeSlowActive = 120; // 2 full seconds of slow motion
+        player.timeSlowCooldown = 300; // 5 second recharge
+    }
+
+    // SUPERPOWER 2: EMP Screen Reboot Wipe (Enter Key Vaporizes Bullets & Hits Boss)
+    if (keys["Enter"] && player.overchargeCooldown === 0) {
+        player.overchargeCooldown = 240;
+        bossBullets = []; // Wipe the grid
+        boss.health -= 150; // Chunky direct damage drop
+        score += 100;
+        if (boss.health <= 0) victory = true;
+    }
+
+    // Dynamic scale vector calculation
+    let timeModifier = player.timeSlowActive > 0 ? 0.20 : 1.0;
+
+    // Calculate Phase Shifts (Automatically scales up as boss drops health)
+    let hpPct = boss.health / boss.maxHealth;
+    if (hpPct > 0.8) boss.phase = 1;
+    else if (hpPct > 0.6) boss.phase = 2;
+    else if (hpPct > 0.4) boss.phase = 3;
+    else if (hpPct > 0.2) boss.phase = 4;
+    else boss.phase = 5;
+
+    // Move Boss Core vertically
+    boss.y += boss.dir * 4 * timeModifier;
+    if (boss.y <= 20 || boss.y >= 600 - boss.h - 20) boss.dir *= -1;
+
+    // Enemy Fire Logic (Speeds up based on phase difficulty)
+    boss.timer += 1 * timeModifier;
+    if (boss.timer >= (25 - (boss.phase * 3))) {
+        boss.timer = 0;
+        let c = phaseColors[boss.phase];
         
-        if (!hasShield) {
-            shieldCooldown++;
-            if (shieldCooldown >= 360) { hasShield = true; shieldCooldown = 0; }
-        }
-
-        // Apply plane translations via WASD / Arrow keys
-        if (keys["w"] || keys["ArrowUp"]) playerY -= playerSpeed;
-        if (keys["s"] || keys["ArrowDown"]) playerY += playerSpeed;
-        if (keys["a"] || keys["ArrowLeft"]) playerX -= playerSpeed;
-        if (keys["d"] || keys["ArrowRight"]) playerX += playerSpeed;
-
-        // Boundaries checks
-        if (playerX < 0) playerX = 0;
-        if (playerX > 1000 - playerW) playerX = 1000 - playerW;
-        if (playerY < 0) playerY = 0;
-        if (playerY > 700 - playerH) playerY = 700 - playerH;
-
-        // WEAPON ENGAGEMENT: RAPID AUTOMATIC REFILL SPREAD (Spacebar)
-        if (shootTimer > 0) shootTimer--;
-        
-        if (keys[" "] && shootTimer === 0) {
-            if (laserType === "triple") {
-                // Triple Spread: Upward slant, straight laser, downward slant
-                playerBullets.push({ x: playerX + playerW, y: playerY + playerH/2, vx: 18, vy: -3 });
-                playerBullets.push({ x: playerX + playerW, y: playerY + playerH/2, vx: 18, vy: 0 });
-                playerBullets.push({ x: playerX + playerW, y: playerY + playerH/2, vx: 18, vy: 3 });
-            } else {
-                // Standard Heavy Single Laser (Deals 25 base damage output)
-                playerBullets.push({ x: playerX + playerW, y: playerY + playerH/2, vx: 18, vy: 0 });
-            }
-            shootTimer = 7; 
-        }
-
-        // SPELL POWER 1: Chronos Engine Time-Slow (Shift Key)
-        if (keys["Shift"] && timeSlowCooldown <= 0) {
-            timeSlowActive = 120; timeSlowCooldown = 300; 
-        }
-
-        // SPELL POWER 2: EMP Screen Cleanse Wipe (Enter Key)
-        if (keys["Enter"] && overchargeCooldown <= 0) {
-            overchargeCooldown = 240; bossBullets = []; bossHealth -= 150; score += 100;
-            if (bossHealth <= 0) victory = true;
-        }
-
-        // Dynamic time slowing velocity scalar factor
-        let timeModifier = timeSlowActive > 0 ? 0.20 : 1.0;
-
-        // Evolve boss difficulty through 5 distinct phase breakpoints
-        let hpPct = bossHealth / bossMaxHealth;
-        if (hpPct > 0.8) bossPhase = 1;
-        else if (hpPct > 0.6) bossPhase = 2;
-        else if (hpPct > 0.4) bossPhase = 3;
-        else if (hpPct > 0.2) bossPhase = 4;
-        else bossPhase = 5;
-
-        // Open upgrade station intermission prompt when a phase drops down
-        if (bossPhase > bossLastPhase) {
-            upgradePoints += 1; bossLastPhase = bossPhase; isShopActive = true; bossBullets = []; return;
-        }
-
-        // Move Alien Boss vertically back and forth
-        bossY += bossDir * 4 * timeModifier;
-        if (bossY <= 30 || bossY >= 700 - bossH - 30) bossDir *= -1;
-
-        // Boss Auto-Turret weapon fires
-        bossTimer += 1 * timeModifier;
-        let delay = 25 - (bossPhase * 4);
-        if (bossTimer >= delay) {
-            bossTimer = 0; let currentHex = phaseColors[bossPhase];
-            
-            if (bossPhase === 1) {
-                bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: -8, vy: 0, r: 8, color: currentHex });
-            } else if (bossPhase === 2) {
-                bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: -9, vy: (Math.random() - 0.5) * 5, r: 7, color: currentHex });
-            } else if (bossPhase === 3) {
-                let angle = Math.atan2((playerY + playerH/2) - (bossY + bossH/2), (playerX + playerW/2) - bossX);
-                bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: Math.cos(angle) * 11, vy: Math.sin(angle) * 11, r: 7, color: currentHex });
-            } else if (bossPhase === 4) {
-                bossBullets.push({ x: bossX, y: bossY + 20, vx: -10, vy: 0, r: 8, color: currentHex });
-                bossBullets.push({ x: bossX, y: bossY + bossH - 20, vx: -10, vy: 0, r: 8, color: currentHex });
-            } else if (bossPhase === 5) {
-                let base = Math.atan2((playerY + playerH/2) - (bossY + bossH/2), (playerX + playerW/2) - bossX);
-                bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: Math.cos(base) * 13, vy: Math.sin(base) * 13, r: 9, color: "#ffffff" });
-                bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: Math.cos(base + 0.2) * 11, vy: Math.sin(base + 0.2) * 11, r: 7, color: currentHex });
-                bossBullets.push({ x: bossX, y: bossY + bossH/2, vx: Math.cos(base - 0.2) * 11, vy: Math.sin(base - 0.2) * 11, r: 7, color: currentHex });
-            }
-        }
-
-        // Bullet Trajectories - Player hits give 25 heavy chunk damage values [W3Schools]
-        for (let i = playerBullets.length - 1; i >= 0; i--) {
-            let b = playerBullets[i]; b.x += b.vx; b.y += b.vy;
-            if (b.x > 1000 || b.y < 0 || b.y > 700) { playerBullets.splice(i, 1); continue; }
-            if (b.x > bossX && b.x < bossX + bossW && b.y > bossY && b.y < bossY + bossH) {
-                bossHealth -= 25; score += 50; playerBullets.splice(i, 1);
-                if (bossHealth <= 0) victory = true;
-            }
-        }
-
-        // Bullet Trajectories - Enemy Threat Orbs (Impacted by Chronos Modifier)
-        for (let i = bossBullets.length - 1; i >= 0; i--) {
-            let b = bossBullets[i]; b.x += b.vx * timeModifier; b.y += b.vy * timeModifier;
-            if (b.x < -20 || b.x > 1020) { bossBullets.splice(i, 1); continue; }
-            if (b.x > playerX && b.x < playerX + playerW && b.y > playerY && b.y < playerY + playerH) {
-                bossBullets.splice(i, 1);
-                if (hasShield) { hasShield = false; shieldCooldown = 0; continue; }
-                playerHealth -= 10; if (playerHealth <= 0) gameOver = true;
-            }
+        if (boss.phase === 1) {
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -7, vy: 0, color: c });
+        } else if (boss.phase === 2) {
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: -8, vy: (Math.random() - 0.5) * 4, color: c });
+        } else if (boss.phase >= 3) {
+            // Tracking shots path logic targeting your ship coordinates
+            let angle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
+            let bSpeed = boss.phase === 5 ? 12 : 9;
+            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, vx: Math.cos(angle) * bSpeed, vy: Math.sin(angle) * bSpeed, color: c });
         }
     }
 
-    // 6. DRAW GRAPHICS LAYER ENGINE
-    function draw() {
-        // ALWAYS WIPE CANVAS BACKBUFFER CLEAN FIRST BEFORE DRAW STEPS [MDN]
-        ctx.clearRect(0, 0, 1000, 700); [MDN]
+    // Update Player Lasers (25 Raw Damage Impact Checked)
+    for (let i = playerBullets.length - 1; i >= 0; i--) {
+        let b = playerBullets[i];
+        b.x += b.speed;
+        if (b.x > 900) { playerBullets.splice(i, 1); continue; }
 
-        if (isShopActive) {
-            // TEXT-BASED UPGRADE SHOP OVERLAY INTERMISSION (100% STABLE RECONSTRUCT)
-            ctx.fillStyle = "rgba(10, 10, 32, 0.95)"; ctx.fillRect(0, 0, 1000, 700); [W3Schools]
-            ctx.fillStyle = "#00ffff"; ctx.font = "bold 25px monospace";
-            ctx.fillText("PHASE BROKEN // UPGRADE CONFIG PROTOCOL", 220, 150);
-            
-            ctx.fillStyle = "#ffffff"; ctx.font = "18px monospace";
-            ctx.fillText("UPGRADE POINTS BANK ACCUMULATED: " + upgradePoints, 320, 220);
-            
-            ctx.fillStyle = "#00ffaa";
-            ctx.fillText("[PRESS 1] Upgrade Cannon Spreads: Triple Laser", 280, 300);
+        if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
+            boss.health -= 25; // Hardcoded specification value
+            score += 50;
+            playerBullets.splice(i, 1);
+            if (boss.health <= 0) victory = true;
+        }
+    }
+
+    // Update Boss Threats (Controlled by Time Slow Coefficient)
+    for (let i = bossBullets.length - 1; i >= 0; i--) {
+        let b = bossBullets[i];
+        b.x += b.vx * timeModifier;
+        b.y += b.vy * timeModifier;
+        if (b.x < -20 || b.x > 920 || b.y < -20 || b.y > 620) { bossBullets.splice(i, 1); continue; }
+
+        if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
+            player.health -= 10;
+            bossBullets.splice(i, 1);
+            if (player.health <= 0) gameOver = true;
+        }
+    }
+}
+
+// GRAPHICS RENDER LOOP
+function draw() {
+    ctx.clearRect(0, 0, 900, 600);
+
+    if (!gameOver && !victory) {
+        // Chronos Space-Slow Matrix Grid Tint Overlay
+        if (player.timeSlowActive > 0) {
+            ctx.fillStyle = "rgba(0, 255, 255, 0.07)";
+            ctx.fillRect(0, 0, 900, 600);
+        }
+
+        // Draw Spaceship Fighter (Cyan Block)
+        ctx.fillStyle = "#00ffff";
+        ctx.fillRect(player.x, player.y, player.w, player.h);
+
+        // Draw Dreadnought Alien Boss Box (Fluctuates hue based on current difficulty phase)
+        ctx.fillStyle = phaseColors[boss.phase];
+        ctx.fillRect(boss.x, boss.y, boss.w, boss.h);
+
+        // Draw Your Lasers
+        ctx.fillStyle = "#00ffaa";
+        playerBullets.forEach(b => ctx.fillRect(b.x, b.y - 3, 16, 6));
+
+        // Draw Enemy Threat Orbs
+        bossBullets.forEach(b => {
+            ctx.fillStyle = b.color;
+            ctx.beginPath(); ctx.arc(b.x, b.y, 7, 0, Math.PI * 2); ctx.fill();
+        });
+
+        // HEADS UP INTERFACE HUD PANEL
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 14px monospace";
+        ctx.fillText(`SHIP INTEGRITY HP: ${Math.max(0, player.health)}%`, 20, 35);
+        ctx.fillText(`CHRONOS DRV [SHIFT]: ${player.timeSlowCooldown === 0 ? "READY" : "CHARGING"}`, 20, 60);
+        ctx.fillText(`EMP DETONATOR [ENTER]: ${player.overchargeCooldown === 0 ? "READY" : "CHARGING"}`, 20, 85);
+        ctx.fillText(`METRICS SCORE: ${score}`, 20, 110);
+
+        // Boss Metrics Indicators
+        let hex = phaseColors[boss.phase];
+        ctx.fillStyle = "#161626"; ctx.fillRect(500, 20, 370, 20);
+        ctx.fillStyle = hex; ctx.fillRect(500, 20, Math.max(0, 370 * (boss.health / boss.maxHealth)), 20);
+        ctx.fillStyle = "#ffffff"; ctx.fillText(`BOSS HP: ${boss.health}`, 500, 58);
+        ctx.fillStyle = hex; ctx.fillText(`[WARNING PHASE: ${boss.phase}/5]`, 500, 78);
+
+    } else {
+        ctx.textAlign = "center"; ctx.font = "bold 35px monospace";
+        if (gameOver) {
+            ctx.fillStyle = "#ff0055"; ctx.fillText("CRITICAL OUTAGE // PILOT DESTROYED", 450, 300);
+        } else if (victory) {
+            ctx.fillStyle = "#00ffaa"; ctx.fillText("MATRIX PURGED // MISSION COMPLETE", 450, 300);
+        }
+    }
+}
+
+// MAIN RECURSIVE ENGINE TRIGGER CLOCK
+function runLoop() {
+    update();
+    draw();
+    requestAnimationFrame(runLoop);
+}
+
+runLoop();
+</script>
+</body>
+</html>
+de Cannon Spreads: Triple Laser", 280, 300);
