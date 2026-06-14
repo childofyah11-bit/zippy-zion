@@ -17,8 +17,9 @@
         <div class="top-nav-bar">
             <div class="deck-title">⚡ TERMINAL_STAR // REACTION_CORE_v500 ⚡</div>
             
-            <!-- Ultra High-Tech Dual-Layer Precision Quantum Clock Overlay -->
+            <!-- Ultra High-Tech Holographic Orbital Quantum Clock Override -->
             <div class="clock-pod" id="quantum-clock" onmousedown="engageHyperWarp()" onmouseup="releaseHyperWarp()">
+                <div class="clock-hologram-ring"></div>
                 <div class="pod-label" id="pod-ticker">SECTOR_CLOCK // REALTIME_SYNC_OK</div>
                 <div class="pod-time" id="pod-time-display">00:00:00.0000</div>
                 <div class="pod-label alert-text" id="pod-warp-flag">⚡ COGNITIVE_STEALTH_SHIELD: NOMINAL</div>
@@ -75,14 +76,16 @@
     body, html { margin:0; padding:0; width:100%; height:100%; background: var(--bg); font-family: 'Courier New', monospace; color: #fff; overflow: hidden; }
     canvas { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1; }
     
-    #deck-hud { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 2; display: grid; grid-template-columns: 340px 1fr 320px; grid-template-rows: 100px 1fr; pointer-events: none; }
+    #deck-hud { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 2; display: grid; grid-template-columns: 340px 1fr 320px; grid-template-rows: 110px 1fr; pointer-events: none; }
     
     .top-nav-bar { grid-column: 1 / span 3; background: linear-gradient(180deg, rgba(1,2,6,0.98) 0%, rgba(15,23,42,0.85) 100%); border-bottom: 2px dashed var(--neon); display: flex; justify-content: space-between; align-items: center; padding: 0 25px; box-shadow: 0 4px 25px rgba(0,255,102,0.2); pointer-events: auto; }
     .deck-title { font-size: 1.25rem; font-weight: bold; color: var(--neon); text-shadow: 0 0 12px var(--neon); animation: corePulse 2s infinite alternate; }
     
-    .clock-pod { background: rgba(0,0,0,0.9); border: 2px solid var(--cyan); padding: 8px 20px; border-radius: 8px; text-align: right; box-shadow: 0 0 20px rgba(0,240,255,0.3); cursor: pointer; transition: all 0.2s; }
-    .pod-time { font-size: 1.5rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px var(--cyan); letter-spacing: 1px; }
-    .pod-label { font-size: 0.65rem; color: var(--pink); letter-spacing: 2px; margin-top: 1px; text-transform: uppercase; font-weight: bold; }
+    /* Super High-Tech Precision Orbital Clock Upgrade */
+    .clock-pod { position: relative; background: rgba(0,0,0,0.95); border: 2px solid var(--cyan); padding: 10px 25px; border-radius: 8px; text-align: right; box-shadow: 0 0 25px rgba(0,240,255,0.4), inset 0 0 15px rgba(0,240,255,0.2); cursor: pointer; transition: all 0.2s; overflow: hidden; }
+    .clock-hologram-ring { position: absolute; top: -50%; left: -20%; width: 140%; height: 200%; background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.1), transparent); transform: skewX(-30deg); animation: holoScan 3s linear infinite; pointer-events: none; }
+    .pod-time { font-size: 1.7rem; font-weight: bold; color: #fff; text-shadow: 0 0 12px var(--cyan), 0 0 2px var(--cyan); letter-spacing: 2px; font-family: 'Impact', monospace; }
+    .pod-label { font-size: 0.65rem; color: var(--pink); letter-spacing: 2px; margin-top: 2px; text-transform: uppercase; font-weight: bold; }
 
     .side-panel-left { background: rgba(1,2,6,0.9); border-right: 1px solid var(--neon); padding: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 0.7rem; color: var(--neon); overflow: hidden; box-shadow: inset -10px 0 30px rgba(0,255,102,0.03); pointer-events: auto; }
     .panel-section-title { font-weight: bold; color: #fff; border-bottom: 1px solid var(--neon); padding-bottom: 4px; margin-bottom: 5px; letter-spacing: 1px; }
@@ -100,13 +103,13 @@
     #deck-boot-trigger { pointer-events: auto; background: #000; border: 3px double var(--neon); padding: 50px; text-align: center; cursor: pointer; box-shadow: 0 0 40px var(--neon); border-radius: 8px; }
     #lyrics-matrix-display { display: none; font-size: 3.5rem; font-weight: 900; text-transform: uppercase; line-height: 1.25; color: #fff; text-shadow: 0 0 25px var(--pink); max-width: 950px; font-family: 'Arial Black', sans-serif; z-index: 5; }
     
-    /* Level 500 Reactive Graphic Visualizer Ring */
-    #visualizer-ring { display: none; position: absolute; width: 450px; height: 450px; border: 4px dashed var(--neon); border-radius: 50%; opacity: 0.15; animation: spinRing 12s linear infinite; box-shadow: 0 0 30px var(--neon); transition: all 0.3s; z-index: 2; }
+    #visualizer-ring { display: none; position: absolute; width: 480px; height: 480px; border: 4px dashed var(--neon); border-radius: 50%; opacity: 0.15; animation: spinRing 12s linear infinite; box-shadow: 0 0 35px var(--neon); transition: all 0.3s; z-index: 2; }
     
     .kinetic-word { display: inline-block; margin: 0 12px; opacity: 0; transform: translateY(-40px) rotate(20deg) scale(0.3); animation: level500Strike 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.6) forwards; }
     
     @keyframes level500Strike { to { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); } }
     @keyframes spinRing { 100% { transform: rotate(360deg); } }
+    @keyframes holoScan { 0% { left: -120%; } 100% { left: 120%; } }
     @keyframes corePulse { from { opacity: 0.75; transform: scale(0.99); } to { opacity: 1; transform: scale(1); } }
     @keyframes warningFlash { 0%, 100% { color: var(--pink); text-shadow: 0 0 10px var(--pink); } 50% { color: #fff; text-shadow: none; } }
     .warning-glitch { animation: warningFlash 0.4s infinite; font-weight: bold; }
@@ -116,10 +119,23 @@
     .hud-btn:hover { background: var(--pink); color: #fff; border-color: var(--pink); box-shadow: 0 0 25px var(--pink); transform: translateY(-2px); }
 </style>
 <script>
+    // COMPLETE UNABRIDGED PAYLOAD LIST
     const scriptLines = [
-        "Small Town Star (Goofball)","I’m a goofball bouncing-off-the-wall-ball","Everybody knows my name","Yeah I’ll be a little goofball","Staying in my own lane",
-        "I’m a low-key pretty goofy really-got-it-good-breezy","standing-pretty-tall-ball","Dancing in the quiet rain","Just a low-key goofball","And God made me perfectly okay",
-        "Woke up Clean slate","Sun's up Don't wait","Step out Big yard","Life's good Not hard","Green trees Clear breeze","Out here Do what I please"
+        "Small Town Star (Goofball)", "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", "Yeah I’ll be a little goofball", "Staying in my own lane",
+        "I’m a low-key pretty goofy really-got-it-good-breezy", "standing-pretty-tall-ball", "Dancing in the quiet rain", "Just a low-key goofball", "And God made me perfectly okay",
+        "Woke up Clean slate", "Sun's up Don't wait", "Step out Big yard", "Life's good Not hard", "Green trees Clear breeze", "Out here Do what I please",
+        "Big smile Spark eye", "Watch the clouds roll right on by", "No rush My pace", "Wide open No race", "Fresh air Cool shade", "Sun shine High sky",
+        "No stress Time flies", "Quiet space Ground solid", "Real world Big knowledge", "Just growth Big views", "No stress Good news", "Out back Chill state",
+        "Everything is looking great", "Birds sing Warm air", "No worries No cares", "Right here My spot", "Appreciate what I got", "His design Right place",
+        "Full of purpose Full of grace", "Phone rings Big crowd", "They talk Real loud", "They know me I'm known", "But right now My zone", "Feet up Chill mind",
+        "One of a kind Good joke", "Fun time That's the end of the line", "They call I decline", "My space All mine", "Top tier No fear", "I’m the star around here",
+        "Screen bright App tapped", "Class notes Book wrapped", "Log in School grind", "Sharp brain Good mind", "Homework Done fast", "A-plus First class",
+        "Next tab Beats play", "Soundtrack for the day", "Headphones No need", "Speakers loud Top speed", "Volume up Track rolls", "Deep rhythm Takes control",
+        "Popular Well liked", "But the focus is spiked", "Peaceful Rest easy", "Everything is going breezy", "Music stops Heavy silence", "World waits Big reliance",
+        "They look I stand", "Take control Command", "Lights fade Stage set", "Moment they won't forget", "No mistakes No flaws", "Woven by His holy laws",
+        "Every detail Every strand", "Held inside a higher hand", "Take a breath Hear the call", "God made me perfectly after all", "Sun goes down Stars appear",
+        "Living life With no fear", "Grateful heart Peaceful state", "Everything is looking great", "Walking forward Staying strong", "This is where I belong",
+        "Deep breath Clear sky", "Watch the days fly right on by", "In His hands Every day", "Everything is turning out okay 😁"
     ];
 
     let currentPointer = 0, iterationTimer, synthCtx, codeNodes = [], hyperWarpActive = false;
@@ -128,20 +144,17 @@
     function recalibrateDeckMetrics() { canvasObj.width = window.innerWidth; canvasObj.height = window.innerHeight; }
     window.onresize = recalibrateDeckMetrics; recalibrateDeckMetrics();
 
-    // Spawn massive digital background falling node network
     for(let i=0; i<120; i++) codeNodes.push({ x: Math.random()*canvasObj.width, y: Math.random()*canvasObj.height, size: Math.random()*2.5+1, velocity: Math.random()*7+5 });
 
     function cycleDeckEngine() {
         canvasContext.fillStyle = 'rgba(1,2,6,0.18)'; canvasContext.fillRect(0,0,canvasObj.width,canvasObj.height);
-        
-        // Render advanced radar scope guidelines
         canvasContext.strokeStyle = 'rgba(0, 255, 102, 0.015)'; canvasContext.lineWidth = 1;
         for(let i=0; i<canvasObj.height; i+=40) { canvasContext.beginPath(); canvasContext.moveTo(0,i); canvasContext.lineTo(canvasObj.width,i); canvasContext.stroke(); }
 
         codeNodes.forEach(node => {
-            node.y += hyperWarpActive ? node.velocity * 3 : node.velocity; 
+            node.y += hyperWarpActive ? node.velocity * 35 : node.velocity; 
             if(node.y > canvasObj.height) { node.y = -60; node.x = Math.random()*canvasObj.width; }
-            canvasContext.fillStyle = hyperWarpActive ? 'rgba(255,0,127,0.5)' : 'rgba(0,255,102,0.4)';
+            canvasContext.fillStyle = hyperWarpActive ? 'rgba(255,0,127,0.6)' : 'rgba(0,255,102,0.4)';
             canvasContext.font = "11px monospace";
             canvasContext.fillText(Math.random().toString(16).substring(2,4).toUpperCase(), node.x, node.y);
         });
@@ -149,36 +162,26 @@
     }
     cycleDeckEngine();
 
-    // High Level Audio Synthesis Array Generator
     function triggerQuantumBeep() {
         if(!synthCtx) synthCtx = new(window.AudioContext||window.webkitAudioContext)();
         let timestamp = synthCtx.currentTime, oscillator = synthCtx.createOscillator(), volumeGate = synthCtx.createGain();
-        
         oscillator.type = hyperWarpActive ? 'square' : 'sawtooth';
-        oscillator.frequency.setValueAtTime(hyperWarpActive ? 85 : 200 + (currentPointer * 40), timestamp);
-        
+        oscillator.frequency.setValueAtTime(hyperWarpActive ? 85 : 200 + (currentPointer * 8), timestamp);
         volumeGate.gain.setValueAtTime(0.06, timestamp); 
         volumeGate.gain.exponentialRampToValueAtTime(0.001, timestamp + (hyperWarpActive ? 0.3 : 0.2));
-        
         oscillator.connect(volumeGate); volumeGate.connect(synthCtx.destination);
         oscillator.start(); oscillator.stop(timestamp + (hyperWarpActive ? 0.3 : 0.2));
     }
 
-    // High Precision Dual-Layer Telemetry System Clock
     function driveQuantumClock() {
         let clockDate = new Date();
-        if (hyperWarpActive) {
-            // Level 500 Silent Shift Logic: Forces internal UI execution offset backward by 1 hour
-            clockDate.setHours(clockDate.getHours() - 1);
-        }
-        
+        if (hyperWarpActive) { clockDate.setHours(clockDate.getHours() - 1); }
         let elements = clockDate.toTimeString().split(' ');
-        let msFraction = String(clockDate.getMilliseconds()).padStart(3, '0') + String(Math.floor(Math.random()*9));
+        let msFraction = String(clockDate.getMilliseconds()).padStart(3, '0') + String(Math.floor(Math.random()*99));
         
         document.getElementById('pod-time-display').innerText = `${elements[0]}.${msFraction}`;
-        document.getElementById('pod-ticker').innerText = `EPOCH_STREAM: ${Date.now()} // COGNITIVE_NODE_LOAD`;
+        document.getElementById('pod-ticker').innerText = `EPOCH_STREAM: ${Date.now()} // CRYSTAL_MHZ: 42.08`;
         
-        // Randomly process active dashboard engine gauges
         if(Math.random() > 0.4) {
             let mockValue = Math.floor(Math.random() * 40) + (hyperWarpActive ? 55 : 30);
             document.getElementById('bar-cpu').style.width = mockValue + "%";
@@ -187,15 +190,13 @@
     }
     setInterval(driveQuantumClock, 1);
 
-    // Hidden functions linked directly to the top Level 500 Clock container
     function engageHyperWarp() {
         hyperWarpActive = true;
         document.getElementById('quantum-clock').style.borderColor = 'var(--pink)';
-        document.getElementById('quantum-clock').style.boxShadow = '0 0 30px var(--pink)';
+        document.getElementById('quantum-clock').style.boxShadow = '0 0 35px var(--pink)';
         document.getElementById('pod-warp-flag').innerText = "⚠️ CRITICAL OPERATIONAL CRASH: CHRONOS_OVERLOAD -3600s";
         document.getElementById('pod-warp-flag').className = "pod-label warning-glitch";
         
-        // Level 500 Reaction: Warps the center ring graphic instantly
         let ring = document.getElementById('visualizer-ring');
         ring.style.borderColor = 'var(--pink)'; ring.style.transform = 'scale(1.3)'; ring.style.opacity = '0.5';
         
@@ -206,7 +207,7 @@
     function releaseHyperWarp() {
         hyperWarpActive = false;
         document.getElementById('quantum-clock').style.borderColor = 'var(--cyan)';
-        document.getElementById('quantum-clock').style.boxShadow = '0 0 20px rgba(0,240,255,0.3)';
+        document.getElementById('quantum-clock').style.boxShadow = '0 0 25px rgba(0,240,255,0.4)';
         document.getElementById('pod-warp-flag').innerText = "⚡ COGNITIVE_STEALTH_SHIELD: NOMINAL";
         document.getElementById('pod-warp-flag').className = "pod-label";
         
@@ -216,14 +217,13 @@
         pushConsoleLog("CRITICAL: Chronos anchor normalization pipeline established. Restoring telemetry logs.", false);
     }
 
-    // Dynamic Matrix Console Log Stream
     function pushConsoleLog(message, isCritical) {
         const consoleFeed = document.getElementById('matrix-console-logs');
         const nodeRow = document.createElement('div');
         nodeRow.className = `log-node ${isCritical ? 'alert-text' : ''}`;
         nodeRow.innerText = `[${new Date().toLocaleTimeString()}] >> ${message}`;
         consoleFeed.appendChild(nodeRow);
-        if(consoleFeed.children.length > 25) consoleFeed.removeChild(consoleFeed.children[1]);
+        if(consoleFeed.children.length > 25) consoleFeed.removeChild(consoleFeed.children);
         consoleFeed.scrollTop = consoleFeed.scrollHeight;
     }
 
@@ -241,7 +241,6 @@
         
         triggerQuantumBeep();
         
-        // Level 500 reactive ring bounce animation
         let ring = document.getElementById('visualizer-ring');
         ring.style.transform = 'scale(1.1)'; setTimeout(() => { if(!hyperWarpActive) ring.style.transform = 'scale(1)'; }, 150);
         
@@ -265,4 +264,3 @@
         broadcastLyrics();
     }
 </script>
-
