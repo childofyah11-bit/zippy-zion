@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-8 AUDIO HARDWARE</title>
+    <title>X-8 AUDIO HARDWARE // VERIFIED</title>
     <style>
-        /* --- SYSTEM STYLING & CRT THEME --- */
+        /* --- SYSTEM STYLING & CRT MATRIX THEME --- */
         body {
             background-color: #000;
             color: #00ff66;
@@ -19,9 +19,22 @@
             margin: 0;
             image-rendering: pixelated;
             user-select: none;
+            overflow-x: hidden;
         }
 
-        /* --- GATEKEEPER OVERLAY (WEB AUDIO LOCK) --- */
+        /* --- CRT VINTAGE SCANLINE SIMULATION OVERLAY --- */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 99999;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* --- GATEKEEPER SCREEN OVERLAY (AUDIO INTERLOCK) --- */
         #gatekeeper-screen {
             position: fixed;
             top: 0;
@@ -56,28 +69,62 @@
             box-shadow: 6px 6px 0px #ff0055;
         }
 
-        /* --- HARDWARE CHASSIS LAYOUT --- */
+        /* --- HARDWARE CHASSIS CONSOLE FRAMEWORK --- */
         .console-chassis {
             background: #000;
             border: 8px solid #00ff66;
             padding: 15px;
             width: 95%;
-            max-width: 700px;
+            max-width: 720px;
             box-shadow: 16px 16px 0px #220044;
+            box-sizing: border-box;
         }
 
         .panel-stripe {
             background: #00ff66;
             color: #000;
-            padding: 5px;
+            padding: 6px;
             font-size: 14px;
             text-align: center;
             margin-bottom: 15px;
+            letter-spacing: 2px;
         }
 
+        /* --- REALTIME CRT OSCILLOSCOPE MONITOR --- */
+        .monitor-display {
+            background: #051105;
+            border: 4px solid #ff0055;
+            margin-bottom: 15px;
+            height: 80px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .monitor-display canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .monitor-tag {
+            position: absolute;
+            top: 4px;
+            left: 6px;
+            font-size: 10px;
+            color: #ffaa00;
+            z-index: 10;
+            background: #051105;
+            padding: 0 4px;
+        }
+
+        /* --- GRID MATRIX FOR MODULE CONTROLS --- */
         .hardware-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 12px;
             margin-bottom: 20px;
         }
@@ -85,7 +132,7 @@
         .module-block {
             border: 4px solid #ffaa00;
             padding: 10px;
-            background: #111;
+            background: #0b0b0b;
         }
 
         .module-tag {
@@ -101,11 +148,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 12px;
         }
 
-        /* --- INDUSTRIAL FORM CONTROLS --- */
+        /* --- INDUSTRIAL DIALS AND INPUT SELECTORS --- */
         select, input[type="range"] {
             background: #000;
             color: #ff0055;
@@ -115,10 +162,11 @@
             padding: 2px;
             outline: none;
             cursor: pointer;
+            box-sizing: border-box;
         }
 
         input[type="range"] {
-            width: 100px;
+            width: 110px;
             -webkit-appearance: none;
             height: 14px;
         }
@@ -132,7 +180,7 @@
             cursor: pointer;
         }
 
-        /* --- PIANO ROLL CHUNK KEYBOARD --- */
+        /* --- BRUTAL CHUNK HARDWARE PIANO KEYS --- */
         .block-keyboard {
             display: flex;
             background: #000;
@@ -144,35 +192,55 @@
         .chunk-key {
             flex: 1;
             background: #fff;
-            height: 80px;
-            border: 6px solid #000;
+            color: #000;
+            height: 90px;
+            border: 4px solid #000;
             box-shadow: 0px 10px 0px #333;
             cursor: pointer;
-            transition: transform 0.05s, box-shadow 0.05s, background-color 0.05s;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 8px;
+            box-sizing: border-box;
+            transition: transform 0.04s, box-shadow 0.04s, background-color 0.04s;
         }
 
         .chunk-key:active, .chunk-key.active {
-            background: #ff0055;
+            background: #ff0055 !important;
+            color: #fff;
             box-shadow: 0px 2px 0px #990022;
             transform: translateY(8px);
+        }
+
+        .key-label {
+            font-size: 12px;
+            font-weight: 900;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- INTERLOCK SCREEN MECHANISM -->
+    <!-- INTERLOCK AUDIO SYSTEM SECURITY BLOCKER -->
     <div id="gatekeeper-screen">
         <h1 style="font-size: 32px; margin-bottom: 30px; color: #ffaa00;">SYSTEM LOCKOUT</h1>
         <button class="giant-boot-btn" id="ignition-btn">[ BOOT MACHINE ]</button>
         <p style="margin-top: 25px; font-size: 12px; color: #ff0055;">WARNING: AUDIO FREQUENCIES WILL PLAY IMMEDIATELY</p>
     </div>
 
-    <!-- SOUND INJECT ENGINE PANEL -->
+    <!-- SYNTH ENGINE SYSTEM CABINET -->
     <div class="console-chassis">
-        <div class="panel-stripe">=== CONTROLLER MATRIX OVERRIDE V2 ===</div>
+        <div class="panel-stripe">=== CONTROLLER MATRIX OVERRIDE V2.5 ===</div>
         
+        <!-- CRT Oscilloscope Screen Block -->
+        <div class="monitor-display">
+            <div class="monitor-tag">LIVE WAVEFORM OSCILLOSCOPE</div>
+            <canvas id="scope-canvas"></canvas>
+        </div>
+
         <div class="hardware-grid">
-            <!-- 01: Waveform Configuration -->
+            <!-- 01: Core Waveforms -->
             <div class="module-block">
                 <div class="module-tag">01// CORE WAVEFORM</div>
                 <div class="input-row">
@@ -195,7 +263,7 @@
                 </div>
             </div>
 
-            <!-- 02: Arpeggiator Chip Controls -->
+            <!-- 02: Arpeggiator Chip Execution Controls -->
             <div class="module-block">
                 <div class="module-tag">02// CHIP MODULATORS</div>
                 <div class="input-row">
@@ -204,11 +272,11 @@
                 </div>
                 <div class="input-row">
                     <label for="arp-interval">ARP INTERVAL</label>
-                    <input type="range" id="arp-interval" min="3" max="12" step="1" value="4">
+                    <input type="range" id="arp-interval" min="1" max="12" step="1" value="4">
                 </div>
             </div>
 
-            <!-- 03: Voltage Pitch Sweeper -->
+            <!-- 03: Voltage Envelope Pitch Sweeper -->
             <div class="module-block">
                 <div class="module-tag">03// VOLTAGE SWEEP</div>
                 <div class="input-row">
@@ -225,56 +293,8 @@
                 </div>
             </div>
 
-            <!-- 04: Gain Dynamics Envelope -->
+            <!-- 04: Gain Dynamics Amplifiers -->
             <div class="module-block">
                 <div class="module-tag">04// AMP DECAY ENVELOPE</div>
                 <div class="input-row">
                     <label for="decay-time">DECAY FADE</label>
-                    <input type="range" id="decay-time" min="0.05" max="1.5" step="0.05" value="0.4">
-                </div>
-                <div class="input-row">
-                    <label for="gain-level">MASTER LEVEL</label>
-                    <input type="range" id="gain-level" min="0" max="0.4" step="0.05" value="0.2">
-                </div>
-            </div>
-        </div>
-
-        <!-- 8 Heavy Hardware Chunk Keys -->
-        <div class="block-keyboard">
-            <div class="chunk-key" data-pitch="110.00" title="A2"></div>
-            <div class="chunk-key" data-pitch="130.81" title="C3"></div>
-            <div class="chunk-key" data-pitch="146.83" title="D3"></div>
-            <div class="chunk-key" data-pitch="164.81" title="E3"></div>
-            <div class="chunk-key" data-pitch="196.00" title="G3"></div>
-            <div class="chunk-key" data-pitch="220.00" title="A3"></div>
-            <div class="chunk-key" data-pitch="261.63" title="C4"></div>
-            <div class="chunk-key" data-pitch="293.66" title="D4"></div>
-        </div>
-    </div>
-
-    <!-- --- DIGITAL AUDIO SYNTHESIS ENGINE --- -->
-    <script>
-        let rawAudioContext = null;
-        const liveVoiceStack = new Map();
-
-        // Boot-up Sequence and API Unlock Handler
-        document.getElementById('ignition-btn').addEventListener('click', () => {
-            rawAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-            if (rawAudioContext.state === 'suspended') {
-                rawAudioContext.resume();
-            }
-            document.getElementById('gatekeeper-screen').style.display = 'none';
-        });
-
-        // Main Signal Voice Synthesizer Execution Loop
-        function initiateAudioOutput(baseFrequency) {
-            if (!rawAudioContext) return;
-            if (rawAudioContext.state === 'suspended') rawAudioContext.resume();
-
-            // Intercept overlapping frequencies instantly
-            if (liveVoiceStack.has(baseFrequency)) {
-                terminateAudioOutput(baseFrequency);
-            }
-
-            // Pull Realtime System UI Control Settings
-            const masterOutputLevel = parseFloat(document.getElementById('gain-level').value);
