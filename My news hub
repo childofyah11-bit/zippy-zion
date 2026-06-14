@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Apex Tech Journal</title>
+</head>
+<body>
+
+    <!-- 1. WEBSITE HEADER -->
+    <header>
+        <h1>The Apex Tech Journal</h1>
+    </header>
+
+    <main>
+        <!-- 2. LINK 1: NEWS ARTICLE (Same Window) -->
+        <section>
+            <h2>Breaking News: The Rise of Quantum Computing</h2>
+            <p>Our lead story explores how recent breakthroughs in quantum mechanics are accelerating data processing speeds, leaving traditional silicon chips behind in architectural benchmarks.</p>
+            <p>
+                <a href="quantum-computing.html">Read Full Report</a>
+            </p>
+        </section>
+
+        <hr>
+
+        <!-- 3. LINK 2: DOWNLOADABLE PDF VERSION (New Window) -->
+        <section>
+            <h2>Print Edition Archive</h2>
+            <p>Access the complete, formatted print layout version of our quantum computing analysis for offline reading or academic citation tracking.</p>
+            <p>
+                <a href="documents/quantum-computing-deep-dive.pdf" target="_blank">View PDF Version</a>
+            </p>
+        </section>
+
+        <hr>
+
+        <!-- 4. LINK 3: EXTERNAL NEWS SOURCE (New Window) -->
+        <section>
+            <h2>Extended Regional Weather Forecast</h2>
+            <p>Keep track of severe weather warnings and atmospheric updates impacting data center grid cooling systems across your local area this week.</p>
+            <p>
+                <a href="https://weather.com" target="_blank">Check Your Local Forecast</a>
+            </p>
+        </section>
+    </main>
+
+</body>
+</html>
