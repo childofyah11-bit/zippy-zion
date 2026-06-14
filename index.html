@@ -28,7 +28,7 @@
     }
     #phone-container {
       position: relative;
-      width: 1100px; /* Expanded for side-by-side training workspaces */
+      width: 1100px; 
       height: 740px;
       background: rgba(7, 10, 17, 0.96);
       border: 2px solid rgba(255, 255, 255, 0.09);
@@ -55,12 +55,6 @@
       justify-content: center;
       width: 320px;
       height: 28px;
-    }
-    #system-clock {
-      font-size: 0.8rem;
-      font-weight: 700;
-      font-family: monospace;
-      color: var(--cyan-glow);
     }
     .glass-card {
       background: var(--glass-surface);
@@ -197,12 +191,12 @@
   <div id="phone-container">
     <div id="dynamic-island">
       <div id="island-pill">
-        <span id="system-clock">ACE_INTELLIGENCE_DECK</span>
+        <span style="font-family: monospace; color: var(--cyan-glow); font-weight: bold;">ACE_INTELLIGENCE_DECK</span>
       </div>
     </div>
 
     <div class="glass-card telemetry-row">
-      <div>RUNTIME_SHELL: <span style="color: var(--cyan-glow);">CSP_COMPLIANT_O_v9.5</span></div>
+      <div>RUNTIME_SHELL: <span style="color: var(--cyan-glow);">CHROME_SANDBOX_v10.0</span></div>
       <div>DATABASE_STATUS: <span id="db-status-tracker" style="color: var(--matrix-green);">0 LOGS LOADED</span></div>
     </div>
 
@@ -213,11 +207,11 @@
         <div class="panel-header" style="color: var(--magenta-glow);">1. KNOWLEDGE INJECTION MATRIX</div>
         
         <div id="knowledge-database-viewport">
-          <div class="knowledge-bubble" id="db-empty-notice">// Memory array blank. Inject custom text keywords or definitions below to anchor chatbot training.</div>
+          <div class="knowledge-bubble" id="db-empty-notice">// Memory array blank. Inject custom facts, rules, or study notes below to train your chatbot.</div>
         </div>
 
         <form id="knowledge-form" onsubmit="saveKnowledgeToMemory(event)">
-          <textarea id="knowledge-input" placeholder="Type a fact or study notes here... (e.g., 'Rome was founded in 753 BCE by Romulus')"></textarea>
+          <textarea id="knowledge-input" placeholder="Type a fact here... (e.g., 'Chromebooks run ChromeOS operating software natively')"></textarea>
           <button type="submit" class="tech-submit-btn teach-btn">INJECT FACT TO CORE</button>
         </form>
       </div>
@@ -227,11 +221,11 @@
         <div class="panel-header" style="color: var(--cyan-glow);">2. ACTIVE CONVERSATION TERMINAL</div>
         
         <div id="chat-history-viewport">
-          <div class="chat-bubble ai-bubble">[ACE] Standing by. Paste facts into the left grid to update my memory. Type questions over here to check my retrieval variables.</div>
+          <div class="chat-bubble ai-bubble">[ACE] Connection secure. Type a custom question here to quiz me. If I haven't been taught the answer on the left, my baseline STEM filters will process it instead.</div>
         </div>
 
         <form id="chat-form" onsubmit="executeChatSearch(event)">
-          <textarea id="ai-input" placeholder="Ask a question... (e.g., 'When was Rome founded?')"></textarea>
+          <textarea id="ai-input" placeholder="Ask a question or type an equation here..."></textarea>
           <button type="submit" class="tech-submit-btn">EXECUTE SEARCH QUERY</button>
         </form>
       </div>
@@ -240,10 +234,10 @@
   </div>
 
   <script>
-    // Safe memory repository block (No risky browser prototypes or custom object assignments)
+    // Safe global memory array
     var customKnowledgeDatabaseArray = [];
 
-    // Safe Knowledge Submissions Pipeline
+    // Safe Knowledge Injection System
     function saveKnowledgeToMemory(event) {
       event.preventDefault();
 
@@ -256,28 +250,25 @@
       var factText = inputField.value.trim();
       if (!factText) { return; }
 
-      // Clear standard notice bubble if this is the first item entry
+      // Clear the empty notification on first write
       var notice = document.getElementById('db-empty-notice');
-      if (notice) {
-        databaseView.removeChild(notice);
-      }
+      if (notice) { databaseView.removeChild(notice); }
 
-      // Add to primitive global repository array strings
+      // Push raw string text straight into array memory
       customKnowledgeDatabaseArray.push(factText);
 
-      // Render custom training block element inside the display sheet
+      // Append text item directly to the view grid
       var bubble = document.createElement('div');
       bubble.className = 'knowledge-bubble';
       bubble.textContent = "[" + customKnowledgeDatabaseArray.length + "] " + factText;
       databaseView.appendChild(bubble);
 
-      // Reset values and scroll view to baseline index
       inputField.value = '';
       databaseView.scrollTop = databaseView.scrollHeight;
       statusTracker.textContent = customKnowledgeDatabaseArray.length + " LOGS LOADED";
     }
 
-    // Safe Conversational Submission Search Pipeline
+    // Fully Fixed, Non-Freezing Chatbot Engine
     function executeChatSearch(event) {
       event.preventDefault();
 
@@ -289,27 +280,32 @@
       var questionText = queryInput.value.trim();
       if (!questionText) { return; }
 
-      // Append standard User message node bubble
+      // Append User message node bubble
       var userBubble = document.createElement('div');
       userBubble.className = 'chat-bubble user-bubble';
       userBubble.textContent = questionText;
       chatHistoryView.appendChild(userBubble);
 
-      // Clear input window instantly
       queryInput.value = '';
       chatHistoryView.scrollTop = chatHistoryView.scrollHeight;
 
-      // Executing search against internal items arrays
+      // Processing answer without dangerous nested word splits
       setTimeout(function() {
         var aiAnswerString = "";
-        var lowQuestionText = questionText.toLowerCase();
-        var matchedFactsList = [];
+        var lowQuestion = questionText.toLowerCase();
+        var matchedFacts = [];
 
-        // Loop through internal memories to hunt keywords
+        // Safe Exact-Phrase Index Search Loop
         for (var i = 0; i < customKnowledgeDatabaseArray.length; i++) {
-          var individualFact = customKnowledgeDatabaseArray[i];
-          var splitWords = lowQuestionText.split(' ');
+          var savedFact = customKnowledgeDatabaseArray[i].toLowerCase();
           
-          var containsKeywordMatch = false;
-          for (var j = 0; j < splitWords.length; j++) {
-            var word = splitWords[j];
+          // Clean out generic punctuation to find clean words
+          var cleanQuestionStr = lowQuestion.replace(/[?:!.,;]/g, "");
+          var questionWords = cleanQuestionStr.split(" ");
+
+          // Scan question for important keywords, skipping short formatting strings
+          for (var w = 0; w < questionWords.length; w++) {
+            var coreWord = questionWords[w];
+            if (coreWord.length > 3 && savedFact.indexOf(coreWord) !== -1) {
+              // Avoid duplicate adds
+              if (matchedFacts.indexOf(customKnowledgeDatabaseArray[i]) === -1) {
