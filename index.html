@@ -252,144 +252,29 @@
         </div>
     </div>
 
-    <!-- External Audio Logic Hook -->
-    <script src="script.js" defer></script>
-</body>
-</html>
-let rawAudioContext = null;
-const liveVoiceStack = new Map();
+    <!-- --- DIGITAL AUDIO SYNTHESIS ENGINE --- -->
+    <script>
+        let rawAudioContext = null;
+        const liveVoiceStack = new Map();
 
-// Boot-up Sequence and API Unlock Handler
-document.getElementById('ignition-btn').addEventListener('click', () => {
-    rawAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-    if (rawAudioContext.state === 'suspended') {
-        rawAudioContext.resume();
-    }
-    document.getElementById('gatekeeper-screen').style.display = 'none';
-});
+        // Boot-up Sequence and API Unlock Handler
+        document.getElementById('ignition-btn').addEventListener('click', () => {
+            rawAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (rawAudioContext.state === 'suspended') {
+                rawAudioContext.resume();
+            }
+            document.getElementById('gatekeeper-screen').style.display = 'none';
+        });
 
-// Main Signal Voice Synthesizer Execution Loop
-function initiateAudioOutput(baseFrequency) {
-    if (!rawAudioContext) return;
-    if (rawAudioContext.state === 'suspended') rawAudioContext.resume();
-
-    // Intercept overlapping frequencies instantly
-    if (liveVoiceStack.has(baseFrequency)) {
-        terminateAudioOutput(baseFrequency);
-    }
-
-    // Pull Realtime System UI Control Settings
-    const masterOutputLevel = parseFloat(document.getElementById('gain-level').value);
-    const chosenWave1 = document.getElementById('osc-wave-1').value;
-    const chosenWave2 = document.getElementById('osc-wave-2').value;
-    const pitchSweepDirection = document.getElementById('sweep-dir').value;
-    const pitchSweepDuration = parseFloat(document.getElementById('sweep-speed').value);
-    const arpeggiatorSpeed = parseInt(document.getElementById('arp-rate').value);
-    const arpeggiatorIntervalSteps = parseInt(document.getElementById('arp-interval').value);
-    const decayDuration = parseFloat(document.getElementById('decay-time').value);
-
-    const currentTime = rawAudioContext.currentTime;
-
-    // Instantiating Virtual Web Audio Nodes
-    const gainNode = rawAudioContext.createGain();
-    const osc1 = rawAudioContext.createOscillator();
-    const osc2 = rawAudioContext.createOscillator();
-
-    osc1.type = chosenWave1;
-    osc2.type = chosenWave2;
-
-    // Microdetuning Matrix Array values for Thick Retro Textures
-    osc1.detune.setValueAtTime(-6, currentTime);
-    osc2.detune.setValueAtTime(6, currentTime); 
-
-    // Core Pitch Declarations
-    osc1.frequency.setValueAtTime(baseFrequency, currentTime);
-    osc2.frequency.setValueAtTime(baseFrequency, currentTime);
-
-    // Voltage Sweep Modulation System
-    if (pitchSweepDirection === 'up') {
-        osc1.frequency.exponentialRampToValueAtTime(baseFrequency * 2, currentTime + pitchSweepDuration);
-        osc2.frequency.exponentialRampToValueAtTime(baseFrequency * 2, currentTime + pitchSweepDuration);
-    } else if (pitchSweepDirection === 'down') {
-        osc1.frequency.exponentialRampToValueAtTime(baseFrequency / 2, currentTime + pitchSweepDuration);
-        osc2.frequency.exponentialRampToValueAtTime(baseFrequency / 2, currentTime + pitchSweepDuration);
-    }
-
-    // Chiptune Style Step Arpeggiator Clock Integration
-    let arpTimerId = null;
-    if (arpeggiatorSpeed > 0) {
-        let cycleIndex = 0;
-        const speedIntervalMs = (1 / arpeggiatorSpeed) * 1000;
-        const secondaryIntervalFreq = baseFrequency * Math.pow(1.059463, arpeggiatorIntervalSteps);
-        
-        arpTimerId = setInterval(() => {
+        // Main Signal Voice Synthesizer Execution Loop
+        function initiateAudioOutput(baseFrequency) {
             if (!rawAudioContext) return;
-            const stepTime = rawAudioContext.currentTime;
-            const targetStepFreq = (cycleIndex % 2 === 0) ? baseFrequency : secondaryIntervalFreq;
-            osc1.frequency.setValueAtTime(targetStepFreq, stepTime);
-            osc2.frequency.setValueAtTime(targetStepFreq, stepTime);
-            cycleIndex++;
-        }, speedIntervalMs);
-    }
+            if (rawAudioContext.state === 'suspended') rawAudioContext.resume();
 
-    // Exponential Decrescendo Level Mapping 
-    gainNode.gain.setValueAtTime(masterOutputLevel, currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + decayDuration);
+            // Intercept overlapping frequencies instantly
+            if (liveVoiceStack.has(baseFrequency)) {
+                terminateAudioOutput(baseFrequency);
+            }
 
-    // Audio Routing Matrix Connections
-    osc1.connect(gainNode);
-    osc2.connect(gainNode);
-    gainNode.connect(rawAudioContext.destination);
-
-    // Signal Stream Ignition
-    osc1.start(currentTime);
-    osc2.start(currentTime);
-
-    // Garbage Collection Routine Execution Thread
-    const voiceTimeout = setTimeout(() => {
-        if (arpTimerId) clearInterval(arpTimerId);
-        try {
-            osc1.stop();
-            osc2.stop();
-            osc1.disconnect();
-            osc2.disconnect();
-            gainNode.disconnect();
-        } catch(e) {}
-        liveVoiceStack.delete(baseFrequency);
-    }, (decayDuration * 1000) + 50);
-
-    // Map variables for dynamic cutoff options
-    liveVoiceStack.set(baseFrequency, { osc1, osc2, gainNode, arpTimerId, voiceTimeout });
-}
-
-// Clean Cutoff Termination Routine
-function terminateAudioOutput(baseFrequency) {
-    if (liveVoiceStack.has(baseFrequency)) {
-        const voiceData = liveVoiceStack.get(baseFrequency);
-        if (voiceData.arpTimerId) clearInterval(voiceData.arpTimerId);
-        clearTimeout(voiceData.voiceTimeout);
-        try {
-            voiceData.osc1.stop();
-            voiceData.osc2.stop();
-            voiceData.osc1.disconnect();
-            voiceData.osc2.disconnect();
-            voiceData.gainNode.disconnect();
-        } catch(e) {}
-        liveVoiceStack.delete(baseFrequency);
-    }
-}
-
-// Setup IO Directives to Visual DOM Array Nodes
-document.querySelectorAll('.chunk-key').forEach(key => {
-    const notePitch = parseFloat(key.getAttribute('data-pitch'));
-    
-    // Mouse Execution Drivers
-    key.addEventListener('mousedown', () => initiateAudioOutput(notePitch));
-    
-    // Mobile Matrix Touch Drivers
-    key.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        initiateAudioOutput(notePitch);
-    });
-});
-
+            // Pull Realtime System UI Control Settings
+            const masterOutputLevel = parseFloat(document.getElementById('gain-level').value);
