@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-8 // MATRIX OVERRIDE EXEGESIS</title>
+    <title>X-8 // TERMINAL DEFENDER CORE</title>
     <style>
-        /* Raw, Low-Res CRT Matrix Style */
+        /* --- CORE BRUTALIST GRID DESIGN --- */
         body {
             background-color: #000;
             color: #00ff66;
@@ -17,130 +17,123 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            image-rendering: pixelated;
-            user-select: none;
             overflow: hidden;
+            user-select: none;
+            image-rendering: pixelated;
         }
 
-        /* Scanline Overlay for Arcade Feel */
+        /* Scanline Overlay for an authentic Retro Cabinet feel */
         body::before {
             content: " ";
             display: block;
             position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
-            z-index: 99999;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+            z-index: 9999;
             background-size: 100% 4px;
             pointer-events: none;
         }
 
-        /* Main Blocky Console Framework */
-        .console-chassis {
+        /* Premium Mechanical Arcade Chassis Wrapper */
+        .arcade-cabinet {
             background: #000;
             border: 8px solid #00ff66;
-            padding: 15px;
+            padding: 20px;
             width: 95%;
-            max-width: 600px;
-            box-shadow: 16px 16px 0px #220044;
+            max-width: 540px;
+            box-shadow: 20px 20px 0px #220044;
             box-sizing: border-box;
             position: relative;
         }
 
-        .panel-stripe {
+        .marquee-header {
             background: #00ff66;
             color: #000;
-            padding: 5px;
-            font-size: 14px;
+            padding: 8px;
+            font-size: 16px;
             text-align: center;
             margin-bottom: 15px;
+            letter-spacing: 2px;
             font-weight: 900;
         }
 
-        /* Game Screen Arena Box */
-        #game-viewport {
-            width: 100%;
-            height: 350px;
-            background: #050505;
-            border: 6px solid #ff0055;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        /* Score & UI Elements inside the cabinet */
-        .hud-row {
+        /* Unified HUD layout matrix blocks */
+        .hud-display {
             display: flex;
             justify-content: space-between;
-            background: #111;
+            background: #0d0d0d;
             border: 4px solid #ffaa00;
-            padding: 6px 12px;
+            padding: 8px 15px;
             font-size: 14px;
             margin-bottom: 15px;
             color: #ffaa00;
         }
 
-        /* Player Ship Character Entity */
-        #player-ship {
-            position: absolute;
-            bottom: 10px;
-            width: 30px;
-            height: 20px;
-            background: #00ff66;
-            border: 3px solid #fff;
+        /* Safe, high-performance Canvas Container */
+        .screen-frame {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border: 6px solid #ff0055;
             box-sizing: border-box;
-            transition: left 0.1s ease-out;
+            margin-bottom: 15px;
         }
 
-        /* Laser Beam Entities */
-        .laser-beam {
-            position: absolute;
-            width: 4px;
-            height: 15px;
-            background: #ff0055;
-            box-shadow: 0 0 4px #ff0055;
+        canvas {
+            display: block;
+            width: 100%;
+            height: 400px;
+            background: #030a05;
         }
 
-        /* Falling Hostile Target Data Packets */
-        .glitch-target {
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            background: #ffaa00;
-            border: 3px solid #000;
-            box-sizing: border-box;
-        }
-
-        /* Game Over Intercept Screen Screen */
-        #game-over-screen {
-            display: none;
+        /* Structural Overlay Screens (Main Menu, Game Over) */
+        .overlay-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 100;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        .action-btn {
+        .menu-title {
+            color: #ff0055;
+            margin: 0 0 10px 0;
+            font-size: 26px;
+            letter-spacing: 1px;
+        }
+
+        .menu-desc {
+            color: #ffaa00;
+            font-size: 12px;
+            margin: 0 0 20px 0;
+            line-height: 1.5;
+        }
+
+        .arcade-btn {
             background: #000;
             color: #00ff66;
             border: 4px solid #00ff66;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-family: inherit;
             font-weight: 900;
+            font-size: 16px;
             cursor: pointer;
-            box-shadow: 4px 4px 0px #ff0055;
-            margin-top: 15px;
-        }
-        .action-btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px #ff0055;
+            box-shadow: 6px 6px 0px #ff0055;
+            transition: transform 0.05s, box-shadow 0.05s;
         }
 
-        /* Chunk-Style Mechanical Action Matrix Keys */
-        .block-keyboard {
+        .arcade-btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0px #ff0055;
+        }
+
+        /* Heavy Mechanical Controller Keys */
+        .controller-deck {
             display: flex;
             background: #000;
             border: 6px solid #00ff66;
@@ -148,11 +141,11 @@
             gap: 6px;
         }
 
-        .chunk-key {
+        .deck-trigger {
             flex: 1;
             background: #fff;
             color: #000;
-            height: 65px;
+            height: 60px;
             border: 4px solid #000;
             box-shadow: 0px 6px 0px #333;
             cursor: pointer;
@@ -163,7 +156,7 @@
             font-size: 14px;
         }
 
-        .chunk-key:active {
+        .deck-trigger:active, .deck-trigger.active {
             background: #ff0055;
             box-shadow: 0px 2px 0px #990022;
             transform: translateY(4px);
@@ -173,123 +166,130 @@
 </head>
 <body>
 
-    <!-- MAIN SOUND GENERATOR SYSTEM CABINET -->
-    <div class="console-chassis">
-        <div class="panel-stripe">=== HARDWARE TERMINAL MATRIX GAME ===</div>
+    <div class="arcade-cabinet">
+        <div class="marquee-header">=== CODENAME: MATRIX REAPER ===</div>
 
-        <!-- System Score Display Board -->
-        <div class="hud-row">
-            <div>DATA_STRIKES: <span id="score-val">0000</span></div>
-            <div>SHIELD_INTEGRITY: <span id="shield-val">100%</span></div>
+        <!-- Dashboard Instrument Display -->
+        <div class="hud-display">
+            <div>SCORE: <span id="hud-score">00000</span></div>
+            <div>SHIELD: <span id="hud-shield">100%</span></div>
         </div>
 
-        <!-- Visual Core Play Arena Box -->
-        <div id="game-viewport">
-            <div id="player-ship"></div>
-            
-            <!-- Game Over System Capture Banner -->
-            <div id="game-over-screen">
-                <h1 style="color: #ff0055; margin: 0; font-size: 28px;">MATRIX FAILURE</h1>
-                <p style="color: #ffaa00; font-size: 12px; margin-top: 10px;">HOSTILE GLITCH ENTITIES BREACHED THE SECTOR</p>
-                <button class="action-btn" id="restart-btn">[ REBOOT SECTOR ]</button>
+        <!-- Visual Core Output Terminal Box -->
+        <div class="screen-frame">
+            <canvas id="arcade-viewport"></canvas>
+
+            <!-- Menu Layer Canvas Blocks -->
+            <div id="ui-overlay" class="overlay-screen">
+                <h1 class="menu-title" id="ui-title">SYSTEM READY</h1>
+                <p class="menu-desc" id="ui-desc">MALICIOUS CODES ARE CORRUPTING THE HARDWARE CORE.<br>TRIGGER CONTROLLER LANE KEYS TO PURGE DATA TRACKS.</p>
+                <button class="arcade-btn" id="ui-action-btn">[ ENGAGE OVERRIDE ]</button>
             </div>
         </div>
 
-        <!-- 8 Heavy Lane Routing Keys -->
-        <div class="block-keyboard">
-            <div class="chunk-key" data-lane="0">L1</div>
-            <div class="chunk-key" data-lane="1">L2</div>
-            <div class="chunk-key" data-lane="2">L3</div>
-            <div class="chunk-key" data-lane="3">L4</div>
-            <div class="chunk-key" data-lane="4">L5</div>
-            <div class="chunk-key" data-lane="5">L6</div>
-            <div class="chunk-key" data-lane="6">L7</div>
-            <div class="chunk-key" data-lane="7">L8</div>
+        <!-- Lane Action Fire Control Deck -->
+        <div class="controller-deck">
+            <div class="deck-trigger" data-lane="0">1</div>
+            <div class="deck-trigger" data-lane="1">2</div>
+            <div class="deck-trigger" data-lane="2">3</div>
+            <div class="deck-trigger" data-lane="3">4</div>
+            <div class="deck-trigger" data-lane="4">5</div>
+            <div class="deck-trigger" data-lane="5">6</div>
+            <div class="deck-trigger" data-lane="6">7</div>
+            <div class="deck-trigger" data-lane="7">8</div>
         </div>
-        <p style="text-align: center; font-size: 11px; margin-top: 12px; color: #ff0055;">TIP: TAP KEYS TO WARP SHIP AND FIRE CORRESPONDING LANES</p>
     </div>
 
+    <!-- --- HIGH PERFORMANCE ARCADE GAME ENGINE --- -->
     <script>
-        // Core Variable Matrix
-        const viewport = document.getElementById('game-viewport');
-        const ship = document.getElementById('player-ship');
-        const scoreDisplay = document.getElementById('score-val');
-        const shieldDisplay = document.getElementById('shield-val');
-        const gameOverScreen = document.getElementById('game-over-screen');
+        const canvas = document.getElementById('arcade-viewport');
+        const ctx = canvas.getContext('2d');
         
+        const hudScore = document.getElementById('hud-score');
+        const hudShield = document.getElementById('hud-shield');
+        const uiOverlay = document.getElementById('ui-overlay');
+        const uiTitle = document.getElementById('ui-title');
+        const uiDesc = document.getElementById('ui-desc');
+        const uiBtn = document.getElementById('ui-action-btn');
+
+        // Engine State Configuration Variables
+        let gameState = 'MENU'; // MENU, PLAYING, GAMEOVER
         let score = 0;
         let shield = 100;
-        let isGameOver = false;
-        
-        const lasers = [];
-        const targets = [];
-        
-        // Spawn and engine looping handles
-        let gameLoopId = null;
-        let targetSpawnId = null;
+        let targetLane = 3;
+        let currentShipX = 0;
+        let spawnTimer = 0;
+        let bossActive = false;
+        let bossHealth = 10;
+        let bossMaxHealth = 10;
+        let bossX = 0;
+        let bossDirection = 1;
 
-        // Compute step dimensions dynamically across 8 track lanes
-        const totalLanes = 8;
-        let laneWidth = viewport.clientWidth / totalLanes;
+        // Visual Asset Entity Stack Arrays
+        const entities = { lasers: [], cells: [], fragments: [], streams: [] };
+        const laneCount = 8;
 
-        // Force calculations to stay aligned if browser frame shifts
-        window.addEventListener('resize', () => {
-            laneWidth = viewport.clientWidth / totalLanes;
-        });
+        // Setup clean high-res canvas backing dimensions
+        function scaleTerminalDimensions() {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        }
+        scaleTerminalDimensions();
 
-        // Set initial ship placement to middle lane
-        let currentLane = 3;
-        updateShipPosition();
-
-        function updateShipPosition() {
-            const leftOffset = (currentLane * laneWidth) + (laneWidth / 2) - 15;
-            ship.style.left = `${leftOffset}px`;
+        // Background scrolling digital matrix code cascade streams setup
+        for (let i = 0; i < 20; i++) {
+            entities.streams.push({
+                x: Math.random() * 500,
+                y: Math.random() * 400,
+                speed: 1.5 + Math.random() * 3,
+                len: 4 + Math.floor(Math.random() * 8)
+            });
         }
 
-        // Action Trigger Framework
-        function triggerLaneAction(laneIndex) {
-            if (isGameOver) return;
+        // Fire Laser Weapons Vector Directive
+        function executeWeaponFire(laneIndex) {
+            if (gameState !== 'PLAYING') return;
             
-            // Instantly warp ship chassis to clicked target channel
-            currentLane = laneIndex;
-            updateShipPosition();
-            
-            // Construct Laser Entity Vector blueprint
-            const laser = document.createElement('div');
-            laser.className = 'laser-beam';
-            
-            const startX = (laneIndex * laneWidth) + (laneWidth / 2) - 2;
-            laser.style.left = `${startX}px`;
-            laser.style.bottom = '35px'; // Fires just above ship height
-            
-            viewport.appendChild(laser);
-            lasers.push(laser);
+            targetLane = laneIndex;
+            const targetX = (laneIndex * (canvas.width / laneCount)) + ((canvas.width / laneCount) / 2);
 
-            // Optional Web Audio Synth Ping (Safe, built-in, standalone fallback synth sound)
+            entities.lasers.push({ x: targetX, y: canvas.height - 35, speed: 9 });
+
+            // Generate stand-alone safe synthetic UI blaster audio effects 
             try {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
                 const actx = new AudioContextClass();
                 const osc = actx.createOscillator();
                 const gain = actx.createGain();
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(300 + (laneIndex * 80), actx.currentTime);
-                gain.gain.setValueAtTime(0.05, actx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + 0.15);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(440 + (laneIndex * 60), actx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, actx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.04, actx.currentTime);
                 osc.connect(gain);
                 gain.connect(actx.destination);
                 osc.start();
-                setTimeout(() => osc.stop(), 160);
+                setTimeout(() => osc.stop(), 100);
             } catch(e) {}
         }
 
-        // Hostile Glitch Target Generator Routine
-        function spawnHostileTarget() {
-            if (isGameOver) return;
-            
-            const target = document.createElement('div');
-            target.className = 'glitch-target';
-            
-            const randomLane = Math.floor(Math.random() * totalLanes);
-            const targetX = (randomLane * laneWidth) + (laneWidth / 2) - 12;
-            
-            target.style.left = `${targetX}px`;
+        // Particle Burst Generator Routine
+        function createExplosionBurst(x, y, tint) {
+            for (let i = 0; i < 8; i++) {
+                entities.fragments.push({
+                    x: x, y: y,
+                    vx: (Math.random() - 0.5) * 5,
+                    vy: (Math.random() - 0.5) * 5,
+                    life: 1.0,
+                    decay: 0.04 + Math.random() * 0.04,
+                    color: tint
+                });
+            }
+        }
+
+        // Central Engine Processing Loop Block
+        function updateLogicCycle() {
+            // --- BACKGROUND MATRIX PIPELINE ---
+            entities.streams.forEach(st => {
+                st.y += st.speed;
+                if (st.y > canvas.height) {
+                    st.y = -40;
