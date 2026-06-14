@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Coding Power: 5-Phase Ultimate Boss Fight</title>
+    <title>Cyber-Core: 5-Phase Protocol</title>
     <style>
-        body { margin: 0; background: #0b0b10; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: 'Courier New', monospace; }
-        canvas { border: 4px solid #00bfff; background: #0f0f16; box-shadow: 0 0 30px rgba(0, 191, 255, 0.4); }
+        body { margin: 0; background: #050508; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: 'Courier New', monospace; }
+        canvas { border: 4px solid #ff0055; background: #0a0a12; box-shadow: 0 0 40px rgba(255, 0, 85, 0.3); }
     </style>
 </head>
 <body>
@@ -16,266 +16,274 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// GAME STATE
+// GAME STATE ENGINE
 let gameOver = false;
 let victory = false;
 let score = 0;
-let combo = 0;
-let comboTimer = 0;
 let screenShake = 0;
+let gameTime = 0;
 
-// PLAYER OBJECT
+// PLAYER SHIP OBJECT
 const player = {
-    x: 100, y: 350, w: 40, h: 40,
-    speed: 6, health: 100, maxHealth: 100,
-    dashCooldown: 0, isDashing: 0
+    x: 100, y: 350, r: 20, // Triangle radius
+    speed: 7, health: 100, maxHealth: 100,
+    shieldActive: 0, shieldCooldown: 0
 };
 
-// 5-PHASE BOSS OBJECT
+// 5-PHASE AI CORE BOSS
 const boss = {
-    x: 850, y: 290, w: 100, h: 120,
-    health: 2000, maxHealth: 2000, // Enormous health pool for 5 phases
-    phase: 1, dir: 1, shootCooldown: 0,
-    flashFrames: 0
+    x: 800, y: 350, r: 60, // Circular AI Core
+    health: 3000, maxHealth: 3000,
+    phase: 1, timer: 0, angle: 0,
+    flash: 0
 };
 
-let playerBullets = [];
-let bossBullets = [];
-let particles = [];
-let textPopups = [];
+let playerLasers = [];
+let bossOrbs = [];
+let visualSparks = [];
+let UIAnnouncements = [];
 const keys = {};
 
-// COLOR GRAPHICS PALETTE FOR EACH PHASE
-const phaseColors = {
-    1: "#ff3232", // Crimson Red
-    2: "#ffaa00", // Raging Orange
-    3: "#32cd32", // Toxic Green
-    4: "#00ffff", // Electric Cyan
-    5: "#ff00ff"  // Dark God Purple
+// SYSTEM COLOURS PER PHASE
+const coreColors = {
+    1: "#00ffcc", // Neon Mint
+    2: "#ffff00", // Laser Yellow
+    3: "#ff0055", // Cyber Pink
+    4: "#7700ff", // Dark Plasma Purple
+    5: "#ffffff"  // Overclocked White
 };
 
-// SPAWN EFFECT PARTICLES
-function spawnParticles(x, y, color, count=8, speedMult=1) {
-    for(let i=0; i<count; i++) {
-        particles.push({
+// JUICE: PARTICLE SPAWNER
+function makeSparks(x, y, color, count = 10) {
+    for (let i = 0; i < count; i++) {
+        visualSparks.push({
             x: x, y: y,
-            dx: (Math.random() - 0.5) * 8 * speedMult,
-            dy: (Math.random() - 0.5) * 8 * speedMult,
-            radius: Math.random() * 4 + 2,
-            life: 30, maxLife: 30,
+            vx: (Math.random() - 0.5) * 10,
+            vy: (Math.random() - 0.5) * 10,
+            alpha: 1,
             color: color
         });
     }
 }
 
-// DAMAGE TEXT POPUPS
-function spawnText(x, y, text, color) {
-    textPopups.push({ x: x, y: y, text: text, color: color, life: 40, dy: -1.5 });
+// JUICE: FLOATING TEXT
+function makeText(text, color) {
+    UIAnnouncements.push({ text: text, color: color, y: 150, alpha: 1 });
 }
 
-// KEYBOARD LISTENERS
+// CONTROLS INGESTION
 window.addEventListener("keydown", e => {
     keys[e.key] = true;
+    
+    // Spacebar: Shoot Laser
     if (e.key === " " && !gameOver && !victory) {
-        playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, dx: 16, dy: 0, r: 5, color: "#00bfff" });
-        spawnParticles(player.x + player.w, player.y + player.h/2, "#00bfff", 3, 0.5);
+        playerLasers.push({ x: player.x + 20, y: player.y, vx: 18, vy: 0 });
+        makeSparks(player.x + 20, player.y, "#ffff00", 2);
     }
-    if (e.key === "Shift" && player.dashCooldown <= 0 && !gameOver && !victory) {
-        player.isDashing = 15;
-        player.dashCooldown = 60;
-        spawnParticles(player.x + player.w/2, player.y + player.h/2, "#fff", 20, 2);
-        screenShake = 10;
+    
+    // Shift: Plasma Shield Power
+    if (e.key === "Shift" && player.shieldCooldown <= 0 && !gameOver && !victory) {
+        player.shieldActive = 45; // Active for 45 frames
+        player.shieldCooldown = 180; // 3 second cooldown
+        screenShake = 8;
+        makeText("SHIELD ENGAGED", "#00ffcc");
     }
 });
 window.addEventListener("keyup", e => keys[e.key] = false);
 
-// MAIN GAME LOGIC
+// MAIN CALCULATIONS LOOP
 function update() {
     if (gameOver || victory) return;
 
-    if (screenShake > 0) screenShake *= 0.9;
-    if (combo > 0) {
-        comboTimer--;
-        if (comboTimer <= 0) combo = 0;
-    }
-    if (player.dashCooldown > 0) player.dashCooldown--;
+    gameTime++;
+    if (screenShake > 0) screenShake *= 0.85;
+    if (player.shieldCooldown > 0) player.shieldCooldown--;
+    if (player.shieldActive > 0) player.shieldActive--;
+    if (boss.flash > 0) boss.flash--;
 
-    // Move Speeds & Dash
-    let currentSpeed = player.speed;
-    if (player.isDashing > 0) {
-        player.isDashing--;
-        currentSpeed = player.speed * 2.5;
-    }
+    // Player Flight Vector Logic
+    if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
+    if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
+    if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
+    if (keys["d"] || keys["ArrowRight"]) player.x += player.speed;
 
-    if (keys["w"] || keys["ArrowUp"]) player.y -= currentSpeed;
-    if (keys["s"] || keys["ArrowDown"]) player.y += currentSpeed;
-    if (keys["a"] || keys["ArrowLeft"]) player.x -= currentSpeed;
-    if (keys["d"] || keys["ArrowRight"]) player.x += currentSpeed;
+    // Boundaries check
+    player.x = Math.max(30, Math.min(canvas.width - 30, player.x));
+    player.y = Math.max(30, Math.min(canvas.height - 30, player.y));
 
-    player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
-    player.y = Math.max(0, Math.min(canvas.height - player.h, player.y));
+    // --- PHASE CALCULATOR ---
+    let hpPercent = boss.health / boss.maxHealth;
+    let priorPhase = boss.phase;
 
-    if (boss.flashFrames > 0) boss.flashFrames--;
+    if (hpPercent > 0.8) boss.phase = 1;
+    else if (hpPercent > 0.6) boss.phase = 2;
+    else if (hpPercent > 0.4) boss.phase = 3;
+    else if (hpPercent > 0.2) boss.phase = 4;
+    else boss.phase = 5; // Final God-Mode Protocol
 
-    // --- 5-PHASE HEALTH MANAGEMENT BRAIN ---
-    let healthPct = boss.health / boss.maxHealth;
-    let oldPhase = boss.phase;
-
-    if (healthPct > 0.8) {
-        boss.phase = 1;
-    } else if (healthPct > 0.6) {
-        boss.phase = 2;
-    } else if (healthPct > 0.4) {
-        boss.phase = 3;
-    } else if (healthPct > 0.2) {
-        boss.phase = 4;
-    } else {
-        boss.phase = 5; // Final Phase Mutation!
+    // Phase Switch Transition Trigger
+    if (boss.phase !== priorPhase) {
+        screenShake = 30;
+        makeSparks(boss.x, boss.y, coreColors[boss.phase], 60);
+        makeText(`WARNING: PHASE ${boss.phase} INITIALIZED`, coreColors[boss.phase]);
     }
 
-    // Trigger visual explosion when crossing into a new phase
-    if (boss.phase !== oldPhase) {
-        screenShake = 25;
-        spawnParticles(boss.x + boss.w/2, boss.y + boss.h/2, phaseColors[boss.phase], 40, 2.5);
-        spawnText(boss.x - 50, boss.y - 20, `PHASE ${boss.phase} ACTIVE!`, phaseColors[boss.phase]);
-    }
+    // --- BOSS MECHANICS PER PHASE ---
+    boss.timer++;
+    boss.angle += 0.02;
 
-    // --- BOSS AI ENGINE PER PHASE ---
     if (boss.phase === 1) {
-        // Vertical hover pacing
-        boss.y += boss.dir * 4;
-        if (boss.y <= 40 || boss.y >= canvas.height - boss.h - 40) boss.dir *= -1;
+        // Slow pacing oscillation
+        boss.y = 350 + Math.sin(gameTime * 0.03) * 150;
+        if (boss.timer >= 20) {
+            boss.timer = 0;
+            bossOrbs.push({ x: boss.x, y: boss.y, vx: -8, vy: 0, r: 8, c: coreColors[1] });
+        }
     } 
-    else if (boss.phase === 2 || boss.phase === 3) {
-        // Smooth target tracking
-        let targetY = player.y + player.h/2 - boss.h/2;
-        boss.y += (targetY - boss.y) * 0.07;
+    else if (boss.phase === 2) {
+        // Horizontal swaying pattern + Wave fire
+        boss.x = 800 + Math.sin(gameTime * 0.05) * 80;
+        boss.y = 350 + Math.cos(gameTime * 0.05) * 100;
+        if (boss.timer >= 14) {
+            boss.timer = 0;
+            bossOrbs.push({ x: boss.x, y: boss.y, vx: -9, vy: -3, r: 7, c: coreColors[2] });
+            bossOrbs.push({ x: boss.x, y: boss.y, vx: -9, vy: 3, r: 7, c: coreColors[2] });
+        }
     } 
-    else if (boss.phase >= 4) {
-        // Aggressive flying matrix: Tracks player and pushes forward dynamically
-        let targetY = player.y + player.h/2 - boss.h/2;
-        boss.y += (targetY - boss.y) * 0.1;
-        boss.x = 800 + Math.sin(Date.now() / 200) * 40; 
-    }
-
-    // --- BOSS BULLET PATTERNS PER PHASE ---
-    boss.shootCooldown++;
-    
-    // Shoot speed dynamically scales down (faster) with each phase
-    let attackDelay = 22; 
-    if (boss.phase === 2) attackDelay = 15;
-    if (boss.phase === 3) attackDelay = 10;
-    if (boss.phase === 4) attackDelay = 7;
-    if (boss.phase === 5) attackDelay = 4; // Absolute bullet hell speed
-
-    if (boss.shootCooldown >= attackDelay) {
-        boss.shootCooldown = 0;
-        let currentBossColor = phaseColors[boss.phase];
-
-        if (boss.phase === 1) {
-            // Straight classic projectiles
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, dx: -9, dy: 0, r: 6, color: currentBossColor });
-        } 
-        else if (boss.phase === 2) {
-            // Unstable spray pattern
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, dx: -10, dy: (Math.random() - 0.5) * 6, r: 6, color: currentBossColor });
-        } 
-        else if (boss.phase === 3) {
-            // Target locked aiming shots
-            let angle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, dx: Math.cos(angle) * 11, dy: Math.sin(angle) * 11, r: 6, color: currentBossColor });
-        } 
-        else if (boss.phase === 4) {
-            // Dual Burst Splitting
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/4, dx: -11, dy: -2, r: 7, color: currentBossColor });
-            bossBullets.push({ x: boss.x, y: boss.y + (boss.h * 0.75), dx: -11, dy: 2, r: 7, color: currentBossColor });
-        } 
-        else if (boss.phase === 5) {
-            // Phase 5 Master Ability: 3-Way heat seeking tracking spray
-            let baseAngle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
-            
-            // Middle, top slant, bottom slant
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, dx: Math.cos(baseAngle) * 12, dy: Math.sin(baseAngle) * 12, r: 8, color: "#ffffff" });
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, dx: Math.cos(baseAngle + 0.25) * 11, dy: Math.sin(baseAngle + 0.25) * 11, r: 7, color: currentBossColor });
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, dx: Math.cos(baseAngle - 0.25) * 11, dy: Math.sin(baseAngle - 0.25) * 11, r: 7, color: currentBossColor });
+    else if (boss.phase === 3) {
+        // Target tracking physics engine
+        boss.y += (player.y - boss.y) * 0.05;
+        if (boss.timer >= 10) {
+            boss.timer = 0;
+            let angle = Math.atan2(player.y - boss.y, player.x - boss.x);
+            bossOrbs.push({ x: boss.x, y: boss.y, vx: Math.cos(angle) * 12, vy: Math.sin(angle) * 12, r: 8, c: coreColors[3] });
+        }
+    } 
+    else if (boss.phase === 4) {
+        // Center Warp & Spiral Barrage pattern
+        boss.x += (500 - boss.x) * 0.05;
+        boss.y += (350 - boss.y) * 0.05;
+        if (boss.timer >= 6) {
+            boss.timer = 0;
+            bossOrbs.push({ x: boss.x, y: boss.y, vx: Math.cos(boss.angle) * 7, vy: Math.sin(boss.angle) * 7, r: 6, c: coreColors[4] });
+            bossOrbs.push({ x: boss.x, y: boss.y, vx: Math.cos(boss.angle + Math.PI) * 7, vy: Math.sin(boss.angle + Math.PI) * 7, r: 6, c: coreColors[4] });
+        }
+    } 
+    else if (boss.phase === 5) {
+        // Phase 5 Power: Hyper Intercept tracking + 3-Way Targeting Array
+        boss.x += (800 - boss.x) * 0.1;
+        boss.y += (player.y - boss.y) * 0.12; // Unescapable tracking speed
+        
+        if (boss.timer >= 5) { // Insane firing rate
+            boss.timer = 0;
+            let targetAngle = Math.atan2(player.y - boss.y, player.x - boss.x);
+            bossOrbs.push({ x: boss.x, y: boss.y, vx: Math.cos(targetAngle) * 14, vy: Math.sin(targetAngle) * 14, r: 10, c: "#ffffff" });
+            bossOrbs.push({ x: boss.x, y: boss.y, vx: Math.cos(targetAngle + 0.3) * 12, vy: Math.sin(targetAngle + 0.3) * 12, r: 8, c: coreColors[5] });
+            bossOrbs.push({ x: boss.x, y: boss.y, vx: Math.cos(targetAngle - 0.3) * 12, vy: Math.sin(targetAngle - 0.3) * 12, r: 8, c: coreColors[5] });
         }
     }
 
-    // UPDATE PLAYER BULLETS
-    playerBullets.forEach((b, index) => {
-        b.x += b.dx;
-        if (b.x > canvas.width) playerBullets.splice(index, 1);
-        
-        if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
-            boss.health -= 10;
-            boss.flashFrames = 3;
-            combo++;
-            comboTimer = 90;
-            score += 10 * combo;
-            
-            spawnParticles(b.x, b.y, "#00bfff", 6, 1);
-            spawnText(boss.x - 20, b.y + (Math.random() - 0.5)*30, `-${10 * combo}`, combo > 4 ? "#ffd700" : "#fff");
-            playerBullets.splice(index, 1);
+    // UPDATE PLAYER PROJECTILES
+    playerLasers.forEach((l, i) => {
+        l.x += l.vx;
+        if (l.x > canvas.width) playerLasers.splice(i, 1);
+
+        // Circle collision with Boss Core
+        let dist = Math.hypot(l.x - boss.x, l.y - boss.y);
+        if (dist < boss.r) {
+            boss.health -= 15;
+            boss.flash = 3;
+            score += 25 * boss.phase;
+            makeSparks(l.x, l.y, coreColors[boss.phase], 4);
+            playerLasers.splice(i, 1);
             if (boss.health <= 0) victory = true;
         }
     });
 
-    // UPDATE BOSS BULLETS
-    bossBullets.forEach((b, index) => {
-        b.x += b.dx;
-        b.y += b.dy;
-        if (b.x < 0 || b.y < 0 || b.y > canvas.height) bossBullets.splice(index, 1);
+    // UPDATE BOSS PROJECTILES
+    bossOrbs.forEach((o, i) => {
+        o.x += o.vx;
+        o.y += o.vy;
+        
+        // Wipe if out of bounds bounds
+        if (o.x < -20 || o.x > canvas.width + 20 || o.y < -20 || o.y > canvas.height + 20) {
+            bossOrbs.splice(i, 1);
+            return;
+        }
 
-        if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
-            if (player.isDashing > 0) return;
+        // Collision check with Player Ship
+        let dist = Math.hypot(o.x - player.x, o.y - player.y);
+        if (dist < o.r + player.r) {
+            bossOrbs.splice(i, 1);
             
-            player.health -= 10; // Slightly tuned down to balance out Phase 5's speed
-            combo = 0;
-            screenShake = 12;
-            spawnParticles(b.x, b.y, phaseColors[boss.phase], 12, 1.5);
-            spawnText(player.x + player.w + 10, player.y, "HIT!", "#ff3232");
-            bossBullets.splice(index, 1);
+            // Invincible rule check
+            if (player.shieldActive > 0) {
+                score += 50; // Rewarded for blocking
+                makeSparks(o.x, o.y, "#00ffcc", 8);
+                return;
+            }
+
+            player.health -= 8;
+            screenShake = 15;
+            makeSparks(player.x, player.y, "#ff0055", 12);
             if (player.health <= 0) gameOver = true;
         }
     });
 
-    // PARTICLES LIFE DECAY
-    particles.forEach((p, index) => {
-        p.x += p.dx;
-        p.y += p.dy;
-        p.life--;
-        if (p.life <= 0) particles.splice(index, 1);
+    // TRAIL DECAY UTILITY
+    visualSparks.forEach((s, i) => {
+        s.x += s.vx; s.y += s.vy; s.alpha -= 0.04;
+        if (s.alpha <= 0) visualSparks.splice(i, 1);
     });
 
-    // TEXT LIFE DECAY
-    textPopups.forEach((t, index) => {
-        t.y += t.dy;
-        t.life--;
-        if (t.life <= 0) textPopups.splice(index, 1);
+    UIAnnouncements.forEach((a, i) => {
+        a.alpha -= 0.015;
+        if (a.alpha <= 0) UIAnnouncements.splice(i, 1);
     });
 }
 
-// DRAW VISUAL ENGINE
+// GRAPHICS PIPELINE ENGINE
 function draw() {
     ctx.save();
-    
-    // Screenshake Application
     if (screenShake > 0.5) {
-        let dx = (Math.random() - 0.5) * screenShake;
-        let dy = (Math.random() - 0.5) * screenShake;
-        ctx.translate(dx, dy);
+        ctx.translate((Math.random() - 0.5) * screenShake, (Math.random() - 0.5) * screenShake);
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (!gameOver && !victory) {
-        // Particles Layer
-        particles.forEach(p => {
-            ctx.fillStyle = p.color;
-            ctx.globalAlpha = p.life / p.maxLife;
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2); ctx.fill();
+        // Sparks
+        visualSparks.forEach(s => {
+            ctx.fillStyle = s.color; ctx.globalAlpha = s.alpha;
+            ctx.beginPath(); ctx.arc(s.x, s.y, 3, 0, Math.PI*2); ctx.fill();
         });
-        ctx.globalAlpha = 1.0;
+        ctx.globalAlpha = 1;
 
-        // Player Dash Trail
-        if (player.isDashing > 0) {
+        // Player Triangle Ship Vector Graphics
+        ctx.fillStyle = "#ffff00";
+        ctx.beginPath();
+        ctx.moveTo(player.x + 20, player.y);
+        ctx.lineTo(player.x - 15, player.y - 15);
+        ctx.lineTo(player.x - 15, player.y + 15);
+        ctx.closePath();
+        ctx.fill();
+
+        // Plasma Shield Power ring bubble
+        if (player.shieldActive > 0) {
+            ctx.strokeStyle = "#00ffcc"; ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.arc(player.x, player.y, player.r + 15, 0, Math.PI*2); ctx.stroke();
+        }
+
+        // Boss Outer Ring Assembly & Core Matrix
+        let currentColors = coreColors[boss.phase];
+        ctx.strokeStyle = currentColors; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.r + 15, boss.angle, boss.angle + Math.PI*1.5); ctx.stroke();
+
+        ctx.fillStyle = boss.flash > 0 ? "#ffffff" : currentColors;
+        ctx.beginPath(); ctx.arc(boss.x, boss.y, boss.r, 0, Math.PI*2); ctx.fill();
+
+        // Lasers
+        playerLasers.forEach(l => {
+            ctx.fillStyle = "#ffff00"; ctx.fillRect(l.x, l.y - 2, 15, 4);
+        });
+
