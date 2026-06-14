@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Coding Power: Mega Boss Edition</title>
+    <title>Coding Power: 5-Phase Ultimate Boss</title>
     <style>
-        body { margin: 0; background: #0b0b10; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: 'Courier New', monospace; }
-        canvas { border: 4px solid #00bfff; background: #0f0f16; box-shadow: 0 0 30px rgba(0, 191, 255, 0.4); }
+        body { margin: 0; background: #08080c; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: 'Courier New', monospace; }
+        canvas { border: 4px solid #ffd700; background: #0d0d14; box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); }
     </style>
 </head>
 <body>
@@ -24,18 +24,19 @@ let combo = 0;
 let comboTimer = 0;
 let screenShake = 0;
 
-// GAME OBJECTS
+// PLAYER OBJECT
 const player = {
     x: 100, y: 350, w: 40, h: 40,
-    speed: 6, health: 100, maxHealth: 100,
+    speed: 6.5, health: 100, maxHealth: 100,
     dashCooldown: 0, isDashing: 0
 };
 
+// 5-PHASE BOSS OBJECT
 const boss = {
-    x: 850, y: 290, w: 100, h: 120,
-    health: 800, maxHealth: 800,
+    x: 830, y: 290, w: 110, h: 130,
+    health: 1000, maxHealth: 1000,
     phase: 1, dir: 1, shootCooldown: 0,
-    flashFrames: 0
+    flashFrames: 0, angleOffset: 0, HasOverhealed: false
 };
 
 let playerBullets = [];
@@ -44,7 +45,7 @@ let particles = [];
 let textPopups = [];
 const keys = {};
 
-// SPAWN EFFECT PARTICLES
+// SYSTEM EFFECTS
 function spawnParticles(x, y, color, count=8, speedMult=1) {
     for(let i=0; i<count; i++) {
         particles.push({
@@ -52,61 +53,51 @@ function spawnParticles(x, y, color, count=8, speedMult=1) {
             dx: (Math.random() - 0.5) * 8 * speedMult,
             dy: (Math.random() - 0.5) * 8 * speedMult,
             radius: Math.random() * 4 + 2,
-            life: 30, maxLife: 30,
-            color: color
+            life: 30, maxLife: 30, color: color
         });
     }
 }
 
-// DAMAGE TEXT POPUPS
 function spawnText(x, y, text, color) {
     textPopups.push({ x: x, y: y, text: text, color: color, life: 40, dy: -1.5 });
 }
 
-// CONTROLS
+// INPUT HANDLERS
 window.addEventListener("keydown", e => {
     keys[e.key] = true;
-    
-    // Attack Button (Spacebar)
     if (e.key === " " && !gameOver && !victory) {
-        playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, dx: 16, dy: 0, r: 5, color: "#00bfff" });
-        spawnParticles(player.x + player.w, player.y + player.h/2, "#00bfff", 3, 0.5);
+        playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, dx: 18, dy: 0, r: 5, color: "#00bfff" });
+        spawnParticles(player.x + player.w, player.y + player.h/2, "#00bfff", 2, 0.5);
     }
-    
-    // Shift Key to Dash
     if (e.key === "Shift" && player.dashCooldown <= 0 && !gameOver && !victory) {
-        player.isDashing = 15; // Active for 15 frames
-        player.dashCooldown = 60; // 1 second cooldown at 60 FPS
-        spawnParticles(player.x + player.w/2, player.y + player.h/2, "#fff", 20, 2);
-        screenShake = 10;
+        player.isDashing = 12;
+        player.dashCooldown = 50;
+        spawnParticles(player.x + player.w/2, player.y + player.h/2, "#fff", 25, 2.5);
+        screenShake = 15;
     }
 });
 window.addEventListener("keyup", e => keys[e.key] = false);
 
-// MAIN GAME LOGIC
+// GET COLORS PER PHASE
+function getBossColor(phase) {
+    if (phase === 1) return "#ff3232"; // Red
+    if (phase === 2) return "#9370db"; // Purple
+    if (phase === 3) return "#32cd32"; // Green
+    if (phase === 4) return "#ff8c00"; // Orange
+    return "#ffd700"; // Phase 5: Golden God
+}
+
+// CORE PHYSICS LOGIC
 function update() {
     if (gameOver || victory) return;
 
-    // Screenshake decay
     if (screenShake > 0) screenShake *= 0.9;
-
-    // Combo decay
-    if (combo > 0) {
-        comboTimer--;
-        if (comboTimer <= 0) combo = 0;
-    }
-
-    // Cooldown management
+    if (combo > 0) { comboTimer--; if (comboTimer <= 0) combo = 0; }
     if (player.dashCooldown > 0) player.dashCooldown--;
 
-    // Movement speeds & Dash tracking
-    let currentSpeed = player.speed;
-    if (player.isDashing > 0) {
-        player.isDashing--;
-        currentSpeed = player.speed * 2.5; // Blazing fast dash
-    }
+    let currentSpeed = player.isDashing > 0 ? player.speed * 2.8 : player.speed;
+    if (player.isDashing > 0) player.isDashing--;
 
-    // Move directions
     if (keys["w"] || keys["ArrowUp"]) player.y -= currentSpeed;
     if (keys["s"] || keys["ArrowDown"]) player.y += currentSpeed;
     if (keys["a"] || keys["ArrowLeft"]) player.x -= currentSpeed;
@@ -115,168 +106,148 @@ function update() {
     player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
     player.y = Math.max(0, Math.min(canvas.height - player.h, player.y));
 
-    // Boss AI Mechanics
     if (boss.flashFrames > 0) boss.flashFrames--;
 
-    if (boss.phase === 1) {
-        boss.y += boss.dir * 4;
-        if (boss.y <= 40 || boss.y >= canvas.height - boss.h - 40) boss.dir *= -1;
-        if (boss.health <= boss.maxHealth * 0.6) {
-            boss.phase = 2;
-            screenShake = 30;
-            spawnParticles(boss.x + boss.w/2, boss.y + boss.h/2, "#ff00ff", 50, 3);
+    // PHASE SELECTION CALCULATOR BASED ON HEALTH
+    let hpPercent = boss.health / boss.maxHealth;
+    let oldPhase = boss.phase;
+
+    if (hpPercent > 0.8) boss.phase = 1;
+    else if (hpPercent > 0.6) boss.phase = 2;
+    else if (hpPercent > 0.4) boss.phase = 3;
+    else if (hpPercent > 0.2) boss.phase = 4;
+    else boss.phase = 5;
+
+    // Phase Change Explosion Feedback Trigger
+    if (boss.phase > oldPhase) {
+        screenShake = 35;
+        spawnParticles(boss.x + boss.w/2, boss.y + boss.h/2, getBossColor(boss.phase), 60, 4);
+        spawnText(boss.x - 40, boss.y - 30, `PHASE ${boss.phase} EVOLUTION!`, getBossColor(boss.phase));
+        
+        // PHASE 5 SPECIAL POWER UP: HEALTH RE-GAIN SHIELD
+        if (boss.phase === 5 && !boss.HasOverhealed) {
+            boss.health += 500; // Inject extra temporary health points
+            boss.maxHealth += 500; // Expand total limit bar
+            boss.HasOverhealed = true;
+            spawnText(boss.x - 60, boss.y - 60, "+500 ULTRA SHIELD GAINED!", "#ffd700");
         }
-    } else {
-        // Aggressive chasing logic
-        let targetY = player.y + player.h/2 - boss.h/2;
-        boss.y += (targetY - boss.y) * 0.07; // Smooth tracking interpolation
     }
 
-    // Boss Weapon Core
+    // BOSS AI STRATEGIES PER PHASE
+    if (boss.phase === 1) {
+        boss.y += boss.dir * 3;
+        if (boss.y <= 50 || boss.y >= canvas.height - boss.h - 50) boss.dir *= -1;
+    } 
+    else if (boss.phase === 2) {
+        boss.y += boss.dir * 5; // Speeds up movement
+        if (boss.y <= 50 || boss.y >= canvas.height - boss.h - 50) boss.dir *= -1;
+    } 
+    else if (boss.phase === 3) {
+        let targetY = player.y + player.h/2 - boss.h/2;
+        boss.y += (targetY - boss.y) * 0.06; // Hard tracking
+    } 
+    else if (boss.phase === 4) {
+        let targetY = player.y + player.h/2 - boss.h/2;
+        boss.y += (targetY - boss.y) * 0.1; // Hyper aggressive tracking
+        boss.x += boss.dir * 2; // Sways forward and back menacingly
+        if (boss.x < 750 || boss.x > 880) boss.dir *= -1;
+    } 
+    else if (boss.phase === 5) {
+        // Ultimate Position Matrix: Teleports smoothly around the center-right arena
+        boss.angleOffset += 0.02;
+        boss.y = 280 + Math.sin(boss.angleOffset * 2) * 180;
+        boss.x = 780 + Math.cos(boss.angleOffset) * 60;
+    }
+
+    // BOSS BULLET FIRING SYSTEMS
     boss.shootCooldown++;
-    let cooldownTarget = boss.phase === 1 ? 20 : 8; // Bullet hell speed in Phase 2
+    let cooldownTarget = 24; 
+    if (boss.phase === 2) cooldownTarget = 16;
+    if (boss.phase === 3) cooldownTarget = 12;
+    if (boss.phase === 4) cooldownTarget = 7; // Rapid-fire assault
+    if (boss.phase === 5) cooldownTarget = 4; // ULTIMATE SPEED BULLET HELL
+
     if (boss.shootCooldown >= cooldownTarget) {
         boss.shootCooldown = 0;
+        let bx = boss.x;
+        let by = boss.y + boss.h/2;
+
         if (boss.phase === 1) {
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, dx: -9, dy: (Math.random() - 0.5) * 4, r: 6, color: "#ff3232" });
-        } else {
-            // Target spray bullet code
-            let angle = Math.atan2((player.y + player.h/2) - (boss.y + boss.h/2), (player.x + player.w/2) - boss.x);
-            let spread = (Math.random() - 0.5) * 0.25; // Inaccuracy spray pattern
-            bossBullets.push({ x: boss.x, y: boss.y + boss.h/2, dx: Math.cos(angle + spread) * 11, dy: Math.sin(angle + spread) * 11, r: 7, color: "#ff00ff" });
+            bossBullets.push({ x: bx, y: by, dx: -8, dy: 0, r: 6, color: getBossColor(1) });
+        } 
+        else if (boss.phase === 2) {
+            let angle = Math.atan2((player.y+20) - by, (player.x+20) - bx);
+            bossBullets.push({ x: bx, y: by, dx: Math.cos(angle)*10, dy: Math.sin(angle)*10, r: 6, color: getBossColor(2) });
+        } 
+        else if (boss.phase === 3) {
+            let angle = Math.atan2((player.y+20) - by, (player.x+20) - bx);
+            let spread = (Math.random() - 0.5) * 0.35; // Wild weapon spread spray
+            bossBullets.push({ x: bx, y: by, dx: Math.cos(angle+spread)*11, dy: Math.sin(angle+spread)*11, r: 6, color: getBossColor(3) });
+        } 
+        else if (boss.phase === 4) {
+            // Fires double stacked waves vertically
+            bossBullets.push({ x: bx, y: by - 30, dx: -12, dy: 1, r: 6, color: getBossColor(4) });
+            bossBullets.push({ x: bx, y: by + 30, dx: -12, dy: -1, r: 6, color: getBossColor(4) });
+        } 
+        else if (boss.phase === 5) {
+            // ULTIMATE SYSTEM: Sine-Wave Expanding Hex Helix Arrays
+            boss.angleOffset += 0.25;
+            let dy1 = Math.sin(boss.angleOffset) * 5;
+            let dy2 = -Math.sin(boss.angleOffset) * 5;
+            bossBullets.push({ x: bx, y: by, dx: -10, dy: dy1, r: 7, color: "#ffd700" });
+            bossBullets.push({ x: bx, y: by, dx: -10, dy: dy2, r: 7, color: "#ffffff" });
         }
     }
 
-    // Update Player Bullets
-    playerBullets.forEach((b, index) => {
+    // COLLISION RESOLUTION PIPELINES
+    playerBullets.forEach((b, idx) => {
         b.x += b.dx;
-        if (b.x > canvas.width) playerBullets.splice(index, 1);
-        
-        // Hitting the Boss box
+        if (b.x > canvas.width) playerBullets.splice(idx, 1);
         if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
             boss.health -= 10;
-            boss.flashFrames = 3; // Flashes white briefly
-            combo++;
-            comboTimer = 90; // 1.5 seconds to chain next hit
-            score += 10 * combo;
-            
-            spawnParticles(b.x, b.y, "#00bfff", 6, 1);
-            spawnText(boss.x - 20, b.y + (Math.random() - 0.5)*30, `-${10 * combo}`, combo > 3 ? "#ffd700" : "#fff");
-            playerBullets.splice(index, 1);
+            boss.flashFrames = 3;
+            combo++; comboTimer = 90; score += 15 * combo;
+            spawnParticles(b.x, b.y, getBossColor(boss.phase), 5, 0.8);
+            spawnText(boss.x - 25, b.y + (Math.random()-0.5)*20, `-${10*combo}`, combo > 4 ? "#ffd700" : "#fff");
+            playerBullets.splice(idx, 1);
             if (boss.health <= 0) victory = true;
         }
     });
 
-    // Update Boss Bullets
-    bossBullets.forEach((b, index) => {
-        b.x += b.dx;
-        b.y += b.dy;
-        if (b.x < 0 || b.y < 0 || b.y > canvas.height) bossBullets.splice(index, 1);
-
-        // Hitting the Player box
+    bossBullets.forEach((b, idx) => {
+        b.x += b.dx; b.y += b.dy;
+        if (b.x < 0 || b.y < 0 || b.y > canvas.height) bossBullets.splice(idx, 1);
         if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
-            if (player.isDashing > 0) return; // Invincible during dashes!
-            
-            player.health -= 12;
-            combo = 0; // Break their combo streak
-            screenShake = 12;
-            spawnParticles(b.x, b.y, "#ff3232", 12, 1.5);
-            spawnText(player.x + player.w + 10, player.y, "HIT!", "#ff3232");
-            bossBullets.splice(index, 1);
+            if (player.isDashing > 0) return; // Invincible check frame
+            player.health -= 8; // Scales hit balancing down since bullets fly faster
+            combo = 0; screenShake = 10;
+            spawnParticles(b.x, b.y, "#ff3232", 10, 1.2);
+            spawnText(player.x + 45, player.y, "Ouch!", "#ff3232");
+            bossBullets.splice(idx, 1);
             if (player.health <= 0) gameOver = true;
         }
     });
 
-    // Handle Active Particles
-    particles.forEach((p, index) => {
-        p.x += p.dx;
-        p.y += p.dy;
-        p.life--;
-        if (p.life <= 0) particles.splice(index, 1);
-    });
-
-    // Handle Damage Text Popups
-    textPopups.forEach((t, index) => {
-        t.y += t.dy;
-        t.life--;
-        if (t.life <= 0) textPopups.splice(index, 1);
-    });
+    particles.forEach((p, idx) => { p.x += p.dx; p.y += p.dy; p.life--; if (p.life <= 0) particles.splice(idx, 1); });
+    textPopups.forEach((t, idx) => { t.y += t.dy; t.life--; if (t.life <= 0) textPopups.splice(idx, 1); });
 }
 
-// RENDERING PIPELINE WITH CAMERA JUICE
+// RENDERING SCREEN GRAPHICS
 function draw() {
     ctx.save();
-    
-    // Apply Screenshake Matrix Offset
     if (screenShake > 0.5) {
-        let dx = (Math.random() - 0.5) * screenShake;
-        let dy = (Math.random() - 0.5) * screenShake;
-        ctx.translate(dx, dy);
+        ctx.translate((Math.random()-0.5)*screenShake, (Math.random()-0.5)*screenShake);
     }
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (!gameOver && !victory) {
-        // Draw Particles Background layer
+        // Draw Particles Background
         particles.forEach(p => {
-            ctx.fillStyle = p.color;
-            ctx.globalAlpha = p.life / p.maxLife;
+            ctx.fillStyle = p.color; ctx.globalAlpha = p.life / p.maxLife;
             ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2); ctx.fill();
         });
         ctx.globalAlpha = 1.0;
 
-        // Draw Dash Ghost trail effect
+        // Player Dash Ghosts
         if (player.isDashing > 0) {
-            ctx.fillStyle = "rgba(0, 191, 255, 0.3)";
-            ctx.fillRect(player.x - (keys["d"]?20:0) + (keys["a"]?20:0), player.y - (keys["s"]?20:0) + (keys["w"]?20:0), player.w, player.h);
-        }
-
-        // Draw Core Player
-        ctx.fillStyle = "#00bfff";
-        ctx.fillRect(player.x, player.y, player.w, player.h);
-
-        // Draw Core Boss (Handle Hit Flash feedback)
-        if (boss.flashFrames > 0) {
-            ctx.fillStyle = "#ffffff";
-        } else {
-            ctx.fillStyle = boss.phase === 1 ? "#ff3232" : "#ff00ff";
-        }
-        ctx.fillRect(boss.x, boss.y, boss.w, boss.h);
-
-        // Draw Active Projectiles
-        playerBullets.forEach(b => { ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill(); });
-        bossBullets.forEach(b => { ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill(); });
-
-        // Draw Floating Damage Texts
-        textPopups.forEach(t => {
-            ctx.fillStyle = t.color;
-            ctx.font = "bold 18px Arial";
-            ctx.fillText(t.text, t.x, t.y);
-        });
-
-        // HUD STYLING
-        // Player HP
-        ctx.fillStyle = "#331111"; ctx.fillRect(20, 20, 250, 15);
-        ctx.fillStyle = "#32cd32"; ctx.fillRect(20, 20, Math.max(0, 250 * (player.health / player.maxHealth)), 15);
-        ctx.fillStyle = "#fff"; ctx.font = "bold 14px 'Courier New'"; ctx.fillText(`HP: ${Math.max(0, player.health)}/100`, 20, 50);
-
-        // Boss HP
-        let bossColor = boss.phase === 1 ? "#ff3232" : "#ff00ff";
-        ctx.fillStyle = "#331111"; ctx.fillRect(600, 20, 380, 20);
-        ctx.fillStyle = bossColor; ctx.fillRect(600, 20, Math.max(0, 380 * (boss.health / boss.maxHealth)), 20);
-        ctx.fillStyle = "#fff"; ctx.fillText(`BOSS HP: ${Math.max(0, boss.health)}`, 600, 55);
-
-        // Score, Multipliers and UI Elements
-        ctx.fillStyle = "#ffd700";
-        ctx.font = "bold 22px 'Courier New'";
-        ctx.fillText(`SCORE: ${score}`, 20, 90);
-        
-        if (combo > 1) {
-            ctx.fillStyle = "#00bfff";
-            ctx.font = "italic bold 26px Arial";
-            ctx.fillText(`COMBO x${combo}!`, 20, 130);
-        }
-    } else {
-        // Screen states
-        ctx.textAlign = "center";
-        if (gameOver) {
+            ctx.fillStyle = "rgba(0, 191, 255, 0.25)";
