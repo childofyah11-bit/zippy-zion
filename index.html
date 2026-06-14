@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X-8 AUDIO HARDWARE</title>
     <style>
-        /* Raw, Low-Res CRT Matrix Style */
+        /* --- SYSTEM STYLING & CRT THEME --- */
         body {
             background-color: #000;
             color: #00ff66;
@@ -18,8 +18,10 @@
             min-height: 100vh;
             margin: 0;
             image-rendering: pixelated;
+            user-select: none;
         }
-        /* Brutalist Boot Wall Overlay */
+
+        /* --- GATEKEEPER OVERLAY (WEB AUDIO LOCK) --- */
         #gatekeeper-screen {
             position: fixed;
             top: 0;
@@ -35,6 +37,7 @@
             border: 14px solid #ff0055;
             box-sizing: border-box;
         }
+
         .giant-boot-btn {
             background: #000;
             color: #00ff66;
@@ -45,12 +48,15 @@
             font-weight: 900;
             cursor: pointer;
             box-shadow: 12px 12px 0px #ff0055;
+            transition: transform 0.05s, box-shadow 0.05s;
         }
+
         .giant-boot-btn:active {
             transform: translate(6px, 6px);
             box-shadow: 6px 6px 0px #ff0055;
         }
-        /* Main Blocky Console Framework */
+
+        /* --- HARDWARE CHASSIS LAYOUT --- */
         .console-chassis {
             background: #000;
             border: 8px solid #00ff66;
@@ -59,6 +65,7 @@
             max-width: 700px;
             box-shadow: 16px 16px 0px #220044;
         }
+
         .panel-stripe {
             background: #00ff66;
             color: #000;
@@ -67,25 +74,29 @@
             text-align: center;
             margin-bottom: 15px;
         }
+
         .hardware-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 12px;
             margin-bottom: 20px;
         }
+
         .module-block {
             border: 4px solid #ffaa00;
-            padding: 8px;
+            padding: 10px;
             background: #111;
         }
+
         .module-tag {
             font-size: 11px;
             background: #ffaa00;
             color: #000;
-            padding: 2px 4px;
+            padding: 2px 6px;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
+
         .input-row {
             display: flex;
             justify-content: space-between;
@@ -93,7 +104,8 @@
             margin-bottom: 8px;
             font-size: 12px;
         }
-        /* Pixel-art Raw Select Box and Text Sliders */
+
+        /* --- INDUSTRIAL FORM CONTROLS --- */
         select, input[type="range"] {
             background: #000;
             color: #ff0055;
@@ -102,12 +114,15 @@
             font-weight: 900;
             padding: 2px;
             outline: none;
+            cursor: pointer;
         }
+
         input[type="range"] {
             width: 100px;
             -webkit-appearance: none;
             height: 14px;
         }
+
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 12px;
@@ -116,7 +131,8 @@
             border: 2px solid #fff;
             cursor: pointer;
         }
-        /* Chunk-Style Piano Roll Intermediary Layout */
+
+        /* --- PIANO ROLL CHUNK KEYBOARD --- */
         .block-keyboard {
             display: flex;
             background: #000;
@@ -124,6 +140,7 @@
             padding: 6px;
             gap: 6px;
         }
+
         .chunk-key {
             flex: 1;
             background: #fff;
@@ -131,8 +148,10 @@
             border: 6px solid #000;
             box-shadow: 0px 10px 0px #333;
             cursor: pointer;
+            transition: transform 0.05s, box-shadow 0.05s, background-color 0.05s;
         }
-        .chunk-key:active {
+
+        .chunk-key:active, .chunk-key.active {
             background: #ff0055;
             box-shadow: 0px 2px 0px #990022;
             transform: translateY(8px);
@@ -141,23 +160,23 @@
 </head>
 <body>
 
-    <!-- ABSOLUTE AUDIO LOCK UNLOCK OVERLAY -->
+    <!-- INTERLOCK SCREEN MECHANISM -->
     <div id="gatekeeper-screen">
         <h1 style="font-size: 32px; margin-bottom: 30px; color: #ffaa00;">SYSTEM LOCKOUT</h1>
         <button class="giant-boot-btn" id="ignition-btn">[ BOOT MACHINE ]</button>
         <p style="margin-top: 25px; font-size: 12px; color: #ff0055;">WARNING: AUDIO FREQUENCIES WILL PLAY IMMEDIATELY</p>
     </div>
 
-    <!-- MAIN SOUND GENERATOR SYSTEM CABINET -->
+    <!-- SOUND INJECT ENGINE PANEL -->
     <div class="console-chassis">
         <div class="panel-stripe">=== CONTROLLER MATRIX OVERRIDE V2 ===</div>
         
         <div class="hardware-grid">
-            <!-- Signal Oscillators -->
+            <!-- 01: Waveform Configuration -->
             <div class="module-block">
                 <div class="module-tag">01// CORE WAVEFORM</div>
                 <div class="input-row">
-                    <label>SHAPE 1</label>
+                    <label for="osc-wave-1">SHAPE 1</label>
                     <select id="osc-wave-1">
                         <option value="square" selected>SQUARE</option>
                         <option value="sawtooth">SAW</option>
@@ -166,7 +185,7 @@
                     </select>
                 </div>
                 <div class="input-row">
-                    <label>SHAPE 2</label>
+                    <label for="osc-wave-2">SHAPE 2</label>
                     <select id="osc-wave-2">
                         <option value="sawtooth" selected>SAW</option>
                         <option value="square">SQUARE</option>
@@ -176,24 +195,24 @@
                 </div>
             </div>
 
-            <!-- Pitch Modification Engine Controls -->
+            <!-- 02: Arpeggiator Chip Controls -->
             <div class="module-block">
                 <div class="module-tag">02// CHIP MODULATORS</div>
                 <div class="input-row">
-                    <label>ARP SPEED</label>
+                    <label for="arp-rate">ARP SPEED</label>
                     <input type="range" id="arp-rate" min="0" max="15" step="1" value="0">
                 </div>
                 <div class="input-row">
-                    <label>ARP INTERVAL</label>
+                    <label for="arp-interval">ARP INTERVAL</label>
                     <input type="range" id="arp-interval" min="3" max="12" step="1" value="4">
                 </div>
             </div>
 
-            <!-- Frequency Ramping Sweep Modification Elements -->
+            <!-- 03: Voltage Pitch Sweeper -->
             <div class="module-block">
                 <div class="module-tag">03// VOLTAGE SWEEP</div>
                 <div class="input-row">
-                    <label>SWEEP DIR</label>
+                    <label for="sweep-dir">SWEEP DIR</label>
                     <select id="sweep-dir">
                         <option value="none">NONE</option>
                         <option value="down">DOWNPITCH</option>
@@ -201,26 +220,26 @@
                     </select>
                 </div>
                 <div class="input-row">
-                    <label>SWEEP RATE</label>
+                    <label for="sweep-speed">SWEEP RATE</label>
                     <input type="range" id="sweep-speed" min="0.05" max="0.8" step="0.05" value="0.2">
                 </div>
             </div>
 
-            <!-- Hard Dynamic Envelope Gate Configuration -->
+            <!-- 04: Gain Dynamics Envelope -->
             <div class="module-block">
                 <div class="module-tag">04// AMP DECAY ENVELOPE</div>
                 <div class="input-row">
-                    <label>DECAY FADE</label>
+                    <label for="decay-time">DECAY FADE</label>
                     <input type="range" id="decay-time" min="0.05" max="1.5" step="0.05" value="0.4">
                 </div>
                 <div class="input-row">
-                    <label>MASTER LEVEL</label>
+                    <label for="gain-level">MASTER LEVEL</label>
                     <input type="range" id="gain-level" min="0" max="0.4" step="0.05" value="0.2">
                 </div>
             </div>
         </div>
 
-        <!-- 8 Heavy Raw Tone Output Blocks -->
+        <!-- 8 Heavy Hardware Chunk Keys -->
         <div class="block-keyboard">
             <div class="chunk-key" data-pitch="110.00" title="A2"></div>
             <div class="chunk-key" data-pitch="130.81" title="C3"></div>
@@ -233,14 +252,14 @@
         </div>
     </div>
 
-    <!-- Linked External Synthesis Engine Script -->
-    <script src="script.js"></script>
+    <!-- External Audio Logic Hook -->
+    <script src="script.js" defer></script>
 </body>
 </html>
 let rawAudioContext = null;
 const liveVoiceStack = new Map();
 
-// Sever security screen blocker and initialize sound map permissions
+// Boot-up Sequence and API Unlock Handler
 document.getElementById('ignition-btn').addEventListener('click', () => {
     rawAudioContext = new (window.AudioContext || window.webkitAudioContext)();
     if (rawAudioContext.state === 'suspended') {
@@ -249,15 +268,17 @@ document.getElementById('ignition-btn').addEventListener('click', () => {
     document.getElementById('gatekeeper-screen').style.display = 'none';
 });
 
+// Main Signal Voice Synthesizer Execution Loop
 function initiateAudioOutput(baseFrequency) {
     if (!rawAudioContext) return;
     if (rawAudioContext.state === 'suspended') rawAudioContext.resume();
 
-    // Clear hanging overlapping sound streams instantly
+    // Intercept overlapping frequencies instantly
     if (liveVoiceStack.has(baseFrequency)) {
         terminateAudioOutput(baseFrequency);
     }
 
+    // Pull Realtime System UI Control Settings
     const masterOutputLevel = parseFloat(document.getElementById('gain-level').value);
     const chosenWave1 = document.getElementById('osc-wave-1').value;
     const chosenWave2 = document.getElementById('osc-wave-2').value;
@@ -269,7 +290,7 @@ function initiateAudioOutput(baseFrequency) {
 
     const currentTime = rawAudioContext.currentTime;
 
-    // Build internal Web Audio routing architecture
+    // Instantiating Virtual Web Audio Nodes
     const gainNode = rawAudioContext.createGain();
     const osc1 = rawAudioContext.createOscillator();
     const osc2 = rawAudioContext.createOscillator();
@@ -277,30 +298,28 @@ function initiateAudioOutput(baseFrequency) {
     osc1.type = chosenWave1;
     osc2.type = chosenWave2;
 
-    // Slight micro-detune engine to generate fat retro textures
+    // Microdetuning Matrix Array values for Thick Retro Textures
     osc1.detune.setValueAtTime(-6, currentTime);
     osc2.detune.setValueAtTime(6, currentTime); 
 
-    // Compute basic pitch calculations
-    let targetedPitch = baseFrequency;
-    osc1.frequency.setValueAtTime(targetedPitch, currentTime);
-    osc2.frequency.setValueAtTime(targetedPitch, currentTime);
+    // Core Pitch Declarations
+    osc1.frequency.setValueAtTime(baseFrequency, currentTime);
+    osc2.frequency.setValueAtTime(baseFrequency, currentTime);
 
-    // Apply Voltage Sweep Ramping System
+    // Voltage Sweep Modulation System
     if (pitchSweepDirection === 'up') {
-        osc1.frequency.exponentialRampToValueAtTime(targetedPitch * 2, currentTime + pitchSweepDuration);
-        osc2.frequency.exponentialRampToValueAtTime(targetedPitch * 2, currentTime + pitchSweepDuration);
+        osc1.frequency.exponentialRampToValueAtTime(baseFrequency * 2, currentTime + pitchSweepDuration);
+        osc2.frequency.exponentialRampToValueAtTime(baseFrequency * 2, currentTime + pitchSweepDuration);
     } else if (pitchSweepDirection === 'down') {
-        osc1.frequency.exponentialRampToValueAtTime(targetedPitch / 2, currentTime + pitchSweepDuration);
-        osc2.frequency.exponentialRampToValueAtTime(targetedPitch / 2, currentTime + pitchSweepDuration);
+        osc1.frequency.exponentialRampToValueAtTime(baseFrequency / 2, currentTime + pitchSweepDuration);
+        osc2.frequency.exponentialRampToValueAtTime(baseFrequency / 2, currentTime + pitchSweepDuration);
     }
 
-    // Apply Chiptune Arpeggiator Modulator System
+    // Chiptune Style Step Arpeggiator Clock Integration
     let arpTimerId = null;
     if (arpeggiatorSpeed > 0) {
         let cycleIndex = 0;
         const speedIntervalMs = (1 / arpeggiatorSpeed) * 1000;
-        // Basic musical interval steps multiplier (1.059463 is the 12th root of 2)
         const secondaryIntervalFreq = baseFrequency * Math.pow(1.059463, arpeggiatorIntervalSteps);
         
         arpTimerId = setInterval(() => {
@@ -313,20 +332,20 @@ function initiateAudioOutput(baseFrequency) {
         }, speedIntervalMs);
     }
 
-    // Set Up Amp decay Volume envelope Gate
+    // Exponential Decrescendo Level Mapping 
     gainNode.gain.setValueAtTime(masterOutputLevel, currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + decayDuration);
 
-    // Route connections out to physical speakers
+    // Audio Routing Matrix Connections
     osc1.connect(gainNode);
     osc2.connect(gainNode);
     gainNode.connect(rawAudioContext.destination);
 
-    // Ignition trigger
+    // Signal Stream Ignition
     osc1.start(currentTime);
     osc2.start(currentTime);
 
-    // Automatically clean references out of memory array when done playing
+    // Garbage Collection Routine Execution Thread
     const voiceTimeout = setTimeout(() => {
         if (arpTimerId) clearInterval(arpTimerId);
         try {
@@ -337,14 +356,13 @@ function initiateAudioOutput(baseFrequency) {
             gainNode.disconnect();
         } catch(e) {}
         liveVoiceStack.delete(baseFrequency);
-    }, decayDuration * 1000 + 50);
+    }, (decayDuration * 1000) + 50);
 
-    // Stash parameters for manual cutoff options
-    liveVoiceStack.set(baseFrequency, {
-        osc1, osc2, gainNode, arpTimerId, voiceTimeout
-    });
+    // Map variables for dynamic cutoff options
+    liveVoiceStack.set(baseFrequency, { osc1, osc2, gainNode, arpTimerId, voiceTimeout });
 }
 
+// Clean Cutoff Termination Routine
 function terminateAudioOutput(baseFrequency) {
     if (liveVoiceStack.has(baseFrequency)) {
         const voiceData = liveVoiceStack.get(baseFrequency);
@@ -361,17 +379,17 @@ function terminateAudioOutput(baseFrequency) {
     }
 }
 
-// Attach event hooks directly to DOM block keyboard components
+// Setup IO Directives to Visual DOM Array Nodes
 document.querySelectorAll('.chunk-key').forEach(key => {
     const notePitch = parseFloat(key.getAttribute('data-pitch'));
     
-    key.addEventListener('mousedown', () => {
-        initiateAudioOutput(notePitch);
-    });
+    // Mouse Execution Drivers
+    key.addEventListener('mousedown', () => initiateAudioOutput(notePitch));
     
-    // Add touch compatibility for cellular mobile devices
+    // Mobile Matrix Touch Drivers
     key.addEventListener('touchstart', (e) => {
         e.preventDefault();
         initiateAudioOutput(notePitch);
     });
 });
+
