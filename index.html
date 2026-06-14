@@ -1,295 +1,191 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-8 // TERMINAL DEFENDER CORE</title>
-    <style>
-        /* --- CORE BRUTALIST GRID DESIGN --- */
-        body {
-            background-color: #000;
-            color: #00ff66;
-            font-family: "Courier New", Courier, monospace;
-            font-weight: 900;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            user-select: none;
-            image-rendering: pixelated;
-        }
+import pygame
+import sys
+import math
+import random
 
-        /* Scanline Overlay for an authentic Retro Cabinet feel */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
-            z-index: 9999;
-            background-size: 100% 4px;
-            pointer-events: none;
-        }
+# Initialize game engine
+pygame.init()
 
-        /* Premium Mechanical Arcade Chassis Wrapper */
-        .arcade-cabinet {
-            background: #000;
-            border: 8px solid #00ff66;
-            padding: 20px;
-            width: 95%;
-            max-width: 540px;
-            box-shadow: 20px 20px 0px #220044;
-            box-sizing: border-box;
-            position: relative;
-        }
+# 1. SCREEN SETUP
+WIDTH, HEIGHT = 1000, 700
+screen = pygame.display.set_available_cameras
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Coding Power: Epic Boss Fight")
+clock = pygame.time.Clock()
 
-        .marquee-header {
-            background: #00ff66;
-            color: #000;
-            padding: 8px;
-            font-size: 16px;
-            text-align: center;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-            font-weight: 900;
-        }
+# COLORS (RGB)
+BLACK = (20, 20, 30)
+WHITE = (255, 255, 255)
+BLUE = (0, 191, 255)
+RED = (255, 50, 50)
+PURPLE = (147, 112, 219)
+YELLOW = (255, 215, 0)
+GREEN = (50, 205, 50)
 
-        /* Unified HUD layout matrix blocks */
-        .hud-display {
-            display: flex;
-            justify-content: space-between;
-            background: #0d0d0d;
-            border: 4px solid #ffaa00;
-            padding: 8px 15px;
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: #ffaa00;
-        }
+# 2. GAME VARIABLES & CLASSES
+class Player:
+    def __init__(self):
+        self.rect = pygame.Rect(100, HEIGHT // 2, 40, 40)
+        self.speed = 6
+        self.health = 100
+        self.max_health = 100
 
-        /* Safe, high-performance Canvas Container */
-        .screen-frame {
-            position: relative;
-            width: 100%;
-            background: #000;
-            border: 6px solid #ff0055;
-            box-sizing: border-box;
-            margin-bottom: 15px;
-        }
-
-        canvas {
-            display: block;
-            width: 100%;
-            height: 400px;
-            background: #030a05;
-        }
-
-        /* Structural Overlay Screens (Main Menu, Game Over) */
-        .overlay-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .menu-title {
-            color: #ff0055;
-            margin: 0 0 10px 0;
-            font-size: 26px;
-            letter-spacing: 1px;
-        }
-
-        .menu-desc {
-            color: #ffaa00;
-            font-size: 12px;
-            margin: 0 0 20px 0;
-            line-height: 1.5;
-        }
-
-        .arcade-btn {
-            background: #000;
-            color: #00ff66;
-            border: 4px solid #00ff66;
-            padding: 12px 24px;
-            font-family: inherit;
-            font-weight: 900;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 6px 6px 0px #ff0055;
-            transition: transform 0.05s, box-shadow 0.05s;
-        }
-
-        .arcade-btn:active {
-            transform: translate(3px, 3px);
-            box-shadow: 3px 3px 0px #ff0055;
-        }
-
-        /* Heavy Mechanical Controller Keys */
-        .controller-deck {
-            display: flex;
-            background: #000;
-            border: 6px solid #00ff66;
-            padding: 6px;
-            gap: 6px;
-        }
-
-        .deck-trigger {
-            flex: 1;
-            background: #fff;
-            color: #000;
-            height: 60px;
-            border: 4px solid #000;
-            box-shadow: 0px 6px 0px #333;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 14px;
-        }
-
-        .deck-trigger:active, .deck-trigger.active {
-            background: #ff0055;
-            box-shadow: 0px 2px 0px #990022;
-            transform: translateY(4px);
-            color: #fff;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="arcade-cabinet">
-        <div class="marquee-header">=== CODENAME: MATRIX REAPER ===</div>
-
-        <!-- Dashboard Instrument Display -->
-        <div class="hud-display">
-            <div>SCORE: <span id="hud-score">00000</span></div>
-            <div>SHIELD: <span id="hud-shield">100%</span></div>
-        </div>
-
-        <!-- Visual Core Output Terminal Box -->
-        <div class="screen-frame">
-            <canvas id="arcade-viewport"></canvas>
-
-            <!-- Menu Layer Canvas Blocks -->
-            <div id="ui-overlay" class="overlay-screen">
-                <h1 class="menu-title" id="ui-title">SYSTEM READY</h1>
-                <p class="menu-desc" id="ui-desc">MALICIOUS CODES ARE CORRUPTING THE HARDWARE CORE.<br>TRIGGER CONTROLLER LANE KEYS TO PURGE DATA TRACKS.</p>
-                <button class="arcade-btn" id="ui-action-btn">[ ENGAGE OVERRIDE ]</button>
-            </div>
-        </div>
-
-        <!-- Lane Action Fire Control Deck -->
-        <div class="controller-deck">
-            <div class="deck-trigger" data-lane="0">1</div>
-            <div class="deck-trigger" data-lane="1">2</div>
-            <div class="deck-trigger" data-lane="2">3</div>
-            <div class="deck-trigger" data-lane="3">4</div>
-            <div class="deck-trigger" data-lane="4">5</div>
-            <div class="deck-trigger" data-lane="5">6</div>
-            <div class="deck-trigger" data-lane="6">7</div>
-            <div class="deck-trigger" data-lane="7">8</div>
-        </div>
-    </div>
-
-    <!-- --- HIGH PERFORMANCE ARCADE GAME ENGINE --- -->
-    <script>
-        const canvas = document.getElementById('arcade-viewport');
-        const ctx = canvas.getContext('2d');
+    def move(self, keys):
+        if keys[pygame.K_w] or keys[pygame.K_UP]: self.rect.y -= self.speed
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]: self.rect.y += self.speed
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]: self.rect.x -= self.speed
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]: self.rect.x += self.speed
         
-        const hudScore = document.getElementById('hud-score');
-        const hudShield = document.getElementById('hud-shield');
-        const uiOverlay = document.getElementById('ui-overlay');
-        const uiTitle = document.getElementById('ui-title');
-        const uiDesc = document.getElementById('ui-desc');
-        const uiBtn = document.getElementById('ui-action-btn');
+        # Keep player on screen
+        self.rect.clamp_ip(pygame.Rect(0, 0, WIDTH, HEIGHT))
 
-        // Engine State Configuration Variables
-        let gameState = 'MENU'; // MENU, PLAYING, GAMEOVER
-        let score = 0;
-        let shield = 100;
-        let targetLane = 3;
-        let currentShipX = 0;
-        let spawnTimer = 0;
-        let bossActive = false;
-        let bossHealth = 10;
-        let bossMaxHealth = 10;
-        let bossX = 0;
-        let bossDirection = 1;
+class Bullet:
+    def __init__(self, x, y, dx, dy, color=BLUE):
+        self.x = x
+        self.y = y
+        self.dx = dx
+        self.dy = dy
+        self.radius = 6
+        self.color = color
 
-        // Visual Asset Entity Stack Arrays
-        const entities = { lasers: [], cells: [], fragments: [], streams: [] };
-        const laneCount = 8;
+    def update(self):
+        self.x += self.dx
+        self.y += self.dy
 
-        // Setup clean high-res canvas backing dimensions
-        function scaleTerminalDimensions() {
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
-        }
-        scaleTerminalDimensions();
+    def draw(self, surface):
+        pygame.draw.circle(surface, self.color, (int(self.x), int(self.y)), self.radius)
 
-        // Background scrolling digital matrix code cascade streams setup
-        for (let i = 0; i < 20; i++) {
-            entities.streams.push({
-                x: Math.random() * 500,
-                y: Math.random() * 400,
-                speed: 1.5 + Math.random() * 3,
-                len: 4 + Math.floor(Math.random() * 8)
-            });
-        }
+class Boss:
+    def __init__(self):
+        self.rect = pygame.Rect(WIDTH - 150, HEIGHT // 2 - 60, 100, 120)
+        self.health = 500
+        self.max_health = 500
+        self.phase = 1
+        self.move_dir = 1
+        self.shoot_cooldown = 0
 
-        // Fire Laser Weapons Vector Directive
-        function executeWeaponFire(laneIndex) {
-            if (gameState !== 'PLAYING') return;
-            
-            targetLane = laneIndex;
-            const targetX = (laneIndex * (canvas.width / laneCount)) + ((canvas.width / laneCount) / 2);
+    def update(self, player_y):
+        # Phase 1: Simple vertical floating up and down
+        if self.phase == 1:
+            self.rect.y += self.move_dir * 3
+            if self.rect.top <= 50 or self.rect.bottom >= HEIGHT - 50:
+                self.move_dir *= -1
+            if self.health <= self.max_health / 2:
+                self.phase = 2  # Trigger Phase 2!
+        
+        # Phase 2: Aggressive tracking of player's Y level
+        elif self.phase == 2:
+            if self.rect.centery < player_y:
+                self.rect.y += 5
+            elif self.rect.centery > player_y:
+                self.rect.y -= 5
 
-            entities.lasers.push({ x: targetX, y: canvas.height - 35, speed: 9 });
+# 3. INSTANTIATE OBJECTS
+player = Player()
+boss = Boss()
+player_bullets = []
+boss_bullets = []
 
-            // Generate stand-alone safe synthetic UI blaster audio effects 
-            try {
-                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                const actx = new AudioContextClass();
-                const osc = actx.createOscillator();
-                const gain = actx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(440 + (laneIndex * 60), actx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(100, actx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.04, actx.currentTime);
-                osc.connect(gain);
-                gain.connect(actx.destination);
-                osc.start();
-                setTimeout(() => osc.stop(), 100);
-            } catch(e) {}
-        }
+# UI Fonts
+font = pygame.font.SysFont("Arial", 24, bold=True)
+large_font = pygame.font.SysFont("Arial", 60, bold=True)
 
-        // Particle Burst Generator Routine
-        function createExplosionBurst(x, y, tint) {
-            for (let i = 0; i < 8; i++) {
-                entities.fragments.push({
-                    x: x, y: y,
-                    vx: (Math.random() - 0.5) * 5,
-                    vy: (Math.random() - 0.5) * 5,
-                    life: 1.0,
-                    decay: 0.04 + Math.random() * 0.04,
-                    color: tint
-                });
-            }
-        }
+# 4. MAIN GAME LOOP
+running = True
+game_over = False
+victory = False
 
-        // Central Engine Processing Loop Block
-        function updateLogicCycle() {
-            // --- BACKGROUND MATRIX PIPELINE ---
-            entities.streams.forEach(st => {
-                st.y += st.speed;
-                if (st.y > canvas.height) {
-                    st.y = -40;
+while running:
+    # Event handling
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            pygame.quit()
+            sys.exit()
+        
+        # Player shoots using SPACEBAR
+        if event.type == pygame.KEYDOWN and not game_over and not victory:
+            if event.key == pygame.K_SPACE:
+                # Shoot forward bullet
+                player_bullets.append(Bullet(player.rect.right, player.rect.centery, 12, 0, BLUE))
+
+    if not game_over and not victory:
+        # Get movement input
+        keys = pygame.key.get_pressed()
+        player.move(keys)
+        boss.update(player.rect.centery)
+
+        # Boss Shooting Logic
+        boss.shoot_cooldown += 1
+        cooldown_target = 25 if boss.phase == 1 else 12  # Shoots twice as fast in Phase 2
+        
+        if boss.shoot_cooldown >= cooldown_target:
+            boss.shoot_cooldown = 0
+            if boss.phase == 1:
+                # Direct straight shots
+                boss_bullets.append(Bullet(boss.rect.left, boss.rect.centery, -8, 0, RED))
+            else:
+                # Phase 2 Target tracking shots: calculate angle to player
+                angle = math.atan2(player.rect.centery - boss.rect.centery, player.rect.centerx - boss.rect.centerx)
+                dx = math.cos(angle) * 9
+                dy = math.sin(angle) * 9
+                boss_bullets.append(Bullet(boss.rect.left, boss.rect.centery, dx, dy, PURPLE))
+
+        # Update Player Bullets
+        for b in player_bullets[:]:
+            b.update()
+            if b.x > WIDTH:
+                player_bullets.remove(b)
+            elif boss.rect.collidepoint(b.x, b.y):
+                boss.health -= 10
+                player_bullets.remove(b)
+                if boss.health <= 0:
+                    victory = True
+
+        # Update Boss Bullets
+        for b in boss_bullets[:]:
+            b.update()
+            if b.x < 0 or b.y < 0 or b.y > HEIGHT:
+                boss_bullets.remove(b)
+            elif player.rect.collidepoint(b.x, b.y):
+                player.health -= 15
+                boss_bullets.remove(b)
+                if player.health <= 0:
+                    game_over = True
+
+    # 5. DRAWING EVERYTHING ON SCREEN
+    screen.fill(BLACK)
+
+    if not game_over and not victory:
+        # Draw Entities
+        pygame.draw.rect(screen, BLUE, player.rect)
+        boss_color = RED if boss.phase == 1 else PURPLE
+        pygame.draw.rect(screen, boss_color, boss.rect)
+
+        # Draw Bullets
+        for b in player_bullets: b.draw(screen)
+        for b in boss_bullets: b.draw(screen)
+
+        # Draw HUD / Health Bars
+        # Player Health Bar
+        pygame.draw.rect(screen, RED, (20, 20, 200, 20))
+        pygame.draw.rect(screen, GREEN, (20, 20, int(200 * (player.health / player.max_health)), 20))
+        p_text = font.render(f"PLAYER HEALTH: {max(0, player.health)}%", True, WHITE)
+        screen.blit(p_text, (20, 45))
+
+        # Boss Health Bar
+        pygame.draw.rect(screen, WHITE, (WIDTH - 420, 20, 400, 25))
+        pygame.draw.rect(screen, boss_color, (WIDTH - 420, 20, int(400 * (boss.health / boss.max_health)), 25))
+        b_text = font.render(f"BOSS PHASE {boss.phase}", True, WHITE)
+        screen.blit(b_text, (WIDTH - 420, 50))
+
+    # End Screen States
+    elif game_over:
+        msg = large_font.render("GAME OVER", True, RED)
+        screen.blit(msg, (WIDTH // 2 - 170, HEIGHT // 2 - 50))
+    elif victory:
+        msg = large_font.render("BOSS DESTROYED!", True, YELLOW)
+        screen.blit(msg, (WIDTH // 2 - 250, HEIGHT // 2 - 50))
+
+    pygame.display.flip()
+    clock.tick(60) # Lock game to 60 FPS
