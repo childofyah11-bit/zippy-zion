@@ -3,87 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OS 19 // Ultra High-Tech Quantum Deck</title>
+  <title>QUANTUM_CORE // OS-19 Sovereign Engine</title>
 </head>
 <body>
 
-  <!-- Offscreen-backed high-velocity background context -->
+  <!-- Background Vector Lattice Processing Layer -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Hardware-isolated viewport module -->
+  <!-- Main Cybernetic Interface Frame -->
   <div id="phone-container">
     
-    <!-- Dynamic Island System Clock Core -->
+    <!-- Multi-State Biometric Dynamic Island Trigger -->
     <div id="dynamic-island">
       <div id="island-pill">
-        <span id="island-icon">✦</span>
-        <span id="system-clock">12:00:00.00</span>
+        <span id="island-icon">⚡</span>
+        <span id="system-clock">00:00:00.00</span>
       </div>
-      <div id="island-expanded-status">NETWORK SECURITY TUNNEL // ROUTE_SHIFT_-3600s</div>
+      <div id="island-expanded-status">TUNNELING OVERRIDE // STRUCT_SHIFT_ACTIVE</div>
     </div>
 
-    <!-- Live Hardware Telemetry Matrix -->
+    <!-- Live Node Telemetry Bus Grid -->
     <div class="glass-card telemetry-row">
-      <div>SIGNAL: <span class="premium-cyan" id="carrier-text">5G_ULTRA</span></div>
-      <div>CORE_TEMP: <span id="temp-metric">31.0°C</span></div>
+      <div class="hud-stat">NET: <span class="premium-cyan" id="carrier-text">5G_SOVEREIGN</span></div>
+      <div class="hud-stat">THERMAL CORE: <span id="temp-metric">35.0°C</span></div>
     </div>
 
-    <!-- Split Interface Layout: Main Audio and Technical Matrix -->
-    <div style="display: flex; gap: 15px; flex: 1; min-height: 0;">
+    <!-- Dual-Column Spatial Processing Array -->
+    <div class="spatial-matrix-split">
       
-      <!-- Left Column: Main Music Deck Media Staging Area -->
-      <div class="glass-card main-media-deck" style="flex: 1.4;">
+      <!-- Left Array: Interactive Audio Deck & Kinetic Spectrum -->
+      <div class="glass-card deck-module main-media-deck">
         <div id="media-boot-prompt" onclick="igniteMediaDeck()">
-          <div class="premium-gradient-text" style="font-size: 1.3rem; font-weight: 700; letter-spacing: 2px;">STREAM AUDIO NODE</div>
-          <p style="color: #64748b; font-size: 0.75rem; margin: 10px 0 0 0;">TAP TO SYNCHRONIZE COGNITIVE WAVEFRONT</p>
+          <div class="premium-gradient-text core-glitch-title">ENGAGE COGNITIVE NODE</div>
+          <p class="sub-telemetry-text">INITIALIZE SYNAPTIC WAVEFRONT STAGING</p>
         </div>
+        
+        <!-- Live Real-Time Oscilloscope Wave Pattern Canvas -->
+        <canvas id="oscilloscope-canvas"></canvas>
         <div id="fluid-audio-ring"></div>
         <div id="kinetic-lyric-viewport"></div>
       </div>
 
-      <!-- Right Column: Real-time Variable Telemetry Sidebar -->
-      <div class="glass-card sidebar-matrix" style="flex: 1; font-family: monospace; font-size: 0.6rem; color: #94a3b8; display: flex; flex-direction: column; gap: 8px; text-align: left; background: rgba(0,0,0,0.4); border-left: 2px solid var(--cyan-glow);">
-        <div style="font-weight: bold; color: var(--cyan-glow); letter-spacing: 1px; border-bottom: 1px solid rgba(0,240,255,0.2); padding-bottom: 4px;">LIVE RUNTIME MATRICES</div>
-        <div>RENDER_LATENCY: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
-        <div>BUFFER_ALLOC: <span class="telemetry-value" id="val-alloc">140 bytes</span></div>
-        <div>PARTICLE_VEL: <span class="telemetry-value" id="val-vel">0.00px/f</span></div>
-        <div>STEALTH_SHIELD: <span class="telemetry-value" id="val-stealth">INACTIVE</span></div>
-        <div>BIT_RATE_INDEX: <span class="telemetry-value" id="val-bitrate">0000 kbps</span></div>
-        <div>FREQUENCY_FREQ: <span class="telemetry-value" id="val-freq">0.0 Hz</span></div>
-        <div style="margin-top: auto; font-weight: bold; color: var(--magenta-glow); letter-spacing: 1px; border-bottom: 1px solid rgba(255,0,127,0.2); padding-bottom: 4px;">HARDWARE PARAMETERS</div>
-        <div>CORE_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
-        <div>THROTTLE_FLAG: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
-        <div>SYSTEM_UPTIME: <span class="telemetry-value" id="val-uptime">000.0s</span></div>
+      <!-- Right Array: High-Frequency Variable Instrument Sidebar -->
+      <div class="glass-card sidebar-matrix instrumentation-panel">
+        <div class="panel-header">VIRTUAL MACHINE RUNTIME</div>
+        <div class="matrix-row">CYCLE_LATENCY <span class="telemetry-value text-cyan" id="val-latency">0.00ms</span></div>
+        <div class="matrix-row">MEMORY_ALLOC <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
+        <div class="matrix-row">VECTOR_VELOCITY <span class="telemetry-value" id="val-vel">0.00px</span></div>
+        <div class="matrix-row">STEALTH_BYPASS <span class="telemetry-value" id="val-stealth">NULL</span></div>
+        
+        <div class="panel-header" style="margin-top: auto;">COMPUTE LAYER METRICS</div>
+        <div class="matrix-row">CPU_THREAD_LOAD <span class="telemetry-value" id="val-load">0.0%</span></div>
+        <div class="matrix-row">HARDWARE_STATE <span class="telemetry-value text-green" id="val-throttle">STABLE</span></div>
+        <div class="matrix-row">UPTIME_COUNTER <span class="telemetry-value" id="val-uptime">0.0s</span></div>
       </div>
     </div>
 
-    <!-- High-Velocity Encrypted Diagnostics Monitor -->
+    <!-- Encrypted Sub-Layer Diagnostic Terminal Stream -->
     <div class="glass-card activity-monitor" id="covert-activity-logs">
-      <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">SYSTEM DIAGNOSTIC STREAM:</div>
+      <div class="terminal-header">DIAGNOSTIC TELEMETRY MATRIX PIPELINE:</div>
     </div>
 
-    <!-- High-Tech Advanced Controls Instrument Panel -->
-    <div id="media-controls" style="flex-direction: column; gap: 10px;">
-      <div style="display: flex; justify-content: center; gap: 30px; width: 100%;">
-        <button class="nav-control-btn icon-btn" onclick="cycleTrackNode(-1)">⏮</button>
-        <button class="nav-control-btn icon-btn" id="master-toggle-btn" style="color: var(--cyan-glow)">⚡</button>
-        <button class="nav-control-btn icon-btn" onclick="cycleTrackNode(1)">⏭</button>
+    <!-- Command Execution Instrument Array Button Interface -->
+    <div id="media-controls">
+      <div class="primary-nav-row">
+        <button class="nav-control-btn quantum-glowing-btn" onclick="cycleTrackNode(-1)">⏮</button>
+        <button class="nav-control-btn quantum-glowing-btn" id="master-toggle-btn" style="color: var(--cyan-glow)">⚡</button>
+        <button class="nav-control-btn quantum-glowing-btn" onclick="cycleTrackNode(1)">⏭</button>
       </div>
-      <div style="display: flex; gap: 8px; width: 100%; justify-content: space-between; font-size: 0.55rem; font-family: monospace;">
-        <button class="tech-sub-btn" onclick="scrambleFrequencies()">SCRAMBLE FREQ</button>
-        <button class="tech-sub-btn" onclick="purgeMemoryBuffers()">PURGE CACHE</button>
-        <button class="tech-sub-btn" onclick="toggleHyperDrive()">HYPERDRIVE</button>
+      <div class="sub-command-grid">
+        <button class="tech-sub-btn command-hex-edge" onclick="scrambleFrequencies()">SCRAMBLE FREQ</button>
+        <button class="tech-sub-btn command-hex-edge" onclick="purgeMemoryBuffers()">PURGE CACHE</button>
+        <button class="tech-sub-btn command-hex-edge" onclick="toggleHyperDrive()">HYPERDRIVE</button>
       </div>
     </div>
   </div>
   <style>
     :root {
-      --premium-bg: #040508;
-      --glass-surface: rgba(15, 20, 32, 0.2);
-      --glass-border: rgba(255, 255, 255, 0.05);
+      --premium-bg: #020306;
+      --glass-surface: rgba(10, 14, 24, 0.45);
+      --glass-border: rgba(0, 240, 255, 0.08);
       --cyan-glow: #00f0ff;
       --magenta-glow: #ff007f;
       --matrix-green: #39ff14;
+      --panel-amber: #ffaa00;
     }
     body, html {
       margin: 0;
@@ -91,7 +94,7 @@
       width: 100%;
       height: 100%;
       background: var(--premium-bg);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Roboto, monospace;
       color: #fff;
       overflow: hidden;
       display: flex;
@@ -110,72 +113,74 @@
     }
     #phone-container {
       position: relative;
-      width: 580px; /* Expanded for high-tech desktop split layout */
-      height: 840px;
-      background: rgba(8, 10, 16, 0.9);
-      border: 4px solid rgba(255,255,255,0.08);
-      border-radius: 45px;
+      width: 760px; /* High-Tech desktop mainframe widescreen conversion scale */
+      height: 860px;
+      background: rgba(4, 6, 12, 0.93);
+      border: 2px solid rgba(0, 240, 255, 0.15);
+      border-radius: 40px;
       z-index: 2;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.95), inset 0 0 30px rgba(0,240,255,0.03);
-      padding: 25px;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.98), 0 0 40px rgba(0,240,255,0.05), inset 0 0 40px rgba(0,0,0,0.8);
+      padding: 30px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      backdrop-filter: blur(40px);
-      -webkit-backdrop-filter: blur(40px);
+      gap: 20px;
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
       transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
       will-change: transform;
       contain: content;
     }
     #dynamic-island {
       position: absolute;
-      top: 15px;
+      top: 18px;
       left: 50%;
       transform: translate3d(-50%, 0, 0);
       background: #000;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(0,240,255,0.2);
       border-radius: 30px;
-      padding: 8px 20px;
+      padding: 8px 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: width 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), height 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), background-color 0.2s ease;
+      transition: width 0.2s cubic-bezier(0.05, 0.9, 0.1, 1), height 0.2s cubic-bezier(0.05, 0.9, 0.1, 1), border-color 0.2s;
       cursor: pointer;
       z-index: 100;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      box-shadow: 0 0 25px rgba(0,240,255,0.1);
       pointer-events: auto;
-      width: 200px;
-      height: 34px;
+      width: 220px;
+      height: 36px;
       will-change: width, height, background-color;
       contain: layout;
     }
     #island-pill {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       width: 100%;
       justify-content: center;
     }
     #system-clock {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 700;
       font-variant-numeric: tabular-nums;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.2);
     }
     #island-icon {
       color: var(--cyan-glow);
-      font-size: 0.8rem;
-      animation: floatIcon 2s infinite ease-in-out;
+      font-size: 0.9rem;
+      animation: floatIcon 1.5s infinite ease-in-out;
     }
     #island-expanded-status {
       display: none;
-      font-size: 0.55rem;
-      font-weight: bold;
+      font-size: 0.58rem;
+      font-weight: 900;
       color: var(--magenta-glow);
       margin-top: 8px;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       width: 100%;
       text-align: center;
     }
@@ -183,10 +188,10 @@
       background: var(--glass-surface);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
-      padding: 15px;
+      padding: 18px;
       box-sizing: border-box;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
       transform: translate3d(0,0,0);
     }
   <style>
@@ -194,89 +199,145 @@
       margin-top: 25px;
       display: flex;
       justify-content: space-between;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 1px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
       color: #94a3b8;
       contain: layout paint;
+      background: rgba(0, 0, 0, 0.4);
     }
     #temp-metric {
       color: var(--matrix-green);
-      text-shadow: 0 0 8px rgba(57,255,20,0.3);
-      transition: color 0.2s ease;
+      text-shadow: 0 0 10px rgba(57,255,20,0.4);
     }
-    .main-media-deck {
+    .spatial-matrix-split {
+      display: flex;
+      gap: 20px;
+      flex: 1;
+      min-height: 0;
+    }
+    .deck-module {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       position: relative;
-      text-align: center;
       overflow: hidden;
       border-radius: 24px;
-      contain: layout size;
-      background: rgba(0, 0, 0, 0.2);
+      contain: layout size style;
+      background: rgba(2, 4, 8, 0.6);
     }
     #media-boot-prompt {
       pointer-events: auto;
       cursor: pointer;
-      transition: transform 0.2s;
+      z-index: 10;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     #media-boot-prompt:hover {
-      transform: scale3d(1.03, 1.03, 1);
+      transform: scale3d(1.04, 1.04, 1);
+    }
+    .core-glitch-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+    .sub-telemetry-text {
+      color: #64748b;
+      font-size: 0.7rem;
+      margin: 8px 0 0 0;
+      letter-spacing: 1px;
+    }
+    #oscilloscope-canvas {
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      opacity: 0.8;
     }
     #kinetic-lyric-viewport {
       display: none;
-      font-size: 1.5rem;
-      font-weight: 800;
-      line-height: 1.3;
+      font-size: 1.6rem;
+      font-weight: 900;
+      line-height: 1.35;
       text-transform: uppercase;
       letter-spacing: -0.5px;
-      max-width: 100%;
+      max-width: 90%;
       z-index: 5;
       contain: layout paint;
     }
     #fluid-audio-ring {
       display: none;
       position: absolute;
-      width: 180px;
-      height: 180px;
-      border: 2px solid rgba(0, 240, 255, 0.15);
+      width: 200px;
+      height: 200px;
+      border: 2px dashed rgba(0, 240, 255, 0.25);
       border-radius: 50%;
-      z-index: 2;
+      z-index: 3;
       transform: scale3d(1, 1, 1);
-      transition: transform 0.1s cubic-bezier(0.1, 0.9, 0.3, 1), border-color 0.1s ease;
-      box-shadow: 0 0 30px rgba(0,240,255,0.05);
-      will-change: transform, border-color;
+      transition: transform 0.08s ease-out, border-color 0.1s ease;
+      box-shadow: 0 0 40px rgba(0,240,255,0.08);
+      will-change: transform;
     }
     .fluid-word {
       display: inline-block;
-      margin: 0 4px;
+      margin: 0 5px;
       opacity: 0;
-      transform: translate3d(0, 12px, 0) scale3d(0.9, 0.9, 1);
-      animation: fluidWaveIn 0.25s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+      transform: translate3d(0, 15px, 0) scale3d(0.85, 0.85, 1);
+      animation: fluidWaveIn 0.28s cubic-bezier(0.15, 0.85, 0.2, 1) forwards;
+      text-shadow: 0 0 12px rgba(255,255,255,0.3);
     }
-    .sidebar-matrix div {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .instrumentation-panel {
+      background: rgba(1, 2, 4, 0.7) !important;
+      border-right: 2px solid var(--cyan-glow) !important;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .panel-header {
+      font-weight: 900;
+      color: var(--cyan-glow);
+      letter-spacing: 1.5px;
+      border-bottom: 1px solid rgba(0,240,255,0.15);
+      padding-bottom: 6px;
+      font-size: 0.65rem;
+    }
+    .matrix-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.62rem;
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+      padding-bottom: 2px;
     }
     .telemetry-value {
       color: #fff;
-      font-weight: bold;
-      float: right;
+      font-weight: 700;
     }
+    .text-cyan { color: var(--cyan-glow); }
+    .text-green { color: var(--matrix-green); }
+    .text-magenta { color: var(--magenta-glow); }
+    
     .activity-monitor {
-      height: 100px;
+      height: 110px;
       display: flex;
       flex-direction: column;
       gap: 4px;
       overflow: hidden;
-      font-size: 0.6rem;
+      font-size: 0.62rem;
       color: #475569;
       font-family: monospace;
       text-align: left;
+      background: rgba(0, 0, 0, 0.5);
       contain: layout paint;
+    }
+    .terminal-header {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      font-weight: bold;
+      margin-bottom: 4px;
     }
     .covert-row {
       white-space: nowrap;
@@ -287,50 +348,68 @@
       color: var(--magenta-glow) !important;
       font-weight: bold;
     }
-    .icon-btn {
+    #media-controls {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .primary-nav-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      width: 100%;
+    }
+    .quantum-glowing-btn {
       background: none;
       border: none;
       color: #fff;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.2s;
+      transition: opacity 0.2s, transform 0.15s;
       opacity: 0.6;
     }
-    .icon-btn:hover {
+    .quantum-glowing-btn:hover {
       opacity: 1;
-      transform: scale3d(1.1, 1.1, 1);
+      transform: scale3d(1.15, 1.15, 1);
+    }
+    .sub-command-grid {
+      display: flex;
+      gap: 10px;
+      width: 100%;
     }
     .tech-sub-btn {
       flex: 1;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0, 240, 255, 0.02);
+      border: 1px solid rgba(0, 240, 255, 0.1);
       color: #64748b;
-      padding: 6px;
-      border-radius: 8px;
+      padding: 8px;
+      border-radius: 10px;
       cursor: pointer;
       font-family: monospace;
-      font-size: 0.55rem;
-      transition: all 0.2s ease;
+      font-size: 0.6rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      transition: all 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
     }
     .tech-sub-btn:hover {
-      background: rgba(0, 240, 255, 0.05);
+      background: rgba(0, 240, 255, 0.08);
       border-color: var(--cyan-glow);
       color: #fff;
+      box-shadow: 0 0 15px rgba(0,240,255,0.15);
     }
     @keyframes fluidWaveIn {
       to { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
     }
     @keyframes floatIcon {
-      0%, 100 { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(0, -3px, 0); }
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -4px, 0); }
     }
     .premium-gradient-text {
-      background: linear-gradient(135deg, #fff 30%, #64748b 100%);
+      background: linear-gradient(135deg, #fff 20%, #475569 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
   </style>
-
   <script>
     const rawPayload = [
       "Small Town Star (Goofball)", "I’m a goofball bouncing-off-the-wall-ball", "Everybody knows my name", 
@@ -358,47 +437,48 @@
 
     const payloadData = rawPayload.map(line => line.split(' '));
     let trackPtr = 0, trackTimer, audioCtx, biquadFilter, stealthShieldActive = false, hyperDriveActive = false;
-    let baseCompTemp = 36.4, frameStartTime = 0;
-    const startTimeStamp = performance.now();
+    let computerCoreTemp = 35.0, appStartTime = performance.now();
     
     const canvas = document.getElementById('ambient-canvas'), ctx = canvas.getContext('2d');
     const offscreen = document.createElement('canvas'), oCtx = offscreen.getContext('2d');
+    
+    const oscCanvas = document.getElementById('oscilloscope-canvas'), oscCtx = oscCanvas.getContext('2d');
 
     function scaleViewport() {
       canvas.width = offscreen.width = window.innerWidth;
       canvas.height = offscreen.height = window.innerHeight;
+      oscCanvas.width = oscCanvas.offsetWidth;
+      oscCanvas.height = oscCanvas.offsetHeight;
     }
     window.addEventListener('resize', scaleViewport, { passive: true });
-    scaleViewport();
 
-    // High performance flat buffer array mechanics
-    let particleCount = 45;
-    let particleBuffer = new Float32Array(particleCount * 4);
+    // High performance primitive float array setup
+    const particleCount = 60;
+    const particleBuffer = new Float32Array(particleCount * 4);
     function buildParticleBuffers() {
       for(let i = 0; i < particleCount; i++) {
         const idx = i << 2;
         particleBuffer[idx] = Math.random() * window.innerWidth;
         particleBuffer[idx+1] = Math.random() * window.innerHeight;
-        particleBuffer[idx+2] = Math.random() * 40 + 20;
-        particleBuffer[idx+3] = -(Math.random() * 0.5 + 0.15);
+        particleBuffer[idx+2] = Math.random() * 35 + 15;
+        particleBuffer[idx+3] = -(Math.random() * 0.4 + 0.1);
       }
       document.getElementById('val-alloc').textContent = (particleBuffer.byteLength) + ' bytes';
     }
-    buildParticleBuffers();
 
-    function drawAmbientGraph(timestamp) {
-      const start = performance.now();
-      oCtx.fillStyle = '#040508';
+    function drawAmbientGraph() {
+      const renderStart = performance.now();
+      oCtx.fillStyle = '#020306';
       oCtx.fillRect(0, 0, offscreen.width, offscreen.height);
-      oCtx.fillStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.03)' : 'rgba(0, 240, 255, 0.03)';
+      oCtx.fillStyle = stealthShieldActive ? 'rgba(255, 0, 127, 0.03)' : 'rgba(0, 240, 255, 0.025)';
 
       const w = offscreen.width, h = offscreen.height;
-      let totalVel = 0;
+      let aggregateVel = 0;
 
       for (let i = 0; i < particleCount; i++) {
         const idx = i << 2;
-        let speedMultiplier = hyperDriveActive ? 8.0 : 1.0;
-        let y = particleBuffer[idx+1] + (particleBuffer[idx+3] * speedMultiplier);
+        let factor = hyperDriveActive ? 12.0 : 1.0;
+        let y = particleBuffer[idx+1] + (particleBuffer[idx+3] * factor);
         const r = particleBuffer[idx+2];
 
         if(y < -r) {
@@ -406,7 +486,7 @@
           particleBuffer[idx] = Math.random() * w;
         }
         particleBuffer[idx+1] = y;
-        totalVel += Math.abs(particleBuffer[idx+3] * speedMultiplier);
+        aggregateVel += Math.abs(particleBuffer[idx+3] * factor);
 
         oCtx.beginPath();
         oCtx.arc(particleBuffer[idx], y, r, 0, 6.28318);
@@ -416,16 +496,42 @@
       ctx.clearRect(0, 0, w, h);
       ctx.drawImage(offscreen, 0, 0);
       
-      // Update sidebar runtime telemetry elements
-      const renderTime = performance.now() - start;
-      document.getElementById('val-latency').textContent = renderTime.toFixed(2) + 'ms';
-      document.getElementById('val-vel').textContent = (totalVel / particleCount).toFixed(2) + 'px/f';
-      document.getElementById('val-uptime').textContent = ((performance.now() - startTimeStamp) / 1000).toFixed(1) + 's';
-      document.getElementById('val-load').textContent = (renderTime * 6.2).toFixed(1) + '%';
+      // Update sidebar telemetry metrics
+      const currentLatency = performance.now() - renderStart;
+      document.getElementById('val-latency').textContent = currentLatency.toFixed(2) + 'ms';
+      document.getElementById('val-vel').textContent = (aggregateVel / particleCount).toFixed(2) + 'px';
+      document.getElementById('val-uptime').textContent = ((performance.now() - appStartTime) / 1000).toFixed(1) + 's';
+      document.getElementById('val-load').textContent = (currentLatency * 7.5).toFixed(1) + '%';
+
+      // Live Oscilloscope Wave Generation Framework
+      if(oscCanvas.style.display === 'block') {
+        renderOscilloscopeWave();
+      }
 
       requestAnimationFrame(drawAmbientGraph);
     }
-    requestAnimationFrame(drawAmbientGraph);
+
+    function renderOscilloscopeWave() {
+      oscCtx.clearRect(0, 0, oscCanvas.width, oscCanvas.height);
+      oscCtx.beginPath();
+      oscCtx.lineWidth = 2;
+      oscCtx.strokeStyle = stealthShieldActive ? 'rgba(255,0,127,0.4)' : 'rgba(0,240,255,0.4)';
+      
+      const width = oscCanvas.width;
+      const height = oscCanvas.height;
+      const sliceWidth = width / 40;
+      let x = 0;
+
+      for(let i = 0; i < 40; i++) {
+        let waveFactor = hyperDriveActive ? 40 : 15;
+        let y = (height / 2) + Math.sin(i * 0.4 + (performance.now() * 0.01)) * waveFactor;
+        if(i === 0) oscCtx.moveTo(x, y);
+        else oscCtx.lineTo(x, y);
+        x += sliceWidth;
+      }
+      oscCtx.lineTo(width, height / 2);
+      oscCtx.stroke();
+    }
 
     function emitOversampleTone() {
       try {
@@ -436,23 +542,20 @@
           biquadFilter.connect(audioCtx.destination);
         }
         let now = audioCtx.currentTime, osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
-        let freqHz = stealthShieldActive ? 85 : 340 + (trackPtr * 4);
+        let targetFreq = stealthShieldActive ? 75 : 300 + (trackPtr * 5);
         
         osc.type = stealthShieldActive ? 'sawtooth' : 'sine';
-        osc.frequency.setValueAtTime(freqHz, now);
-        biquadFilter.frequency.setValueAtTime(stealthShieldActive ? 180 : 1400, now);
+        osc.frequency.setValueAtTime(targetFreq, now);
+        biquadFilter.frequency.setValueAtTime(stealthShieldActive ? 150 : 1600, now);
         
-        document.getElementById('val-freq').textContent = freqHz + ' Hz';
-        
-        gain.gain.setValueAtTime(0.015, now);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+        gain.gain.setValueAtTime(0.012, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
         osc.connect(gain);
         gain.connect(biquadFilter);
         osc.start();
-        osc.stop(now + 0.15);
+        osc.stop(now + 0.14);
         
-        // Spike calculated computer temperature slightly on audio task computation
-        baseCompTemp += 0.4;
+        computerCoreTemp += 0.6; // Core compute generates execution heat
       } catch(e) {}
     }
 
@@ -466,17 +569,19 @@
       const ms = String(clockDate.getMilliseconds()).padStart(3, '0').substring(0,2);
       clockEl.textContent = parts + '.' + ms;
       
-      // High-precision calculated temperature cooling logic loop
-      if(baseCompTemp > 35.0) baseCompTemp -= 0.04;
-      if(hyperDriveActive) baseCompTemp += (Math.random() * 0.15);
+      // Dynamic simulated dissipation algorithms
+      if(computerCoreTemp > 34.0) computerCoreTemp -= 0.06;
+      if(hyperDriveActive) computerCoreTemp += (Math.random() * 0.22);
       
-      tempEl.textContent = baseCompTemp.toFixed(1) + '°C';
-      if(baseCompTemp > 42.0) {
+      tempEl.textContent = computerCoreTemp.toFixed(1) + '°C';
+      if(computerCoreTemp > 44.0) {
         tempEl.style.color = 'var(--magenta-glow)';
-        document.getElementById('val-throttle').textContent = 'THERMAL_WARN';
+        document.getElementById('val-throttle').textContent = 'CORE_OVERHEAT';
+        document.getElementById('val-throttle').className = 'telemetry-value text-magenta';
       } else {
         tempEl.style.color = 'var(--matrix-green)';
-        document.getElementById('val-throttle').textContent = 'NOMINAL';
+        document.getElementById('val-throttle').textContent = 'STABLE_NOMINAL';
+        document.getElementById('val-throttle').className = 'telemetry-value text-green';
       }
     }
     setInterval(processSystemClock, 30);
@@ -487,41 +592,21 @@
 
     island.addEventListener('mousedown', () => {
       stealthShieldActive = true;
-      island.style.width = "340px";
+      island.style.width = "360px";
       island.style.height = "55px";
-      island.style.backgroundColor = "#110309";
+      island.style.backgroundColor = "#14020a";
       island.style.borderColor = "var(--magenta-glow)";
       expandedStatus.style.display = "block";
-      carrierText.textContent = "PROXY_TUNNEL";
+      carrierText.textContent = "PROXY_TUNNEL_ESTABLISHED";
       carrierText.className = "premium-cyan covert-shift-flag";
-      document.getElementById('val-stealth').textContent = 'ACTIVE';
-      document.getElementById('val-stealth').style.color = 'var(--magenta-glow)';
-      appendCovertLog("OVERRIDE EXECUTED: REGIONAL GEOLOCATION TUNNEL SECURED (-3600s)", true);
+      document.getElementById('val-stealth').textContent = 'SECURE_BYPASS';
+      document.getElementById('val-stealth').className = 'telemetry-value text-magenta';
+      appendCovertLog("CRITICAL: REGIONAL NETWORK LOCATION ROUTED THROUGH ENCRYPTED PROXY.", true);
       emitOversampleTone();
     }, { passive: true });
 
     window.addEventListener('mouseup', () => {
       if (!stealthShieldActive) return;
       stealthShieldActive = false;
-      island.style.width = "200px";
-      island.style.height = "34px";
-      island.style.backgroundColor = "#000";
-      island.style.borderColor = "transparent";
-      expandedStatus.style.display = "none";
-      carrierText.textContent = "5G_ULTRA";
-      carrierText.className = "premium-cyan";
-      document.getElementById('val-stealth').textContent = 'INACTIVE';
-      document.getElementById('val-stealth').style.color = '#fff';
-      appendCovertLog("Telemetry re-synchronized to root gateway index.", false);
-    }, { passive: true });
-
-    const panel = document.getElementById('covert-activity-logs');
-    function appendCovertLog(msg, flagged) {
-      const row = document.createElement('div');
-      row.className = flagged ? 'covert-row covert-shift-flag' : 'covert-row';
-      row.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
-      panel.appendChild(row);
-      if(panel.children.length > 5) panel.removeChild(panel.children[1]);
-      panel.scrollTop = panel.scrollHeight;
-    }
-
+      island.style.width = "220px";
+      island.style.height = "36px";
