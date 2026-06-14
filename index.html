@@ -1,4 +1,18 @@
-<!DOCTYPE html>
+// Replace the top of your playNote function with this:
+async function playNote(frequency, keyElement) {
+    initAudio();
+    
+    // Force the audio hardware to wake up FIRST
+    if (audioCtx.state === 'suspended') {
+        await audioCtx.resume();
+    }
+
+    if (activeNotes.has(frequency)) {
+        stopNote(frequency, keyElement);
+    }
+    
+    // ... rest of your oscillator and ADSR code remains exactly the same
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
