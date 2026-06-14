@@ -3,78 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QUANTUM_AI // Mathematical Processing Node</title>
+  <title>KINETIC_AI // Advanced School & STEM Solver</title>
 </head>
 <body>
 
-  <!-- Background Computational Matrix Layer -->
+  <!-- Background Data Flow Grid Layer -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- High-Tech Supercomputer Shell Container -->
+  <!-- High-Tech Supercomputer Main Viewport -->
   <div id="phone-container">
     
-    <!-- Dynamic Island Central Processing Unit -->
+    <!-- Central Control Dynamic Processing Unit -->
     <div id="dynamic-island">
       <div id="island-pill">
-        <span id="island-icon">⚛</span>
+        <span id="island-icon">🧠</span>
         <span id="system-clock">00:00:00.00</span>
       </div>
-      <div id="island-expanded-status">CORE_MATH_KERNEL // FLOATING_POINT_ACTIVE</div>
+      <div id="island-expanded-status">REASONING_CORE_v9.0 // CONTEXT_WINDOW_ENGAGED</div>
     </div>
 
-    <!-- Live Telemetry Row Metrics -->
+    <!-- Live Telemetry Diagnostics Row -->
     <div class="glass-card telemetry-row">
-      <div>THREAD_POOL: <span class="premium-cyan" id="carrier-text">PARALLEL_v3.8</span></div>
-      <div>CPU_TEMP: <span id="temp-metric">34.2°C</span></div>
+      <div>AI_ENGINE: <span class="premium-cyan" id="carrier-text">SYNAPSE_PRO_COMPUTE</span></div>
+      <div>CORE_TEMP: <span id="temp-metric">35.0°C</span></div>
     </div>
 
-    <!-- Desktop Split Workspace Area -->
+    <!-- Split-Pane Workspace Interface -->
     <div class="workspace-layout">
       
-      <!-- Main Action & Computation Deck -->
+      <!-- Main Intelligence Panel -->
       <div class="glass-card main-media-deck">
-        <div id="workspace-header">AI COMPUTATION ENGINE</div>
         
-        <!-- Interactive Code/Formula Input Node -->
+        <!-- Subject Mode Selection Tab Bar -->
+        <div class="subject-bar">
+          <button class="subject-tab active-tab" onclick="setSubjectMode('math')">MATHEMATICS</button>
+          <button class="subject-tab" onclick="setSubjectMode('physics')">PHYSICS</button>
+          <button class="subject-tab" onclick="setSubjectMode('chemistry')">CHEMISTRY</button>
+          <button class="subject-tab" onclick="setSubjectMode('stats')">STATISTICS</button>
+        </div>
+        
+        <!-- Input Terminal Node Container -->
         <div class="input-container">
-          <textarea id="ai-input" placeholder="Enter mathematical expressions or datasets here... (e.g., 25 * Math.sqrt(144) + Math.sin(45))"></textarea>
+          <textarea id="ai-input" placeholder="Type your problem or variables here... (e.g., Area of triangle with base 12 and height 5, or quadratic equation parameters)"></textarea>
           <div class="input-controls">
-            <button class="tech-sub-btn run-btn" onclick="executeCoreProcessing()">EXECUTE EXPR</button>
-            <button class="tech-sub-btn clear-btn" onclick="clearWorkspace()">RESET ENGINE</button>
+            <button class="tech-sub-btn run-btn" onclick="processProblemSolvingNode()">SOLVE PROBLEM</button>
+            <button class="tech-sub-btn clear-btn" onclick="clearWorkspaceEngine()">PURGE REGISTER</button>
           </div>
         </div>
 
-        <!-- Dynamic Visualization Graph Core Wrapper -->
+        <!-- Real-Time Geometric Coordinate & Data Trace Plotter -->
         <div id="graph-wrapper">
-          <canvas id="visualizer-ring-canvas"></canvas>
+          <div id="plot-label-y">Y-AXIS</div>
+          <div id="plot-label-x">X-AXIS</div>
+          <canvas id="analytical-plot-canvas"></canvas>
         </div>
 
-        <!-- Instant Core Math Output Readout Terminal -->
+        <!-- Comprehensive Step-By-Step Solution Window -->
         <div id="math-output-deck">
-          <div style="color: #64748b; font-size: 0.65rem;">OUTPUT CORE STREAM:</div>
-          <div id="primary-result">SYSTEM IDLE // AWAITING EXPR TRACE...</div>
+          <div class="output-header">REASONING TRACE & EXPLANATION ENGINE</div>
+          <div id="solution-viewport">
+            <span style="color: #475569;">[SYSTEM STANDBY] Enter variables or tap a preset to begin computation...</span>
+          </div>
         </div>
       </div>
 
-      <!-- Right Column: Live Variable Telemetry Matrix -->
+      <!-- Right Side: Intelligent Parameter Dashboard -->
       <div class="glass-card sidebar-matrix">
-        <div class="sidebar-header">LIVE COMPUTER PARAMETERS</div>
+        <div class="sidebar-header">INSTRUMENTATION REGISTERS</div>
         <div>CALC_LATENCY: <span class="telemetry-value" id="val-latency">0.00ms</span></div>
-        <div>DATA_BUFFER: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
+        <div>BUFFER_ALLOC: <span class="telemetry-value" id="val-alloc">0 bytes</span></div>
         <div>SOLVER_STEPS: <span class="telemetry-value" id="val-steps">000000</span></div>
-        <div>CALC_PRECISION: <span class="telemetry-value" id="val-precision">64-BIT</span></div>
+        <div>ALGO_PRECISION: <span class="telemetry-value" id="val-precision">FLOAT64</span></div>
         <div>CORE_LOAD: <span class="telemetry-value" id="val-load">0.0%</span></div>
         <div>COMPUTE_THROTTLE: <span class="telemetry-value" id="val-throttle">NOMINAL</span></div>
 
-        <div class="sidebar-header" style="margin-top: 15px;">AI PRESETS / FAST ACTIONS</div>
-        <button class="preset-btn" onclick="injectPreset('fibonacci')">RUN FIBONACCI (20)</button>
-        <button class="preset-btn" onclick="injectPreset('primes')">FIND PRIMES (<100)</button>
-        <button class="preset-btn" onclick="injectPreset('sinewave')">PLOT TRANSFORM WAVE</button>
-        <button class="preset-btn" onclick="toggleOverclock()">TOGGLE OVERCLOCK</button>
+        <div class="sidebar-header" style="margin-top: 15px;">STEM PROBLEM PRESETS</div>
+        <button class="preset-btn" onclick="injectPreset('quadratic')">📐 QUADRATIC FUNCTION</button>
+        <button class="preset-btn" onclick="injectPreset('kinematics')">🚀 KINEMATICS DYNAMICS</button>
+        <button class="preset-btn" onclick="injectPreset('gas_laws')">🧪 IDEAL GAS SOLUTION</button>
+        <button class="preset-btn" onclick="injectPreset('standard_dev')">📊 VARIANCE & STDEV</button>
+        <button class="preset-btn" onclick="toggleOverclockEngine()">⚡ MAXIMUM INTERFERENCE</button>
       </div>
     </div>
 
-    <!-- Diagnostic Stream & Covert Activity Ticker -->
+    <!-- Live Encrypted Ticker & Event Logger -->
     <div class="glass-card activity-monitor" id="covert-activity-logs">
       <div style="font-size: 0.65rem; color: #94a3b8; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px;">SYSTEM DIAGNOSTIC STREAM:</div>
     </div>
@@ -82,8 +94,8 @@
   </div>
   <style>
     :root {
-      --premium-bg: #030407;
-      --glass-surface: rgba(10, 15, 26, 0.4);
+      --premium-bg: #020306;
+      --glass-surface: rgba(8, 12, 22, 0.5);
       --glass-border: rgba(255, 255, 255, 0.05);
       --cyan-glow: #00f0ff;
       --magenta-glow: #ff007f;
@@ -115,13 +127,13 @@
     }
     #phone-container {
       position: relative;
-      width: 820px; /* Fully expanded horizontal deck viewport */
-      height: 640px;
-      background: rgba(6, 8, 14, 0.95);
-      border: 2px solid rgba(255, 255, 255, 0.08);
-      border-radius: 28px;
+      width: 900px; /* Enhanced wide cockpit display */
+      height: 680px;
+      background: rgba(4, 6, 10, 0.96);
+      border: 2px solid rgba(255, 255, 255, 0.07);
+      border-radius: 24px;
       z-index: 2;
-      box-shadow: 0 40px 100px rgba(0,0,0,0.95), inset 0 0 40px rgba(0,240,255,0.02);
+      box-shadow: 0 45px 120px rgba(0,0,0,0.95), inset 0 0 50px rgba(0,240,255,0.01);
       padding: 20px;
       box-sizing: border-box;
       display: flex;
@@ -129,8 +141,7 @@
       gap: 12px;
       backdrop-filter: blur(40px);
       -webkit-backdrop-filter: blur(40px);
-      transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-      will-change: transform;
+      transform: translateZ(0);
       contain: content;
     }
     #dynamic-island {
@@ -139,7 +150,7 @@
       left: 50%;
       transform: translate3d(-50%, 0, 0);
       background: #000;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.07);
       border-radius: 20px;
       padding: 4px 15px;
       display: flex;
@@ -147,9 +158,8 @@
       align-items: center;
       justify-content: center;
       z-index: 100;
-      width: 240px;
+      width: 260px;
       height: 28px;
-      contain: layout;
     }
     #island-pill {
       display: flex;
@@ -163,7 +173,6 @@
       font-weight: 700;
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.5px;
-      color: #fff;
     }
     #island-icon {
       color: var(--cyan-glow);
@@ -179,11 +188,9 @@
     .glass-card {
       background: var(--glass-surface);
       border: 1px solid var(--glass-border);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 12px;
       box-sizing: border-box;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
     }
     .telemetry-row {
       margin-top: 20px;
@@ -207,16 +214,36 @@
     .main-media-deck {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       position: relative;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
     }
-    #workspace-header {
-      font-size: 0.75rem;
+    .subject-bar {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 6px;
+    }
+    .subject-tab {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #64748b;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.65rem;
       font-weight: bold;
-      letter-spacing: 2px;
-      color: var(--cyan-glow);
-      text-shadow: 0 0 10px rgba(0,240,255,0.2);
+      letter-spacing: 1px;
+      transition: all 0.2s ease;
+    }
+    .subject-tab:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.02);
+    }
+    .active-tab {
+      border-color: var(--cyan-glow);
+      color: var(--cyan-glow) !important;
+      background: rgba(0, 240, 255, 0.05) !important;
     }
     .input-container {
       display: flex;
@@ -225,12 +252,12 @@
     }
     #ai-input {
       width: 100%;
-      height: 65px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      height: 70px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
       padding: 8px;
-      color: #39ff14;
+      color: #fff;
       font-family: monospace;
       font-size: 0.75rem;
       resize: none;
@@ -246,50 +273,91 @@
     }
     .tech-sub-btn {
       flex: 1;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.01);
+      border: 1px solid rgba(255,255,255,0.07);
       color: #94a3b8;
       padding: 6px;
       border-radius: 6px;
       cursor: pointer;
       font-family: monospace;
       font-size: 0.65rem;
+      font-weight: bold;
     }
     .run-btn:hover {
-      background: rgba(0, 240, 255, 0.1);
+      background: rgba(0, 240, 255, 0.08);
       border-color: var(--cyan-glow);
       color: #fff;
     }
     .clear-btn:hover {
-      background: rgba(255, 0, 127, 0.1);
+      background: rgba(255, 0, 127, 0.08);
       border-color: var(--magenta-glow);
       color: #fff;
     }
     #graph-wrapper {
-      flex: 1;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.03);
+      flex: 1.2;
+      background: rgba(2, 4, 8, 0.8);
+      border: 1px solid rgba(255,255,255,0.04);
       border-radius: 8px;
       position: relative;
       overflow: hidden;
     }
-    #visualizer-ring-canvas {
+    #analytical-plot-canvas {
       width: 100%;
       height: 100%;
     }
+    #plot-label-y {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      font-family: monospace;
+      font-size: 0.5rem;
+      color: #475569;
+    }
+    #plot-label-x {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      font-family: monospace;
+      font-size: 0.5rem;
+      color: #475569;
+    }
     #math-output-deck {
-      background: rgba(0,0,0,0.6);
-      border: 1px solid rgba(255,255,255,0.05);
+      flex: 1.5;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.06);
       border-radius: 8px;
-      padding: 8px;
+      padding: 10px;
       text-align: left;
       font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow: hidden;
     }
-    #primary-result {
-      font-size: 0.9rem;
-      color: #fff;
-      margin-top: 4px;
-      word-break: break-all;
+    .output-header {
+      color: #64748b;
+      font-size: 0.6rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 3px;
+    }
+    #solution-viewport {
+      flex: 1;
+      font-size: 0.75rem;
+      line-height: 1.4;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      color: #cbd5e1;
+    }
+    .trace-step {
+      margin-bottom: 6px;
+      border-left: 2px solid var(--cyan-glow);
+      padding-left: 6px;
+    }
+    .trace-highlight {
+      color: var(--matrix-green);
+      font-weight: bold;
     }
     .sidebar-matrix {
       font-family: monospace;
@@ -305,7 +373,7 @@
       font-weight: bold;
       color: var(--cyan-glow);
       letter-spacing: 1px;
-      border-bottom: 1px solid rgba(0,240,255,0.2);
+      border-bottom: 1px solid rgba(0,240,255,0.15);
       padding-bottom: 2px;
       margin-bottom: 2px;
     }
@@ -315,22 +383,23 @@
       float: right;
     }
     .preset-btn {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.01);
+      border: 1px solid rgba(255,255,255,0.04);
       color: #cbd5e1;
-      padding: 5px;
+      padding: 6px;
       border-radius: 4px;
       cursor: pointer;
       text-align: left;
       font-size: 0.55rem;
+      transition: all 0.2s ease;
     }
     .preset-btn:hover {
-      background: rgba(57, 255, 20, 0.08);
-      border-color: var(--matrix-green);
+      background: rgba(0, 240, 255, 0.05);
+      border-color: var(--cyan-glow);
       color: #fff;
     }
     .activity-monitor {
-      height: 75px;
+      height: 70px;
       display: flex;
       flex-direction: column;
       gap: 3px;
@@ -347,195 +416,241 @@
     }
   </style>
   <script>
-    // State Space Memory Layout Allocation
-    let totalSolverSteps = 0, isOverclocked = false;
-    let baseSystemTemp = 34.2, dataPointsArray = [];
-    const executionTimestamp = performance.now();
-    
-    const ambientCanvas = document.getElementById('ambient-canvas'), aCtx = ambientCanvas.getContext('2d');
-    const graphCanvas = document.getElementById('visualizer-ring-canvas'), gCtx = graphCanvas.getContext('2d');
+    // State Space Memory Configuration
+    let activeSubjectMode = 'math', isOverclocked = false;
+    let solverExecutionCounter = 0, coreThermalIndex = 35.0;
+    const initialEpochStamp = performance.now();
 
-    function resizeSystemCanvases() {
+    const ambientCanvas = document.getElementById('ambient-canvas'), aCtx = ambientCanvas.getContext('2d');
+    const plotCanvas = document.getElementById('analytical-plot-canvas'), pCtx = plotCanvas.getContext('2d');
+
+    function syncSystemDisplays() {
       ambientCanvas.width = window.innerWidth;
       ambientCanvas.height = window.innerHeight;
       
-      const box = graphCanvas.parentElement;
-      graphCanvas.width = box.clientWidth;
-      graphCanvas.height = box.clientHeight;
+      const parent = plotCanvas.parentElement;
+      plotCanvas.width = parent.clientWidth;
+      plotCanvas.height = parent.clientHeight;
     }
-    window.addEventListener('resize', resizeSystemCanvases, { passive: true });
-    resizeSystemCanvases();
+    window.addEventListener('resize', syncSystemDisplays, { passive: true });
+    syncSystemDisplays();
 
-    // Primitive Flat Array Buffers for Particle Calculations
-    const nodeCount = 30;
-    const nodeMatrixBuffer = new Float32Array(nodeCount * 4); // [x, y, radius, speedY]
-    for(let i = 0; i < nodeCount; i++) {
-      const idx = i << 2;
-      nodeMatrixBuffer[idx] = Math.random() * window.innerWidth;
-      nodeMatrixBuffer[idx+1] = Math.random() * window.innerHeight;
-      nodeMatrixBuffer[idx+2] = Math.random() * 30 + 10;
-      nodeMatrixBuffer[idx+3] = -(Math.random() * 0.4 + 0.1);
+    // Primitive Matrix Arrays for Background Computational Nodes
+    const meshDensity = 40;
+    const arrayBufferMesh = new Float32Array(meshDensity * 4); // [x, y, lineLength, fallSpeed]
+    for(let i=0; i < meshDensity; i++) {
+      const p = i << 2;
+      arrayBufferMesh[p] = Math.random() * window.innerWidth;
+      arrayBufferMesh[p+1] = Math.random() * window.innerHeight;
+      arrayBufferMesh[p+2] = Math.random() * 40 + 10;
+      arrayBufferMesh[p+3] = Math.random() * 0.8 + 0.2;
     }
 
-    // Background Matrix Redraw Loop
-    function runBackgroundSimulation() {
-      aCtx.fillStyle = '#030407';
+    function paintBackgroundProcessing() {
+      aCtx.fillStyle = '#020306';
       aCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
-      aCtx.fillStyle = isOverclocked ? 'rgba(255, 0, 127, 0.02)' : 'rgba(0, 240, 255, 0.02)';
+      aCtx.strokeStyle = isOverclocked ? 'rgba(255, 0, 127, 0.04)' : 'rgba(0, 240, 255, 0.03)';
+      aCtx.lineWidth = 1;
 
-      for(let i = 0; i < nodeCount; i++) {
-        const idx = i << 2;
-        let y = nodeMatrixBuffer[idx+1] + nodeMatrixBuffer[idx+3];
-        if(y < -nodeMatrixBuffer[idx+2]) {
-          y = ambientCanvas.height + nodeMatrixBuffer[idx+2];
-          nodeMatrixBuffer[idx] = Math.random() * ambientCanvas.width;
+      for(let i=0; i < meshDensity; i++) {
+        const p = i << 2;
+        let y = arrayBufferMesh[p+1] + arrayBufferMesh[p+3];
+        if(y > ambientCanvas.height) {
+          y = -arrayBufferMesh[p+2];
+          arrayBufferMesh[p] = Math.random() * ambientCanvas.width;
         }
-        nodeMatrixBuffer[idx+1] = y;
+        arrayBufferMesh[p+1] = y;
+
         aCtx.beginPath();
-        aCtx.arc(nodeMatrixBuffer[idx], y, nodeMatrixBuffer[idx+2], 0, 6.28318);
-        aCtx.fill();
+        aCtx.moveTo(arrayBufferMesh[p], y);
+        aCtx.lineTo(arrayBufferMesh[p], y + arrayBufferMesh[p+2]);
+        aCtx.stroke();
       }
-      requestAnimationFrame(runBackgroundSimulation);
+      requestAnimationFrame(paintBackgroundProcessing);
     }
-    requestAnimationFrame(runBackgroundSimulation);
-    // Core Mathematical Solver Core
-    function executeCoreProcessing() {
-      const startTime = performance.now();
-      const rawInput = document.getElementById('ai-input').value.trim();
-      const resultView = document.getElementById('primary-result');
+    requestAnimationFrame(paintBackgroundProcessing);
+
+    function setSubjectMode(mode) {
+      activeSubjectMode = mode;
+      const tabs = document.querySelectorAll('.subject-tab');
+      tabs.forEach(t => t.classList.remove('active-tab'));
+      event.target.classList.add('active-tab');
+      appendConsoleDiagnostic(`Switched primary algorithmic register to mode: [${mode.toUpperCase()}]`, false);
+    }
+    // Massive Automated Multi-Disciplinary Reasoning Engine
+    function processProblemSolvingNode() {
+      const executionStart = performance.now();
+      const queryStr = document.getElementById('ai-input').value.trim();
+      const viewport = document.getElementById('solution-viewport');
       
-      if(!rawInput) {
-        resultView.textContent = "ERROR: INPUT REGISTER EMPTY";
+      if(!queryStr) {
+        viewport.innerHTML = `<span style="color:var(--magenta-glow);">ERROR: PROMPT_REGISTER_EMPTY // INPUT REJECTED</span>`;
         return;
       }
 
-      try {
-        appendLogStream("PARSING STRING TOKEN ARRAY...", false);
+      // Track processing buffers
+      solverExecutionCounter++;
+      coreThermalIndex += isOverclocked ? 2.2 : 0.8;
+      document.getElementById('val-alloc').textContent = (queryStr.length * 2) + ' bytes';
+      document.getElementById('val-steps').textContent = String(solverExecutionCounter).padStart(6, '0');
+
+      // Clear layout and parse string signatures
+      viewport.textContent = '';
+      const numbersInPrompt = queryStr.match(/-?\d+(\.\d+)?/g) || [];
+      const values = numbersInPrompt.map(Number);
+
+      let HTMLTraceOutput = "";
+      let analyticalPointsToPlot = [];
+
+      // Dynamic AI Routing Matrix based on active context configurations
+      if (activeSubjectMode === 'math') {
+        // Fallback or explicit values for quadratic parser equations Ax^2 + Bx + C
+        let a = values[0] !== undefined ? values[0] : 1;
+        let b = values[1] !== undefined ? values[1] : -5;
+        let c = values[2] !== undefined ? values[2] : 6;
+
+        const discriminant = (b * b) - (4 * a * c);
+        HTMLTraceOutput += `<div class="trace-step">[STEP 1] Parsing Quadratic Coefficients Matrix: A=${a}, B=${b}, C=${c}</div>`;
+        HTMLTraceOutput += `<div class="trace-step">[STEP 2] Compute Discriminant (Δ = b² - 4ac): ${b}² - 4(${a})(${c}) = <span class="trace-highlight">${discriminant}</span></div>`;
         
-        // Secure expression evaluator constraint sandbox
-        const cleanInput = rawInput.replace(/[^0-9+\-*/().\s,Math.sincosqrtpie]/g, '');
-        
-        // Execute calculation computation string natively
-        const evaluatedResult = new Function(`return (${cleanInput})`)();
-        
-        if (evaluatedResult === undefined || Array.isArray(evaluatedResult) || typeof evaluatedResult === 'function') {
-          throw new Error("Invalid Mathematical Vector");
+        if (discriminant >= 0) {
+          const r1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+          const r2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+          HTMLTraceOutput += `<div class="trace-step">[STEP 3] Evaluating Real Root Structures via Bhaskara/Quadratic Formula:</div>`;
+          HTMLTraceOutput += `<div class="trace-step"> >> Root Alpha (x₁): <span class="trace-highlight">${r1.toFixed(4)}</span></div>`;
+          HTMLTraceOutput += `<div class="trace-step"> >> Root Beta (x₂): <span class="trace-highlight">${r2.toFixed(4)}</span></div>`;
+        } else {
+          const realPart = (-b / (2 * a)).toFixed(4);
+          const imagPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(4);
+          HTMLTraceOutput += `<div class="trace-step">[STEP 3] Discriminant &lt; 0. Computing Complex/Imaginary Conjugate Space:</div>`;
+          HTMLTraceOutput += `<div class="trace-step"> >> x₁ = <span class="trace-highlight">${realPart} + ${imagPart}i</span></div>`;
+          HTMLTraceOutput += `<div class="trace-step"> >> x₂ = <span class="trace-highlight">${realPart} - ${imagPart}i</span></div>`;
         }
 
-        const runDelta = performance.now() - startTime;
-        
-        // Update Output Ports
-        resultView.textContent = "= " + evaluatedResult;
-        resultView.style.color = "var(--matrix-green)";
-        
-        // Refresh Variables & Metrics Block
-        totalSolverSteps++;
-        baseSystemTemp += isOverclocked ? 1.8 : 0.6;
-        
-        document.getElementById('val-latency').textContent = runDelta.toFixed(3) + 'ms';
-        document.getElementById('val-alloc').textContent = (rawInput.length * 2) + ' bytes';
-        document.getElementById('val-steps').textContent = String(totalSolverSteps).padStart(6, '0');
-        
-        appendLogStream(`SUCCESS: Evaluated vector trace with latency Δ ${runDelta.toFixed(2)}ms`, false);
-        
-        // Generate values on the internal coordinate plot array matching calculation outputs
-        generateGraphWaveform(Number(evaluatedResult) || 0);
+        // Map parabolic trace function to vector space arrays
+        for(let x = -10; x <= 10; x += 0.5) {
+          analyticalPointsToPlot.push({ x: x, y: (a*x*x) + (b*x) + c });
+        }
 
-      } catch(err) {
-        resultView.textContent = "SYNTAX_ERROR // MATH_KERNEL_REJECTED";
-        resultView.style.color = "var(--magenta-glow)";
-        appendLogStream("CRITICAL: Math parse anomaly detected inside code string.", true);
+      } else if (activeSubjectMode === 'physics') {
+        // Mechanics Kinematics Module: Acceleration, Velocity, Displacements
+        let v0 = values[0] !== undefined ? values[0] : 0; // Init velocity
+        let accel = values[1] !== undefined ? values[1] : 9.81; // Constant acceleration
+        let time = values[2] !== undefined ? values[2] : 5; // Temporal point
+
+        const finalVelocity = v0 + (accel * time);
+        const displacement = (v0 * time) + (0.5 * accel * time * time);
+
+        HTMLTraceOutput += `<div class="trace-step">[STEP 1] Mapping Constant Kinematic Vector States: Initial Velocity(v₀)=${v0} m/s, Accel(a)=${accel} m/s², Duration(t)=${time}s</div>`;
+        HTMLTraceOutput += `<div class="trace-step">[STEP 2] Computing Terminal Velocity (v = v₀ + at): ${v0} + (${accel} * ${time}) = <span class="trace-highlight">${finalVelocity.toFixed(2)} m/s</span></div>`;
+        HTMLTraceOutput += `<div class="trace-step">[STEP 3] Computing Net Displacement Tensor (d = v₀t + 0.5at²): = <span class="trace-highlight">${displacement.toFixed(2)} meters</span></div>`;
+
+        for(let t = 0; t <= time * 2; t += time/20) {
+          analyticalPointsToPlot.push({ x: t, y: (v0 * t) + (0.5 * accel * t * t) });
+        }
+
+      } else if (activeSubjectMode === 'chemistry') {
+        // Ideal Gas Law State Matrix: PV = nRT
+        let p = values[0] !== undefined ? values[0] : 1.0; // Pressure atm
+        let v = values[1] !== undefined ? values[1] : 22.4; // Volume Liters
+        let n = values[2] !== undefined ? values[2] : 1.0; // Moles
+        const R = 0.0821; // Gas constant
+
+        const targetTemp = (p * v) / (n * R);
+
+        HTMLTraceOutput += `<div class="trace-step">[STEP 1] Introspecting Ideal Gas Thermodynamic Parameters:</div>`;
+        HTMLTraceOutput += `<div class="trace-step"> >> Measured Pressure (P) = ${p} atm, Volume (V) = ${v} L, Substance Amount (n) = ${n} mol</div>`;
+        HTMLTraceOutput += `<div class="trace-step">[STEP 2] Applying Ideal Gas Constant: R = ${R} L·atm/(mol·K)</div>`;
+        HTMLTraceOutput += `<div class="trace-step">[STEP 3] Resolving State Variable (T = PV / nR): = <span class="trace-highlight">${targetTemp.toFixed(2)} Kelvin (${(targetTemp - 273.15).toFixed(2)}°C)</span></div>`;
+
+        for(let vol = 5; vol <= 50; vol += 2) {
+          analyticalPointsToPlot.push({ x: vol, y: (n * R * targetTemp) / vol });
+        }
+
+      } else if (activeSubjectMode === 'stats') {
+        // Vector Statistics Array Processing
+        let sampleDataset = values.length > 1 ? values :;
+        const count = sampleDataset.length;
+        const sum = sampleDataset.reduce((a, b) => a + b, 0);
+        const mean = sum / count;
+        const squaredDiffsSum = sampleDataset.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0);
+        const variance = squaredDiffsSum / (count - 1);
+        const standardDev = Math.sqrt(variance);
+
+        HTMLTraceOutput += `<div class="trace-step">[STEP 1] Captured Matrix Vector Population: [${sampleDataset.join(', ')}] (N = ${count})</div>`;
+        HTMLTraceOutput += `<div class="trace-step">[STEP 2] Calculated Arithmetic Mean (μ): ${sum} / ${count} = <span class="trace-highlight">${mean.toFixed(2)}</span></div>`;
+        HTMLTraceOutput += `<div class="trace-step">[STEP 3] Computing Sample Variance (s²): = <span class="trace-highlight">${variance.toFixed(3)}</span></div>`;
+        HTMLTraceOutput += `<div class="trace-step">[STEP 4] Extrapolating Standard Deviation (σ): √s² = <span class="trace-highlight">${standardDev.toFixed(4)}</span></div>`;
+
+        sampleDataset.forEach((val, index) => {
+          analyticalPointsToPlot.push({ x: index, y: val });
+        });
       }
+
+      // Print step solution arrays directly to the window viewport
+      viewport.innerHTML = HTMLTraceOutput;
+      
+      const latencyDelta = performance.now() - executionStart;
+      document.getElementById('val-latency').textContent = latencyDelta.toFixed(3) + 'ms';
+      
+      // Render Cartesian arrays directly onto the Analytical Dashboard Canvas
+      renderDatasetToCanvasPlot(analyticalPointsToPlot);
     }
 
-    // Waveform Graph Generator Visualizer Output Module
-    function generateGraphWaveform(seedValue) {
-      gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
-      gCtx.strokeStyle = isOverclocked ? '#ff007f' : '#00f0ff';
-      gCtx.lineWidth = 2;
-      gCtx.beginPath();
+    // High-Precision Mathematical Graph Vector Canvas Plotter
+    function renderDatasetToCanvasPlot(points) {
+      if(points.length === 0) return;
+      pCtx.clearRect(0, 0, plotCanvas.width, plotCanvas.height);
 
-      const midY = graphCanvas.height / 2;
-      const stepX = graphCanvas.width / 40;
-
-      for(let i = 0; i <= 40; i++) {
-        const x = i * stepX;
-        const amplitude = Math.sin(i * 0.5 + seedValue) * (graphCanvas.height * 0.35);
-        if(i === 0) gCtx.moveTo(x, midY + amplitude);
-        else gCtx.lineTo(x, midY + amplitude);
+      // Draw Grid Line Arrays
+      pCtx.strokeStyle = 'rgba(255,255,255,0.03)';
+      pCtx.lineWidth = 1;
+      const gridInterval = 20;
+      for(let x = 0; x < plotCanvas.width; x += gridInterval) {
+        pCtx.beginPath(); pCtx.moveTo(x, 0); pCtx.lineTo(x, plotCanvas.height); pCtx.stroke();
       }
-      gCtx.stroke();
+      for(let y = 0; y < plotCanvas.height; y += gridInterval) {
+        pCtx.beginPath(); pCtx.moveTo(0, y); pCtx.lineTo(plotCanvas.width, y); pCtx.stroke();
+      }
+
+      // Calculate Extents bounds
+      const xVals = points.map(p => p.x);
+      const yVals = points.map(p => p.y);
+      const minX = Math.min(...xVals), maxX = Math.max(...xVals);
+      const minY = Math.min(...yVals), maxY = Math.max(...yVals);
+
+      pCtx.strokeStyle = isOverclocked ? 'var(--magenta-glow)' : 'var(--cyan-glow)';
+      pCtx.lineWidth = 2.5;
+      pCtx.beginPath();
+
+      points.forEach((p, idx) => {
+        // Map abstract computational points to direct canvas coordinates
+        const canvasX = ((p.x - minX) / (maxX - minX || 1)) * (plotCanvas.width - 20) + 10;
+        const canvasY = plotCanvas.height - (((p.y - minY) / (maxY - minY || 1)) * (plotCanvas.height - 20) + 10);
+        
+        if (idx === 0) pCtx.moveTo(canvasX, canvasY);
+        else pCtx.lineTo(canvasX, canvasY);
+      });
+      pCtx.stroke();
     }
 
-    // Preset Vector Injection Routines
-    function injectPreset(type) {
-      const field = document.getElementById('ai-input');
-      if(type === 'fibonacci') {
-        field.value = "((1 + Math.sqrt(5))**20 - (1 - Math.sqrt(5))**20) / (2**20 * Math.sqrt(5))";
-        appendLogStream("Injected Analytical Binet's Fibonacci Matrix Sequence Equation.", false);
-      } else if(type === 'primes') {
-        field.value = "Math.sqrt(97) * Math.PI";
-        appendLogStream("Injected Primality Vector Scaling Check Formula.", false);
-      } else if(type === 'sinewave') {
-        field.value = "Math.sin(45 * Math.PI / 180) + Math.cos(30)";
-        appendLogStream("Injected High Velocity Composite Wave Function.", false);
-      }
-      executeCoreProcessing();
-    }
-
-    // Real-Time Master Telemetry Clock & Temperature Monitor Node
-    function updateSystemClockTick() {
+    // Environment Metric and Thermal Dissipation Hardware Loop
+    function stepHardwareSystemClock() {
       const d = new Date();
       const timeStr = d.toTimeString().substring(0, 8);
       const msStr = String(d.getMilliseconds()).padStart(3, '0').substring(0, 2);
       document.getElementById('system-clock').textContent = timeStr + '.' + msStr;
 
-      // Thermal dispersion math models
-      if(baseSystemTemp > 34.0) baseSystemTemp -= 0.02;
-      if(isOverclocked) baseSystemTemp += Math.random() * 0.12 + 0.05;
+      if(coreThermalIndex > 34.0) coreThermalIndex -= 0.03;
+      if(isOverclocked) coreThermalIndex += Math.random() * 0.16 + 0.04;
       
       const tempEl = document.getElementById('temp-metric');
-      tempEl.textContent = baseSystemTemp.toFixed(1) + '°C';
+      tempEl.textContent = coreThermalIndex.toFixed(1) + '°C';
       
-      const throttleView = document.getElementById('val-throttle');
-      const loadView = document.getElementById('val-load');
-      
-      if(baseSystemTemp > 45.0) {
+      const throttleEl = document.getElementById('val-throttle');
+      const loadEl = document.getElementById('val-load');
+
+      if(coreThermalIndex > 46.0) {
         tempEl.style.color = "var(--magenta-glow)";
-        throttleView.textContent = "CORE_THROTTLE_ACTIVE";
-        throttleView.style.color = "var(--magenta-glow)";
-        loadView.textContent = (Math.random() * 10 + 85).toFixed(1) + "%";
-      } else {
-        tempEl.style.color = "var(--matrix-green)";
-        throttleView.textContent = "NOMINAL";
-        throttleView.style.color = "#fff";
-        loadView.textContent = (Math.random() * 5 + (isOverclocked ? 45 : 12)).toFixed(1) + "%";
-      }
-    }
-    setInterval(updateSystemClockTick, 33);
-
-    function toggleOverclock() {
-      isOverclocked = !isOverclocked;
-      appendLogStream(isOverclocked ? "WARNING: CPU VOLTAGE BOUNDS OVERRIDDEN." : "SYSTEM: Clock frequencies reset to default values.", isOverclocked);
-    }
-
-    function clearWorkspace() {
-      document.getElementById('ai-input').value = '';
-      document.getElementById('primary-result').textContent = 'SYSTEM IDLE // AWAITING EXPR TRACE...';
-      gCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
-      appendLogStream("Calculations workspace and data caches purged.", false);
-    }
-
-    const logPanel = document.getElementById('covert-activity-logs');
-    function appendLogStream(msg, isFlagged) {
-      const div = document.createElement('div');
-      div.className = 'covert-row';
-      if(isFlagged) div.style.color = 'var(--magenta-glow)';
-      div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-      logPanel.appendChild(div);
-      if(logPanel.children.length > 4) logPanel.removeChild(logPanel.children[1]);
-      logPanel.scrollTop = logPanel.scrollHeight;
-    }
-  </script>
-</body>
-</html>
+        throttleEl.textContent = "THERMAL_THROTTLE";
+        
