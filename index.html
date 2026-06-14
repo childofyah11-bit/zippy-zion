@@ -1,75 +1,94 @@
-// Replace the top of your playNote function with this:
-async function playNote(frequency, keyElement) {
-    initAudio();
-    
-    // Force the audio hardware to wake up FIRST
-    if (audioCtx.state === 'suspended') {
-        await audioCtx.resume();
-    }
-
-    if (activeNotes.has(frequency)) {
-        stopNote(frequency, keyElement);
-    }
-    
-    // ... rest of your oscillator and ADSR code remains exactly the same
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Polyphonic Synthesizer</title>
+    <title>Neon Pulse Wave Synthesizer</title>
     <style>
-        :root {
-            --bg-color: #0b0f19;
-            --panel-color: #161f30;
-            --accent-neon: #00ffcc;
-            --accent-blue: #0077ff;
-            --text-color: #e2e8f0;
-            --slider-thumb: #ff007f;
-        }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
+            background-color: #030712;
+            color: #f9fafb;
+            font-family: monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            margin: 0;
+            padding: 20px;
             box-sizing: border-box;
         }
 
-        h1 {
-            margin: 0 0 20px 0;
-            font-weight: 300;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--accent-neon);
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
-        }
-
-        .synth-container {
-            background: var(--panel-color);
-            border: 2px solid #233554;
-            border-radius: 16px;
-            padding: 25px;
+        .rack-mount {
+            background-color: #111827;
+            border: 3px solid #374151;
+            border-radius: 12px;
+            padding: 30px;
             width: 100%;
-            max-width: 900px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
 
-        /* Visualization Screen */
-        .visualizer-panel {
-            background: #050811;
-            border: 1px solid #1e2d4a;
+        /* Power Overlay for Browser Security Bypass */
+        .power-screen {
+            background: rgba(17, 24, 39, 0.95);
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 9px;
+            backdrop-filter: blur(4px);
+        }
+
+        .power-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: monospace;
+            letter-spacing: 2px;
             border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+            transition: all 0.2s;
+        }
+
+        .power-btn:hover {
+            background: #f87171;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 25px;
+            border-bottom: 2px dashed #374151;
+            padding-bottom: 15px;
             position: relative;
+        }
+
+        .panel-header h1 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: 3px;
+            color: #3b82f6;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Frequency Wave Visualizer Box */
+        .scope-box {
+            background-color: #020617;
+            border: 2px solid #1e3a8a;
+            border-radius: 6px;
+            height: 120px;
+            margin-bottom: 25px;
             overflow: hidden;
-            height: 150px;
         }
 
         canvas {
@@ -78,236 +97,219 @@ async function playNote(frequency, keyElement) {
             display: block;
         }
 
-        /* Control Dashboard Layout */
-        .control-grid {
+        /* Synth Parameters Rows */
+        .modules-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
-        .control-group {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
+        .module {
+            background: #1f2937;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
             padding: 15px;
         }
 
-        .control-group h3 {
-            margin: 0 0 15px 0;
-            font-size: 14px;
+        .module-title {
+            font-size: 12px;
+            color: #10b981;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--accent-blue);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 5px;
+            margin-bottom: 15px;
+            font-weight: bold;
         }
 
-        /* Custom Inputs */
-        .control-row {
+        .knob-row {
             display: flex;
             flex-direction: column;
             margin-bottom: 12px;
         }
 
-        .control-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .control-row label {
+        .knob-row label {
             font-size: 11px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            color: #8892b0;
+            color: #9ca3af;
+            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
         }
 
-        .control-row label span {
-            color: var(--accent-neon);
+        .knob-row label span {
+            color: #f59e0b;
         }
 
-        select, input[type="range"] {
-            background: #0d1527;
-            color: var(--text-color);
-            border: 1px solid #233554;
-            padding: 6px;
+        input[type="range"], select {
+            width: 100%;
+            background: #111827;
+            color: #f3f4f6;
+            border: 1px solid #4b5563;
+            padding: 5px;
             border-radius: 4px;
-            outline: none;
+            box-sizing: border-box;
         }
 
         input[type="range"] {
             -webkit-appearance: none;
-            width: 100%;
-            height: 6px;
-            background: #0d1527;
+            height: 8px;
         }
 
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--slider-thumb);
+            width: 14px;
+            height: 14px;
+            background: #3b82f6;
+            border-radius: 2px;
             cursor: pointer;
-            box-shadow: 0 0 8px var(--slider-thumb);
-            transition: transform 0.1s;
+            box-shadow: 0 0 8px #3b82f6;
         }
 
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        /* Musical Keyboard */
-        .keyboard {
+        /* Desktop Trigger Keys */
+        .piano-roll {
             display: flex;
-            background: #050811;
-            padding: 10px;
+            background: #090d16;
+            padding: 15px;
             border-radius: 8px;
-            position: relative;
-            height: 160px;
-            user-select: none;
+            gap: 4px;
         }
 
-        .key {
+        .ivory {
             flex: 1;
-            height: 100%;
-            background: #f3f3f3;
-            border: 1px solid #111;
+            background: #f9fafb;
+            height: 140px;
             border-radius: 0 0 4px 4px;
             cursor: pointer;
             position: relative;
-            z-index: 1;
             transition: background 0.1s;
         }
 
-        .key:active, .key.active {
-            background: var(--accent-neon);
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        .ivory.active {
+            background: #10b981 !important;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 0 10px #10b981;
         }
 
-        .key.black {
-            background: #111;
-            height: 60%;
-            width: 6%;
-            margin-left: -3%;
-            margin-right: -3%;
-            z-index: 2;
+        .ebony {
+            background: #1f2937;
+            height: 85px;
+            width: 32px;
+            margin-left: -18px;
+            margin-right: -18px;
+            z-index: 5;
             border-radius: 0 0 3px 3px;
+            cursor: pointer;
+            border: 1px solid #111827;
+            transition: background 0.1s;
         }
 
-        .key.black:active, .key.black.active {
-            background: var(--slider-thumb);
+        .ebony.active {
+            background: #f59e0b !important;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 10px #f59e0b;
         }
     </style>
 </head>
 <body>
 
-    <h1>Aether Synth</h1>
-
-    <div class="synth-container">
-        <!-- Waveform Visualizer -->
-        <div class="visualizer-panel">
-            <canvas id="visualizer"></canvas>
+    <div class="rack-mount" style="position: relative;">
+        <!-- Audio Unlock Overlay Screen -->
+        <div class="power-screen" id="gatekeeper">
+            <button class="power-btn" id="power-on">BOOT SYSTEM</button>
+            <p style="color: #6b7280; font-size: 11px; margin-top: 15px;">ACTIVATE WEB AUDIO HARDWARE ENGINE</p>
         </div>
 
-        <!-- Synth Settings Panel -->
-        <div class="control-grid">
-            <!-- Oscillator 1 Configuration -->
-            <div class="control-group">
-                <h3>Oscillator 1</h3>
-                <div class="control-row">
-                    <label>Waveform</label>
-                    <select id="osc1-type">
-                        <option value="sine">Sine</option>
-                        <option value="square" selected>Square</option>
-                        <option value="sawtooth">Sawtooth</option>
-                        <option value="triangle">Triangle</option>
+        <div class="panel-header">
+            <h1>ANALOG VOLTAGE SYNTHESIZER</h1>
+            <div style="font-size: 11px; color: #4b5563;">MODEL // 2026-X</div>
+        </div>
+
+        <!-- Oscilloscope Wave Engine Screen -->
+        <div class="scope-box">
+            <canvas id="scope"></canvas>
+        </div>
+
+        <div class="modules-grid">
+            <!-- Signal Generator -->
+            <div class="module">
+                <div class="module-title">1. Oscillator</div>
+                <div class="knob-row">
+                    <label>Wave Shape</label>
+                    <select id="wave-type">
+                        <option value="sawtooth">Sawtooth (Aggressive)</option>
+                        <option value="sine">Sine (Pure / Clean)</option>
+                        <option value="square">Square (Hollow / Retro)</option>
+                        <option value="triangle">Triangle (Flute-like)</option>
                     </select>
                 </div>
-                <div class="control-row">
-                    <label>Detune <span id="v-osc1-detune">0 c</span></label>
-                    <input type="range" id="osc1-detune" min="-50" max="50" value="0">
+                <div class="knob-row">
+                    <label>Master Volume <span id="v-gain">70%</span></label>
+                    <input type="range" id="vol-level" min="0" max="1" step="0.05" value="0.7">
                 </div>
             </div>
 
-            <!-- Oscillator 2 Configuration -->
-            <div class="control-group">
-                <h3>Oscillator 2</h3>
-                <div class="control-row">
-                    <label>Waveform</label>
-                    <select id="osc2-type">
-                        <option value="sine">Sine</option>
-                        <option value="square">Square</option>
-                        <option value="sawtooth" selected>Sawtooth</option>
-                        <option value="triangle">Triangle</option>
-                    </select>
+            <!-- Signal Filtering -->
+            <div class="module">
+                <div class="module-title">2. Lowpass Filter</div>
+                <div class="knob-row">
+                    <label>Cutoff Freq <span id="v-cutoff">4000 Hz</span></label>
+                    <input type="range" id="cutoff-freq" min="100" max="10000" step="50" value="4000">
                 </div>
-                <div class="control-row">
-                    <label>Detune <span id="v-osc2-detune">12 c</span></label>
-                    <input type="range" id="osc2-detune" min="-50" max="50" value="12">
+                <div class="knob-row">
+                    <label>Resonance (Q) <span id="v-res">1.0</span></label>
+                    <input type="range" id="res-val" min="0.5" max="15" step="0.5" value="1.0">
                 </div>
             </div>
 
-            <!-- Filter (VCF) -->
-            <div class="control-group">
-                <h3>Filter</h3>
-                <div class="control-row">
-                    <label>Cutoff <span id="v-filter-freq">2000 Hz</span></label>
-                    <input type="range" id="filter-freq" min="40" max="10000" value="2000" step="1">
+            <!-- Envelope Shaping -->
+            <div class="module">
+                <div class="module-title">3. Amp Envelope</div>
+                <div class="knob-row">
+                    <label>Attack Speed <span id="v-attack">0.05s</span></label>
+                    <input type="range" id="attack-time" min="0.01" max="1" step="0.01" value="0.05">
                 </div>
-                <div class="control-row">
-                    <label>Resonance (Q) <span id="v-filter-q">1</span></label>
-                    <input type="range" id="filter-q" min="1" max="20" value="1" step="0.5">
-                </div>
-            </div>
-
-            <!-- Envelope (ADSR) -->
-            <div class="control-group">
-                <h3>Envelope (ADSR)</h3>
-                <div class="control-row">
-                    <label>Attack <span id="v-env-a">0.1s</span></label>
-                    <input type="range" id="env-a" min="0.01" max="2" value="0.1" step="0.01">
-                </div>
-                <div class="control-row">
-                    <label>Release <span id="v-env-r">0.4s</span></label>
-                    <input type="range" id="env-r" min="0.01" max="3" value="0.4" step="0.01">
+                <div class="knob-row">
+                    <label>Release Fade <span id="v-release">0.30s</span></label>
+                    <input type="range" id="release-time" min="0.05" max="2" step="0.05" value="0.30">
                 </div>
             </div>
         </div>
 
-        <!-- Interactive Music Keyboard Grid -->
-        <div class="keyboard" id="keyboard">
-            <div class="key" data-note="261.63"></div> <!-- C4 -->
-            <div class="key black" data-note="277.18"></div> <!-- C#4 -->
-            <div class="key" data-note="293.66"></div> <!-- D4 -->
-            <div class="key black" data-note="311.13"></div> <!-- D#4 -->
-            <div class="key" data-note="329.63"></div> <!-- E4 -->
-            <div class="key" data-note="349.23"></div> <!-- F4 -->
-            <div class="key black" data-note="369.99"></div> <!-- F#4 -->
-            <div class="key" data-note="392.00"></div> <!-- G4 -->
-            <div class="key black" data-note="415.30"></div> <!-- G#4 -->
-            <div class="key" data-note="440.00"></div> <!-- A4 -->
-            <div class="key black" data-note="466.16"></div> <!-- A#4 -->
-            <div class="key" data-note="493.88"></div> <!-- B4 -->
-            <div class="key" data-note="523.25"></div> <!-- C5 -->
+        <!-- Synthesizer Interaction Keys -->
+        <div class="piano-roll">
+            <div class="ivory" data-hz="261.63"></div>
+            <div class="ebony" data-hz="277.18"></div>
+            <div class="ivory" data-hz="293.66"></div>
+            <div class="ebony" data-hz="311.13"></div>
+            <div class="ivory" data-hz="329.63"></div>
+            <div class="ivory" data-hz="349.23"></div>
+            <div class="ebony" data-hz="369.99"></div>
+            <div class="ivory" data-hz="392.00"></div>
+            <div class="ebony" data-hz="415.30"></div>
+            <div class="ivory" data-hz="440.00"></div>
+            <div class="ebony" data-hz="466.16"></div>
+            <div class="ivory" data-hz="493.88"></div>
+            <div class="ivory" data-hz="523.25"></div>
         </div>
     </div>
 
     <script>
-        // Initialize Core Audio Context
-        let audioCtx = null;
-        let masterGain = null;
-        let filterNode = null;
-        let analyserNode = null;
+        let audioContext = null;
+        let mainFilterNode = null;
+        let outputGainNode = null;
+        let signalAnalyser = null;
         
-        // Track actively playing sound instances (Polyphony tracking)
-        const activeNotes = new Map();
+        // Tracking structure map for playing keys
+        const trackingVoices = new Map();
 
-        // Canvas Setup for Wavelength Animations
-        const canvas = document.getElementById('visualizer');
-        const ctx = canvas.getContext('2d');
+        // Canvas Setup
+        const canvas = document.getElementById('scope');
+        const canvasCtx = canvas.getContext('2d');
         
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth * window.devicePixelRatio;
+        function fitCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', fitCanvas);
+        fitCanvas();
+
+        // Absolute Hardware Unlock Handler triggered by the BOOT Button
+.parentElement.clientWidth * window.devicePixelRatio;
             canvas.height = canvas.parentElement.clientHeight * window.devicePixelRatio;
