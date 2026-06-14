@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cyber Hunter: Chronos Engine</title>
+    <title>Cyber Hunter: Overclock Edition</title>
     <style>
-        body { margin: 0; background: #080810; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: sans-serif; }
-        canvas { border: 4px solid #00ffaa; background: #0c0c1a; }
+        body { margin: 0; background: #080810; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
+        canvas { border: 4px solid #00ffaa; background: #0c0c1a; box-shadow: 0 0 30px rgba(0, 255, 170, 0.2); }
     </style>
 </head>
 <body>
@@ -16,52 +16,94 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// STATE MANAGER
+// GAME STATE MANAGER
 let gameOver = false;
 let victory = false;
+let isShopActive = false;
 let score = 0;
 
-// UPGRADED PLAYER OBJECT
+// PLAYER ENGINE
 const player = {
     x: 100, y: 350, w: 40, h: 40,
     speed: 7, health: 100, maxHealth: 100,
     timeSlowActive: 0, timeSlowCooldown: 0,
     overchargeCooldown: 0,
-    // New Shield System variables
-    hasShield: true,
-    shieldCooldown: 0,
-    // Firing Speed Loop variable
-    shootTimer: 0
+    hasShield: true, shieldCooldown: 0,
+    shootTimer: 0,
+    // Upgrade Trackers
+    laserType: "normal", // Can be upgraded to "triple"
+    upgradePoints: 0
 };
 
 // 5-PHASE BOSS
 const boss = {
     x: 840, y: 280, w: 90, h: 140,
-    health: 3000, maxHealth: 3000, // Slightly boosted to challenge your new upgrades
-    phase: 1, timer: 0, dir: 1
+    health: 3000, maxHealth: 3000,
+    phase: 1, lastPhase: 1, timer: 0, dir: 1
 };
 
 let playerBullets = [];
 let bossBullets = [];
 const keys = {};
 
-// CONFIG MATRIX
+// SYSTEM MATRIX THEMES
 const phaseColors = { 1: "#00ffaa", 2: "#00bfff", 3: "#ffff00", 4: "#ffaa00", 5: "#ff0055" };
 const phaseNames = { 1: "GRID DEFENSE", 2: "CYAN OVERLOAD", 3: "MATRIX WARNING", 4: "CRITICAL CORE", 5: "ROGUE GOD" };
 
-// KEYBOARD HANDLING
+// INTERACTIVE BUTTON BOUNDARIES FOR SHOP MENU
+const buttons = {
+    triple: { x: 350, y: 260, w: 300, h: 50, cost: 1, label: "Buy Triple Shot (1 Pt)" },
+    speed:  { x: 350, y: 340, w: 300, h: 50, cost: 1, label: "Upgrade Speed +2 (1 Pt)" },
+    health: { x: 350, y: 420, w: 300, h: 50, cost: 1, label: "Max HP Boost +50 (1 Pt)" },
+    resume: { x: 400, y: 520, w: 200, h: 50, cost: 0, label: "Resume Fight" }
+};
+
+// INPUT EVENT HANDLING
 window.addEventListener("keydown", e => { keys[e.key] = true; });
 window.addEventListener("keyup", e => { keys[e.key] = false; });
-// MATHEMATICAL TRACKING ENGINE
-function update() {
-    if (gameOver || victory) return;
 
-    // Recharge Cooldowns
+// MOUSE CLICK HANDLER FOR SHOP UPGRADES
+canvas.addEventListener("click", e => {
+    if (!isShopActive) return;
+
+    // Calculate exact click coordinates on canvas
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    // Helper function to detect button hits
+    function checkHit(btn) {
+        return mouseX >= btn.x && mouseX <= btn.x + btn.w && mouseY >= btn.y && mouseY <= btn.y + btn.h;
+    }
+
+    if (checkHit(buttons.triple) && player.upgradePoints >= buttons.triple.cost && player.laserType !== "triple") {
+        player.laserType = "triple";
+        player.upgradePoints -= buttons.triple.cost;
+    } 
+    else if (checkHit(buttons.speed) && player.upgradePoints >= buttons.speed.cost) {
+        player.speed += 2;
+        player.upgradePoints -= buttons.speed.cost;
+    } 
+    else if (checkHit(buttons.health) && player.upgradePoints >= buttons.health.cost) {
+        player.maxHealth += 50;
+        player.health = player.maxHealth; // Full heal on upgrade
+        player.upgradePoints -= buttons.health.cost;
+    } 
+    else if (checkHit(buttons.resume)) {
+        isShopActive = false; // Exit shop loop
+    }
+});
+
+// MATHEMATICAL CALCULATION ENGINE
+function update() {
+    // Completely freeze background updates if game is paused or stopped
+    if (gameOver || victory || isShopActive) return;
+
+    // Cooldown management clocks
     if (player.timeSlowCooldown > 0) player.timeSlowCooldown--;
     if (player.timeSlowActive > 0) player.timeSlowActive--;
     if (player.overchargeCooldown > 0) player.overchargeCooldown--;
     
-    // Shield automatic generation clock (Generates a new shield every 6 seconds)
     if (!player.hasShield) {
         player.shieldCooldown++;
         if (player.shieldCooldown >= 360) {
@@ -70,7 +112,7 @@ function update() {
         }
     }
 
-    // Smooth Vector Axis Controls
+    // Vector Axis Movement Controls
     if (keys["w"] || keys["ArrowUp"]) player.y -= player.speed;
     if (keys["s"] || keys["ArrowDown"]) player.y += player.speed;
     if (keys["a"] || keys["ArrowLeft"]) player.x -= player.speed;
@@ -79,35 +121,41 @@ function update() {
     player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
     player.y = Math.max(0, Math.min(canvas.height - player.h, player.y));
 
-    // UPGRADED AUTOMATIC RAPID FIRE MODE (Spacebar)
-    // Decrement the gun reloading step
+    // AUTOMATIC RAPID FIRE GUN LOOPS
     if (player.shootTimer > 0) player.shootTimer--;
     
-    // Holding Spacebar down automatically sprays bullets at double speed!
     if (keys[" "] && player.shootTimer === 0) {
-        playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, speed: 18 });
-        player.shootTimer = 7; // Cuts bullet weapon delay right in half!
+        if (player.laserType === "triple") {
+            // Triple Shot Upgrade: Fires 3 lasers at distinct vertical angles
+            playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: -3 });
+            playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 0 });
+            playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 3 });
+        } else {
+            // Standard Single Laser Block
+            playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 0 });
+        }
+        player.shootTimer = 7; 
     }
 
-    // SUPERPOWER 1: Chronos Time Slow Mod Trigger
+    // SUPERPOWER 1: Chronos Time Slow Mod
     if (keys["Shift"] && player.timeSlowCooldown <= 0) {
-        player.timeSlowActive = 120;   // Active for 2 seconds
-        player.timeSlowCooldown = 300; // 5 second recharge
+        player.timeSlowActive = 120;   
+        player.timeSlowCooldown = 300; 
     }
 
-    // SUPERPOWER 2: Screen Wipe Strike Trigger
-    if ((keys["Enter"]) && player.overchargeCooldown <= 0) {
+    // SUPERPOWER 2: Clear Grid Overcharge
+    if (keys["Enter"] && player.overchargeCooldown <= 0) {
         player.overchargeCooldown = 240; 
-        bossBullets = []; // Instantly cleanses screen grid
-        boss.health -= 150; // Slams boss bar
+        bossBullets = []; 
+        boss.health -= 150; 
         score += 100;
         if (boss.health <= 0) victory = true;
     }
 
-    // Time-slow speed modifier
+    // Slow calculations factor
     let timeModifier = player.timeSlowActive > 0 ? 0.20 : 1.0;
 
-    // Calculate Boss Phase Shifts
+    // Calculate Multi-Phase Shifts
     let hpPct = boss.health / boss.maxHealth;
     if (hpPct > 0.8) boss.phase = 1;
     else if (hpPct > 0.6) boss.phase = 2;
@@ -115,11 +163,20 @@ function update() {
     else if (hpPct > 0.2) boss.phase = 4;
     else boss.phase = 5;
 
-    // Move Boss
+    // PAUSE INTERMISSION WHEN PHASE BREAKS (Trigger Upgrade Bar Menu)
+    if (boss.phase > boss.lastPhase) {
+        player.upgradePoints += 1; // Reward 1 point token
+        boss.lastPhase = boss.phase;
+        isShopActive = true; 
+        bossBullets = []; // Free clear to prepare for next level
+        return;
+    }
+
+    // Move Boss Core
     boss.y += boss.dir * 4 * timeModifier;
     if (boss.y <= 30 || boss.y >= canvas.height - boss.h - 30) boss.dir *= -1;
 
-    // Boss Firing Mechanics
+    // Boss Firing Mechanics Loop
     boss.timer += 1 * timeModifier;
     let delay = 25 - (boss.phase * 4);
     if (boss.timer >= delay) {
@@ -144,20 +201,21 @@ function update() {
         }
     }
 
-    // Process Player Bullets
+    // Handle Active Player Lasers
     playerBullets.forEach((b, idx) => {
-        b.x += b.speed;
-        if (b.x > canvas.width) playerBullets.splice(idx, 1);
+        b.x += b.vx;
+        b.y += b.vy;
+        if (b.x > canvas.width || b.y < 0 || b.y > canvas.height) playerBullets.splice(idx, 1);
 
         if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
-            boss.health -= 25; // 25 High-impact Damage
+            boss.health -= 25; // Massive 25 damage per projectile
             score += 50;
             playerBullets.splice(idx, 1);
             if (boss.health <= 0) victory = true;
         }
     });
 
-    // Process Enemy Orbs
+    // Handle Active Enemy Projectiles
     bossBullets.forEach((b, idx) => {
         b.x += b.vx * timeModifier;
         b.y += b.vy * timeModifier;
@@ -170,11 +228,10 @@ function update() {
         if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
             bossBullets.splice(idx, 1);
             
-            // NEW PASSIVE SHIELD ABSORPTION RULE CHECK
             if (player.hasShield) {
-                player.hasShield = false; // Pops shield entirely
-                player.shieldCooldown = 0; // Starts recharging loop timer
-                return; // Blocks the hit damage 100%!
+                player.hasShield = false; 
+                player.shieldCooldown = 0; 
+                return; 
             }
 
             player.health -= 10;
@@ -182,78 +239,21 @@ function update() {
         }
     });
 }
-// DRAW VISUAL HOOKS
+
+// VISUALS RENDER PIPELINE
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (!gameOver && !victory) {
-        // Chronos dimension blue grid shade tint
-        if (player.timeSlowActive > 0) {
-            ctx.fillStyle = "rgba(0, 191, 255, 0.08)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
+    if (isShopActive) {
+        // --- UPGRADE SHOP OVERLAY LAYOUT ---
+        ctx.fillStyle = "rgba(12, 12, 26, 0.9)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw Player (Cyan Block)
-        ctx.fillStyle = "#00ffff";
-        ctx.fillRect(player.x, player.y, player.w, player.h);
+        ctx.fillStyle = "#00ffaa"; ctx.font = "bold 30px monospace"; ctx.textAlign = "center";
+        ctx.fillText("PHASE BROKEN // UPGRADE PROTOCOL", canvas.width / 2, 120);
+        
+        ctx.fillStyle = "#fff"; ctx.font = "18px monospace";
+        ctx.fillText(`AVAILABLE POINT TOKENS: ${player.upgradePoints}`, canvas.width / 2, 180);
 
-        // NEW: Draw Green Passive Shield Bubble around player if active
-        if (player.hasShield) {
-            ctx.strokeStyle = "#32cd32";
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.arc(player.x + player.w/2, player.y + player.h/2, player.w, 0, Math.PI * 2);
-            ctx.stroke();
-        }
-
-        // Draw Boss
-        ctx.fillStyle = phaseColors[boss.phase];
-        ctx.fillRect(boss.x, boss.y, boss.w, boss.h);
-
-        // Draw Lasers
-        ctx.fillStyle = "#00ffaa";
-        playerBullets.forEach(b => ctx.fillRect(b.x, b.y - 3, 16, 6));
-
-        // Draw Boss Projectiles
-        bossBullets.forEach(b => {
-            ctx.fillStyle = b.color;
-            ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
-        });
-
-        // HUD STYLING
-        ctx.fillStyle = "#fff"; ctx.font = "bold 14px monospace";
-        ctx.fillText(`HUNTER HP: ${Math.max(0, player.health)}%`, 30, 40);
-        ctx.fillText(`SHIELD DEFENSE: ${player.hasShield ? "ONLINE" : "RECHARGING"}`, 30, 65);
-        ctx.fillText(`CHRONOS MOD  [SHIFT]: ${player.timeSlowCooldown === 0 ? "READY" : "CHARGING"}`, 30, 90);
-        ctx.fillText(`WIPE STRIKE   [ENTER]: ${player.overchargeCooldown === 0 ? "READY" : "CHARGING"}`, 30, 115);
-        ctx.fillText(`METRICS SCORE: ${score}`, 30, 140);
-
-        // Boss Info Bar
-        let currentHex = phaseColors[boss.phase];
-        ctx.fillStyle = "#221111"; ctx.fillRect(600, 25, 370, 20);
-        ctx.fillStyle = currentHex; ctx.fillRect(600, 25, Math.max(0, 370 * (boss.health / boss.maxHealth)), 20);
-        ctx.fillStyle = "#fff"; ctx.fillText(`AI CORE HP: ${boss.health}`, 600, 65);
-        ctx.fillStyle = currentHex; ctx.fillText(`[PHASE ${boss.phase}/5: ${phaseNames[boss.phase]}]`, 600, 85);
-
-    } else {
-        ctx.textAlign = "center";
-        if (gameOver) {
-            ctx.fillStyle = "#ff0055"; ctx.font = "bold 40px monospace"; ctx.fillText("CRITICAL FAILURE: VANGUARD DESTROYED", canvas.width/2, canvas.height/2);
-        } else if (victory) {
-            ctx.fillStyle = "#00ffaa"; ctx.font = "bold 40px monospace"; ctx.fillText("AI PURGED: TOTAL VICTORY SECURED", canvas.width/2, canvas.height/2);
-        }
-    }
-}
-
-// PRIMARY TICK ENGINE CLOCK
-function runLoop() {
-    update();
-    draw();
-    requestAnimationFrame(runLoop);
-}
-
-runLoop();
-</script>
-</body>
-</html>
-
+        // Draw Shop Choice Buttons
+        Object.keys(buttons).forEach(key => {
