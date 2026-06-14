@@ -2,36 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Retro Space Battle: Fixed Edition</title>
+    <title>Cyber Dragon Grid: Chronos Protocol</title>
     <style>
-        /* Centers the gameplay container perfectly on any Chrome screen layout */
-        body { margin: 0; background: #0c0c16; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
-        canvas { border: 4px solid #00ffff; background: #05050f; display: block; box-shadow: 0 0 30px rgba(0, 255, 255, 0.2); }
-        
-        /* Chrome Security Override Start Button */
-        #launchButton { padding: 15px 40px; font-size: 22px; font-family: monospace; font-weight: bold; background: #00ffff; color: #0c0c16; border: none; cursor: pointer; box-shadow: 0 0 20px #00ffff; border-radius: 4px; }
-        #launchButton:hover { background: #ffffff; box-shadow: 0 0 30px #ffffff; }
+        /* This centered pixel-grid box forces components onto any screen layout */
+        body { margin: 0; background: #06060c; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
+        canvas { border: 4px solid #00ffaa; background: #020205; display: block; box-shadow: 0 0 30px rgba(0, 255, 170, 0.2); }
     </style>
 </head>
 <body>
 
-<!-- This button forces Chrome to give the code instant permission to render -->
-<button id="launchButton" onclick="initializeEngine()">LAUNCH MISSION</button>
-<canvas id="gameCanvas" width="900" height="600" style="display: none;"></canvas>
+<canvas id="gameCanvas" width="900" height="600"></canvas>
 
 <script>
-// UNIFIED ENGINE HOOKS
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// PRIMARY STATE CONTROLLERS
+// Pull keyboard permission straight to the game screen immediately
+window.focus();
+
+// PRIMARY SYSTEM FLAGS
 let gameOver = false;
 let victory = false;
-let isShopActive = false;
 let score = 0;
-let damageCurrency = 0; // Your damage scores points you turn into cash currency
 
-// CYAN SPACESHIP DATA
+// THE PLAYER COMBAT FIGHTER (GREEN BLOCK)
 let pX = 100;
 let pY = 280;
 let pW = 40;
@@ -42,19 +36,14 @@ let pMaxHealth = 150;
 let timeSlowActive = 0;
 let timeSlowCooldown = 0;
 let overchargeCooldown = 0;
-let laserType = "normal"; 
 
-// CAPABILITY 4: Overdrive Shield matrix
-let overdriveShieldActive = 0;
-let overdriveShieldCooldown = 0;
-
-// THE MULTI-PHASE ALIEN BOSS TITAN
+// THE 5-PHASE CYBER DRAGON BOSS (REACTIVE HUE BLOCK)
 let bX = 760;
 let bY = 220;
 let bW = 80;
 let bH = 150;
-let bHealth = 5000; 
-let bMaxHealth = 5000;
+let bHealth = 4000;
+let bMaxHealth = 4000;
 let bPhase = 1;
 let bDir = 1;
 let bTimer = 0;
@@ -64,195 +53,210 @@ let playerBullets = [];
 let bossBullets = [];
 const keys = {};
 
-// SYSTEM BINDING ACTION OVERRIDES TO SAFELY INGEST KEYBOARD INPUTS
+// INPUT TRACKING EVENT LISTENERS
 window.addEventListener("keydown", function(e) { 
     if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
         e.preventDefault();
     }
-
     keys[e.key] = true; 
-
-    // --- PAUSE SHOP LOGIC INGESTION: CAPTURES KEY NUMBERS INSIDE MENU ---
-    if (isShopActive) {
-        if (e.key === "1" && damageCurrency >= 200 && laserType !== "triple") {
-            laserType = "triple"; damageCurrency -= 200;
-        }
-        else if (e.key === "2" && damageCurrency >= 100) {
-            pSpeed += 2; damageCurrency -= 100;
-        }
-        else if (e.key === "3" && damageCurrency >= 150) {
-            pMaxHealth += 50; pHealth = pMaxHealth; damageCurrency -= 150;
-        }
-        else if (e.key === "4" && damageCurrency >= 250 && overdriveShieldCooldown === 0) {
-            overdriveShieldCooldown = 1; damageCurrency -= 250; 
-        }
-        else if (e.key === "p" || e.key === "P" || e.key === "Enter") { 
-            isShopActive = false;
-        }
-        return;
-    }
-
-    // --- TAP P KEY AT ANY POINT DURING THE GAME TO SAFELY OPEN SHOP MATRIX ---
-    if ((e.key === "p" || e.key === "P") && !gameOver && !victory) {
-        isShopActive = true;
-    }
-
-    // --- DEPLOY SUPERPOWER 4: SHIELD REFLECTOR BUBBLE MATRIX (R Key) ---
-    if ((e.key === "r" || e.key === "R") && overdriveShieldCooldown === 0 && overdriveShieldActive === 0 && !gameOver && !victory) {
-        overdriveShieldActive = 180; overdriveShieldCooldown = 480; 
-    }
 });
-
 window.addEventListener("keyup", function(e) { keys[e.key] = false; });
 
-// SECURITY LAUNCH HOOK FOR CHROME RECOGNITION
-function initializeEngine() {
-    document.getElementById("launchButton").style.display = "none";
-    canvas.style.display = "block";
-    
-    // Automatically force keyboard focus into the center game field array container
-    window.focus();
-    canvas.focus();
-    
-    // Begin continuous loops clock execution ticks safely
-    runLoop();
-}
-
-// ARCADES CALCULATION STEP PIPELINE
+// MATHEMATICAL CALCULATION STEP ENGINE
 function update() {
-    if (gameOver || victory || isShopActive) return;
+    if (gameOver || victory) return;
 
-    // Tick down system meters updates
+    // Tick down superpower system meters
     if (timeSlowCooldown > 0) timeSlowCooldown--;
     if (timeSlowActive > 0) timeSlowActive--;
     if (overchargeCooldown > 0) overchargeCooldown--;
-    
-    if (overdriveShieldCooldown > 0 && overdriveShieldActive === 0) overdriveShieldCooldown--;
-    if (overdriveShieldActive > 0) overdriveShieldActive--;
 
-    // Standard Smooth Flight Axis translations
+    // Smooth Smooth Flight Translations Axis
     if (keys["w"] || keys["ArrowUp"]) pY -= pSpeed;
     if (keys["s"] || keys["ArrowDown"]) pY += pSpeed;
     if (keys["a"] || keys["ArrowLeft"]) pX -= pSpeed;
     if (keys["d"] || keys["ArrowRight"]) pX += pSpeed;
 
+    // Bounding walls containment constraints
     if (pX < 10) pX = 10;
     if (pX > 400) pX = 400; 
     if (pY < 10) pY = 10;
     if (pY > 600 - pH - 10) pY = 600 - pH - 10;
 
-    // UPGRADED PRIMARY WEAPON: Spacebar shoots lasers (35 Damage Output)
-    if (keys[" "] && playerBullets.length < 8) {
-        if (laserType === "triple") {
-            playerBullets.push({ x: pX + pW, y: pY + pH/2, vx: 15, vy: -3 });
-            playerBullets.push({ x: pX + pW, y: pY + pH/2, vx: 15, vy: 0 });
-            playerBullets.push({ x: pX + pW, y: pY + pH/2, vx: 15, vy: 3 });
-        } else {
-            playerBullets.push({ x: pX + pW, y: pY + pH/2, vx: 15, vy: 0 });
-        }
-        keys[" "] = false; 
+    // --- SPECIFICATION 1: VOLTAIC RAILGUN ATTACK (Spacebar Fires 35-Damage Lasers) ---
+    if (keys[" "] && playerBullets.length < 6) {
+        playerBullets.push({ x: pX + pW, y: pY + pH/2 });
+        keys[" "] = false; // Requires distinct click taps to launch projectiles
     }
 
-    // SUPERPOWER 1: Chronos Slow Warp Mod (Left Shift Key drops threats to 20% speed)
+    // --- SPECIFICATION 2: CHRONOS WARP DRIVE TIME-SLOW (Shift Key Drops Threats To 20% Speed) ---
     if (keys["Shift"] && timeSlowCooldown === 0) {
-        timeSlowActive = 150; timeSlowCooldown = 360; 
+        timeSlowActive = 150; // Active for 2.5 seconds
+        timeSlowCooldown = 360; // 6 second recharge loop clock
     }
 
-    // SUPERPOWER 2: EMP Screen Cleanse Pulse (Enter Key wipes map field bullets)
+    // --- SPECIFICATION 3: EMP SCREEN REBOOT RECTIFIER (Enter Key Clears Grid Bullets) ---
     if (keys["Enter"] && overchargeCooldown === 0) {
         overchargeCooldown = 240;
-        bossBullets = []; bHealth -= 250; damageCurrency += 250; 
+        bossBullets = []; // Instantly vaporizes all active enemy spheres off the field
+        bHealth -= 250; // Mass burst flat chunk damage strike
         score += 150;
         if (bHealth <= 0) victory = true;
     }
 
+    // Velocity slow parameter calculation factor
     let timeModifier = timeSlowActive > 0 ? 0.20 : 1.0;
 
-    // Process Boss Protocols Phase Shifting indices calculation
+    // Evolve Boss Protocols difficulty step shifts across health metrics
     let hpPct = bHealth / bMaxHealth;
     if (hpPct > 0.8) bPhase = 1;
     else if (hpPct > 0.6) bPhase = 2;
     else if (hpPct > 0.4) bPhase = 3;
     else if (hpPct > 0.15) bPhase = 4;
-    else bPhase = 5; 
+    else bPhase = 5; // --- SPECIFICATION 4: OVERPOWERED CRITICAL PHASE 5 ---
 
-    // Overpowered Flight Pathing at Phase 5
+    // Boss Motion Scripts
     if (bPhase === 5) {
+        // Double movement vertical pacing speed and lock intercept tracks onto ship height position
         let targetY = pY + pH/2 - bH/2;
         bY += (targetY - bY) * 0.08 * timeModifier;
-        bX = 740 + Math.sin(Date.now() / 150) * 40 * timeModifier; 
+        bX = 740 + Math.sin(Date.now() / 150) * 40 * timeModifier; // Glitches side to side unstable
     } else {
         bY += bDir * 4 * timeModifier;
         if (bY <= 20 || bY >= 600 - bH - 20) bDir *= -1;
     }
 
-    // Automated Boss Turret weapon firing loops
-    bTimer += 1 * timeModifier; bAngle += 0.08 * timeModifier;
+    // Boss Automated weapon turret firing loops
+    bTimer += 1 * timeModifier;
+    bAngle += 0.08 * timeModifier;
+
     let fireDelay = 25 - (bPhase * 3);
-    if (bPhase === 5) fireDelay = 4; 
+    if (bPhase === 5) fireDelay = 4; // Absolute hyper-speed bullet hell array output!
 
     if (bTimer >= fireDelay) {
         bTimer = 0;
-        let c = "#00ffff"; 
-        if (bPhase === 2) c = "#ff00ff"; 
+        
+        // Define color hex string and title string text per step phase
+        let c = "#00ffaa"; 
+        if (bPhase === 2) c = "#00bfff"; 
         if (bPhase === 3) c = "#ffff00"; 
-        if (bPhase === 4) c = "#ff5500"; 
-        if (bPhase === 5) c = "#ff3300"; 
+        if (bPhase === 4) c = "#ffaa00"; 
+        if (bPhase === 5) c = "#ff0055"; 
 
         if (bPhase === 1) {
             bossBullets.push({ x: bX, y: bY + bH/2, vx: -8, vy: 0, color: c });
-        } else if (bPhase === 2) {
+        } 
+        else if (bPhase === 2) {
             bossBullets.push({ x: bX, y: bY + bH/2, vx: -9, vy: (Math.random() - 0.5) * 5, color: c });
-        } else if (bPhase === 3) {
+        } 
+        else if (bPhase === 3) {
             let angle = Math.atan2((pY + pH/2) - (bY + bH/2), (pX + pW/2) - bX);
             bossBullets.push({ x: bX, y: bY + bH/2, vx: Math.cos(angle) * 10, vy: Math.sin(angle) * 10, color: c });
-        } else if (bPhase === 4) {
+        } 
+        else if (bPhase === 4) {
             bossBullets.push({ x: bX, y: bY + 20, vx: -11, vy: -1.5, color: c });
             bossBullets.push({ x: bX, y: bY + bH - 20, vx: -11, vy: 1.5, color: c });
-        } else if (bPhase === 5) {
+        } 
+        else if (bPhase === 5) {
+            // Rapid continuously rotating 3-way spread pattern
             bossBullets.push({ x: bX, y: bY + bH/2, vx: -13, vy: Math.sin(bAngle) * 7, color: c });
             bossBullets.push({ x: bX, y: bY + bH/2, vx: -11, vy: Math.sin(bAngle + 0.8) * 5, color: "#ffffff" });
-            bossBullets.push({ x: bX, y: bY + bH/2, vx: -11, vy: Math.sin(bAngle - 0.8) * 5, color: c });
+            bossBullets.push({ x: bossX, y: bY + bH/2, vx: -11, vy: Math.sin(bAngle - 0.8) * 5, color: c });
         }
     }
 
-    // Trajectory tracking player lasers (Deals 35 points and transfers instantly into cash!)
+    // Track Player Lasers (Deals 35 points of heavy specification damage)
     for (let i = playerBullets.length - 1; i >= 0; i--) {
-        let b = playerBullets[i]; b.x += b.vx || 15; b.y += b.vy || 0;
-        if (b.x > 900 || b.y < 0 || b.y > 600) { playerBullets.splice(i, 1); continue; }
+        let b = playerBullets[i]; b.x += 15;
+        if (b.x > 900) { playerBullets.splice(i, 1); continue; }
 
         if (b.x > bX && b.x < bX + bW && b.y > bY && b.y < bY + bH) {
-            bHealth -= 35; 
-            damageCurrency += 35; // CORE HARDCODED REQ: HIT STRIKES ACCUMULATE AS DIRECT CASH VALUE!
+            bHealth -= 35; // 35 damage points per shot
             score += 50;
             playerBullets.splice(i, 1);
             if (bHealth <= 0) victory = true;
         }
     }
 
-    // Trajectory tracking enemy threat spheres
+    // Track Enemy Threat Projectiles (Velocity scaled by Chronos Mod modifier value)
     for (let i = bossBullets.length - 1; i >= 0; i--) {
         let b = bossBullets[i]; b.x += b.vx * timeModifier; b.y += b.vy * timeModifier;
         if (b.x < -20 || b.x > 920 || b.y < -20 || b.y > 620) { bossBullets.splice(i, 1); continue; }
 
         if (b.x > pX && b.x < pX + pW && b.y > pY && b.y < pY + pH) {
-            bossBullets.splice(i, 1);
-            if (overdriveShieldActive > 0) { score += 25; continue; }
-
             let dmg = bPhase === 5 ? 12 : 10; 
-            pHealth -= dmg; if (pHealth <= 0) gameOver = true;
+            pHealth -= dmg;
+            bossBullets.splice(i, 1);
+            if (pHealth <= 0) gameOver = true;
         }
     }
 }
 
-// GRAPHICS RENDER LAYER INTERFACES
+// VISUAL ENGINE GRAPHICS PAINTER
 function draw() {
     ctx.clearRect(0, 0, 900, 600);
 
-    if (isShopActive) {
-        // --- UPGRADE NETWORK DASHBOARD INTERMISSION SCREEN PANEL ---
-        ctx.fillStyle = "rgba(10, 10, 32, 0.96)"; ctx.fillRect(0, 0, 900, 600);
-        ctx.fillStyle = "#ff007f"; ctx.font = "bold 24px monospace"; ctx.textAlign = "center";
-        ctx.fillText("DAMAGE REWARD EQUIPMENT TERMINAL ENGINE", 450, 120);
-        
-        ctx.fillStyle = "#ffffff"; ctx.font = "18px monospace";
+    if (!gameOver && !victory) {
+        // Chronos blue dimension active layout overlay box tint
+        if (timeSlowActive > 0) {
+            ctx.fillStyle = "rgba(0, 255, 255, 0.08)"; ctx.fillRect(0, 0, 900, 600);
+        }
+
+        // Paint Space Fighter (Neon Green Block Frame)
+        ctx.fillStyle = "#00ffaa"; ctx.fillRect(pX, pY, pW, pH);
+
+        // Dynamic status mapping variables setup per phase
+        let bossColor = "#00ffaa";
+        let phaseTitle = "GRID DEFENSE";
+        if (bPhase === 2) { bossColor = "#00bfff"; phaseTitle = "CYAN OVERLOAD"; }
+        if (bPhase === 3) { bossColor = "#ffff00"; phaseTitle = "SWARM MATRIX"; }
+        if (bPhase === 4) { bossColor = "#ffaa00"; phaseTitle = "CRITICAL CORE"; }
+        if (bPhase === 5) { bossColor = "#ff0055"; phaseTitle = "OVERPOWERED TITAN CORE"; }
+
+        // Paint Cyber Dragon Boss Box
+        ctx.fillStyle = bossColor; ctx.fillRect(bX, bY, bW, bH);
+
+        // Paint Railgun Lasers
+        ctx.fillStyle = "#00ffaa";
+        playerBullets.forEach(function(b) { ctx.fillRect(b.x, b.y - 3, 16, 6); });
+
+        // Paint Threat Orbs
+        bossBullets.forEach(function(b) {
+            ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, 7, 0, Math.PI * 2); ctx.fill();
+        });
+
+        // SYSTEM HOVER TERMINAL DASHBOARD PANEL DISPLAY (HUD)
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 13px monospace";
+        ctx.fillText("FIGHTER SYSTEM HP: " + Math.max(0, pHealth) + "/" + pMaxHealth, 20, 35);
+        ctx.fillText("CHRONOS CLOCK [SHIFT]: " + (timeSlowCooldown === 0 ? "READY" : "CHARGING"), 20, 60);
+        ctx.fillText("EMP PULSE REBOOT [ENTER]: " + (overchargeCooldown === 0 ? "READY" : "CHARGING"), 20, 85);
+        ctx.fillText("MISSION DATA DATA RECORD: " + score, 20, 110);
+
+        // Enemy Health Indicator Gauges Bars meters
+        ctx.fillStyle = "#141424"; ctx.fillRect(500, 20, 370, 20);
+        ctx.fillStyle = bossColor; ctx.fillRect(500, 20, Math.max(0, 370 * (bHealth / bMaxHealth)), 20);
+        ctx.fillStyle = "#ffffff"; ctx.fillText("BOSS VITALFORCE HP: " + bHealth, 500, 58);
+        ctx.fillStyle = bossColor;
+        ctx.fillText("[ PROTOCOL MODE " + bPhase + "/5 : " + phaseTitle + " ]", 500, 80);
+
+    } else {
+        ctx.textAlign = "center"; ctx.font = "bold 35px monospace";
+        if (gameOver) {
+            ctx.fillStyle = "#ff0055"; ctx.fillText("CRITICAL FAILURE // FIGHTER SHIP DESTROYED", 450, 300);
+        } else if (victory) {
+            ctx.fillStyle = "#00ffaa"; ctx.fillText("TITAN PURGED // GRID MISSION COMPLETED", 450, 300);
+        }
+    }
+}
+
+// PRIMARY RECURSIVE TIMING CLOCK TICK GENERATOR LOOP
+function runLoop() {
+    update();
+    draw();
+    requestAnimationFrame(runLoop);
+}
+
+// FORCIBLY IGNITE RUNTIME
+runLoop();
+</script>
+</body>
