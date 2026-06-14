@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-8 AUDIO HARDWARE</title>
+    <title>X-8 // MATRIX OVERRIDE EXEGESIS</title>
     <style>
         /* Raw, Low-Res CRT Matrix Style */
         body {
@@ -19,6 +19,19 @@
             margin: 0;
             image-rendering: pixelated;
             user-select: none;
+            overflow: hidden;
+        }
+
+        /* Scanline Overlay for Arcade Feel */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+            z-index: 99999;
+            background-size: 100% 4px;
+            pointer-events: none;
         }
 
         /* Main Blocky Console Framework */
@@ -27,9 +40,10 @@
             border: 8px solid #00ff66;
             padding: 15px;
             width: 95%;
-            max-width: 700px;
+            max-width: 600px;
             box-shadow: 16px 16px 0px #220044;
             box-sizing: border-box;
+            position: relative;
         }
 
         .panel-stripe {
@@ -39,65 +53,93 @@
             font-size: 14px;
             text-align: center;
             margin-bottom: 15px;
+            font-weight: 900;
         }
 
-        .hardware-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
+        /* Game Screen Arena Box */
+        #game-viewport {
+            width: 100%;
+            height: 350px;
+            background: #050505;
+            border: 6px solid #ff0055;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
         }
 
-        .module-block {
-            border: 4px solid #ffaa00;
-            padding: 8px;
-            background: #111;
-        }
-
-        .module-tag {
-            font-size: 11px;
-            background: #ffaa00;
-            color: #000;
-            padding: 2px 4px;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-
-        .input-row {
+        /* Score & UI Elements inside the cabinet */
+        .hud-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            font-size: 12px;
+            background: #111;
+            border: 4px solid #ffaa00;
+            padding: 6px 12px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #ffaa00;
         }
 
-        /* Pixel-art Raw Select Box and Text Sliders */
-        select, input[type="range"] {
-            background: #000;
-            color: #ff0055;
-            border: 4px solid #ff0055;
-            font-family: inherit;
-            font-weight: 900;
-            padding: 2px;
-            outline: none;
-        }
-
-        input[type="range"] {
-            width: 100px;
-            -webkit-appearance: none;
-            height: 14px;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 12px;
+        /* Player Ship Character Entity */
+        #player-ship {
+            position: absolute;
+            bottom: 10px;
+            width: 30px;
             height: 20px;
             background: #00ff66;
-            border: 2px solid #fff;
-            cursor: pointer;
+            border: 3px solid #fff;
+            box-sizing: border-box;
+            transition: left 0.1s ease-out;
         }
 
-        /* Chunk-Style Piano Roll Intermediary Layout */
+        /* Laser Beam Entities */
+        .laser-beam {
+            position: absolute;
+            width: 4px;
+            height: 15px;
+            background: #ff0055;
+            box-shadow: 0 0 4px #ff0055;
+        }
+
+        /* Falling Hostile Target Data Packets */
+        .glitch-target {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #ffaa00;
+            border: 3px solid #000;
+            box-sizing: border-box;
+        }
+
+        /* Game Over Intercept Screen Screen */
+        #game-over-screen {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .action-btn {
+            background: #000;
+            color: #00ff66;
+            border: 4px solid #00ff66;
+            padding: 10px 20px;
+            font-family: inherit;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px #ff0055;
+            margin-top: 15px;
+        }
+        .action-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #ff0055;
+        }
+
+        /* Chunk-Style Mechanical Action Matrix Keys */
         .block-keyboard {
             display: flex;
             background: #000;
@@ -110,15 +152,13 @@
             flex: 1;
             background: #fff;
             color: #000;
-            height: 80px;
-            border: 6px solid #000;
-            box-shadow: 0px 10px 0px #333;
+            height: 65px;
+            border: 4px solid #000;
+            box-shadow: 0px 6px 0px #333;
             cursor: pointer;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
-            padding-bottom: 10px;
-            box-sizing: border-box;
             font-weight: 900;
             font-size: 14px;
         }
@@ -126,7 +166,7 @@
         .chunk-key:active {
             background: #ff0055;
             box-shadow: 0px 2px 0px #990022;
-            transform: translateY(8px);
+            transform: translateY(4px);
             color: #fff;
         }
     </style>
@@ -135,135 +175,121 @@
 
     <!-- MAIN SOUND GENERATOR SYSTEM CABINET -->
     <div class="console-chassis">
-        <div class="panel-stripe">=== CONTROLLER MATRIX OVERRIDE V2 ===</div>
-        <div class="hardware-grid">
+        <div class="panel-stripe">=== HARDWARE TERMINAL MATRIX GAME ===</div>
+
+        <!-- System Score Display Board -->
+        <div class="hud-row">
+            <div>DATA_STRIKES: <span id="score-val">0000</span></div>
+            <div>SHIELD_INTEGRITY: <span id="shield-val">100%</span></div>
+        </div>
+
+        <!-- Visual Core Play Arena Box -->
+        <div id="game-viewport">
+            <div id="player-ship"></div>
             
-            <!-- Signal Oscillators -->
-            <div class="module-block">
-                <div class="module-tag">01// CORE WAVEFORM</div>
-                <div class="input-row">
-                    <label>SHAPE 1</label>
-                    <select id="osc-wave-1">
-                        <option value="square" selected>SQUARE</option>
-                        <option value="sawtooth">SAW</option>
-                        <option value="triangle">TRI</option>
-                        <option value="sine">SINE</option>
-                    </select>
-                </div>
-                <div class="input-row">
-                    <label>SHAPE 2</label>
-                    <select id="osc-wave-2">
-                        <option value="sawtooth" selected>SAW</option>
-                        <option value="square">SQUARE</option>
-                        <option value="triangle">TRI</option>
-                        <option value="sine">SINE</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Pitch Modification Engine Controls -->
-            <div class="module-block">
-                <div class="module-tag">02// CHIP MODULATORS</div>
-                <div class="input-row">
-                    <label>ARP SPEED</label>
-                    <input type="range" id="arp-rate" min="0" max="15" step="1" value="0">
-                </div>
-                <div class="input-row">
-                    <label>ARP INTERVAL</label>
-                    <input type="range" id="arp-interval" min="3" max="12" step="1" value="4">
-                </div>
-            </div>
-
-            <!-- Frequency Ramping Sweep Modification Elements -->
-            <div class="module-block">
-                <div class="module-tag">03// VOLTAGE SWEEP</div>
-                <div class="input-row">
-                    <label>SWEEP DIR</label>
-                    <select id="sweep-dir">
-                        <option value="none">NONE</option>
-                        <option value="down">DOWNPITCH</option>
-                        <option value="up">UPPITCH</option>
-                    </select>
-                </div>
-                <div class="input-row">
-                    <label>SWEEP RATE</label>
-                    <input type="range" id="sweep-speed" min="0.05" max="0.8" step="0.05" value="0.2">
-                </div>
-            </div>
-
-            <!-- Hard Dynamic Envelope Gate Configuration -->
-            <div class="module-block">
-                <div class="module-tag">04// AMP DECAY ENVELOPE</div>
-                <div class="input-row">
-                    <label>DECAY FADE</label>
-                    <input type="range" id="decay-time" min="0.05" max="1.5" step="0.05" value="0.4">
-                </div>
-                <div class="input-row">
-                    <label>MASTER LEVEL</label>
-                    <input type="range" id="gain-level" min="0" max="0.4" step="0.02" value="0.25">
-                </div>
+            <!-- Game Over System Capture Banner -->
+            <div id="game-over-screen">
+                <h1 style="color: #ff0055; margin: 0; font-size: 28px;">MATRIX FAILURE</h1>
+                <p style="color: #ffaa00; font-size: 12px; margin-top: 10px;">HOSTILE GLITCH ENTITIES BREACHED THE SECTOR</p>
+                <button class="action-btn" id="restart-btn">[ REBOOT SECTOR ]</button>
             </div>
         </div>
 
-        <!-- 8 Heavy Raw Tone Output Blocks (Tuned higher for small laptop/phone speakers) -->
+        <!-- 8 Heavy Lane Routing Keys -->
         <div class="block-keyboard">
-            <div class="chunk-key" data-pitch="220.00">A3</div>
-            <div class="chunk-key" data-pitch="261.63">C4</div>
-            <div class="chunk-key" data-pitch="293.66">D4</div>
-            <div class="chunk-key" data-pitch="329.63">E4</div>
-            <div class="chunk-key" data-pitch="392.00">G4</div>
-            <div class="chunk-key" data-pitch="440.00">A4</div>
-            <div class="chunk-key" data-pitch="523.25">C5</div>
-            <div class="chunk-key" data-pitch="587.33">D5</div>
+            <div class="chunk-key" data-lane="0">L1</div>
+            <div class="chunk-key" data-lane="1">L2</div>
+            <div class="chunk-key" data-lane="2">L3</div>
+            <div class="chunk-key" data-lane="3">L4</div>
+            <div class="chunk-key" data-lane="4">L5</div>
+            <div class="chunk-key" data-lane="5">L6</div>
+            <div class="chunk-key" data-lane="6">L7</div>
+            <div class="chunk-key" data-lane="7">L8</div>
         </div>
+        <p style="text-align: center; font-size: 11px; margin-top: 12px; color: #ff0055;">TIP: TAP KEYS TO WARP SHIP AND FIRE CORRESPONDING LANES</p>
     </div>
 
     <script>
-        // Store running arpeggiation intervals universally
-        const activeIntervals = new Map();
+        // Core Variable Matrix
+        const viewport = document.getElementById('game-viewport');
+        const ship = document.getElementById('player-ship');
+        const scoreDisplay = document.getElementById('score-val');
+        const shieldDisplay = document.getElementById('shield-val');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        
+        let score = 0;
+        let shield = 100;
+        let isGameOver = false;
+        
+        const lasers = [];
+        const targets = [];
+        
+        // Spawn and engine looping handles
+        let gameLoopId = null;
+        let targetSpawnId = null;
 
-        function playTone(frequency) {
+        // Compute step dimensions dynamically across 8 track lanes
+        const totalLanes = 8;
+        let laneWidth = viewport.clientWidth / totalLanes;
+
+        // Force calculations to stay aligned if browser frame shifts
+        window.addEventListener('resize', () => {
+            laneWidth = viewport.clientWidth / totalLanes;
+        });
+
+        // Set initial ship placement to middle lane
+        let currentLane = 3;
+        updateShipPosition();
+
+        function updateShipPosition() {
+            const leftOffset = (currentLane * laneWidth) + (laneWidth / 2) - 15;
+            ship.style.left = `${leftOffset}px`;
+        }
+
+        // Action Trigger Framework
+        function triggerLaneAction(laneIndex) {
+            if (isGameOver) return;
+            
+            // Instantly warp ship chassis to clicked target channel
+            currentLane = laneIndex;
+            updateShipPosition();
+            
+            // Construct Laser Entity Vector blueprint
+            const laser = document.createElement('div');
+            laser.className = 'laser-beam';
+            
+            const startX = (laneIndex * laneWidth) + (laneWidth / 2) - 2;
+            laser.style.left = `${startX}px`;
+            laser.style.bottom = '35px'; // Fires just above ship height
+            
+            viewport.appendChild(laser);
+            lasers.push(laser);
+
+            // Optional Web Audio Synth Ping (Safe, built-in, standalone fallback synth sound)
             try {
-                // Initialize audio instantly on click to force browser safety clearance
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                const ctx = new AudioContextClass();
-                
-                // Read configuration settings on runtime execution
-                const volume = parseFloat(document.getElementById('gain-level').value);
-                const wave1 = document.getElementById('osc-wave-1').value;
-                const wave2 = document.getElementById('osc-wave-2').value;
-                const sweepDir = document.getElementById('sweep-dir').value;
-                const sweepRate = parseFloat(document.getElementById('sweep-speed').value);
-                const arpRate = parseInt(document.getElementById('arp-rate').value);
-                const arpInterval = parseInt(document.getElementById('arp-interval').value);
-                const decay = parseFloat(document.getElementById('decay-time').value);
+                const actx = new AudioContextClass();
+                const osc = actx.createOscillator();
+                const gain = actx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(300 + (laneIndex * 80), actx.currentTime);
+                gain.gain.setValueAtTime(0.05, actx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(actx.destination);
+                osc.start();
+                setTimeout(() => osc.stop(), 160);
+            } catch(e) {}
+        }
 
-                const now = ctx.currentTime;
-
-                // Build Core Synth Engine Architecture Nodes
-                const osc1 = ctx.createOscillator();
-                const osc2 = ctx.createOscillator();
-                const mainGain = ctx.createGain();
-
-                osc1.type = wave1;
-                osc2.type = wave2;
-
-                // Thick industrial detune layer
-                osc1.detune.setValueAtTime(-8, now);
-                osc2.detune.setValueAtTime(8, now);
-
-                osc1.frequency.setValueAtTime(frequency, now);
-                osc2.frequency.setValueAtTime(frequency, now);
-
-                // Voltage Frequency Sweep Math Execution
-                if (sweepDir === 'up') {
-                    osc1.frequency.exponentialRampToValueAtTime(frequency * 2, now + sweepRate);
-                    osc2.frequency.exponentialRampToValueAtTime(frequency * 2, now + sweepRate);
-                } else if (sweepDir === 'down') {
-                    osc1.frequency.exponentialRampToValueAtTime(frequency * 0.5, now + sweepRate);
-                    osc2.frequency.exponentialRampToValueAtTime(frequency * 0.5, now + sweepRate);
-                }
-
-                // Chiptune Step-Arpeggiator Engine Clock
-                if (arpRate > 0) {
-                    let step = 0;
+        // Hostile Glitch Target Generator Routine
+        function spawnHostileTarget() {
+            if (isGameOver) return;
+            
+            const target = document.createElement('div');
+            target.className = 'glitch-target';
+            
+            const randomLane = Math.floor(Math.random() * totalLanes);
+            const targetX = (randomLane * laneWidth) + (laneWidth / 2) - 12;
+            
+            target.style.left = `${targetX}px`;
