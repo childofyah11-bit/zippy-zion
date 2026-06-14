@@ -6,17 +6,21 @@
     <style>
         body { margin: 0; background: #080810; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
         canvas { border: 4px solid #00ffaa; background: #0c0c1a; box-shadow: 0 0 30px rgba(0, 255, 170, 0.2); }
+        #startBtn { position: absolute; padding: 15px 40px; font-size: 24px; font-family: monospace; font-weight: bold; background: #00ffaa; color: #0c0c1a; border: none; cursor: pointer; box-shadow: 0 0 20px #00ffaa; border-radius: 5px; }
+        #startBtn:hover { background: #ffffff; box-shadow: 0 0 30px #ffffff; }
     </style>
 </head>
 <body>
 
-<canvas id="gameCanvas" width="1000" height="700"></canvas>
+<button id="startBtn" onclick="startGame()">START GAME</button>
+<canvas id="gameCanvas" width="1000" height="700" style="display:none;"></canvas>
 
 <script>
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 // GAME STATE MANAGER
+let gameStarted = false;
 let gameOver = false;
 let victory = false;
 let isShopActive = false;
@@ -30,8 +34,7 @@ const player = {
     overchargeCooldown: 0,
     hasShield: true, shieldCooldown: 0,
     shootTimer: 0,
-    // Upgrade Trackers
-    laserType: "normal", // Can be upgraded to "triple"
+    laserType: "normal", 
     upgradePoints: 0
 };
 
@@ -58,6 +61,14 @@ const buttons = {
     resume: { x: 400, y: 520, w: 200, h: 50, cost: 0, label: "Resume Fight" }
 };
 
+// INITIALIZATION BUTTON FUNCTION
+function startGame() {
+    document.getElementById("startBtn").style.display = "none";
+    canvas.style.display = "block";
+    gameStarted = true;
+    runLoop(); // Safely triggers loop after player interaction
+}
+
 // INPUT EVENT HANDLING
 window.addEventListener("keydown", e => { keys[e.key] = true; });
 window.addEventListener("keyup", e => { keys[e.key] = false; });
@@ -66,12 +77,10 @@ window.addEventListener("keyup", e => { keys[e.key] = false; });
 canvas.addEventListener("click", e => {
     if (!isShopActive) return;
 
-    // Calculate exact click coordinates on canvas
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    // Helper function to detect button hits
     function checkHit(btn) {
         return mouseX >= btn.x && mouseX <= btn.x + btn.w && mouseY >= btn.y && mouseY <= btn.y + btn.h;
     }
@@ -86,18 +95,17 @@ canvas.addEventListener("click", e => {
     } 
     else if (checkHit(buttons.health) && player.upgradePoints >= buttons.health.cost) {
         player.maxHealth += 50;
-        player.health = player.maxHealth; // Full heal on upgrade
+        player.health = player.maxHealth; 
         player.upgradePoints -= buttons.health.cost;
     } 
     else if (checkHit(buttons.resume)) {
-        isShopActive = false; // Exit shop loop
+        isShopActive = false; 
     }
 });
 
 // MATHEMATICAL CALCULATION ENGINE
 function update() {
-    // Completely freeze background updates if game is paused or stopped
-    if (gameOver || victory || isShopActive) return;
+    if (gameOver || victory || isShopActive || !gameStarted) return;
 
     // Cooldown management clocks
     if (player.timeSlowCooldown > 0) player.timeSlowCooldown--;
@@ -126,12 +134,10 @@ function update() {
     
     if (keys[" "] && player.shootTimer === 0) {
         if (player.laserType === "triple") {
-            // Triple Shot Upgrade: Fires 3 lasers at distinct vertical angles
             playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: -3 });
             playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 0 });
             playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 3 });
         } else {
-            // Standard Single Laser Block
             playerBullets.push({ x: player.x + player.w, y: player.y + player.h/2, vx: 18, vy: 0 });
         }
         player.shootTimer = 7; 
@@ -152,7 +158,6 @@ function update() {
         if (boss.health <= 0) victory = true;
     }
 
-    // Slow calculations factor
     let timeModifier = player.timeSlowActive > 0 ? 0.20 : 1.0;
 
     // Calculate Multi-Phase Shifts
@@ -163,12 +168,12 @@ function update() {
     else if (hpPct > 0.2) boss.phase = 4;
     else boss.phase = 5;
 
-    // PAUSE INTERMISSION WHEN PHASE BREAKS (Trigger Upgrade Bar Menu)
+    // Trigger Upgrade Menu on Phase break
     if (boss.phase > boss.lastPhase) {
-        player.upgradePoints += 1; // Reward 1 point token
+        player.upgradePoints += 1; 
         boss.lastPhase = boss.phase;
         isShopActive = true; 
-        bossBullets = []; // Free clear to prepare for next level
+        bossBullets = []; 
         return;
     }
 
@@ -201,21 +206,21 @@ function update() {
         }
     }
 
-    // Handle Active Player Lasers
+    // Process Player Lasers
     playerBullets.forEach((b, idx) => {
         b.x += b.vx;
         b.y += b.vy;
         if (b.x > canvas.width || b.y < 0 || b.y > canvas.height) playerBullets.splice(idx, 1);
 
         if (b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
-            boss.health -= 25; // Massive 25 damage per projectile
+            boss.health -= 25; 
             score += 50;
             playerBullets.splice(idx, 1);
             if (boss.health <= 0) victory = true;
         }
     });
 
-    // Handle Active Enemy Projectiles
+    // Process Enemy Projectiles
     bossBullets.forEach((b, idx) => {
         b.x += b.vx * timeModifier;
         b.y += b.vy * timeModifier;
@@ -245,7 +250,6 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (isShopActive) {
-        // --- UPGRADE SHOP OVERLAY LAYOUT ---
         ctx.fillStyle = "rgba(12, 12, 26, 0.9)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -255,5 +259,3 @@ function draw() {
         ctx.fillStyle = "#fff"; ctx.font = "18px monospace";
         ctx.fillText(`AVAILABLE POINT TOKENS: ${player.upgradePoints}`, canvas.width / 2, 180);
 
-        // Draw Shop Choice Buttons
-        Object.keys(buttons).forEach(key => {
