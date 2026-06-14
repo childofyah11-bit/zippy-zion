@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Cyber Space Arcade: 2 Levels Fixed</title>
     <style>
-        /* Forces the 900x600 grid to center perfectly on your screen */
-        body { margin: 0; background: #06060c; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
-        canvas { border: 4px solid #00ffaa; background: #020205; display: block; box-shadow: 0 0 30px rgba(0, 255, 170, 0.2); }
+        /* Forces the 900x600 canvas grid to center perfectly on your screen */
+        body { margin: 0; background: #0c0c16; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
+        canvas { border: 4px solid #00ffff; background: #05050f; display: block; }
     </style>
 </head>
 <body>
@@ -17,14 +17,14 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Lock keyboard controls instantly on page load
+// Lock keyboard controls instantly on load
 window.focus();
 
-// PRIMARY GAME STATES
+// PRIMARY GAME STATE VARIABLE INITIALIZATIONS
 let gameOver = false;
 let victory = false;
 let score = 0;
-let currentLevel = 1; // Level 1 = Cyber Dragon, Level 2 = Phoenix Overlord
+let currentLevel = 1; // Level 1 or Level 2 tracker flags
 
 // SPACESHIP PLAYER VARIABLES (GREEN BLOCK)
 let pX = 100;
@@ -38,28 +38,22 @@ let timeSlowActive = 0;
 let timeSlowCooldown = 0;
 let overchargeCooldown = 0;
 
-// MECHA BOSS VARIABLES (CHANGING HUE BLOCK)
+// MECHA BOSS VARIABLES (CHANGING HUE RECTANGLE)
 let bX = 760;
 let bY = 220;
 let bW = 80;
 let bH = 150;
-let bHealth = 4000; // Level 1 Boss HP pool
+let bHealth = 4000; // Level 1 Starts with 4000 HP pool
 let bMaxHealth = 4000;
 let bPhase = 1;
 let bDir = 1;
-let bDirX = 1; // Horizontal glide vector for Level 2
 let bTimer = 0;
-let bAngle = 0; 
 
 let playerBullets = [];
 let bossBullets = [];
 const keys = {};
 
-// IMMUTABLE HEX COLORS MAPPED PER PHASE TO ELIMINATE LOAD CRASHES
-const phaseColorsLvl1 = ["#00ffaa", "#00ffaa", "#00bfff", "#ffff00", "#ffaa00", "#ff0055"];
-const phaseColorsLvl2 = ["#ff00ff", "#ff00ff", "#ff5500", "#00ffff", "#ff0055", "#ffffff"];
-
-// KEYBOARD HANDLING
+// KEYBOARD REGISTER INPUTS
 window.addEventListener("keydown", function(e) { 
     if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
         e.preventDefault();
@@ -77,13 +71,13 @@ function update() {
     if (timeSlowActive > 0) timeSlowActive--;
     if (overchargeCooldown > 0) overchargeCooldown--;
 
-    // Smooth Spaceship Movement Controls (WASD / Arrow Keys)
+    // Spaceship Flight Axis translations (WASD / Arrow Keys)
     if (keys["w"] || keys["ArrowUp"]) pY -= pSpeed;
     if (keys["s"] || keys["ArrowDown"]) pY += pSpeed;
     if (keys["a"] || keys["ArrowLeft"]) pX -= pSpeed;
     if (keys["d"] || keys["ArrowRight"]) pX += pSpeed;
 
-    // Keep ship locked inside the grid arena boundary limits
+    // Boundary constraints containment
     if (pX < 10) pX = 10;
     if (pX > 400) pX = 400; 
     if (pY < 10) pY = 10;
@@ -92,7 +86,7 @@ function update() {
     // --- ATTACK POWER: Spacebar fires 35-Damage Lasers ---
     if (keys[" "] && playerBullets.length < 6) {
         playerBullets.push({ x: pX + pW, y: pY + pH/2 });
-        keys[" "] = false; 
+        keys[" "] = false; // Requires individual click taps to fire
     }
 
     // --- SUPERPOWER 1: Chronos Time Slow Mod (Shift Key drops threats to 20% speed) ---
@@ -104,12 +98,12 @@ function update() {
     if (keys["Enter"] && overchargeCooldown === 0) {
         overchargeCooldown = 240;
         bossBullets = []; bHealth -= 250; score += 150;
-        if (bHealth <= 0) resetAndLoadNextLevel();
+        if (bHealth <= 0) loadNextLevelData();
     }
 
     let timeModifier = timeSlowActive > 0 ? 0.20 : 1.0;
 
-    // Calculate Multi-Phase Shifts across current health parameters
+    // Calculate Multi-Phase Shifts across current active pools
     let hpPct = bHealth / bMaxHealth;
     if (hpPct > 0.8) bPhase = 1;
     else if (hpPct > 0.6) bPhase = 2;
@@ -117,56 +111,47 @@ function update() {
     else if (hpPct > 0.15) bPhase = 4;
     else bPhase = 5; 
 
-    // --- BOSS FLIGHT SCHEDULERS PER ACTIVE LEVEL ---
+    // --- BOSS FLIGHT SCHEDULERS PER LEVEL ---
     if (currentLevel === 1) {
-        if (bPhase === 5) {
-            let targetY = pY + pH/2 - bH/2;
-            bY += (targetY - bY) * 0.08 * timeModifier;
-            bX = 740 + Math.sin(Date.now() / 150) * 40 * timeModifier; 
-        } else {
-            bY += bDir * 4 * timeModifier;
-            if (bY <= 20 || bY >= 600 - bH - 20) bDir *= -1;
-        }
+        // Level 1: Standard vertical hover vertical pathing
+        bY += bDir * 4 * timeModifier;
+        if (bY <= 20 || bY >= 600 - bH - 20) bDir *= -1;
     } 
     else if (currentLevel === 2) {
-        // LEVEL 2 MOVEMENT ENHANCEMENT: Boss flies faster and waves diagonally across X and Y axes
-        let speedMult = bPhase === 5 ? 7.5 : 5.5;
-        bY += bDir * speedMult * timeModifier;
-        bX += bDirX * 3 * timeModifier;
-
+        // LEVEL 2 MOVEMENT UPGRADE: Boss pacing velocity speeds up dramatically (+50% speed!)
+        bY += bDir * 7.5 * timeModifier;
         if (bY <= 20 || bY >= 600 - bH - 20) bDir *= -1;
-        if (bX <= 550 || bX >= 850) bDirX *= -1; 
-        
-        if (bPhase === 5) {
-            let targetY = pY + pH/2 - bH/2;
-            bY += (targetY - bY) * 0.12 * timeModifier;
-        }
     }
 
-    // --- BOSS WEAPONS TURRET GENERATORS ---
-    bTimer += 1 * timeModifier; bAngle += 0.08 * timeModifier;
+    // --- BOSS AUTOMATIC TURRET WEAPONS GENERATOR ---
+    bTimer += 1 * timeModifier;
     let fireDelay = 25 - (bPhase * 3);
-    if (bPhase === 5) fireDelay = 4; // Hyper bullet hell spray speed
+    if (bPhase === 5) fireDelay = 4; // Hyper bullet hell spray pattern output velocity
 
     if (bTimer >= fireDelay) {
         bTimer = 0;
-        let c = currentLevel === 1 ? phaseColorsLvl1[bPhase] : phaseColorsLvl2[bPhase];
         
+        // Define hardcoded color hex values based on Level and Phase variables
+        let bulletColor = "#ff0055"; // Default red
+        if (currentLevel === 2) bulletColor = "#ff00ff"; // Level 2 triggers magenta threats
+        if (bPhase === 5) bulletColor = "#ffffff"; // Phase 5 fires white warning blasts
+
         if (bPhase === 1) {
-            bossBullets.push({ x: bX, y: bY + bH/2, vx: -8, vy: 0, color: c });
+            bossBullets.push({ x: bX, y: bY + bH/2, vx: -8, vy: 0, color: bulletColor });
         } else if (bPhase === 2) {
-            bossBullets.push({ x: bX, y: bY + bH/2, vx: -9, vy: (Math.random() - 0.5) * 5, color: c });
+            bossBullets.push({ x: bX, y: bY + bH/2, vx: -9, vy: (Math.random() - 0.5) * 5, color: bulletColor });
         } else if (bPhase === 3) {
             let angle = Math.atan2((pY + pH/2) - (bY + bH/2), (pX + pW/2) - bX);
-            let bSpeed = currentLevel === 2 ? 11.5 : 9.5;
-            bossBullets.push({ x: bX, y: bY + bH/2, vx: Math.cos(angle) * bSpeed, vy: Math.sin(angle) * bSpeed, color: c });
+            let speedMult = currentLevel === 2 ? 11 : 9; // Level 2 has faster tracking orbs
+            bossBullets.push({ x: bX, y: bY + bH/2, vx: Math.cos(angle) * speedMult, vy: Math.sin(angle) * speedMult, color: bulletColor });
         } else if (bPhase === 4) {
-            bossBullets.push({ x: bX, y: bY + 20, vx: -11, vy: -1.5, color: c });
-            bossBullets.push({ x: bX, y: bY + bH - 20, vx: -11, vy: 1.5, color: c });
+            bossBullets.push({ x: bX, y: bY + 20, vx: -11, vy: -1.5, color: bulletColor });
+            bossBullets.push({ x: bX, y: bY + bH - 20, vx: -11, vy: 1.5, color: bulletColor });
         } else if (bPhase === 5) {
-            bossBullets.push({ x: bX, y: bY + bH/2, vx: -13, vy: Math.sin(bAngle) * 7, color: c });
-            bossBullets.push({ x: bX, y: bY + bH/2, vx: -11, vy: Math.sin(bAngle + 0.8) * 5, color: "#ffffff" });
-            bossBullets.push({ x: bX, y: bY + bH/2, vx: -11, vy: Math.sin(bAngle - 0.8) * 5, color: c });
+            // Three-way scatter spray barrage
+            bossBullets.push({ x: bX, y: bY + bH/2, vx: -12, vy: 0, color: bulletColor });
+            bossBullets.push({ x: bX, y: bY + bH/2, vx: -11, vy: -3, color: bulletColor });
+            bossBullets.push({ x: bX, y: bY + bH/2, vx: -11, vy: 3, color: bulletColor });
         }
     }
 
@@ -177,11 +162,11 @@ function update() {
 
         if (b.x > bX && b.x < bX + bW && b.y > bY && b.y < bY + bH) {
             bHealth -= 35; score += 50; playerBullets.splice(i, 1);
-            if (bHealth <= 0) resetAndLoadNextLevel();
+            if (bHealth <= 0) loadNextLevelData();
         }
     }
 
-    // Update Enemy Threat Projectiles
+    // Update Enemy Threat Projectiles (Modulated by time slow)
     for (let i = bossBullets.length - 1; i >= 0; i--) {
         let b = bossBullets[i]; b.x += b.vx * timeModifier; b.y += b.vy * timeModifier;
         if (b.x < -20 || b.x > 920 || b.y < -20 || b.y > 620) { bossBullets.splice(i, 1); continue; }
@@ -194,73 +179,81 @@ function update() {
     }
 }
 
-// 100% RELIABLE AUTOMATED PROGRESSION RESET LAYER
-function resetAndLoadNextLevel() {
+// 100% WORKING AUTOMATED PROGRESSION HOOK
+function loadNextLevelData() {
     if (currentLevel === 1) {
-        // IMMEDIATELY FORCE LEVEL 2 VALUES TO PREVENT BLANK SCREENS [MDN]
+        // HARD RESET LEVEL INDEX TO LEVEL 2 INSTANTLY
         currentLevel = 2;
         
-        // Clear all arrays to prevent old calculation leaks
+        // Wipe old active tracking vectors out of memory
         playerBullets = [];
         bossBullets = [];
         
-        // Hard Reset your health bar parameters completely
+        // Reset player placement and health bar parameters
         pX = 100; pY = 280;
         pHealth = pMaxHealth; 
         
-        // Spawn Level 2 Boss (Phoenix Overlord) dimensions instantly
+        // Spawn Level 2 Boss (Phoenix Overlord) variables instantly
         bX = 760; bY = 220;
-        bHealth = 6000; // Boosted 6,000 HP pool for Level 2
+        bHealth = 6000; // UPGRADED 6,000 HP FOR THE LEVEL 2 FIGHT
         bMaxHealth = 6000;
-        bPhase = 1; bTimer = 0; bDir = 1; bDirX = 1;
+        bPhase = 1; bTimer = 0; bDir = 1;
         score += 1000; 
     } else {
-        // If Level 2 drops, you win the game!
+        // If Level 2 boss dies, you win the game!
         victory = true;
     }
 }
 
-// VISUAL GRAPHICS PAINTER LAYER
+// GRAPHICS VISUAL PAINTER LAYER
 function draw() {
-    ctx.clearRect(0, 0, 900, 600); [MDN]
+    ctx.clearRect(0, 0, 900, 600);
 
     if (!gameOver && !victory) {
         if (timeSlowActive > 0) {
-            ctx.fillStyle = "rgba(0, 255, 255, 0.08)"; ctx.fillRect(0, 0, 900, 600); [W3Schools]
+            ctx.fillStyle = "rgba(0, 255, 255, 0.08)"; ctx.fillRect(0, 0, 900, 600);
         }
 
-        // Draw Player Spaceship (Neon Green Block Frame)
-        ctx.fillStyle = "#00ffaa"; ctx.fillRect(pX, pY, pW, pH); [W3Schools]
+        // Draw Player Ship (Neon Green Box Frame)
+        ctx.fillStyle = "#00ffaa"; ctx.fillRect(pX, pY, pW, pH);
 
-        // Handle text label maps and boundary colors safely per active level
-        let bossColor = "#00ffaa";
-        let phaseTitle = "GRID DEFENSE";
-        let bossName = "CYBER DRAGON";
-
-        if (currentLevel === 1) {
-            bossColor = phaseColorsLvl1[bPhase]; bossName = "CYBER DRAGON";
-            if (bPhase === 2) phaseTitle = "CYAN OVERLOAD";
-            if (bPhase === 3) phaseTitle = "SWARM MATRIX";
-            if (bPhase === 4) phaseTitle = "CRITICAL CORE";
-            if (bPhase === 5) phaseTitle = "OVERPOWERED TITAN";
-        } else if (currentLevel === 2) {
-            bossColor = phaseColorsLvl2[bPhase]; bossName = "PHOENIX OVERLORD";
-            if (bPhase === 1) phaseTitle = "ABYSS ARRIVAL";
-            if (bPhase === 2) phaseTitle = "PLASMA MATRIX";
-            if (bPhase === 3) phaseTitle = "VOLT BARRAGE";
-            if (bPhase === 4) phaseTitle = "DREAD THERMAL";
-            if (bPhase === 5) phaseTitle = "GOD MODE PROTOCOL";
+        // Hardcode colors based exclusively on flat parameters to ensure no crashing
+        let currentBossColor = "#ff3300"; // Red for Level 1
+        let currentBossName = "CYBER DRAGON";
+        
+        if (currentLevel === 2) {
+            currentBossColor = "#ff00ff"; // Magenta for Level 2
+            currentBossName = "PHOENIX OVERLORD";
         }
 
-        // Draw active Enemy Boss Box
-        ctx.fillStyle = bossColor; ctx.fillRect(bX, bY, bW, bH); [W3Schools]
+        // Draw active Threat Boss Box
+        ctx.fillStyle = currentBossColor; ctx.fillRect(bX, bY, bW, bH);
 
         // Paint Player Lasers
         ctx.fillStyle = "#00ffaa";
         playerBullets.forEach(function(b) { ctx.fillRect(b.x, b.y - 3, 16, 6); });
 
-        // Paint Enemy Threat Projectiles
+        // Paint Enemy Threat Orbs
         bossBullets.forEach(function(b) {
             ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, 7, 0, Math.PI * 2); ctx.fill();
         });
 
+        // HEADS UP USER MONITOR TERMINAL (HUD)
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 13px monospace";
+        ctx.fillText("FIGHTER SYSTEM HP: " + Math.max(0, pHealth) + "/" + pMaxHealth, 20, 35);
+        ctx.fillText("CHRONOS CLOCK [SHIFT]: " + (timeSlowCooldown === 0 ? "READY" : "CHARGING"), 20, 60);
+        ctx.fillText("EMP PULSE REBOOT [ENTER]: " + (overchargeCooldown === 0 ? "READY" : "CHARGING"), 20, 85);
+        
+        // Active Stage Level display tracker lines
+        ctx.fillStyle = "#ffff00"; ctx.fillText("ACTIVE STAGE AREA: LEVEL " + currentLevel + "/2", 20, 110);
+        ctx.fillStyle = "#ffffff"; ctx.fillText("MISSION DATA RECORD SC: " + score, 20, 135);
+
+        // Enemy Boss Health indicators meters bars
+        ctx.fillStyle = "#141424"; ctx.fillRect(500, 20, 370, 20);
+        ctx.fillStyle = currentBossColor; ctx.fillRect(500, 20, Math.max(0, 370 * (bHealth / bMaxHealth)), 20);
+        ctx.fillStyle = "#ffffff"; ctx.fillText(currentBossName + " HP: " + bHealth, 500, 58);
+        ctx.fillText("[ SYSTEM MODE THREAT LEVEL PHASE: " + bPhase + "/5 ]", 500, 80);
+
+    } else {
+        ctx.textAlign = "center"; ctx.font = "bold 35px monospace";
+        if (gameOver) {
