@@ -2,31 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Retro Space Arcade: Fixed Damage Shop</title>
+    <title>Retro Space Battle: Fixed Edition</title>
     <style>
+        /* Centers the gameplay container perfectly on any Chrome screen layout */
         body { margin: 0; background: #0c0c16; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; font-family: monospace; }
         canvas { border: 4px solid #00ffff; background: #05050f; display: block; box-shadow: 0 0 30px rgba(0, 255, 255, 0.2); }
+        
+        /* Chrome Security Override Start Button */
+        #launchButton { padding: 15px 40px; font-size: 22px; font-family: monospace; font-weight: bold; background: #00ffff; color: #0c0c16; border: none; cursor: pointer; box-shadow: 0 0 20px #00ffff; border-radius: 4px; }
+        #launchButton:hover { background: #ffffff; box-shadow: 0 0 30px #ffffff; }
     </style>
 </head>
 <body>
 
-<canvas id="gameCanvas" width="900" height="600"></canvas>
+<!-- This button forces Chrome to give the code instant permission to render -->
+<button id="launchButton" onclick="initializeEngine()">LAUNCH MISSION</button>
+<canvas id="gameCanvas" width="900" height="600" style="display: none;"></canvas>
 
 <script>
+// UNIFIED ENGINE HOOKS
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Locks browser keyboard controls onto the screen immediately
-window.focus();
-
-// GAME VARIABLES
+// PRIMARY STATE CONTROLLERS
 let gameOver = false;
 let victory = false;
 let isShopActive = false;
 let score = 0;
-let damageCurrency = 0; // Your damage cash currency
+let damageCurrency = 0; // Your damage scores points you turn into cash currency
 
-// USER SPACESHIP (CYAN)
+// CYAN SPACESHIP DATA
 let pX = 100;
 let pY = 280;
 let pW = 40;
@@ -39,11 +44,11 @@ let timeSlowCooldown = 0;
 let overchargeCooldown = 0;
 let laserType = "normal"; 
 
-// POWER 4: Overdrive Shield variables
+// CAPABILITY 4: Overdrive Shield matrix
 let overdriveShieldActive = 0;
 let overdriveShieldCooldown = 0;
 
-// CHRONOS ALIEN TITAN BOSS
+// THE MULTI-PHASE ALIEN BOSS TITAN
 let bX = 760;
 let bY = 220;
 let bW = 80;
@@ -59,7 +64,7 @@ let playerBullets = [];
 let bossBullets = [];
 const keys = {};
 
-// KEYBOARD REGISTERING CONTROLS
+// SYSTEM BINDING ACTION OVERRIDES TO SAFELY INGEST KEYBOARD INPUTS
 window.addEventListener("keydown", function(e) { 
     if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
         e.preventDefault();
@@ -67,7 +72,7 @@ window.addEventListener("keydown", function(e) {
 
     keys[e.key] = true; 
 
-    // --- INTERACTIVE UPGRADE TERMINAL LOGIC ---
+    // --- PAUSE SHOP LOGIC INGESTION: CAPTURES KEY NUMBERS INSIDE MENU ---
     if (isShopActive) {
         if (e.key === "1" && damageCurrency >= 200 && laserType !== "triple") {
             laserType = "triple"; damageCurrency -= 200;
@@ -87,25 +92,37 @@ window.addEventListener("keydown", function(e) {
         return;
     }
 
-    // --- PRESS P KEY TO SAFELY OPEN SHOP ---
+    // --- TAP P KEY AT ANY POINT DURING THE GAME TO SAFELY OPEN SHOP MATRIX ---
     if ((e.key === "p" || e.key === "P") && !gameOver && !victory) {
         isShopActive = true;
     }
 
-    // --- ACTIVATE OVERDRIVE SHIELD (R Key) ---
+    // --- DEPLOY SUPERPOWER 4: SHIELD REFLECTOR BUBBLE MATRIX (R Key) ---
     if ((e.key === "r" || e.key === "R") && overdriveShieldCooldown === 0 && overdriveShieldActive === 0 && !gameOver && !victory) {
-        overdriveShieldActive = 180; 
-        overdriveShieldCooldown = 480; 
+        overdriveShieldActive = 180; overdriveShieldCooldown = 480; 
     }
 });
 
 window.addEventListener("keyup", function(e) { keys[e.key] = false; });
 
-// MATHEMATICAL ENGINE CALCULATION MATRIX
+// SECURITY LAUNCH HOOK FOR CHROME RECOGNITION
+function initializeEngine() {
+    document.getElementById("launchButton").style.display = "none";
+    canvas.style.display = "block";
+    
+    // Automatically force keyboard focus into the center game field array container
+    window.focus();
+    canvas.focus();
+    
+    // Begin continuous loops clock execution ticks safely
+    runLoop();
+}
+
+// ARCADES CALCULATION STEP PIPELINE
 function update() {
     if (gameOver || victory || isShopActive) return;
 
-    // Cooldown clock updates
+    // Tick down system meters updates
     if (timeSlowCooldown > 0) timeSlowCooldown--;
     if (timeSlowActive > 0) timeSlowActive--;
     if (overchargeCooldown > 0) overchargeCooldown--;
@@ -113,7 +130,7 @@ function update() {
     if (overdriveShieldCooldown > 0 && overdriveShieldActive === 0) overdriveShieldCooldown--;
     if (overdriveShieldActive > 0) overdriveShieldActive--;
 
-    // Standard Flight Vectors
+    // Standard Smooth Flight Axis translations
     if (keys["w"] || keys["ArrowUp"]) pY -= pSpeed;
     if (keys["s"] || keys["ArrowDown"]) pY += pSpeed;
     if (keys["a"] || keys["ArrowLeft"]) pX -= pSpeed;
@@ -124,7 +141,7 @@ function update() {
     if (pY < 10) pY = 10;
     if (pY > 600 - pH - 10) pY = 600 - pH - 10;
 
-    // Spacebar shoots lasers (35 Damage output)
+    // UPGRADED PRIMARY WEAPON: Spacebar shoots lasers (35 Damage Output)
     if (keys[" "] && playerBullets.length < 8) {
         if (laserType === "triple") {
             playerBullets.push({ x: pX + pW, y: pY + pH/2, vx: 15, vy: -3 });
@@ -136,12 +153,12 @@ function update() {
         keys[" "] = false; 
     }
 
-    // Chronos Slow Warp Mod (Left Shift Key drops threats to 20% speed)
+    // SUPERPOWER 1: Chronos Slow Warp Mod (Left Shift Key drops threats to 20% speed)
     if (keys["Shift"] && timeSlowCooldown === 0) {
         timeSlowActive = 150; timeSlowCooldown = 360; 
     }
 
-    // EMP Screen Cleanse Pulse (Enter Key)
+    // SUPERPOWER 2: EMP Screen Cleanse Pulse (Enter Key wipes map field bullets)
     if (keys["Enter"] && overchargeCooldown === 0) {
         overchargeCooldown = 240;
         bossBullets = []; bHealth -= 250; damageCurrency += 250; 
@@ -151,7 +168,7 @@ function update() {
 
     let timeModifier = timeSlowActive > 0 ? 0.20 : 1.0;
 
-    // Process Boss Protocols Phase Shifting
+    // Process Boss Protocols Phase Shifting indices calculation
     let hpPct = bHealth / bMaxHealth;
     if (hpPct > 0.8) bPhase = 1;
     else if (hpPct > 0.6) bPhase = 2;
@@ -169,7 +186,7 @@ function update() {
         if (bY <= 20 || bY >= 600 - bH - 20) bDir *= -1;
     }
 
-    // Automated Boss Turret weapon loops
+    // Automated Boss Turret weapon firing loops
     bTimer += 1 * timeModifier; bAngle += 0.08 * timeModifier;
     let fireDelay = 25 - (bPhase * 3);
     if (bPhase === 5) fireDelay = 4; 
@@ -206,7 +223,7 @@ function update() {
 
         if (b.x > bX && b.x < bX + bW && b.y > bY && b.y < bY + bH) {
             bHealth -= 35; 
-            damageCurrency += 35; 
+            damageCurrency += 35; // CORE HARDCODED REQ: HIT STRIKES ACCUMULATE AS DIRECT CASH VALUE!
             score += 50;
             playerBullets.splice(i, 1);
             if (bHealth <= 0) victory = true;
@@ -228,42 +245,14 @@ function update() {
     }
 }
 
-// GRAPHICS RENDER ENGINE
+// GRAPHICS RENDER LAYER INTERFACES
 function draw() {
     ctx.clearRect(0, 0, 900, 600);
 
     if (isShopActive) {
-        // --- UPGRADE CONSOLE DRAW SCREEN ---
+        // --- UPGRADE NETWORK DASHBOARD INTERMISSION SCREEN PANEL ---
         ctx.fillStyle = "rgba(10, 10, 32, 0.96)"; ctx.fillRect(0, 0, 900, 600);
         ctx.fillStyle = "#ff007f"; ctx.font = "bold 24px monospace"; ctx.textAlign = "center";
         ctx.fillText("DAMAGE REWARD EQUIPMENT TERMINAL ENGINE", 450, 120);
         
         ctx.fillStyle = "#ffffff"; ctx.font = "18px monospace";
-        ctx.fillText("CURRENT DAMAGE CASH STORED: " + damageCurrency + " DMG", 450, 180);
-        
-        ctx.fillStyle = "#00ffff"; ctx.font = "15px monospace";
-        ctx.fillText("[PRESS 1] Buy Triple Laser Spread Cannon ------ Cost: 200 DMG", 450, 260);
-        ctx.fillText("[PRESS 2] Upgrade Flight Thrusters (+2 Speed) -- Cost: 100 DMG", 450, 310);
-        ctx.fillText("[PRESS 3] Rebuild Structural Hull (+50 Max HP) -- Cost: 150 DMG", 450, 360);
-        
-        let shLabel = overdriveShieldCooldown === 0 ? "LOCK OUT UNLOCKED: [R] Overdrive Shield Matrix - Cost: 250 DMG" : "ALREADY ACTIVE IN RIG MAPPED DATA [TAP R]";
-        ctx.fillStyle = overdriveShieldCooldown === 0 ? "#00ffaa" : "#888888";
-        ctx.fillText("[PRESS 4] " + shLabel, 450, 420);
-        
-        ctx.fillStyle = "#ff007f"; ctx.font = "bold 16px monospace";
-        ctx.fillText("[PRESS P KEY OR ENTER BUTTON] RESUME SPACE FLIGHT", 450, 500);
-        ctx.textAlign = "left"; 
-        return;
-    }
-
-    if (!gameOver && !victory) {
-        if (timeSlowActive > 0) {
-            ctx.fillStyle = "rgba(0, 255, 255, 0.08)"; ctx.fillRect(0, 0, 900, 600);
-        }
-
-        // Draw Spaceship Fighter (Cyan Block)
-        ctx.fillStyle = "#00ffff"; ctx.fillRect(pX, pY, pW, pH);
-
-        // Draw protective green shield loop if active
-        if (overdriveShieldActive > 0) {
-            ctx.strokeStyle = "#00ffaa"; ctx.lineWidth = 4;
