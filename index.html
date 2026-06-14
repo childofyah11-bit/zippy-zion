@@ -19,11 +19,13 @@
             margin: 0;
             image-rendering: pixelated;
         }
-
         /* Brutalist Boot Wall Overlay */
         #gatekeeper-screen {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: #000;
             display: flex;
             flex-direction: column;
@@ -33,7 +35,6 @@
             border: 14px solid #ff0055;
             box-sizing: border-box;
         }
-
         .giant-boot-btn {
             background: #000;
             color: #00ff66;
@@ -45,12 +46,10 @@
             cursor: pointer;
             box-shadow: 12px 12px 0px #ff0055;
         }
-
         .giant-boot-btn:active {
             transform: translate(6px, 6px);
             box-shadow: 6px 6px 0px #ff0055;
         }
-
         /* Main Blocky Console Framework */
         .console-chassis {
             background: #000;
@@ -60,7 +59,6 @@
             max-width: 700px;
             box-shadow: 16px 16px 0px #220044;
         }
-
         .panel-stripe {
             background: #00ff66;
             color: #000;
@@ -69,20 +67,17 @@
             text-align: center;
             margin-bottom: 15px;
         }
-
         .hardware-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 12px;
             margin-bottom: 20px;
         }
-
         .module-block {
             border: 4px solid #ffaa00;
             padding: 8px;
             background: #111;
         }
-
         .module-tag {
             font-size: 11px;
             background: #ffaa00;
@@ -91,7 +86,6 @@
             display: inline-block;
             margin-bottom: 10px;
         }
-
         .input-row {
             display: flex;
             justify-content: space-between;
@@ -99,7 +93,6 @@
             margin-bottom: 8px;
             font-size: 12px;
         }
-
         /* Pixel-art Raw Select Box and Text Sliders */
         select, input[type="range"] {
             background: #000;
@@ -110,13 +103,11 @@
             padding: 2px;
             outline: none;
         }
-
         input[type="range"] {
             width: 100px;
             -webkit-appearance: none;
             height: 14px;
         }
-
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 12px;
@@ -125,7 +116,6 @@
             border: 2px solid #fff;
             cursor: pointer;
         }
-
         /* Chunk-Style Piano Roll Intermediary Layout */
         .block-keyboard {
             display: flex;
@@ -134,7 +124,6 @@
             padding: 6px;
             gap: 6px;
         }
-
         .chunk-key {
             flex: 1;
             background: #fff;
@@ -143,7 +132,6 @@
             box-shadow: 0px 10px 0px #333;
             cursor: pointer;
         }
-
         .chunk-key:active {
             background: #ff0055;
             box-shadow: 0px 2px 0px #990022;
@@ -163,7 +151,7 @@
     <!-- MAIN SOUND GENERATOR SYSTEM CABINET -->
     <div class="console-chassis">
         <div class="panel-stripe">=== CONTROLLER MATRIX OVERRIDE V2 ===</div>
-
+        
         <div class="hardware-grid">
             <!-- Signal Oscillators -->
             <div class="module-block">
@@ -245,33 +233,145 @@
         </div>
     </div>
 
-    <script>
-        let rawAudioContext = null;
-        const liveVoiceStack = new Map();
+    <!-- Linked External Synthesis Engine Script -->
+    <script src="script.js"></script>
+</body>
+</html>
+let rawAudioContext = null;
+const liveVoiceStack = new Map();
 
-        // Sever the security blocker overlay and immediately register system hardware permissions
-        document.getElementById('ignition-btn').addEventListener('click', () => {
-            rawAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-            rawAudioContext.resume();
-            document.getElementById('gatekeeper-screen').style.display = 'none';
-        });
+// Sever security screen blocker and initialize sound map permissions
+document.getElementById('ignition-btn').addEventListener('click', () => {
+    rawAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (rawAudioContext.state === 'suspended') {
+        rawAudioContext.resume();
+    }
+    document.getElementById('gatekeeper-screen').style.display = 'none';
+});
 
-        function initiateAudioOutput(baseFrequency) {
+function initiateAudioOutput(baseFrequency) {
+    if (!rawAudioContext) return;
+    if (rawAudioContext.state === 'suspended') rawAudioContext.resume();
+
+    // Clear hanging overlapping sound streams instantly
+    if (liveVoiceStack.has(baseFrequency)) {
+        terminateAudioOutput(baseFrequency);
+    }
+
+    const masterOutputLevel = parseFloat(document.getElementById('gain-level').value);
+    const chosenWave1 = document.getElementById('osc-wave-1').value;
+    const chosenWave2 = document.getElementById('osc-wave-2').value;
+    const pitchSweepDirection = document.getElementById('sweep-dir').value;
+    const pitchSweepDuration = parseFloat(document.getElementById('sweep-speed').value);
+    const arpeggiatorSpeed = parseInt(document.getElementById('arp-rate').value);
+    const arpeggiatorIntervalSteps = parseInt(document.getElementById('arp-interval').value);
+    const decayDuration = parseFloat(document.getElementById('decay-time').value);
+
+    const currentTime = rawAudioContext.currentTime;
+
+    // Build internal Web Audio routing architecture
+    const gainNode = rawAudioContext.createGain();
+    const osc1 = rawAudioContext.createOscillator();
+    const osc2 = rawAudioContext.createOscillator();
+
+    osc1.type = chosenWave1;
+    osc2.type = chosenWave2;
+
+    // Slight micro-detune engine to generate fat retro textures
+    osc1.detune.setValueAtTime(-6, currentTime);
+    osc2.detune.setValueAtTime(6, currentTime); 
+
+    // Compute basic pitch calculations
+    let targetedPitch = baseFrequency;
+    osc1.frequency.setValueAtTime(targetedPitch, currentTime);
+    osc2.frequency.setValueAtTime(targetedPitch, currentTime);
+
+    // Apply Voltage Sweep Ramping System
+    if (pitchSweepDirection === 'up') {
+        osc1.frequency.exponentialRampToValueAtTime(targetedPitch * 2, currentTime + pitchSweepDuration);
+        osc2.frequency.exponentialRampToValueAtTime(targetedPitch * 2, currentTime + pitchSweepDuration);
+    } else if (pitchSweepDirection === 'down') {
+        osc1.frequency.exponentialRampToValueAtTime(targetedPitch / 2, currentTime + pitchSweepDuration);
+        osc2.frequency.exponentialRampToValueAtTime(targetedPitch / 2, currentTime + pitchSweepDuration);
+    }
+
+    // Apply Chiptune Arpeggiator Modulator System
+    let arpTimerId = null;
+    if (arpeggiatorSpeed > 0) {
+        let cycleIndex = 0;
+        const speedIntervalMs = (1 / arpeggiatorSpeed) * 1000;
+        // Basic musical interval steps multiplier (1.059463 is the 12th root of 2)
+        const secondaryIntervalFreq = baseFrequency * Math.pow(1.059463, arpeggiatorIntervalSteps);
+        
+        arpTimerId = setInterval(() => {
             if (!rawAudioContext) return;
-            if (rawAudioContext.state === 'suspended') rawAudioContext.resume();
+            const stepTime = rawAudioContext.currentTime;
+            const targetStepFreq = (cycleIndex % 2 === 0) ? baseFrequency : secondaryIntervalFreq;
+            osc1.frequency.setValueAtTime(targetStepFreq, stepTime);
+            osc2.frequency.setValueAtTime(targetStepFreq, stepTime);
+            cycleIndex++;
+        }, speedIntervalMs);
+    }
 
-            // Clear hanging overlapping sound streams instantly
-            if (liveVoiceStack.has(baseFrequency)) {
-                terminateAudioOutput(baseFrequency);
-            }
+    // Set Up Amp decay Volume envelope Gate
+    gainNode.gain.setValueAtTime(masterOutputLevel, currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + decayDuration);
 
-            const masterOutputLevel = parseFloat(document.getElementById('gain-level').value);
-            const chosenWave1 = document.getElementById('osc-wave-1').value;
-            const chosenWave2 = document.getElementById('osc-wave-2').value;
-            
-            const pitchSweepDirection = document.getElementById('sweep-dir').value;
-            const pitchSweepDuration = parseFloat(document.getElementById('sweep-speed').value);
-            
-            const arpeggiatorSpeed = parseInt(document.getElementById('arp-rate').value);
-            const arpeggiatorIntervalSteps = parseInt(document.getElementById('arp-interval').value);
-            
+    // Route connections out to physical speakers
+    osc1.connect(gainNode);
+    osc2.connect(gainNode);
+    gainNode.connect(rawAudioContext.destination);
+
+    // Ignition trigger
+    osc1.start(currentTime);
+    osc2.start(currentTime);
+
+    // Automatically clean references out of memory array when done playing
+    const voiceTimeout = setTimeout(() => {
+        if (arpTimerId) clearInterval(arpTimerId);
+        try {
+            osc1.stop();
+            osc2.stop();
+            osc1.disconnect();
+            osc2.disconnect();
+            gainNode.disconnect();
+        } catch(e) {}
+        liveVoiceStack.delete(baseFrequency);
+    }, decayDuration * 1000 + 50);
+
+    // Stash parameters for manual cutoff options
+    liveVoiceStack.set(baseFrequency, {
+        osc1, osc2, gainNode, arpTimerId, voiceTimeout
+    });
+}
+
+function terminateAudioOutput(baseFrequency) {
+    if (liveVoiceStack.has(baseFrequency)) {
+        const voiceData = liveVoiceStack.get(baseFrequency);
+        if (voiceData.arpTimerId) clearInterval(voiceData.arpTimerId);
+        clearTimeout(voiceData.voiceTimeout);
+        try {
+            voiceData.osc1.stop();
+            voiceData.osc2.stop();
+            voiceData.osc1.disconnect();
+            voiceData.osc2.disconnect();
+            voiceData.gainNode.disconnect();
+        } catch(e) {}
+        liveVoiceStack.delete(baseFrequency);
+    }
+}
+
+// Attach event hooks directly to DOM block keyboard components
+document.querySelectorAll('.chunk-key').forEach(key => {
+    const notePitch = parseFloat(key.getAttribute('data-pitch'));
+    
+    key.addEventListener('mousedown', () => {
+        initiateAudioOutput(notePitch);
+    });
+    
+    // Add touch compatibility for cellular mobile devices
+    key.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        initiateAudioOutput(notePitch);
+    });
+});
